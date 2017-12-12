@@ -40,10 +40,10 @@ static int setvals(const char *ws, const char *hs, const char *cs) {
 	    && sscanf(cs, "%u", _c) == 1;
 }
 
-int getvals(const int argc, const char *const argv[]) {
+int getvals(const int argc, const char *const argv[], const char *s) {
 	const char *cs, *ws, *hs;
 	int c;
-	while((c = getopt(argc, (char *const*)argv, OPTSTRING)) != -1) {
+	while((c = getopt(argc, (char *const*)argv, s)) != -1) {
 		switch(c) {
 			case 'c':
 				cs = optarg;
@@ -55,7 +55,7 @@ int getvals(const int argc, const char *const argv[]) {
 				hs = optarg;
 				break;
 			case '?':
-				handleerr(optopt, OPTSTRING);
+				handleerr(optopt, s);
 				return 1;
 			default:
 				return 2;

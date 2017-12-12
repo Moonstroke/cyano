@@ -6,6 +6,6 @@
 
 void setvars(unsigned int *board_width, unsigned int *board_height, unsigned int *cell_pixels);
 
-int getvals(const int argc, const char *const argv[]);
+int getvals(const int argc, const char *const argv[], const char *optstr);
 
 #endif // CLOP_H
