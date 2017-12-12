@@ -38,7 +38,7 @@ int main(const int argc, const char *const argv[]) {
 	Board b;
 	initBoard(&b, board_width, board_height);
 
-	int mx, my,
+	int over_x, over_y,
 	    last_x, last_y;
 	bool loop = true;
 	bool mdown = false;
@@ -50,18 +50,20 @@ int main(const int argc, const char *const argv[]) {
 			switch(event.type) {
 				case SDL_MOUSEBUTTONDOWN:
 					mdown = true;
-					toggleHoveredCell(&b, mx, my, cell_pixels);
+					getHoverCoord(cell_pixels, &over_x, &over_y);
+					toggleCell(&b, over_x, over_y);
+					last_x = over_x;
+					last_y = over_y;
 					break;
 				case SDL_MOUSEBUTTONUP:
 					mdown = false;
 				case SDL_MOUSEMOTION:
-					SDL_GetMouseState(&mx, &my);
 					if(mdown) {
-						const int cx = mx / cell_pixels, cy = my / cell_pixels;
-						if(cx != last_x || cy != last_y) {
-							toggleHoveredCell(&b, mx, my, cell_pixels);
-							last_x = cx;
-							last_y = cy;
+						getHoverCoord(cell_pixels, &over_x, &over_y);
+						if((over_x != last_x) || (over_y != last_y)) {
+							toggleCell(&b, over_x, over_y);
+							last_x = over_x;
+							last_y = over_y;
 						}
 					}
 					break;
