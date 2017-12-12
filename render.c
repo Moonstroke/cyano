@@ -9,14 +9,14 @@ void renderBoard(Board *const b, SDL_Renderer *const ren, const int d) {
 		const unsigned int w = b->w, h = b->h;
 		unsigned int i, j;
 		SDL_Rect r;
+		r.w = d;
+		r.h = d;
 		for(j = 0; j < h; ++j) {
 			for(i = 0; i < w; ++i) {
 				const unsigned char c = getCell(b, i, j) ? 0 : 255;
 				SDL_SetRenderDrawColor(ren, c, c, c, 255);
 				r.x = d * i;
 				r.y = d * j;
-				r.w = d;
-				r.h = d;
 				SDL_RenderFillRect(ren, &r);
 			}
 		}
