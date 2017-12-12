@@ -1,7 +1,6 @@
 #ifndef LIFE_H
 #define LIFE_H
 
-#include <SDL2/SDL_render.h>
 #include <stdbool.h>
 
 
@@ -27,6 +26,7 @@ void setRules(Board *board, Rules rules);
 
 bool nextGen(Board *board);
 
-void renderBoard(Board *board, SDL_Renderer *renderer, unsigned int cell_dim);
+void clear(Board *board);
+
 
 #endif // LIFE_H
