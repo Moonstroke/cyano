@@ -11,6 +11,6 @@
 
 void renderBoard(Board *board, SDL_Renderer *renderer, int cell_pixels);
 
-void toggleHoveredCell(Board *b, int mouse_x, int mouse_y, int cell_pixels);
+void getHoverCoord(int cell_pixels, int *x, int *y);
 
 #endif // RENDER_H

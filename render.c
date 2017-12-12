@@ -1,5 +1,7 @@
 #include "render.h"
 
+#include <SDL2/SDL_mouse.h>
+
 
 void renderBoard(Board *const b, SDL_Renderer *const ren, const int d) {
 	if(b->changed) {
@@ -23,6 +25,8 @@ void renderBoard(Board *const b, SDL_Renderer *const ren, const int d) {
 	}
 }
 
-void toggleHoveredCell(Board *const b, const int x, const int y, const int d) {
-	toggleCell(b, x / d, y / d);
+void getHoverCoord(const int d, int *const x, int *y) {
+	SDL_GetMouseState(x, y);
+	*x /= d;
+	*y /= d;
 }
