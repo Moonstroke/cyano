@@ -5,8 +5,8 @@
 #include "render.h"
 
 
-#define BOARD_WIDTH    40
-#define BOARD_HEIGHT   30
+#define BOARD_WIDTH    80
+#define BOARD_HEIGHT   45
 
 #define WINDOW_HEIGHT  BOARD_HEIGHT * CELL_PIXELS
 #define WINDOW_WIDTH   BOARD_WIDTH * CELL_PIXELS
