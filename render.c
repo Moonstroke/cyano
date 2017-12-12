@@ -1,7 +1,7 @@
 #include "render.h"
 
 
-void renderBoard(Board *const b, SDL_Renderer *const ren) {
+void renderBoard(Board *const b, SDL_Renderer *const ren, const int d) {
 	if(b->changed) {
 		SDL_RenderClear(ren);
 		const unsigned int w = b->w, h = b->h;
@@ -11,10 +11,10 @@ void renderBoard(Board *const b, SDL_Renderer *const ren) {
 			for(i = 0; i < w; ++i) {
 				const unsigned char c = getCell(b, i, j) ? 0 : 255;
 				SDL_SetRenderDrawColor(ren, c, c, c, 255);
-				r.x = CELL_PIXELS * i;
-				r.y = CELL_PIXELS * j;
-				r.w = CELL_PIXELS;
-				r.h = CELL_PIXELS;
+				r.x = d * i;
+				r.y = d * j;
+				r.w = d;
+				r.h = d;
 				SDL_RenderFillRect(ren, &r);
 			}
 		}
@@ -23,6 +23,6 @@ void renderBoard(Board *const b, SDL_Renderer *const ren) {
 	}
 }
 
-void toggleHoveredCell(Board *const b, const int x, const int y) {
-	toggleCell(b, x / CELL_PIXELS, y / CELL_PIXELS);
+void toggleHoveredCell(Board *const b, const int x, const int y, const int d) {
+	toggleCell(b, x / d, y / d);
 }

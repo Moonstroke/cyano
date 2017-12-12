@@ -3,23 +3,23 @@
 #include "log.h"
 #include "life.h"
 #include "render.h"
+#include "clop.h"
 
 
-#define BOARD_WIDTH    80
-#define BOARD_HEIGHT   45
-
-#define WINDOW_HEIGHT  BOARD_HEIGHT * CELL_PIXELS
-#define WINDOW_WIDTH   BOARD_WIDTH * CELL_PIXELS
 #define WINDOW_FLAGS   SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_INPUT_FOCUS
 #define RENDERER_FLAGS SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
 
-int main(void) {
+int main(const int argc, const char *const argv[]) {
+
+	unsigned int board_width, board_height, cell_pixels;
+	setvars(&board_width, &board_height, &cell_pixels);
+	getvals(argc, argv);
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fatal("Could not load SDL: %s", SDL_GetError());
 		return 1;
 	}
-	SDL_Window *win = SDL_CreateWindow("SDL Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_FLAGS);
+	SDL_Window *win = SDL_CreateWindow("SDL Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, board_width * cell_pixels, board_height * cell_pixels, WINDOW_FLAGS);
 	if(win == NULL) {
 		fatal("Could not create SDL window: %s", SDL_GetError());
 		return 1;
@@ -32,7 +32,7 @@ int main(void) {
 	
 
 	Board b;
-	initBoard(&b, BOARD_WIDTH, BOARD_HEIGHT);
+	initBoard(&b, board_width, board_height);
 
 	int mx, my,
 	    last_x, last_y;
@@ -41,21 +41,21 @@ int main(void) {
 	bool play = false;
 	SDL_Event event;
 	while(loop) {
-		renderBoard(&b, ren);
+		renderBoard(&b, ren, cell_pixels);
 		while(SDL_PollEvent(&event)) {
 			switch(event.type) {
 				case SDL_MOUSEBUTTONDOWN:
 					mdown = true;
-					toggleHoveredCell(&b, mx, my);
+					toggleHoveredCell(&b, mx, my, cell_pixels);
 					break;
 				case SDL_MOUSEBUTTONUP:
 					mdown = false;
 				case SDL_MOUSEMOTION:
 					SDL_GetMouseState(&mx, &my);
 					if(mdown) {
-						const int cx = mx / CELL_PIXELS, cy = my / CELL_PIXELS;
+						const int cx = mx / cell_pixels, cy = my / cell_pixels;
 						if(cx != last_x || cy != last_y) {
-							toggleHoveredCell(&b, mx, my);
+							toggleHoveredCell(&b, mx, my, cell_pixels);
 							last_x = cx;
 							last_y = cy;
 						}
