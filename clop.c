@@ -19,9 +19,9 @@ void setvars(unsigned int *const w, unsigned int *const h, unsigned int *const c
 }
 
 
-static void handleerr(const char optopt, char *const valids) { // TODO test
+static void handleerr(const char optopt, const char *const valid_chars) {
 	if(isprint(optopt)) {
-		char *c = valids;
+		const char *c = valid_chars;
 		bool recognized = false;
 		while(*c && !recognized)
 			recognized = *c++ == optopt;
