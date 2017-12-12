@@ -7,6 +7,8 @@
 #include "life.h"
 
 
+#define DEFAULT_CELLS_PIXELS 16
+
 void renderBoard(Board *board, SDL_Renderer *renderer, int cell_pixels);
 
 void toggleHoveredCell(Board *b, int mouse_x, int mouse_y, int cell_pixels);

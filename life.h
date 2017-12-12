@@ -4,6 +4,10 @@
 #include <stdbool.h>
 
 
+#define DEFAULT_BOARD_WIDTH  80
+#define DEFAULT_BOARD_HEIGHT 60
+
+
 typedef struct {
 	const char *b, *s;
 } Rules;

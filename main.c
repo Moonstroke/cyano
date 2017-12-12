@@ -11,10 +11,14 @@
 
 int main(const int argc, const char *const argv[]) {
 
-	unsigned int board_width, board_height, cell_pixels;
+	unsigned int board_width = DEFAULT_BOARD_WIDTH,
+	             board_height = DEFAULT_BOARD_HEIGHT,
+	             cell_pixels = DEFAULT_CELLS_PIXELS;
+
 	setvars(&board_width, &board_height, &cell_pixels);
 	getvals(argc, argv);
 
+	debug("board = (%dx%d)x%d", board_width, board_height, cell_pixels);
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fatal("Could not load SDL: %s", SDL_GetError());
 		return 1;
