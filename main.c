@@ -2,12 +2,11 @@
 
 #include "log.h"
 #include "life.h"
+#include "render.h"
 
 
 #define BOARD_WIDTH    40
 #define BOARD_HEIGHT   30
-
-#define CELL_PIXELS    16
 
 #define WINDOW_HEIGHT  BOARD_HEIGHT * CELL_PIXELS
 #define WINDOW_WIDTH   BOARD_WIDTH * CELL_PIXELS
@@ -35,30 +34,34 @@ int main(void) {
 	Board b;
 	initBoard(&b, BOARD_WIDTH, BOARD_HEIGHT);
 
-	int mouse_x, mouse_y;
+	int mx, my,
+	    last_x, last_y;
 	bool loop = true;
-	bool mouse_down = false;
-	bool has_changed;
+	bool mdown = false;
+	bool changed = true;
 	bool play = false;
 	SDL_Event event;
 	SDL_RenderClear(ren);
 	while(loop) {
-		has_changed = false;
 		while(SDL_PollEvent(&event)) {
 			switch(event.type) {
 				case SDL_MOUSEBUTTONDOWN:
-					mouse_down = true;
-					SDL_GetMouseState(&mouse_x, &mouse_y);
-					toggleCell(&b, mouse_x / CELL_PIXELS, mouse_y / CELL_PIXELS);
-					has_changed = true;
+					mdown = true;
+					toggleHoveredCell(&b, mx, my);
+					changed = true;
 					break;
 				case SDL_MOUSEBUTTONUP:
-					mouse_down = false;
+					mdown = false;
 				case SDL_MOUSEMOTION:
-					if(mouse_down) {
-						SDL_GetMouseState(&mouse_x, &mouse_y);
-						toggleCell(&b, mouse_x / CELL_PIXELS, mouse_y / CELL_PIXELS);
-						has_changed = true;
+					SDL_GetMouseState(&mx, &my);
+					if(mdown) {
+						const int cx = mx / CELL_PIXELS, cy = my / CELL_PIXELS;
+						if(cx != last_x || cy != last_y) {
+							toggleHoveredCell(&b, mx, my);
+							changed = true;
+							last_x = cx;
+							last_y = cy;
+						}
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -69,7 +72,7 @@ int main(void) {
 						case SDLK_RETURN:
 							if(!play)
 								nextGen(&b);
-							has_changed = true;
+							changed = true;
 						// The window can be closed with ESC, CTRL+q or CTRL+w
 						case SDLK_q:
 						case SDLK_w:
@@ -77,6 +80,10 @@ int main(void) {
 								break;
 						case SDLK_ESCAPE:
 							loop = false;
+							break;
+						case SDLK_c:
+							clear(&b);
+							changed = true;
 							break;
 					}
 					break;
@@ -87,12 +94,13 @@ int main(void) {
 		}
 		if(play) {
 			nextGen(&b);
-			has_changed = true;
+			changed = true;
 		}
-		if(has_changed) {
+		if(changed) {
 			SDL_RenderClear(ren);
-			renderBoard(&b, ren, CELL_PIXELS);
+			renderBoard(&b, ren);
 			SDL_RenderPresent(ren);
+			changed = false;
 		}
 	}
 
