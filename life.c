@@ -13,6 +13,7 @@ bool initBoard(Board *const b, const unsigned int w, const unsigned int h) {
 
 	bool *const cells = calloc(w * h, sizeof(bool));
 	b->cells = cells;
+	b->changed = true;
 	return cells != NULL;
 }
 
@@ -28,6 +29,7 @@ bool getCell(const Board *const b, const unsigned int x, const unsigned int y) {
 bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
 	if(x < b->w && y < b->h) {
 		b->cells[b->w * y + x] = !b->cells[b->w * y + x];
+		b->changed = true;
 		return true;
 	}
 	return false;
@@ -71,6 +73,7 @@ bool nextGen(Board *const b) {
 	}
 	free(b->cells);
 	b->cells = cells;
+	b->changed = true;
 	return true;
 }
 
@@ -80,4 +83,5 @@ void clear(Board *const b) {
 	for(j = 0; j < h; ++j)
 		for(i = 0; i < w; ++i)
 			b->cells[w * j + i] = false;
+	b->changed = true;
 }

@@ -38,17 +38,15 @@ int main(void) {
 	    last_x, last_y;
 	bool loop = true;
 	bool mdown = false;
-	bool changed = true;
 	bool play = false;
 	SDL_Event event;
-	SDL_RenderClear(ren);
 	while(loop) {
+		renderBoard(&b, ren);
 		while(SDL_PollEvent(&event)) {
 			switch(event.type) {
 				case SDL_MOUSEBUTTONDOWN:
 					mdown = true;
 					toggleHoveredCell(&b, mx, my);
-					changed = true;
 					break;
 				case SDL_MOUSEBUTTONUP:
 					mdown = false;
@@ -58,7 +56,6 @@ int main(void) {
 						const int cx = mx / CELL_PIXELS, cy = my / CELL_PIXELS;
 						if(cx != last_x || cy != last_y) {
 							toggleHoveredCell(&b, mx, my);
-							changed = true;
 							last_x = cx;
 							last_y = cy;
 						}
@@ -72,7 +69,6 @@ int main(void) {
 						case SDLK_RETURN:
 							if(!play)
 								nextGen(&b);
-							changed = true;
 						// The window can be closed with ESC, CTRL+q or CTRL+w
 						case SDLK_q:
 						case SDLK_w:
@@ -83,7 +79,6 @@ int main(void) {
 							break;
 						case SDLK_c:
 							clear(&b);
-							changed = true;
 							break;
 					}
 					break;
@@ -94,13 +89,6 @@ int main(void) {
 		}
 		if(play) {
 			nextGen(&b);
-			changed = true;
-		}
-		if(changed) {
-			SDL_RenderClear(ren);
-			renderBoard(&b, ren);
-			SDL_RenderPresent(ren);
-			changed = false;
 		}
 	}
 
