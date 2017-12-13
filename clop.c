@@ -19,21 +19,6 @@ void setvars(unsigned int *const w, unsigned int *const h, unsigned int *const c
 }
 
 
-static void handleerr(const char optopt, const char *const valid_chars) {
-	if(isprint(optopt)) {
-		const char *c = valid_chars;
-		bool recognized = false;
-		while(*c && !recognized)
-			recognized = *c++ == optopt;
-		if(recognized)
-			error("Option -%c requires an argument", optopt);
-		else
-			error("Unknow option -%c", optopt);
-	}
-	else
-		error("Unknown option character 0x%x", optopt);
-}
-
 static void getval(const char opt, const char *const arg, unsigned int *const dst) {
 	unsigned int tmp;
 	if(sscanf(arg, "%u", &tmp) != 1)
@@ -42,9 +27,9 @@ static void getval(const char opt, const char *const arg, unsigned int *const ds
 		*dst = tmp;
 }
  
-int getvals(const int argc, const char *const argv[], const char *s) {
-	int c;
-	while((c = getopt(argc, (char *const*)argv, s)) != -1) {
+bool getvals(const int argc, const char *const argv[], const char *s, const struct option l[]) {
+	int c, idx, res = 0;
+	while((c = getopt_long(argc, (char *const*)argv, s, l, &long_index)) != -1) {
 		switch(c) {
 			case 'c':
 				getval('c', optarg, _c);
@@ -55,16 +40,20 @@ int getvals(const int argc, const char *const argv[], const char *s) {
 			case 'h':
 				getval('h', optarg, _h);
 				break;
+			case '\0':
+				// found flag option
+				break;
 			case '?':
-				handleerr(optopt, s);
 				return 1;
 			default:
 				return 2;
 		}
+		res++;
 	}
 	int i;
-	for(i = optind; i < argc; ++i)
+	for(i = optind; i < argc; ++i) {
+		res++;
 		warning("Unrecognized non-option argument \"%s\"", argv[i]);
-
-	return 0;
+	}
+	return res == argc - 1;
 }
