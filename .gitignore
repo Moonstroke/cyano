@@ -1,2 +1,7 @@
+# Possible output files
 a.out
+sdlife
+life
+
+# Object files
 *.o
