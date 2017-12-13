@@ -16,7 +16,10 @@ int main(const int argc, const char *const argv[]) {
 	             cell_pixels = DEFAULT_CELLS_PIXELS;
 
 	setvars(&board_width, &board_height, &cell_pixels);
-	getvals(argc, argv, OPTSTRING);
+	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
+		fatal("Failure in options handling -- exiting.");
+		return 1;
+	}
 
 	debug("board = (%dx%d)x%d", board_width, board_height, cell_pixels);
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
