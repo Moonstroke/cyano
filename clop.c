@@ -34,25 +34,26 @@ static void handleerr(const char optopt, const char *const valid_chars) {
 		error("Unknown option character 0x%x", optopt);
 }
 
-static int setvals(const char *ws, const char *hs, const char *cs) {
-	return sscanf(ws, "%u", _w) == 1
-	    && sscanf(hs, "%u", _h) == 1
-	    && sscanf(cs, "%u", _c) == 1;
+static void getval(const char opt, const char *const arg, unsigned int *const dst) {
+	unsigned int tmp;
+	if(sscanf(arg, "%u", &tmp) != 1)
+		error("Option -%c needs an unsigned integer argument", opt);
+	else
+		*dst = tmp;
 }
-
+ 
 int getvals(const int argc, const char *const argv[], const char *s) {
-	const char *cs, *ws, *hs;
 	int c;
 	while((c = getopt(argc, (char *const*)argv, s)) != -1) {
 		switch(c) {
 			case 'c':
-				cs = optarg;
+				getval('c', optarg, _c);
 				break;
 			case 'w':
-				ws = optarg;
+				getval('w', optarg, _w);
 				break;
 			case 'h':
-				hs = optarg;
+				getval('h', optarg, _h);
 				break;
 			case '?':
 				handleerr(optopt, s);
@@ -61,8 +62,6 @@ int getvals(const int argc, const char *const argv[], const char *s) {
 				return 2;
 		}
 	}
-	if(setvals(ws, hs, cs) != 0)
-		return 3;
 	int i;
 	for(i = optind; i < argc; ++i)
 		warning("Unrecognized non-option argument \"%s\"", argv[i]);
