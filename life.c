@@ -58,7 +58,7 @@ static inline unsigned int neighbors(const Board *const b, unsigned int x, unsig
 	return n;
 }
 
-bool nextGen(Board *const b) {
+bool updateBoard(Board *const b) {
 	const unsigned int w = b->w, h = b->h;
 	bool *cells = malloc(w * h * sizeof(bool));
 	if(cells == NULL)
@@ -79,7 +79,7 @@ bool nextGen(Board *const b) {
 	return true;
 }
 
-void clear(Board *const b) {
+void clearBoard(Board *const b) {
 	const unsigned int w = b->w, h = b->h;
 	unsigned int i, j;
 	for(j = 0; j < h; ++j)

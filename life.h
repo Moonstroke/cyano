@@ -30,9 +30,9 @@ bool toggleCell(Board *board, unsigned int x, unsigned int y);
 Rules getRules(const Board *board);
 void setRules(Board *board, Rules rules);
 
-bool nextGen(Board *board);
+bool updateBoard(Board *board);
 
-void clear(Board *board);
+void clearBoard(Board *board);
 
 
 #endif // LIFE_H
