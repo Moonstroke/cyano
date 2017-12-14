@@ -80,7 +80,7 @@ int main(const int argc, const char *const argv[]) {
 							break;
 						case SDLK_RETURN:
 							if(!play)
-								nextGen(&b);
+								updateBoard(&b);
 						// The window can be closed with ESC, CTRL+q or CTRL+w
 						case SDLK_q:
 						case SDLK_w:
@@ -90,7 +90,7 @@ int main(const int argc, const char *const argv[]) {
 							loop = false;
 							break;
 						case SDLK_c:
-							clear(&b);
+							clearBoard(&b);
 							break;
 					}
 					break;
@@ -100,7 +100,7 @@ int main(const int argc, const char *const argv[]) {
 			}
 		}
 		if(play) {
-			nextGen(&b);
+			updateBoard(&b);
 		}
 	}
 
