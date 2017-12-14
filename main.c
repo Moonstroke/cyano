@@ -13,7 +13,9 @@ int main(const int argc, const char *const argv[]) {
 
 	unsigned int board_width = DEFAULT_BOARD_WIDTH,
 	             board_height = DEFAULT_BOARD_HEIGHT,
-	             cell_pixels = DEFAULT_CELLS_PIXELS;
+	             cell_pixels = DEFAULT_CELLS_PIXELS,
+	             window_width,
+	             window_height;
 
 	setvars(&board_width, &board_height, &cell_pixels);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
@@ -26,7 +28,8 @@ int main(const int argc, const char *const argv[]) {
 		fatal("Could not load SDL: %s", SDL_GetError());
 		return 1;
 	}
-	SDL_Window *win = SDL_CreateWindow("SDL Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, board_width * cell_pixels, board_height * cell_pixels, WINDOW_FLAGS);
+	getWindowDim(board_width, board_height, cell_pixels, &window_width, &window_height);
+	SDL_Window *win = SDL_CreateWindow("SDL Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, WINDOW_FLAGS);
 	if(win == NULL) {
 		fatal("Could not create SDL window: %s", SDL_GetError());
 		return 1;

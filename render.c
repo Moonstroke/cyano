@@ -30,3 +30,8 @@ void getHoverCoord(const int d, int *const x, int *y) {
 	*x /= d;
 	*y /= d;
 }
+
+void getWindowDim(const unsigned int bw, const unsigned int bh, const unsigned int d, unsigned int *const ww, unsigned int *const wh) {
+	*ww = bw * d;
+	*wh = bh * d;
+}
