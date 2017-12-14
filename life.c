@@ -22,13 +22,14 @@ void freeBoard(Board *b) {
 }
 
 
-bool getCell(const Board *const b, const unsigned int x, const unsigned int y) {
-	return x < b->w && y < b->h && b->cells[b->w * y + x];
+bool *getCell(const Board *const b, const unsigned int x, const unsigned int y) {
+	return x < b->w && y < b->h ? b->cells + (b->w * y + x) : NULL;
 }
 
 bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
-	if(x < b->w && y < b->h) {
-		b->cells[b->w * y + x] = !b->cells[b->w * y + x];
+	bool *const cell = getCell(b, x, y);
+	if(cell != NULL) {
+		*cell = !*cell;
 		b->changed = true;
 		return true;
 	}
@@ -68,7 +69,8 @@ bool nextGen(Board *const b) {
 		for(i = 0; i < w; ++i) {
 			const unsigned int n = neighbors(b, i, j);
 			// FIXME use rules
-			cells[w * j + i] = (n == 3 || (n == 2 && getCell(b, i, j)));
+			bool *const cell = getCell(b, i, j);
+			*cell = (n == 3 || (n == 2 && *cell));
 		}
 	}
 	free(b->cells);
@@ -82,6 +84,6 @@ void clear(Board *const b) {
 	unsigned int i, j;
 	for(j = 0; j < h; ++j)
 		for(i = 0; i < w; ++i)
-			b->cells[w * j + i] = false;
+			*getCell(b, i, j) = false;
 	b->changed = true;
 }

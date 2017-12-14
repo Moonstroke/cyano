@@ -24,7 +24,7 @@ bool initBoard(Board *board, unsigned int width, unsigned int height);
 
 void freeBoard(Board *board);
 
-bool getCell(const Board *board, unsigned int x, unsigned int y);
+bool *getCell(const Board *board, unsigned int x, unsigned int y);
 bool toggleCell(Board *board, unsigned int x, unsigned int y);
 
 Rules getRules(const Board *board);
