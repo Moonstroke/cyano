@@ -47,14 +47,24 @@ void setRules(Board *const b, Rules r) {
 
 static inline unsigned int neighbors(const Board *const b, unsigned int x, unsigned int y) {
 	unsigned int n = 0;
-	if(getCell(b, x - 1, y - 1)) n += 1;
-	if(getCell(b, x    , y - 1)) n += 1;
-	if(getCell(b, x + 1, y - 1)) n += 1;
-	if(getCell(b, x - 1, y    )) n += 1;
-	if(getCell(b, x + 1, y    )) n += 1;
-	if(getCell(b, x - 1, y + 1)) n += 1;
-	if(getCell(b, x    , y + 1)) n += 1;
-	if(getCell(b, x + 1, y + 1)) n += 1;
+	bool *cell;
+
+	const int coords[][2] = {
+	        {x - 1, y - 1},
+	        {x    , y - 1},
+	        {x + 1, y - 1},
+	        {x - 1, y    },
+	        {x + 1, y    },
+	        {x - 1, y + 1},
+	        {x    , y + 1},
+	        {x + 1, y + 1}
+	    };
+
+	for(unsigned int i = 0; i < 8; ++i) {
+		cell = getCell(b, coords[i][0], coords[i][1]);
+		if(cell != NULL && *cell == true) n += 1;
+	}
+
 	return n;
 }
 
@@ -68,9 +78,9 @@ bool updateBoard(Board *const b) {
 	for(j = 0; j < h; ++j) {
 		for(i = 0; i < w; ++i) {
 			const unsigned int n = neighbors(b, i, j);
+			bool cell = *getCell(b, i, j);
 			// FIXME use rules
-			bool *const cell = getCell(b, i, j);
-			*cell = (n == 3 || (n == 2 && *cell));
+			cells[w * j + i] = (n == 3 || (n == 2 && cell));
 		}
 	}
 	free(b->cells);
