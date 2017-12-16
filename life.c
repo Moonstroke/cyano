@@ -13,7 +13,6 @@ bool initBoard(Board *const b, const unsigned int w, const unsigned int h) {
 
 	bool *const cells = calloc(w * h, sizeof(bool));
 	b->cells = cells;
-	b->changed = true;
 	return cells != NULL;
 }
 
@@ -30,7 +29,6 @@ bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
 	bool *const cell = getCell(b, x, y);
 	if(cell != NULL) {
 		*cell = !*cell;
-		b->changed = true;
 		return true;
 	}
 	return false;
@@ -85,7 +83,6 @@ bool updateBoard(Board *const b) {
 	}
 	free(b->cells);
 	b->cells = cells;
-	b->changed = true;
 	return true;
 }
 
@@ -95,5 +92,4 @@ void clearBoard(Board *const b) {
 	for(j = 0; j < h; ++j)
 		for(i = 0; i < w; ++i)
 			*getCell(b, i, j) = false;
-	b->changed = true;
 }

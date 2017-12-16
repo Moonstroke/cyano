@@ -16,8 +16,6 @@ typedef struct {
 	unsigned int w, h;
 	bool *cells;
 	Rules rules;
-	bool changed;
-	unsigned char padding[7];
 } Board;
 
 bool initBoard(Board *board, unsigned int width, unsigned int height);

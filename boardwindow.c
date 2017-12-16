@@ -41,28 +41,25 @@ void freeBoardWindow(BoardWindow *const bw) {
 }
 
 void renderBoardWindow(const BoardWindow *const bw) {
-	if(bw->board->changed) {
-		SDL_RenderClear(bw->ren);
-		const unsigned int w = bw->board->w,
-		                   h = bw->board->h,
-		                   c = bw->cell_pixels;
+	SDL_RenderClear(bw->ren);
+	const unsigned int w = bw->board->w,
+	                   h = bw->board->h,
+	                   c = bw->cell_pixels;
 
-		unsigned int i, j;
-		SDL_Rect r;
-		r.w = c;
-		r.h = c;
-		for(j = 0; j < h; ++j) {
-			for(i = 0; i < w; ++i) {
-				const unsigned char ch = *getCell(bw->board, i, j) ? 0 : 255;
-				SDL_SetRenderDrawColor(bw->ren, ch, ch, ch, 255);
-				r.x = c * i;
-				r.y = c * j;
-				SDL_RenderFillRect(bw->ren, &r);
-			}
+	unsigned int i, j;
+	SDL_Rect r;
+	r.w = c;
+	r.h = c;
+	for(j = 0; j < h; ++j) {
+		for(i = 0; i < w; ++i) {
+			const unsigned char ch = *getCell(bw->board, i, j) ? 0 : 255;
+			SDL_SetRenderDrawColor(bw->ren, ch, ch, ch, 255);
+			r.x = c * i;
+			r.y = c * j;
+			SDL_RenderFillRect(bw->ren, &r);
 		}
-		SDL_RenderPresent(bw->ren);
-		bw->board->changed = false;
 	}
+	SDL_RenderPresent(bw->ren);
 }
 
 void getHoverCoord(const BoardWindow *const bw, int *const x, int *y) {
