@@ -15,6 +15,10 @@
 
 #define DEFAULT_CELLS_PIXELS 16
 
+#define DEFAULT_UPDATE_RATE 25
+
+
+
 typedef struct {
 	Board *board;
 	SDL_Window *win;

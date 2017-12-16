@@ -7,8 +7,6 @@
 #include "timer.h"
 
 
-#define DEFAULT_UPDATE_RATE 25
-
 int main(const int argc, const char *const argv[]) {
 
 	unsigned int board_width = DEFAULT_BOARD_WIDTH,
