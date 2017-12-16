@@ -15,8 +15,9 @@ int main(const int argc, const char *const argv[]) {
 	             board_height = DEFAULT_BOARD_HEIGHT,
 	             cell_pixels = DEFAULT_CELLS_PIXELS,
 	             update_rate = DEFAULT_UPDATE_RATE;
+	bool use_vsync = false;
 
-	setvars(&board_width, &board_height, &cell_pixels, &update_rate);
+	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &use_vsync);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
 		fatal("Failure in command line options handling!");
 		return 1;
@@ -31,7 +32,7 @@ int main(const int argc, const char *const argv[]) {
 	Board b;
 	initBoard(&b, board_width, board_height);
 
-	BoardWindow *bw = newBoardWindow(&b, cell_pixels, "SDL Game of Life");
+	BoardWindow *bw = newBoardWindow(&b, cell_pixels, "SDL Game of Life", use_vsync);
 	if(bw == NULL) {
 		fatal("Could not create the game window: %s", SDL_GetError());
 		return 1;
@@ -104,7 +105,7 @@ int main(const int argc, const char *const argv[]) {
 		}
 
 		remTime = getRemainingTime(&timer);
-		if(remTime > 0) {
+		if(!use_vsync && remTime > 0) {
 			SDL_Delay(remTime);
 		}
 	}

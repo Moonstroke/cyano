@@ -10,7 +10,7 @@ static inline void getWinDim(const Board *const b, const unsigned int c, unsigne
 	*wh = b->h * c;
 }
 
-BoardWindow *newBoardWindow(Board *const b, const unsigned int c, const char *const t) {
+BoardWindow *newBoardWindow(Board *const b, const unsigned int c, const char *const t, bool v) {
 	BoardWindow *bw = malloc(sizeof(BoardWindow));
 	if(bw == NULL)
 		return NULL;
@@ -21,7 +21,7 @@ BoardWindow *newBoardWindow(Board *const b, const unsigned int c, const char *co
 	if(win == NULL)
 		return NULL;
 
-	SDL_Renderer *const ren = SDL_CreateRenderer(win, -1, RENDERER_FLAGS);
+	SDL_Renderer *const ren = SDL_CreateRenderer(win, -1, RENDERER_FLAGS(v));
 	if(ren == NULL)
 		return NULL;
 

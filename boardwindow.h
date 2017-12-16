@@ -3,12 +3,15 @@
 
 
 #include <SDL2/SDL_render.h>
+#include <stdbool.h>
 
 #include "board.h"
 
 
 #define WINDOW_FLAGS   SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_INPUT_FOCUS
-#define RENDERER_FLAGS SDL_RENDERER_ACCELERATED
+
+#define REN_DEFT_FLAGS SDL_RENDERER_ACCELERATED
+#define RENDERER_FLAGS(use_vsync) (use_vsync ? REN_DEFT_FLAGS | SDL_RENDERER_PRESENTVSYNC : REN_DEFT_FLAGS)
 
 #define DEFAULT_CELLS_PIXELS 16
 
@@ -21,7 +24,7 @@ typedef struct {
 	unsigned char padding[4];
 } BoardWindow;
 
-BoardWindow *newBoardWindow(Board *board, unsigned int cell_pixels, const char *window_title);
+BoardWindow *newBoardWindow(Board *board, unsigned int cell_pixels, const char *window_title, bool use_vsync);
 
 void freeBoardWindow(BoardWindow *self);
 
