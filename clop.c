@@ -51,11 +51,6 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 			case 'w':
 				getval('w', optarg, _w);
 				break;
-			case '\0':
-				// found flag option
-				break;
-			case '?':
-				return false;
 			default:
 				return false;
 		}
