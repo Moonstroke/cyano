@@ -7,16 +7,16 @@
 #include "timer.h"
 
 
-#define FPS 2
-#define DELAY (1000 / FPS)
+#define DEFAULT_UPDATE_RATE 25
 
 int main(const int argc, const char *const argv[]) {
 
 	unsigned int board_width = DEFAULT_BOARD_WIDTH,
 	             board_height = DEFAULT_BOARD_HEIGHT,
-	             cell_pixels = DEFAULT_CELLS_PIXELS;
+	             cell_pixels = DEFAULT_CELLS_PIXELS,
+	             update_rate = DEFAULT_UPDATE_RATE;
 
-	setvars(&board_width, &board_height, &cell_pixels);
+	setvars(&board_width, &board_height, &cell_pixels, &update_rate);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
 		fatal("Failure in command line options handling!");
 		return 1;
@@ -39,7 +39,7 @@ int main(const int argc, const char *const argv[]) {
 
 	Timer timer;
 	resetTimer(&timer);
-	setDelay(&timer, DELAY);
+	setDelay(&timer, 1000.d / (double)update_rate);
 
 	int over_x, over_y,
 	    last_x, last_y;

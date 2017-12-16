@@ -9,13 +9,14 @@
 
 
 
-static unsigned int *_w, *_h, *_c;
+static unsigned int *_w, *_h, *_c, *_r;
 
 
-void setvars(unsigned int *const w, unsigned int *const h, unsigned int *const c) {
+void setvars(unsigned int *const w, unsigned int *const h, unsigned int *const c, unsigned int *const r) {
 	_w = w;
 	_h = h;
 	_c = c;
+	_r = r;
 }
 
 
@@ -39,6 +40,9 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 				break;
 			case 'h':
 				getval('h', optarg, _h);
+				break;
+			case 'r':
+				getval('r', optarg, _r);
 				break;
 			case '\0':
 				// found flag option
