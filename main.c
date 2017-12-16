@@ -4,7 +4,11 @@
 #include "board.h"
 #include "boardwindow.h"
 #include "clop.h"
+#include "timer.h"
 
+
+#define FPS 2
+#define DELAY (1000 / FPS)
 
 int main(const int argc, const char *const argv[]) {
 
@@ -33,6 +37,9 @@ int main(const int argc, const char *const argv[]) {
 		return 1;
 	}
 
+	Timer timer;
+	resetTimer(&timer);
+	setDelay(&timer, DELAY);
 
 	int over_x, over_y,
 	    last_x, last_y;
@@ -41,6 +48,8 @@ int main(const int argc, const char *const argv[]) {
 	bool play = false;
 	SDL_Event event;
 	while(loop) {
+		unsigned int remTime;
+		startTimer(&timer);
 		renderBoardWindow(bw);
 		while(SDL_PollEvent(&event)) {
 			switch(event.type) {
@@ -89,8 +98,14 @@ int main(const int argc, const char *const argv[]) {
 					break;
 			}
 		}
+
 		if(play) {
 			updateBoard(&b);
+		}
+
+		remTime = getRemainingTime(&timer);
+		if(remTime > 0) {
+			SDL_Delay(remTime);
 		}
 	}
 
