@@ -18,12 +18,12 @@ int main(const int argc, const char *const argv[]) {
 
 	setvars(&board_width, &board_height, &cell_pixels);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
-		fatal("Failure in options handling -- exiting.");
+		fatal("Failure in command line options handling!");
 		return 1;
 	}
 
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
-		fatal("Could not load SDL: %s", SDL_GetError());
+		fatal("Could not load the SDL: %s", SDL_GetError());
 		return 1;
 	}
 
@@ -33,7 +33,7 @@ int main(const int argc, const char *const argv[]) {
 
 	BoardWindow *bw = newBoardWindow(&b, cell_pixels, "SDL Game of Life");
 	if(bw == NULL) {
-		fatal("Could not create SDL window: %s", SDL_GetError());
+		fatal("Could not create the game window: %s", SDL_GetError());
 		return 1;
 	}
 
