@@ -55,9 +55,9 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 				// found flag option
 				break;
 			case '?':
-				return 1;
+				return false;
 			default:
-				return 2;
+				return false;
 		}
 		res++;
 	}
