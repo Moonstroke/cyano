@@ -1,4 +1,4 @@
-#include "life.h"
+#include "board.h"
 
 
 #include <stdlib.h>

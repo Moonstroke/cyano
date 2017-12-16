@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_render.h>
 
-#include "life.h"
+#include "board.h"
 
 
 #define WINDOW_FLAGS   SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_INPUT_FOCUS
