@@ -17,7 +17,7 @@ int main(const int argc, const char *const argv[]) {
 
 	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &use_vsync);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
-		fatal("Failure in command line options handling!");
+		fatal("Failure in command line options handling");
 		return 1;
 	}
 
