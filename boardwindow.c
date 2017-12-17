@@ -5,17 +5,12 @@
 #include "log.h"
 
 
-static inline void getWinDim(const Board *const board, const unsigned int c, const unsigned int b, unsigned int *const ww, unsigned int *const wh) {
-	*ww = board->w * (c + b) + b;
-	*wh = board->h * (c + b) + b;
-}
-
 BoardWindow *newBoardWindow(Board *const board, const unsigned int c, const unsigned int b, const char *const t, bool v) {
 	BoardWindow *bw = malloc(sizeof(BoardWindow));
 	if(bw == NULL)
 		return NULL;
-	unsigned int ww, wh;
-	getWinDim(board, c, b, &ww, &wh);
+	const unsigned int ww = board->w * (c + b) + b,
+	                   wh = board->h * (c + b) + b;
 
 	SDL_Window *const win = SDL_CreateWindow(t, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ww, wh, WINDOW_FLAGS);
 	if(win == NULL)
