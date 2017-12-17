@@ -40,6 +40,17 @@ void updateBoardWindow(BoardWindow *const bw) {
 	getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
 }
 
+static inline void drawCell(SDL_Renderer *const ren, SDL_Rect *const rect,
+                            const unsigned int i, const unsigned int j,
+                            const unsigned int c, const unsigned int border,
+                            const unsigned char r, const unsigned char g,
+                            const unsigned char b, const unsigned char a) {
+	SDL_SetRenderDrawColor(ren, r, g, b, a);
+	rect->x = (c + border) * i + border;
+	rect->y = (c + border) * j + border;
+	SDL_RenderFillRect(ren, rect);
+}
+
 void renderBoardWindow(const BoardWindow *const bw) {
 	const unsigned int w = bw->board->w,
 	                   h = bw->board->h,
@@ -56,17 +67,11 @@ void renderBoardWindow(const BoardWindow *const bw) {
 	for(j = 0; j < h; ++j) {
 		for(i = 0; i < w; ++i) {
 			const unsigned char ch = *getCell(bw->board, i, j) ? 0 : 255;
-			SDL_SetRenderDrawColor(bw->ren, ch, ch, ch, 255);
-			r.x = (c + b) * i + b;
-			r.y = (c + b) * j + b;
-			SDL_RenderFillRect(bw->ren, &r);
+			drawCell(bw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}
 	SDL_SetRenderDrawBlendMode(bw->ren, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(bw->ren, 127, 127, 127, 127);
-	r.x = (c + b) * bw->sel_x + b;
-	r.y = (c + b) * bw->sel_y + b;
-	SDL_RenderFillRect(bw->ren, &r);
+	drawCell(bw->ren, &r, bw->sel_x, bw->sel_y, c, b, 127, 127, 127, 127);
 	SDL_RenderPresent(bw->ren);
 }
 
