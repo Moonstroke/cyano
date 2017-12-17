@@ -12,10 +12,11 @@ int main(const int argc, const char *const argv[]) {
 	unsigned int board_width = DEFAULT_BOARD_WIDTH,
 	             board_height = DEFAULT_BOARD_HEIGHT,
 	             cell_pixels = DEFAULT_CELLS_PIXELS,
-	             update_rate = DEFAULT_UPDATE_RATE;
+	             update_rate = DEFAULT_UPDATE_RATE,
+	             border_width = DEFAULT_BORDER_WIDTH;
 	bool use_vsync = false;
 
-	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &use_vsync);
+	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
 		fatal("Failure in command line options handling");
 		return 1;
@@ -30,7 +31,7 @@ int main(const int argc, const char *const argv[]) {
 	Board b;
 	initBoard(&b, board_width, board_height);
 
-	BoardWindow *bw = newBoardWindow(&b, cell_pixels, "SDL Game of Life", use_vsync);
+	BoardWindow *bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life", use_vsync);
 	if(bw == NULL) {
 		fatal("Could not create the game window: %s", SDL_GetError());
 		return 1;

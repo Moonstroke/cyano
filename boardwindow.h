@@ -25,11 +25,15 @@ typedef struct {
 	SDL_Window *win;
 	SDL_Renderer *ren;
 	unsigned int cell_pixels;
+	unsigned int border_width;
 	unsigned int sel_x, sel_y;
-	unsigned char padding[4];
 } BoardWindow;
 
-BoardWindow *newBoardWindow(Board *board, unsigned int cell_pixels, const char *window_title, bool use_vsync);
+BoardWindow *newBoardWindow(Board *board,
+                            unsigned int cell_pixels,
+                            unsigned int border_width,
+                            const char *window_title,
+                            bool use_vsync);
 
 void freeBoardWindow(BoardWindow *self);
 
