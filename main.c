@@ -27,7 +27,6 @@ int main(const int argc, const char *const argv[]) {
 		return 1;
 	}
 
-	debug("board = (%dx%d)x%d", board_width, board_height, cell_pixels);
 	Board b;
 	initBoard(&b, board_width, board_height);
 
