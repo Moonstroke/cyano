@@ -36,6 +36,10 @@ void freeBoardWindow(BoardWindow *const bw) {
 	free(bw);
 }
 
+void updateBoardWindow(BoardWindow *const bw) {
+	getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
+}
+
 void renderBoardWindow(const BoardWindow *const bw) {
 	const unsigned int w = bw->board->w,
 	                   h = bw->board->h,
@@ -58,11 +62,10 @@ void renderBoardWindow(const BoardWindow *const bw) {
 			SDL_RenderFillRect(bw->ren, &r);
 		}
 	}
-	getHoverCoord(bw, (signed*)&i, (signed*)&j);
 	SDL_SetRenderDrawBlendMode(bw->ren, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(bw->ren, 127, 127, 127, 127);
-	r.x = (c + b) * i + b;
-	r.y = (c + b) * j + b;
+	r.x = (c + b) * bw->sel_x + b;
+	r.y = (c + b) * bw->sel_y + b;
 	SDL_RenderFillRect(bw->ren, &r);
 	SDL_RenderPresent(bw->ren);
 }

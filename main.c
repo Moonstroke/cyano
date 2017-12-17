@@ -49,6 +49,7 @@ int main(const int argc, const char *const argv[]) {
 	while(loop) {
 		unsigned int remTime;
 		startTimer(&timer);
+		updateBoardWindow(bw);
 		renderBoardWindow(bw);
 		while(SDL_PollEvent(&event)) {
 			switch(event.type) {

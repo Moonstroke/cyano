@@ -26,7 +26,7 @@ typedef struct {
 	SDL_Renderer *ren;
 	unsigned int cell_pixels;
 	unsigned int border_width;
-	unsigned int sel_x, sel_y;
+	int sel_x, sel_y;
 } BoardWindow;
 
 BoardWindow *newBoardWindow(Board *board,
@@ -37,7 +37,7 @@ BoardWindow *newBoardWindow(Board *board,
 
 void freeBoardWindow(BoardWindow *self);
 
-
+void updateBoardWindow(BoardWindow *self);
 void renderBoardWindow(const BoardWindow *self);
 
 void getHoverCoord(const BoardWindow *self, int *x, int *y);
