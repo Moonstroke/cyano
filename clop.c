@@ -36,17 +36,22 @@ static void getval(const char opt, const char *const arg, unsigned int *const ds
  
 bool getvals(const int argc, const char *const argv[], const char *so, const struct option lo[]) {
 	int ch, idx, res = 0;
-	bool r_met = false, v_met = false;
+	bool r_met = false, v_met = false, b_met = false, n_met = false;
 	while((ch = getopt_long(argc, (char *const*)argv, so, lo, &idx)) != -1) {
 		switch(ch) {
 			case 'b':
 				getval('b', optarg, _b);
+				b_met = true;
 				break;
 			case 'c':
 				getval('c', optarg, _c);
 				break;
 			case 'h':
 				getval('h', optarg, _h);
+				break;
+			case 'n':
+				*_b = 0;
+				n_met = true;
 				break;
 			case 'r':
 				getval('r', optarg, _r);
@@ -66,6 +71,10 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 	}
 	if(v_met && r_met) {
 		error("You cannot provide an update rate and ask to follow vSync at the same time!");
+		return false;
+	}
+	if(b_met && n_met) {
+		error("You cannot provide a border width and ask for no border between the cells at the same time!");
 		return false;
 	}
 	int i;

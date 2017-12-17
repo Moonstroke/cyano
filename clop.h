@@ -5,13 +5,14 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-static const char *const OPTSTRING = "b:c:h:r:vw:";
+static const char *const OPTSTRING = "b:c:h:nr:vw:";
 
 static const struct option const LONGOPTS[] = {
 	{"board-width",  required_argument, NULL, 'w'},
 	{"board-height", required_argument, NULL, 'h'},
 	{"border-width", required_argument, NULL, 'b'},
 	{"cell-dim",     required_argument, NULL, 'c'},
+	{"no-border",    no_argument,       NULL, 'n'},
 	{"update-rate",  required_argument, NULL, 'r'},
 	{"vsync",        no_argument      , NULL, 'v'},
 	{"", 0, NULL, 0}
