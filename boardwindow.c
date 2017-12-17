@@ -6,8 +6,8 @@
 
 
 static inline void getWinDim(const Board *const b, const unsigned int c, unsigned int *const ww, unsigned int *const wh) {
-	*ww = b->w * c;
-	*wh = b->h * c;
+	*ww = b->w * (c + DEFAULT_BORDER_WIDTH) + DEFAULT_BORDER_WIDTH;
+	*wh = b->h * (c + DEFAULT_BORDER_WIDTH) + DEFAULT_BORDER_WIDTH;
 }
 
 BoardWindow *newBoardWindow(Board *const b, const unsigned int c, const char *const t, bool v) {
@@ -41,6 +41,7 @@ void freeBoardWindow(BoardWindow *const bw) {
 }
 
 void renderBoardWindow(const BoardWindow *const bw) {
+	SDL_SetRenderDrawColor(bw->ren, 127, 127, 127, 255);
 	SDL_RenderClear(bw->ren);
 	const unsigned int w = bw->board->w,
 	                   h = bw->board->h,
@@ -54,8 +55,8 @@ void renderBoardWindow(const BoardWindow *const bw) {
 		for(i = 0; i < w; ++i) {
 			const unsigned char ch = *getCell(bw->board, i, j) ? 0 : 255;
 			SDL_SetRenderDrawColor(bw->ren, ch, ch, ch, 255);
-			r.x = c * i;
-			r.y = c * j;
+			r.x = (c + DEFAULT_BORDER_WIDTH) * i + DEFAULT_BORDER_WIDTH;
+			r.y = (c + DEFAULT_BORDER_WIDTH) * j + DEFAULT_BORDER_WIDTH;
 			SDL_RenderFillRect(bw->ren, &r);
 		}
 	}
@@ -63,8 +64,8 @@ void renderBoardWindow(const BoardWindow *const bw) {
 }
 
 void getHoverCoord(const BoardWindow *const bw, int *const x, int *y) {
-	const unsigned int d = bw->cell_pixels;
+	const unsigned int c = bw->cell_pixels;
 	SDL_GetMouseState(x, y);
-	*x /= d;
-	*y /= d;
+	*x = (*x - DEFAULT_BORDER_WIDTH) / (c + DEFAULT_BORDER_WIDTH);
+	*y = (*y - DEFAULT_BORDER_WIDTH) / (c + DEFAULT_BORDER_WIDTH);
 }

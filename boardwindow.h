@@ -17,6 +17,7 @@
 
 #define DEFAULT_UPDATE_RATE 25
 
+#define DEFAULT_BORDER_WIDTH 2
 
 
 typedef struct {
