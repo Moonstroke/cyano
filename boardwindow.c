@@ -37,8 +37,6 @@ void freeBoardWindow(BoardWindow *const bw) {
 }
 
 void renderBoardWindow(const BoardWindow *const bw) {
-	SDL_SetRenderDrawColor(bw->ren, 127, 127, 127, 255);
-	SDL_RenderClear(bw->ren);
 	const unsigned int w = bw->board->w,
 	                   h = bw->board->h,
 	                   c = bw->cell_pixels,
@@ -46,6 +44,9 @@ void renderBoardWindow(const BoardWindow *const bw) {
 
 	unsigned int i, j;
 	SDL_Rect r;
+
+	SDL_SetRenderDrawColor(bw->ren, 127, 127, 127, 255);
+	SDL_RenderClear(bw->ren);
 	r.w = c;
 	r.h = c;
 	for(j = 0; j < h; ++j) {
