@@ -58,6 +58,12 @@ void renderBoardWindow(const BoardWindow *const bw) {
 			SDL_RenderFillRect(bw->ren, &r);
 		}
 	}
+	getHoverCoord(bw, (signed*)&i, (signed*)&j);
+	SDL_SetRenderDrawBlendMode(bw->ren, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(bw->ren, 127, 127, 127, 127);
+	r.x = (c + b) * i + b;
+	r.y = (c + b) * j + b;
+	SDL_RenderFillRect(bw->ren, &r);
 	SDL_RenderPresent(bw->ren);
 }
 
