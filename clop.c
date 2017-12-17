@@ -35,7 +35,7 @@ static void getval(const char opt, const char *const arg, unsigned int *const ds
 }
  
 bool getvals(const int argc, const char *const argv[], const char *so, const struct option lo[]) {
-	int ch, idx, res = 0;
+	int ch, idx, res = 0, i;
 	bool r_met = false, v_met = false, b_met = false, n_met = false;
 	while((ch = getopt_long(argc, (char *const*)argv, so, lo, &idx)) != -1) {
 		switch(ch) {
@@ -77,7 +77,6 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 		error("You cannot provide a border width and ask for no border between the cells at the same time!");
 		return false;
 	}
-	int i;
 	for(i = optind; i < argc; ++i) {
 		res++;
 		warning("Unrecognized non-option argument \"%s\"", argv[i]);
