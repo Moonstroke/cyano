@@ -38,7 +38,7 @@ int main(const int argc, const char *const argv[]) {
 
 	Timer timer;
 	resetTimer(&timer);
-	setDelay(&timer, 1000.d / (double)update_rate);
+	setDelay(&timer, 1000. / (double)update_rate);
 
 	int over_x, over_y,
 	    last_x, last_y;
