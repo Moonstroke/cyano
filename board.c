@@ -24,7 +24,7 @@ void freeBoard(Board *b) {
 }
 
 
-static unsigned int mod(int a, int b) {
+static inline unsigned int mod(int a, int b) {
 	const int r = a % b;
 	return r < 0 ? r + b : r;
 }
