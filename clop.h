@@ -15,6 +15,7 @@ static const struct option const LONGOPTS[] = {
 	{"no-border",    no_argument,       NULL, 'n'},
 	{"update-rate",  required_argument, NULL, 'r'},
 	{"vsync",        no_argument      , NULL, 'v'},
+	{"wrap",         no_argument      , NULL, 'a'},
 	{"", 0, NULL, 0}
 };
 
@@ -23,7 +24,8 @@ void setvars(unsigned int *board_width,
              unsigned int *cell_pixels,
              unsigned int *update_rate,
              unsigned int *border_width,
-             bool *use_vsync);
+             bool *use_vsync,
+             bool *wrap);
 
 bool getvals(const int argc, const char *const argv[], const char *optstr, const struct option longopt[]);
 

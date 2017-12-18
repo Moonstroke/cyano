@@ -66,7 +66,7 @@ void renderBoardWindow(const BoardWindow *const bw) {
 	r.h = c;
 	for(j = 0; j < h; ++j) {
 		for(i = 0; i < w; ++i) {
-			const unsigned char ch = *getCell(bw->board, i, j) ? 0 : 255;
+			const unsigned char ch = *bw->board->getCell(bw->board, i, j) ? 0 : 255;
 			drawCell(bw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}

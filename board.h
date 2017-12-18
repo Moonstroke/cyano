@@ -12,17 +12,17 @@ typedef struct {
 	const char *b, *s;
 } Rules;
 
-typedef struct {
+typedef struct board {
 	unsigned int w, h;
 	bool *cells;
 	Rules rules;
+	bool *(*getCell)(const struct board*, int, int);
 } Board;
 
-bool initBoard(Board *board, unsigned int width, unsigned int height);
+bool initBoard(Board *board, unsigned int width, unsigned int height, bool wrap);
 
 void freeBoard(Board *board);
 
-bool *getCell(const Board *board, unsigned int x, unsigned int y);
 bool toggleCell(Board *board, unsigned int x, unsigned int y);
 
 Rules getRules(const Board *board);

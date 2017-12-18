@@ -14,9 +14,9 @@ int main(const int argc, const char *const argv[]) {
 	             cell_pixels = DEFAULT_CELLS_PIXELS,
 	             update_rate = DEFAULT_UPDATE_RATE,
 	             border_width = DEFAULT_BORDER_WIDTH;
-	bool use_vsync = false;
+	bool use_vsync = false, wrap = false;
 
-	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync);
+	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync, &wrap);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
 		fatal("Failure in command line options handling");
 		return 1;
@@ -28,7 +28,7 @@ int main(const int argc, const char *const argv[]) {
 	}
 
 	Board b;
-	initBoard(&b, board_width, board_height);
+	initBoard(&b, board_width, board_height, wrap);
 
 	BoardWindow *bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life", use_vsync);
 	if(bw == NULL) {
