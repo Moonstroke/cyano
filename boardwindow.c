@@ -2,7 +2,6 @@
 
 #include <SDL2/SDL_mouse.h>
 
-#include "log.h"
 
 
 BoardWindow *newBoardWindow(Board *const board, const unsigned int c, const unsigned int b, const char *const t, bool v) {

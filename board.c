@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 
-#include "log.h"
 
 
 static bool *getCellLimits(const Board*, int, int);

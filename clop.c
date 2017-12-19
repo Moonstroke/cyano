@@ -1,11 +1,11 @@
 #include "clop.h"
 
 
-#include <unistd.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <unistd.h>
 
 #include "log.h"
-
 
 
 static unsigned int *_w, *_h, *_c, *_r, *_b;
