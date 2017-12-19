@@ -42,8 +42,8 @@
  *   alive cells.
  */
 
-#ifndef LIFE_H
-#define LIFE_H
+#ifndef BOARD_H
+#define BOARD_H
 
 
 #include <stdbool.h>
@@ -166,4 +166,4 @@ bool updateBoard(Board *board);
 void clearBoard(Board *board);
 
 
-#endif // LIFE_H
+#endif // BOARD_H

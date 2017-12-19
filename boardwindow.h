@@ -10,8 +10,8 @@
  * It communicates with the SDL through its abstract structure \a SDL_Window.
  */
 
-#ifndef RENDER_H
-#define RENDER_H
+#ifndef BOARDWINDOW_H
+#define BOARDWINDOW_H
 
 
 #include <SDL2/SDL_render.h>
@@ -127,4 +127,4 @@ void renderBoardWindow(const BoardWindow *self);
 void getHoverCoord(const BoardWindow *self, int *x, int *y);
 
 
-#endif // RENDER_H
+#endif // BOARDWINDOW_H
