@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-static const char *const OPTSTRING = "b:c:h:nr:vw:";
+static const char *const OPTSTRING = "b:c:h:nr:vw:W";
 
 static const struct option const LONGOPTS[] = {
 	{"board-width",  required_argument, NULL, 'w'},
@@ -15,7 +15,7 @@ static const struct option const LONGOPTS[] = {
 	{"no-border",    no_argument,       NULL, 'n'},
 	{"update-rate",  required_argument, NULL, 'r'},
 	{"vsync",        no_argument      , NULL, 'v'},
-	{"wrap",         no_argument      , NULL, 'a'},
+	{"wrap",         no_argument      , NULL, 'W'},
 	{"", 0, NULL, 0}
 };
 

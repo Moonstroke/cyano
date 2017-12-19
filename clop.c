@@ -9,7 +9,7 @@
 
 
 static unsigned int *_w, *_h, *_c, *_r, *_b;
-static bool *_v, *_wrap;
+static bool *_v, *_W;
 
 void setvars(unsigned int *const w,
              unsigned int *const h,
@@ -17,14 +17,14 @@ void setvars(unsigned int *const w,
              unsigned int *const r,
              unsigned int *const b,
              bool *const v,
-             bool *const wrap) {
+             bool *const W) {
 	_w = w;
 	_h = h;
 	_c = c;
 	_r = r;
 	_b = b;
 	_v = v;
-	_wrap = wrap;
+	_W = W;
 }
 
 
@@ -41,9 +41,6 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 	bool r_met = false, v_met = false, b_met = false, n_met = false;
 	while((ch = getopt_long(argc, (char *const*)argv, so, lo, &idx)) != -1) {
 		switch(ch) {
-			case 'a':
-				*_wrap = true;
-				break;
 			case 'b':
 				getval('b', optarg, _b);
 				b_met = true;
@@ -68,6 +65,9 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 				break;
 			case 'w':
 				getval('w', optarg, _w);
+				break;
+			case 'W':
+				*_W = true;
 				break;
 			default:
 				return false;
