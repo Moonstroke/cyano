@@ -57,7 +57,7 @@ void setRules(Board *const b, Rules r) {
 
 
 static inline unsigned int neighbors(const Board *const b, unsigned int x, unsigned int y) {
-	unsigned int n = 0;
+	unsigned int n = 0, i;
 	bool *cell;
 
 	const int coords[][2] = {
@@ -70,7 +70,7 @@ static inline unsigned int neighbors(const Board *const b, unsigned int x, unsig
 	        {x    , y + 1},
 	        {x + 1, y + 1}
 	    };
-	for(unsigned int i = 0; i < 8; ++i) {
+	for(i = 0; i < 8; ++i) {
 		cell = b->getCell(b, coords[i][0], coords[i][1]);
 		if(cell != NULL && *cell == true) {
 			n += 1;
