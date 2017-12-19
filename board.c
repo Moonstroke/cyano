@@ -82,11 +82,13 @@ static inline unsigned int neighbors(const Board *const b, unsigned int x, unsig
 
 bool updateBoard(Board *const b) {
 	const unsigned int w = b->w, h = b->h;
-	bool *cells = malloc(w * h * sizeof(bool));
+	unsigned int i, j;
+	bool *cells;
+
+	cells = malloc(w * h * sizeof(bool));
 	if(cells == NULL)
 		return false;
 
-	unsigned int i, j;
 	for(j = 0; j < h; ++j) {
 		for(i = 0; i < w; ++i) {
 			const unsigned int n = neighbors(b, i, j);

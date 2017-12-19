@@ -9,12 +9,27 @@
 
 int main(const int argc, const char *const argv[]) {
 
+	// Objects
+	Board b;
+	BoardWindow *bw;
+
+	// Initializers parameters
 	unsigned int board_width = DEFAULT_BOARD_WIDTH,
 	             board_height = DEFAULT_BOARD_HEIGHT,
 	             cell_pixels = DEFAULT_CELLS_PIXELS,
 	             update_rate = DEFAULT_UPDATE_RATE,
 	             border_width = DEFAULT_BORDER_WIDTH;
 	bool use_vsync = false, wrap = false;
+
+
+	// Main loop variables
+	Timer timer;
+	int over_x, over_y,
+	    last_x, last_y;
+	bool loop = true;
+	bool mdown = false;
+	bool play = false;
+	SDL_Event event;
 
 	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync, &wrap);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
@@ -27,25 +42,17 @@ int main(const int argc, const char *const argv[]) {
 		return 1;
 	}
 
-	Board b;
 	initBoard(&b, board_width, board_height, wrap);
 
-	BoardWindow *bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life", use_vsync);
+	bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life", use_vsync);
 	if(bw == NULL) {
 		fatal("Could not create the game window: %s", SDL_GetError());
 		return 1;
 	}
 
-	Timer timer;
 	resetTimer(&timer);
 	setDelay(&timer, 1000. / (double)update_rate);
 
-	int over_x, over_y,
-	    last_x, last_y;
-	bool loop = true;
-	bool mdown = false;
-	bool play = false;
-	SDL_Event event;
 	while(loop) {
 		unsigned int remTime;
 		startTimer(&timer);

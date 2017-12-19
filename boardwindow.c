@@ -6,17 +6,21 @@
 
 
 BoardWindow *newBoardWindow(Board *const board, const unsigned int c, const unsigned int b, const char *const t, bool v) {
-	BoardWindow *bw = malloc(sizeof(BoardWindow));
-	if(bw == NULL)
-		return NULL;
+	BoardWindow *bw;
 	const unsigned int ww = board->w * (c + b) + b,
 	                   wh = board->h * (c + b) + b;
+	SDL_Window *win;
+	SDL_Renderer *ren;
 
-	SDL_Window *const win = SDL_CreateWindow(t, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ww, wh, WINDOW_FLAGS);
+	bw = malloc(sizeof(BoardWindow));
+	if(bw == NULL)
+		return NULL;
+
+	win = SDL_CreateWindow(t, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ww, wh, WINDOW_FLAGS);
 	if(win == NULL)
 		return NULL;
 
-	SDL_Renderer *const ren = SDL_CreateRenderer(win, -1, RENDERER_FLAGS(v));
+	ren = SDL_CreateRenderer(win, -1, RENDERER_FLAGS(v));
 	if(ren == NULL)
 		return NULL;
 
