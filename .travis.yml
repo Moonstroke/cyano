@@ -4,8 +4,8 @@ compiler: gcc
 sudo: true
 
 before_install:
- - sudo apt update
- - sudo apt install libsdl2-dev
+ - sudo apt-get update
+ - sudo apt-get install libsdl2-dev
 
 script:
  - shopt -s extglob
