@@ -43,17 +43,17 @@ board:
 
 Short option|Long option|Description|Conflicts?
 :----:|:---:|:----:|:----:
-`-w WIDTH`|`--board-width WIDTH`|the width of the board|None
-`-h HEIGHT`|`--board-height  HEIGHT`|the height of the board|None
-`-b BORDER`|`--border-size`|the size of the gap between two cells|`--no-border`
-`-c SIZE`|`--cell-size`|the size of the representation of one cell, in pixels|None
-`-n`|`--no-border`|to disable the borders between the cells|`--border-size`, because equivalent to `-b0`
-`-r RATE`|`--update-rate RATE`|the frequency of the generations|`--vsync`
-`-v`|`--vsync`|follow vertical synchronization for refresh rate|`--update-rate`
-`-W`|`--wrap`|create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
+`-w WIDTH`|`--board-width WIDTH`|The width of the board|None
+`-h HEIGHT`|`--board-height  HEIGHT`|The height of the board|None
+`-b BORDER`|`--border-size`|The size of the gap between two cells|`--no-border`
+`-c SIZE`|`--cell-size`|The size of the representation of one cell, in pixels|None
+`-n`|`--no-border`|Disable the borders between the cells|`--border-size`, because equivalent to `-b0`
+`-r RATE`|`--update-rate RATE`|The frequency of the generations|`--vsync`
+`-v`|`--vsync`|Follow vertical synchronization for refresh rate|`--update-rate`
+`-W`|`--wrap`|Create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
 
 <a name="1">1</a>: A toroidal grid is, by opposition to a rectangular (or
-standard )one, is a configuration of the board in which each cell crossing a
+standard) one, is a configuration of the board in which each cell crossing a
 wall will re-enter the board on the opposite side instead of disappearing. It
 allows to virtually replicate an infinite grid -- except that ships maight wrap
 around and interact with the original pattern that launched it, resulting in
