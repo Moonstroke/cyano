@@ -41,19 +41,21 @@ This project also depends on another of mine, the [logging system in C](https://
 The program accepts several command-line options to specify parameters of the
 board:
 
- - `-w WIDTH`, or `--board-width WIDTH`, the width of the board to `WIDTH`,
- - `-h HEIGHT`, or `--board-height  HEIGHT`, the height of the board to
-   `HEIGHT`,
- - `-b BORDER`, or `--border-size`, the size of the gap between two cells,
- - `-c SIZE`, or `--cell-size`, the size of the representation of one cell, in
-   pixels,
- - `-n`, or `--no-border`, to disable the borders between the cells (conflicts
-   with `-b` because it is equivalent to `--border-size=0`)
- - `-r RATE`, or `--update-rate RATE`, the frequency of the generations,
- - `-v`, or `--vsync`, to follow vertical synchronization for refresh rate
-   (conflicts with `--update-rate`)
- - `-W`, or `--wrap`, to create a toroidal grid instead of a rectangular one
-   (i.e. Each cell crossing a wall will re-enter the board on the opposite side
-   instead of disappearing)
+Short option|Long option|Description|Conflicts?
+:----:|:---:|:----:|:----:
+`-w WIDTH`|`--board-width WIDTH`|the width of the board|
+`-h HEIGHT`|`--board-height  HEIGHT`|the height of the board|
+`-b BORDER`|`--border-size`|the size of the gap between two cells|`--no-border`
+`-c SIZE`|`--cell-size`|the size of the representation of one cell, in pixels
+`-n`|`--no-border`|to disable the borders between the cells|`-b`, because equivalent to `--border-size=0`
+`-r RATE`|`--update-rate RATE`|the frequency of the generations|
+`-v`|`--vsync`|follow vertical synchronization for refresh rate|`--update-rate`
+`-W`|`--wrap`|create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one
 
+<a name="1">1</a>: A toroidal grid is, by opposition to a rectangular (or
+standard)one, is a configuration of the board in which each cell crossing a wall
+will re-enter the board on the opposite side instead of disappearing. It allows
+to virtually replicate an infinite grid -- except that ships maight wrap around
+and interact with the original pattern that launched it, resulting in behaviour
+that would not have occurred on a truly infinite grid.
 
