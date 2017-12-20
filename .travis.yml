@@ -11,4 +11,4 @@ script:
  - shopt -s extglob
  - wget -Olog.h 'https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq'
  - wget -Oliblog.a 'https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0'
- - gcc !(test*).c -osdlife -llog -lSDL2
+ - gcc !(test*).c -osdlife -llog -lSDL2 -L.
