@@ -47,8 +47,8 @@ Short option|Long option|Description|Conflicts?
 `-h HEIGHT`|`--board-height  HEIGHT`|the height of the board|None
 `-b BORDER`|`--border-size`|the size of the gap between two cells|`--no-border`
 `-c SIZE`|`--cell-size`|the size of the representation of one cell, in pixels|None
-`-n`|`--no-border`|to disable the borders between the cells|`-b`, because equivalent to `--border-size=0`
-`-r RATE`|`--update-rate RATE`|the frequency of the generations|None
+`-n`|`--no-border`|to disable the borders between the cells|`--border-size`, because equivalent to `-b0`
+`-r RATE`|`--update-rate RATE`|the frequency of the generations|`--vsync`
 `-v`|`--vsync`|follow vertical synchronization for refresh rate|`--update-rate`
 `-W`|`--wrap`|create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
 
