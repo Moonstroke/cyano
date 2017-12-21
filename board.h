@@ -118,7 +118,7 @@ bool toggleCell(Board *board, unsigned int x, unsigned int y);
 
 
 /**
- * \brief Retrieves the rules used in this board, as a string.
+ * \brief Retrieves the rules of evolution used for this board, as a string.
  *
  * \param[in] board The board
  *
