@@ -36,9 +36,9 @@ void setvars(unsigned int *const w,
 
 static bool validate_rule(const char *const r) {
 	regex_t re;
-	const char *fmt = "B[0-9]*/?S[0-9]*";
+	const char *fmt = "B[0-9]*/S[0-9]*";
 	bool valid;
-	const int status = regcomp(&re, fmt, REG_NOSUB | REG_EXTENDED);
+	const int status = regcomp(&re, fmt, REG_NOSUB);
 	if(status != 0) {
 		char err[ERR_MSG_MAX_LEN];
 		regerror(status, &re, err, ERR_MSG_MAX_LEN);

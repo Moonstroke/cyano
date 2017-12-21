@@ -31,15 +31,17 @@
  * in a short form:
  * \code B<number of alive neighbors to be born>S<numberof neighbors to survive> \endcode.
  * So the original rules of the Game of Life as designed by Conway can be
- * expressed as \c B2S23.
+ * expressed as \c B3/S23. Ths format is called the *Golly* format. (\e Golly is
+ * a renown Life-simulation software which uses this format to characterize a
+ * Life-like cellular automata)
  *
  * Some famouse other rules are :
- * - \b Seeds, of form \c B2S, in this scheme, <em>no cell survives more than a
+ * - \b Seeds, of form \c B2/S, in this scheme, <em>no cell survives more than a
  *   single generation</em>;
- * - \b HighLife, of rule B36S23,
- * - <b>Day & Night</b>, a cellular automaton were the \e dead and \e alive
- *   states are symmetrical, meaning that dead cells mirror in behavior that of
- *   alive cells.
+ * - \b HighLife, of rule \c B36/S23,
+ * - <b>Day & Night</b>, of rule \c B3678/S34678, a cellular automaton were the
+ *   \e dead and \e alive states are symmetrical, meaning that dead cells mirror
+ *   in behavior that of alive cells.
  */
 
 #ifndef BOARD_H
@@ -76,8 +78,8 @@ typedef struct board {
 	bool *cells;
 	/**< The data of the board cells. */
 	const char *rules;
-	/**< The rules determining the evolution of the game, as a string of format
-	     \c "B<m>/S<n>". */
+	/**< The rules determining the evolution of the game, as a string in
+	     \e Golly format. */
 	bool *(*getCell)(const struct board*, int, int);
 	/**< The function the board uses to retrieve a cell on itself (depends on
 	     whether the board's walls wrap or not). */
@@ -122,7 +124,7 @@ bool toggleCell(Board *board, unsigned int x, unsigned int y);
  *
  * \param[in] board The board
  *
- * \return The rules of the board, in \c "B<m>/S<n>" format
+ * \return The rules of the board, in \Golly format
  */
 const char *getRules(const Board *board);
 
@@ -130,7 +132,7 @@ const char *getRules(const Board *board);
  * \brief Updates the rules of the board, using a string to represent the rules.
  *
  * \param[in,out] board The board
- * \param[in]     rules The new rules, as a string of format \c "B<m>/S<n>"
+ * \param[in]     rules The new rules, as a string in \e Golly format
  *
  * \note The standard rules are represented by the string \c "B3/S23"
  */

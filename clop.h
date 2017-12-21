@@ -62,8 +62,8 @@ static const struct option const LONGOPTS[] = {
  * \param[in] wrap         Sets the grid as rectangular or toroidal (i.e. a cell
  *                         crossing a wall will appear on the other side of the
  *                         board instead of just dying)
- * \param[in] game_rules   The evolution rules of the game, in \c "B<m>/S<n>"
- *                         format (the \c / is optional)
+ * \param[in] game_rules   The evolution rules of the game, in \e Golly format
+ *                         (\c Bm/Sn where m is the number of alive neighbors)
  */
 void setvars(unsigned int *board_width,
              unsigned int *board_height,
