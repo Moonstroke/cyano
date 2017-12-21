@@ -5,12 +5,12 @@
 
 ## What is it?
 
-The SDL ([Simple DirectMedia Layer](http://www.libsdl.org)) is a low-level C
+The SDL ([Simple DirectMedia Layer][sdl]) is a low-level C
 library that provides access to mouse, keyboard and joystick events, audio but
 mostly *graphics*.
 
 I started using it for my main project, a
-[Point & Click library in C](https://github.com/Moonstroke/C-SDL-Point-Click).
+[Point & Click library in C][c-pnc].
 
 But I always wanted to make my very own Game of Life with graphics, and the SDL
 being awesome, I went for it.
@@ -30,10 +30,10 @@ with `-pedantic -Wall` and every syntax warning possible enabled).
 Apart from pre-installed packages, the source depends on the APT package
 `libsdl2-dev` to compile (and dependencies packages, of course).
 
-This project also depends on another of mine, the [logging system in C](https://github.com/Moonstroke/C-log.git)
+This project also depends on another of mine, the [logging system in C][log.git]
 
-> Header available [here](https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq),
-> and archive [here](https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0)
+> Header available [here][log.h],
+> and archive [here][liblog.a]
 
 
 ### Execution
@@ -75,3 +75,9 @@ allows to virtually replicate an infinite grid -- except that ships might wrap
 around and interact with the original pattern that launched it, resulting in
 behaviour that would not have occurred on a truly infinite grid.
 
+
+[sdl]: http://www.libsdl.org "The SDL website"
+[c-pnc]: https://github.com/Moonstroke/C-SDL-Point-Click.git "C+SDL / Point & Click"
+[log.git]: https://github.com/Moonstroke/C-log.git "C / log"
+[log.h]: https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq "log.h"
+[liblog.a]: https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0 "liblog.a"
