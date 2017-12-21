@@ -50,7 +50,7 @@ const char *getRules(const Board *const b) {
 	return b->rules;
 }
 
-void setRules(Board *const b, const char *r) {
+void setRules(Board *const b, const char *const r) {
 	b->rules = r;
 }
 
