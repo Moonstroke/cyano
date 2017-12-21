@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "log.h"
+#include "rules.h"
 
 #define ERR_MSG_MAX_LEN 64
 
@@ -34,22 +35,30 @@ void setvars(unsigned int *const w,
 	_R = R;
 }
 
-static bool validate_rule(const char *const r) {
-	regex_t re;
-	const char *fmt = "B[0-9]*/S[0-9]*";
-	bool valid;
-	const int status = regcomp(&re, fmt, REG_NOSUB);
-	if(status != 0) {
-		char err[ERR_MSG_MAX_LEN];
-		regerror(status, &re, err, ERR_MSG_MAX_LEN);
-		fatal("Could not compile regular expression for format \"%s\": %s", fmt, err);
-		return false;
+static bool rvalset(const char *const a, const char **dst) {
+	const char *const r = getRuleFromName(a);
+	if(r != NULL) {
+		*dst = r;
+		return true;
+	} else {
+		regex_t re;
+		const char *fmt = "B[0-9]*/S[0-9]*";
+		bool valid;
+		const int status = regcomp(&re, fmt, REG_NOSUB);
+		if(status != 0) {
+			char err[ERR_MSG_MAX_LEN];
+			regerror(status, &re, err, ERR_MSG_MAX_LEN);
+			fatal("Could not compile regular expression for format \"%s\": %s", fmt, err);
+			return false;
+		}
+		valid = regexec(&re, a, 0, NULL, 0) == 0;
+		regfree(&re);
+		if(valid)
+			*dst = a;
+		else
+			error("Invalid rules: \"%s\"", r);
+		return valid;
 	}
-	valid = regexec(&re, r, 0, NULL, 0) == 0;
-	regfree(&re);
-	if(!valid)
-		error("Invalid rules: \"%s\"", r);
-	return valid;
 }
 
 static void getval(const char opt, const char *const arg, unsigned int *const dst) {
@@ -84,10 +93,8 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 				r_met = true;
 				break;
 			case 'R':
-				if(!validate_rule(optarg))
+				if(!rvalset(optarg, _R))
 					return false;
-				else
-					*_R = optarg;
 				break;
 			case 'v':
 				*_v = true;
