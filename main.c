@@ -20,7 +20,7 @@ int main(const int argc, const char *const argv[]) {
 	             update_rate = DEFAULT_UPDATE_RATE,
 	             border_width = DEFAULT_BORDER_WIDTH;
 	bool use_vsync = false, wrap = false;
-
+	const char *game_rules = DEFAULT_BOARD_RULES;
 
 	// Main loop variables
 	Timer timer;
@@ -31,7 +31,7 @@ int main(const int argc, const char *const argv[]) {
 	bool play = false;
 	SDL_Event event;
 
-	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync, &wrap);
+	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync, &wrap, &game_rules);
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
 		fatal("Failure in command line options handling");
 		return 1;
@@ -43,7 +43,7 @@ int main(const int argc, const char *const argv[]) {
 	}
 
 	initBoard(&b, board_width, board_height, wrap);
-	setRules(&b, DEFAULT_BOARD_RULES);
+	setRules(&b, game_rules);
 
 	bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life", use_vsync);
 	if(bw == NULL) {

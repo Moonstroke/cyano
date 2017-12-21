@@ -28,7 +28,7 @@
 /**
  * The short options string.
  */
-static const char *const OPTSTRING = "b:c:h:nr:vw:W";
+static const char *const OPTSTRING = "b:c:h:nr:R:vw:W";
 
 /**
  * The long options array.
@@ -39,6 +39,7 @@ static const struct option const LONGOPTS[] = {
 	{"border-size",  required_argument, NULL, 'b'},
 	{"cell-size",    required_argument, NULL, 'c'},
 	{"no-border",    no_argument,       NULL, 'n'},
+	{"game-rules",   required_argument, NULL, 'R'},
 	{"update-rate",  required_argument, NULL, 'r'},
 	{"vsync",        no_argument      , NULL, 'v'},
 	{"wrap",         no_argument      , NULL, 'W'},
@@ -61,6 +62,8 @@ static const struct option const LONGOPTS[] = {
  * \param[in] wrap         Sets the grid as rectangular or toroidal (i.e. a cell
  *                         crossing a wall will appear on the other side of the
  *                         board instead of just dying)
+ * \param[in] game_rules   The evolution rules of the game, in \c "B<m>/S<n>"
+ *                         format (the \c / is optional)
  */
 void setvars(unsigned int *board_width,
              unsigned int *board_height,
@@ -68,7 +71,8 @@ void setvars(unsigned int *board_width,
              unsigned int *update_rate,
              unsigned int *border_width,
              bool *use_vsync,
-             bool *wrap);
+             bool *wrap,
+             const char **game_rules);
 
 
 /**

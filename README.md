@@ -49,10 +49,22 @@ Short option|Long option|Description|Conflicts?
 `-c SIZE`|`--cell-size`|The size of the representation of one cell, in pixels|None
 `-n`|`--no-border`|Disable the borders between the cells|`--border-size`, because equivalent to `-b0`
 `-r RATE`|`--update-rate RATE`|The frequency of the generations|`--vsync`
+`-R RULE`|`--game-rule RULE`|The evolution rule<sup>[1](#1)</sup> of the game|None
 `-v`|`--vsync`|Follow vertical synchronization for refresh rate|`--update-rate`
-`-W`|`--wrap`|Create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
+`-W`|`--wrap`|Create a *toroidal*<sup>[2](#2)</sup> grid instead of a rectangular one|None
 
-<a name="1">1</a>: A toroidal grid is, by opposition to a rectangular (or
+
+<a name="1">1</a>: The game rule is a character string of the form `B<m>/S<n>`
+where `<m>` is the concatenation of the different number of alive neighbors one
+dead cell needs to be born on the next generation, and `<n>` is the
+concatenation of the numbers of alive neighbors one alive cell needs to survive
+to the next generation. (Note that the `/` character is optional.)
+
+For example, the strings `B3/S23` and `B3S23` both represent the original rules
+of the Game of Life as designed by Conway. (`B3S32` is valid too, but not very
+orthodox)
+
+<a name="2">2</a>: A toroidal grid is, by opposition to a rectangular (or
 standard) one, is a configuration of the board in which each cell crossing a
 wall will re-enter the board on the opposite side instead of disappearing. It
 allows to virtually replicate an infinite grid -- except that ships maight wrap
