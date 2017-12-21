@@ -2,6 +2,7 @@
 
 
 #include <stdlib.h>
+#include <string.h>
 
 
 
@@ -54,6 +55,23 @@ void setRules(Board *const b, const char *const r) {
 	b->rules = r;
 }
 
+static inline bool willBeBorn(const unsigned int n, const char *r) {
+	const char k = '0' + n;
+	r = strchr(r, 'B') + 1;
+	while(*r != '\0' && (*r != '/' && *r != 'S') && *r != k) {
+		r++;
+	}
+	return *r == k;
+}
+
+static inline bool willSurvive(const unsigned int n, const char *r) {
+	const char k = '0' + n;
+	r = strchr(r, 'S') + 1;
+	while(*r != '\0' && *r != k) {
+		r++;
+	}
+	return *r == k;
+}
 
 static inline unsigned int neighbors(const Board *const b, unsigned int x, unsigned int y) {
 	unsigned int n = 0, i;
@@ -90,10 +108,10 @@ bool updateBoard(Board *const b) {
 
 	for(j = 0; j < h; ++j) {
 		for(i = 0; i < w; ++i) {
-			const unsigned int n = neighbors(b, i, j);
-			bool cell = *b->getCell(b, i, j);
-			// FIXME use rules
-			cells[w * j + i] = (n == 3 || (n == 2 && cell));
+			if(*b->getCell(b, i, j))
+				cells[w * j + i] = willSurvive(neighbors(b, i, j), b->rules);
+			else
+				cells[w * j + i] = willBeBorn(neighbors(b, i, j), b->rules);
 		}
 	}
 	free(b->cells);

@@ -43,6 +43,7 @@ int main(const int argc, const char *const argv[]) {
 	}
 
 	initBoard(&b, board_width, board_height, wrap);
+	setRules(&b, DEFAULT_BOARD_RULES);
 
 	bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life", use_vsync);
 	if(bw == NULL) {
