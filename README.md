@@ -12,19 +12,19 @@ mostly *graphics*.
 I started using it for my main project, a
 [Point & Click library in C](https://github.com/Moonstroke/C-SDL-Point-Click).
 
-But I alway wanted to make my very own Game of Life with graphics, and the SDL
+But I always wanted to make my very own Game of Life with graphics, and the SDL
 being awesome, I went for it.
 
-The Game of Life is what is called a *cellular automaton*, a 0-player game where
-*alive* or *dead* cells on a grid interact.
+The Game of Life is a *cellular automaton*, a 0-player game where *alive* or
+*dead* cells on a grid interact.
 
 
 ## Technicals
 
 ### Compilation
 
-The program was coded under *buntu 17.04, uses the version 2.0 of the SDL, and
-compiled with `gcc`; however the code should be standard compliant (compiled
+The program was coded under *buntu 17.04, uses the version `2.0.5` of the SDL,
+and compiled with `gcc`; however the code should be standard compliant (compiled
 with `-pedantic -Wall` and every syntax warning possible enabled).
 
 Apart from pre-installed packages, the source depends on the APT package
@@ -32,8 +32,8 @@ Apart from pre-installed packages, the source depends on the APT package
 
 This project also depends on another of mine, the [logging system in C](https://github.com/Moonstroke/C-log.git)
 
-> Header available [here](https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq)
-> And archive [here](https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0)
+> Header available [here](https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq),
+> and archive [here](https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0)
 
 
 ### Execution
@@ -54,6 +54,10 @@ Short option|Long option|Description|Conflicts?
 `-W`|`--wrap`|Create a *toroidal*<sup>[2](#2)</sup> grid instead of a rectangular one|None
 
 
+***
+
+## Footnotes
+
 <a name="1">1</a>: The game rule is a character string of the form `B<m>/S<n>`
 where `<m>` is the concatenation of the different number of alive neighbors one
 dead cell needs to be born on the next generation, and `<n>` is the
@@ -67,7 +71,7 @@ orthodox)
 <a name="2">2</a>: A toroidal grid is, by opposition to a rectangular (or
 standard) one, is a configuration of the board in which each cell crossing a
 wall will re-enter the board on the opposite side instead of disappearing. It
-allows to virtually replicate an infinite grid -- except that ships maight wrap
+allows to virtually replicate an infinite grid -- except that ships might wrap
 around and interact with the original pattern that launched it, resulting in
 behaviour that would not have occurred on a truly infinite grid.
 
