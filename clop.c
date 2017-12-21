@@ -1,12 +1,15 @@
 #include "clop.h"
 
 
+#include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "log.h"
+
+#define ERR_MSG_MAX_LEN 64
 
 
 static unsigned int *_w, *_h, *_c, *_r, *_b;
@@ -31,26 +34,21 @@ void setvars(unsigned int *const w,
 	_R = R;
 }
 
-static bool validate_rules(const char *const r) {
-	const unsigned int b_pos = strchr(r, 'B') - r,
-	                   s_pos = strchr(r, 'S') - r;
-	const char *const slash_p = strchr(r, '/');
-	unsigned int slash_pos = slash_p != NULL ? slash_p - r: s_pos - 1,
-	             i;
+static bool validate_rule(const char *const r) {
+	regex_t re;
+	const char *fmt = "B[0-9]*/?S[0-9]*";
 	bool valid;
-	debug("b_pos = %u, s_pos = %u, slash_pos = %u", b_pos, s_pos, slash_pos);
-	valid = (b_pos == 0) && (slash_pos == (s_pos - 1)) && (s_pos > b_pos);
-	debug("valid = %d", valid);
-	for(i = 1; i < slash_pos && valid; ++i) {
-		valid = '/' < r[i] && r[i] < ':';
-		debug("i = %u, r[i] = '%c', valid = %d", i, r[i], valid);
-		i++;
+	const int status = regcomp(&re, fmt, REG_NOSUB | REG_EXTENDED);
+	if(status != 0) {
+		char err[ERR_MSG_MAX_LEN];
+		regerror(status, &re, err, ERR_MSG_MAX_LEN);
+		fatal("Could not compile regular expression for format \"%s\": %s", fmt, err);
+		return false;
 	}
-	for(i = s_pos + 1; r[i] && valid; ++i) {
-		valid = '/' < r[i] && r[i] < ':';
-		debug("i = %u, r[i] = '%c', valid = %d", i, r[i], valid);
-		i++;
-	}
+	valid = regexec(&re, r, 0, NULL, 0) == 0;
+	regfree(&re);
+	if(!valid)
+		error("Invalid rules: \"%s\"", r);
 	return valid;
 }
 
@@ -86,10 +84,9 @@ bool getvals(const int argc, const char *const argv[], const char *so, const str
 				r_met = true;
 				break;
 			case 'R':
-				if(!validate_rules(optarg)) {
-					error("Invalid rules: \"%s\"", optarg);
+				if(!validate_rule(optarg))
 					return false;
-				} else
+				else
 					*_R = optarg;
 				break;
 			case 'v':
