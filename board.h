@@ -59,23 +59,6 @@
  */
 #define DEFAULT_BOARD_HEIGHT 60
 
-
-/**
- * \brief A type to represent the rules of the cellular automaton.
- *
- * The rules correspond to the equations defining the state of one cell at time
- * \code n + 1 \endcode according to the states of its eight surrounding
- * neighbors at time \c n.
- */
-typedef struct {
-	const char *b,
-	/**< Every character is a number of alive neighbors each cell needs to be
-	     born on the next generation.*/
-	           *s;
-	/**< Every character is a number of alive neighbors each cell needs to
-	     survive to the next generation. */
-} Rules;
-
 /**
  * \brief The type representing the board of the game.
  */
@@ -86,10 +69,12 @@ typedef struct board {
 	/**< The height of the board. */
 	bool *cells;
 	/**< The data of the board cells. */
-	Rules rules;
-	/**< The rules determining this game. */
+	const char *rules;
+	/**< The rules determining the evolution of the game, as a string of format
+	     \c "B<m>/S<n>". */
 	bool *(*getCell)(const struct board*, int, int);
-	/**< The function the board uses to retrieve a cell on itself. */
+	/**< The function the board uses to retrieve a cell on itself (depends on
+	     whether the board's walls wrap or not). */
 } Board;
 
 
@@ -127,21 +112,23 @@ bool toggleCell(Board *board, unsigned int x, unsigned int y);
 
 
 /**
- * \brief Retrieve the rules used in this board.
+ * \brief Retrieves the rules used in this board, as a string.
  *
  * \param[in] board The board
  *
- * \return The rules of the board
+ * \return The rules of the board, in \c "B<m>/S<n>" format
  */
-Rules getRules(const Board *board);
+const char *getRules(const Board *board);
 
 /**
- * \brief Update the rules of the board
+ * \brief Updates the rules of the board, using a string to represent the rules.
  *
  * \param[in,out] board The board
- * \param[in]     rules The new rules
+ * \param[in]     rules The new rules, as a string of format \c "B<m>/S<n>"
+ *
+ * \note The standard rules are represented by the string \c "B3/S23"
  */
-void setRules(Board *board, Rules rules);
+void setRules(Board *board, const char *rules);
 
 
 /**

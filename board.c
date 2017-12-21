@@ -46,11 +46,11 @@ bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
 	return false;
 }
 
-Rules getRules(const Board *const b) {
+const char *getRules(const Board *const b) {
 	return b->rules;
 }
 
-void setRules(Board *const b, Rules r) {
+void setRules(Board *const b, const char *r) {
 	b->rules = r;
 }
 
