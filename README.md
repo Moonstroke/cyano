@@ -1,9 +1,9 @@
 # SDLife
 
-> Conway's Game of Life in C using the SDL
+## Conway's Game of Life in C using the SDL
 
 
-## What is it?
+### What is it?
 
 The SDL ([Simple DirectMedia Layer][sdl]) is a low-level C
 library that provides access to mouse, keyboard and joystick events, audio but
@@ -19,9 +19,9 @@ The Game of Life is a *cellular automaton*, a 0-player game where *alive* or
 *dead* cells on a grid interact.
 
 
-## Technicals
+### Technicals
 
-### Compilation
+#### Compilation
 
 The program was coded under *buntu 17.04, uses the version `2.0.5` of the SDL,
 and compiled with `gcc`; however the code should be standard compliant (compiled
@@ -36,7 +36,7 @@ This project also depends on another of mine, the [logging system in C][log.git]
 > and archive [here][liblog.a]
 
 
-### Execution
+#### Execution
 
 The program accepts several command-line options to specify parameters of the
 board:
@@ -56,7 +56,7 @@ Short option|Long option|Description|Conflicts?
 
 ***
 
-## Footnotes
+### Footnotes
 
 <a name="1">1</a>: The game rule is a character string of the form `B<m>/S<n>`
 where `<m>` is the concatenation of the different number of alive neighbors one
