@@ -60,6 +60,12 @@
 #define DEFAULT_BOARD_HEIGHT 60
 
 /**
+ * \brief The default rules of evolution for the <i>Game of Life</i>, as
+ * originally devised by Conway.
+ */
+#define DEFAULT_BOARD_RULES "B3/S23"
+
+/**
  * \brief The type representing the board of the game.
  */
 typedef struct board {
