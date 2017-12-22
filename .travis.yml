@@ -3,6 +3,11 @@ compiler: gcc
 
 sudo: true
 
+env:
+ - LIBRARY_PATH=.:$LIBRARY_PATH
+ - CPATH=.:$CPATH
+ - C_INCLUDE_PATH=.:$C_INCLUDE_PATH
+
 before_install:
  - sudo apt-get update
  - sudo apt-get install --yes libasound2-dev libdbus-1-dev libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev libglu1-mesa-dev libibus-1.0-dev libmirclient-dev libpulse-dev libsdl2-2.0-0 libsndio-dev libudev-dev libwayland-dev libx11-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxkbcommon-dev libxrandr-dev libxss-dev libxt-dev libxv-dev libxxf86vm-dev libsdl2-dev
