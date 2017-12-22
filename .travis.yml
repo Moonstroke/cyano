@@ -5,11 +5,8 @@ compiler: gcc
 sudo: true
 
 env:
- # Where the compiler looks when searching for static libraries
- - LIBRARY_PATH=.:$LIBRARY_PATH
- # Where the compiler looks when searching `#include`d files
- - CPATH=.:$CPATH
- - C_INCLUDE_PATH=.:$C_INCLUDE_PATH
+ # Where the compiler looks when searching for static libraries and `#include`d files
+ - LIBRARY_PATH=.:$LIBRARY_PATH CPATH=.:$CPATH C_INCLUDE_PATH=.:$C_INCLUDE_PATH
 
 before_install:
  # Refreshing the APT cache doesn't hurt
