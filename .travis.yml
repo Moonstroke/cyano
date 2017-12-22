@@ -1,19 +1,25 @@
 language: c
 compiler: gcc
 
+# We need to be root to install the SDL2 packages
 sudo: true
 
 env:
+ # Where the compiler looks when searching for static libraries
  - LIBRARY_PATH=.:$LIBRARY_PATH
+ # Where the compiler looks when searching `#include`d files
  - CPATH=.:$CPATH
  - C_INCLUDE_PATH=.:$C_INCLUDE_PATH
 
 before_install:
+ # Refreshing the APT cache doesn't hurt
  - sudo apt-get update
+ # We obviously need the SDL installed
  - sudo apt-get install --yes libasound2-dev libdbus-1-dev libegl1-mesa-dev libgl1-mesa-dev libgles2-mesa-dev libglu1-mesa-dev libibus-1.0-dev libmirclient-dev libpulse-dev libsdl2-2.0-0 libsndio-dev libudev-dev libwayland-dev libx11-dev libxcursor-dev libxext-dev libxi-dev libxinerama-dev libxkbcommon-dev libxrandr-dev libxss-dev libxt-dev libxv-dev libxxf86vm-dev libsdl2-dev
 
 script:
- - shopt -s extglob
+ # We retrieve the needed log library needed for compilation (this is dirty)
  - wget -Olog.h 'https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq'
  - wget -Oliblog.a 'https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0'
+ # Aaand we build.
  - make
