@@ -9,6 +9,7 @@
 #define NB_NAMES 32
 
 
+
 static const char *const names[] = {
 	"2x2",
 	"34 Life",
@@ -24,8 +25,9 @@ static const char *const names[] = {
 	"Gnarl",
 	"HighLife",
 	"Highlife",
-	"Inverse Life",
+	"InverseLife",
 	"Inverse life",
+	"Life 3-4",
 	"Life without Death",
 	"Long Life",
 	"Long life",
@@ -40,7 +42,6 @@ static const char *const names[] = {
 	"Seeds",
 	"Serviettes",
 	"Stains",
-	"Standard",
 	"WalledCities"
 };
 
@@ -61,6 +62,7 @@ static const char *const rules[] = {
 	"B36/S23",
 	"B0123478/S34678",
 	"B0123478/S34678",
+	"B34/S34",
 	"B3/S012345678",
 	"B345/S5",
 	"B345/S5",
@@ -75,7 +77,6 @@ static const char *const rules[] = {
 	"B2/S",
 	"B234/S",
 	"B3678/235678",
-	"B3/S23",
 	"B45678/S2345"
 };
 
