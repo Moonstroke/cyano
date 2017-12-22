@@ -12,4 +12,5 @@ script:
  - wget -Olog.h 'https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq'
  - wget -Oliblog.a 'https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0'
  - ls -lA .
- - gcc !(test*).c -c -osdlife -llog -lSDL2 -L. -Wall -Wextra
+ - gcc !(test*).c -c
+ - gcc *.o -osdlife -llog -lSDL2 -L. -Wall -Wextra
