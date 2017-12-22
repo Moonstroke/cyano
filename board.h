@@ -124,7 +124,7 @@ bool toggleCell(Board *board, unsigned int x, unsigned int y);
  *
  * \param[in] board The board
  *
- * \return The rules of the board, in \Golly format
+ * \return The rules of the board, in \e Golly format
  */
 const char *getRules(const Board *board);
 
