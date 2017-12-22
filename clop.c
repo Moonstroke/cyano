@@ -56,7 +56,7 @@ static bool rvalset(const char *const a, const char **dst) {
 		if(valid)
 			*dst = a;
 		else
-			error("Invalid rules: \"%s\"", r);
+			error("Invalid rules: \"%s\"", a);
 		return valid;
 	}
 }
