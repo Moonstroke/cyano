@@ -56,8 +56,8 @@ and repeats.
 
 The *glider*, simplest and first discovered spaceship:
 
-     @
-    @
+    .@.
+    @..
     @@@
 
 
@@ -68,15 +68,15 @@ The question of the finiteness of the evolution of a pattern has been solved
 with the iscovery of the *Glider gun*, a pattern that emits gliders, discovered
 by Bill Gosper:
 
-                            @
-                          @ @
-                @@      @@            @@
-               @   @    @@            @@
-    @@        @     @   @@
-    @@        @   @ @@    @ @
-              @     @       @
-               @   @
-                @@
+    .........................@...........
+    .......................@.@...........
+    .............@@......@@............@@
+    ............@...@....@@............@@
+    .@@........@.....@...@@..............
+    .@@........@...@.@@....@.@...........
+    ...........@.....@.......@...........
+    ............@...@....................
+    .............@@......................
 
 
 ##### Golly format
@@ -137,8 +137,8 @@ Name |Rule (in Golly)|Description
 **Pseudo Life**, or **Pseudo life**|B357/S238|Looks like Conway's, but no common pattern from it behave the same way.
 **Replicator**|B1357/S1357|Every pattern is a replicator
 **Seeds**|B2/S|Though every cell dies on the next generation, most patterns explode
-**Serviettes**|B234/S|Produces beutiful persian rugs-like geometries
-**Stains**|B3678/235678|
+**Serviettes**|B234/S|Produces beautiful persian rugs-like geometries
+**Stains**|B3678/S235678|Evolves into stable big ink stains
 **WalledCities**|B3678/235678|Stabilizes into *"cities"*, areas of high activities delimited by a continuous wall
 
 
