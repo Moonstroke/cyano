@@ -17,12 +17,19 @@ else
 endif
 LDFLAGS :=
 
-# File macros
+TEST_LDLIBS := -llog
+
+
+# Executables
 EXEC := sdlife
-TEST_FILES := $(wildcard test*.c)
-SRC_FILES := $(wildcard *.c)
-SRC_FILES := $(filter-out $(TEST_FILES), $(SRC_FILES))
-OBJ_FILES := $(SRC_FILES:.c=.o)
+TEST_EXEC := test_sdlife
+
+# Tests macros
+TEST_SRC := $(wildcard test*.c)
+TEST_OBJ := $(TEST_SRC:.c=.o)
+TEST_REQ := board.o clop.o rules.o
+SRC := $(filter-out $(TEST_SRC), $(wildcard *.c))
+OBJ := $(SRC:.c=.o)
 
 
 # Documentation
@@ -35,15 +42,15 @@ DOC_DIR := doc/
 
 all: $(EXEC)
 
-$(EXEC): $(OBJ_FILES)
-	$(CC) -o$(EXEC) $(OBJ_FILES) $(LDLIBS) $(CFLAGS)
+$(EXEC): $(OBJ)
+	$(CC) -o$(EXEC) $(OBJ) $(LDLIBS) $(CFLAGS)
 
 %.o: %.c
 	$(CC) -c $< -o$@
 
 
 clean:
-	rm -rf $(OBJ_FILES)
+	rm -rf $(OBJ)
 
 distclean: clean
 	rm -rf $(EXEC)
@@ -51,3 +58,7 @@ distclean: clean
 
 doc:
 	$(DOC_PRG) $(DOC_CFG)
+
+test: $(TEST_OBJ) $(TEST_REQ)
+	$(CC) -o$(TEST_EXEC) $(TEST_OBJ) $(TEST_REQ) $(TEST_LDLIBS)
+	./$(TEST_EXEC)

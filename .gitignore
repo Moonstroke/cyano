@@ -2,6 +2,8 @@
 a.out
 sdlife
 life
+test
+test_sdlife
 
 # Object files
 *.o
