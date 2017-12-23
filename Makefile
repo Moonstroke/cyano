@@ -52,7 +52,7 @@ $(EXEC): $(OBJ)
 clean:
 	rm -rf $(OBJ)
 
-distclean: clean
+distclean: clean testclean
 	rm -rf $(EXEC)
 	rm -rf $(DOC_DIR)
 
@@ -62,3 +62,6 @@ doc:
 test: $(TEST_OBJ) $(TEST_REQ)
 	$(CC) -o$(TEST_EXEC) $(TEST_OBJ) $(TEST_REQ) $(TEST_LDLIBS)
 	./$(TEST_EXEC)
+
+testclean:
+	rm -rf $(TEST_OBJ) $(TEST_REQ) $(TEST_EXEC)
