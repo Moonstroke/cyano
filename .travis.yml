@@ -20,7 +20,7 @@ before_install:
 
 script:
  # We retrieve the needed log library needed for compilation (this is dirty)
- - wget -Olog.h 'https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq'
- - wget -Oliblog.a 'https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0'
+ - wget -Olog.h 'https://raw.githubusercontent.com/Moonstroke/C-log/master/log.h'
+ - wget -Oliblog.a 'https://github.com/Moonstroke/C-log/releases/download/v0.1/liblog.a'
  # Aaand we build.
  - make
