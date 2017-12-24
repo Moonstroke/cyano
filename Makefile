@@ -4,7 +4,7 @@ STATIC := y
 
 # Compilation flags
 CC := gcc
-CFLAGS := -finline-functions -pedantic -Wall -Wextra -Wpadded -Wdeclaration-after-statement
+CFLAGS := -std=c11 -pedantic -Wall -Wextra -Wpadded
 ifeq ($(DEBUG), y)
 	CFLAGS += -g
 endif
@@ -38,12 +38,12 @@ DOC_CFG := Doxyfile
 DOC_DIR := doc/
 
 
-.PHONY: all clean distclean doc
+.PHONY: all clean distclean doc test testclean
 
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) -o$(EXEC) $(OBJ) $(LDLIBS) $(CFLAGS)
+	$(CC) -o$(EXEC) $(OBJ) $(CFLAGS) $(LDLIBS)
 
 %.o: %.c
 	$(CC) -c $< -o$@
@@ -60,7 +60,7 @@ doc:
 	$(DOC_PRG) $(DOC_CFG)
 
 test: $(TEST_OBJ) $(TEST_REQ)
-	$(CC) -o$(TEST_EXEC) $(TEST_OBJ) $(TEST_REQ) $(TEST_LDLIBS)
+	$(CC) -o$(TEST_EXEC) $(TEST_OBJ) $(TEST_REQ) $(CFLAGS) $(TEST_LDLIBS)
 	./$(TEST_EXEC)
 
 testclean:
