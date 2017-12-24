@@ -1,7 +1,7 @@
 #include "log.h"
 
-int test_board(void);
-int test_clop(int argc, const char *const argv[]);
+extern int test_board(void);
+extern int test_clop(int argc, const char *const argv[]);
 
 int main(const int argc, const char *const argv[]) {
 	int status;
