@@ -1,12 +1,6 @@
-# Possible output files
-a.out
-sdlife
-life
-test
-test_sdlife
-
-# Object files
-*.o
+# Compilation directories
+obj/
+out/
 
 # Documentation directory (use doxygen to compile docs from the configuration file Doxyfile)
 doc/
