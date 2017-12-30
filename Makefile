@@ -76,4 +76,4 @@ test: $(TEST_OBJ) $(TEST_REQ)
 	$(OUT_DIR)/$(TEST_EXEC)
 
 testclean:
-	rm -rf $(OBJ_DIR)/$(TEST_OBJ) $(OBJ_DIR)/$(TEST_REQ) $(OUT_DIR)/$(TEST_EXEC)
+	rm -rf $(OBJ_DIR)/$(TEST_OBJ) $(OUT_DIR)/$(TEST_EXEC)
