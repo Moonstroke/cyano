@@ -71,7 +71,8 @@ doc:
 	$(DOC_PRG) $(DOC_CFG)
 
 test: $(TEST_OBJ) $(TEST_REQ)
-	$(CC) -o$(OUT_DIR)/$(TEST_EXEC) $(OBJ_DIR)/$(TEST_OBJ) $(OBJ_DIR)/$(TEST_REQ) $(CFLAGS) $(TEST_LDLIBS)
+	mkdir -p $(OUT_DIR)
+	$(CC) -o$(OUT_DIR)/$(TEST_EXEC) $^ $(CFLAGS) $(TEST_LDLIBS)
 	$(OUT_DIR)/$(TEST_EXEC)
 
 testclean:
