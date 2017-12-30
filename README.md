@@ -173,6 +173,20 @@ This project also depends on another of mine, the [logging system in C][log.git]
 > Header available [here][log.h],
 > and archive [here][liblog.a]
 
+The compilation process is handled by *make*, and a Makefile is provided.
+
+The following rules are defined:
+ - *all* (obviously) which cleans the test object files and compile the project,
+ - *clean*, to remove the object directory,
+ - *distclean*, to remove all files that are not on the base of the project
+   (documentation, objects and output executables directories)
+ - *doc*, to generate the documentation directory (*cf.* **Documentation**
+   subsection)
+ - *test*, to compile the test suites (every `test_*.c` files)
+ - *testclean*, to remove every files involved in tests (because of potential
+   conflicts with other object files, notably concerning definition of *main()*).
+
+
 
 #### Execution
 
