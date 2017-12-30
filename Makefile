@@ -25,7 +25,7 @@ OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 # Documentation
 DOC_PRG := doxygen
 DOC_CFG := Doxyfile
-DOC_DIR := doc/
+DOC_DIR := doc
 
 
 # Compilation flags
