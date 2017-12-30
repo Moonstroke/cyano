@@ -49,7 +49,7 @@ TEST_LDLIBS := -llog
 
 .PHONY: all clean distclean doc test testclean
 
-all: $(EXEC)
+all: testclean $(EXEC)
 
 $(EXEC): $(OBJ)
 	mkdir -p $(OUT_DIR)
@@ -63,7 +63,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	rm -rf $(OBJ_DIR)
 
-distclean: clean testclean
+distclean: clean
 	rm -rf $(OUT_DIR)
 	rm -rf $(DOC_DIR)
 
