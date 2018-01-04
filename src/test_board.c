@@ -3,6 +3,7 @@
 #include "log.h"
 
 
+
 int test_board(void) {
 
 	const unsigned int w = 3, h = 3;
@@ -28,8 +29,10 @@ int test_board(void) {
 	}
 	if(i == 3)
 		info("OK");
-	else
+	else {
+		freeBoard(&b);
 		return 1;
+	}
 
 	info("Next generation");
 	updateBoard(&b);
@@ -40,9 +43,11 @@ int test_board(void) {
 	}
 	if(j == 3)
 		info("OK");
-	else
+	else {
+		freeBoard(&b);
 		return 1;
+	}
 
-
+	freeBoard(&b);
 	return 0;
 }
