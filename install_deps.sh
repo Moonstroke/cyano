@@ -1,12 +1,12 @@
 #!/bin/bash
 
 function install_git_repo() {
-	git clone "$2" "$1"
+	git clone -v "$2" "$1"
 	( cd "$1" && make install )
 }
 
 function clean_git_repo() {
-	rm -rf "$1"
+	rm -rfv "$1"
 }
 
 
