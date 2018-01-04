@@ -1,6 +1,6 @@
 # Compilation parameters
 DEBUG := n
-STATIC := y
+STATIC := n
 
 
 # Directories
