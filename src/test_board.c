@@ -1,6 +1,7 @@
 #include "board.h"
 
 #include "log.h"
+#include <stdlib.h>
 
 
 
@@ -31,7 +32,7 @@ int test_board(void) {
 		info("OK");
 	else {
 		freeBoard(&b);
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	info("Next generation");
@@ -45,9 +46,9 @@ int test_board(void) {
 		info("OK");
 	else {
 		freeBoard(&b);
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	freeBoard(&b);
-	return 0;
+	return EXIT_SUCCESS;
 }
