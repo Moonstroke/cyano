@@ -4,13 +4,6 @@ compiler: gcc
 # We need to be root to install the SDL2 packages
 sudo: true
 
-env:
- global:
-  # Where the compiler looks when searching for static libraries
-  - LIBRARY_PATH=.:$LIBRARY_PATH
-  # Idem for `#include`d headers
-  - CPATH=.:$CPATH
-  - C_INCLUDE_PATH=.:$C_INCLUDE_PATH
 
 before_install:
  # Install the dependencies from the install_deps.sh script
