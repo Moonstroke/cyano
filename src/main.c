@@ -70,6 +70,7 @@ int main(const int argc, const char *const argv[]) {
 					break;
 				case SDL_MOUSEBUTTONUP:
 					mdown = false;
+					break;
 				case SDL_MOUSEMOTION:
 					if(mdown) {
 						getHoverCoord(bw, &over_x, &over_y);

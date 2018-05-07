@@ -31,11 +31,11 @@ static inline unsigned int mod(int a, int b) {
 
 static bool *getCellLimits(const Board *const b, const int x, const int y) {
 	const unsigned int i = (unsigned)x, j = (unsigned)y;
-	return i < b->w && j < b->h ? b->cells + (b->w * j + i) : NULL;
+	return (i < b->w && j < b->h) ? &b->cells[b->w * j + i] : NULL;
 }
 static bool *getCellWrap(const Board *const b, const int x, const int y) {
 	const unsigned int i = mod(x, b->w), j = mod(y, b->h);
-	return b->cells + (b->w * j + i);
+	return &b->cells[b->w * j + i];
 }
 
 bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
