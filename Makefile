@@ -1,25 +1,16 @@
-# Compilation parameters
-DEBUG := n
-STATIC := n
+## PROJECT SETTINGS ##
 
 
-# Directories
+# Project name
+PROJECT_NAME := SDLife
+
+
+# Project directories
 INC_DIR := inc
 SRC_DIR := src
 OBJ_DIR := obj
 OUT_DIR := out
-
-# Executables
-EXEC := sdlife
-TEST_EXEC := test_sdlife
-
-
-# Tests macros
-TEST_SRC := $(wildcard $(SRC_DIR)/test*.c)
-TEST_OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(TEST_SRC))
-TEST_REQ := $(OBJ_DIR)/board.o $(OBJ_DIR)/clop.o $(OBJ_DIR)/rules.o
-SRC := $(filter-out $(TEST_SRC), $(wildcard $(SRC_DIR)/*.c))
-OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+TEST_DIR := test
 
 
 # Documentation
@@ -28,52 +19,110 @@ DOC_CFG := Doxyfile
 DOC_DIR := doc
 
 
+
+## BUILD SETTINGS ##
+
+
+# Enables debugging symbols (gdb)
+# y/n
+DEBUG := n
+
+# Specify whether the libraries should be linked statically or not
+# y/n
+STATIC := n
+
+# The optimization level for the compilation
+# 0..3/s
+OPTIM_LVL := 0
+
+
+
+## VARIABLES ##
+
+
+# Test executable
+TEST_EXEC := $(OUT_DIR)/test_$(PROJECT_NAME)
+
+# Tests files
+TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
+TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
+# Necessary to avoid redefinition of main()
+TEST_REQUIRED_OBJ := $(OBJ_DIR)/board.o $(OBJ_DIR)/clop.o $(OBJ_DIR)/rules.o
+TEST_LOG := test.log
+
+# Variables describing the architecture of the project directory
+SRC := $(wildcard $(SRC_DIR)/*.c)
+OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+
+
+# Output executable
+EXEC := $(OUT_DIR)/$(PROJECT_NAME)
+
+
+# Preprocessor flags
+CPPFLAGS := -I$(INC_DIR)
 # Compilation flags
-CC := gcc
-CFLAGS := -std=c11 -pedantic -Wall -Wextra -Wpadded
+CFLAGS := -std=c11 -pedantic -Wall -Wextra -Wpadded $$(sdl2-config --cflags) -O$(OPTIM_LVL)
 ifeq ($(DEBUG), y)
 	CFLAGS += -g
 endif
+
+# The libraries to link against
 ifeq ($(STATIC),y)
-	LDLIBS := -Wl,-dn -llog -lSDL2 -Wl,-dy -lm -ldl -lasound -lpthread -lpulse \
-	          -lsndio -lX11 -lXext -lXcursor -lXinerama -lXi -lXrandr -lXss \
-	          -lXxf86vm -lwayland-egl -lwayland-client -lwayland-cursor -lxkbcommon
+	LDLIBS := $$(sdl2-config --static-libs)
 else
-	LDLIBS := -llog -lSDL2
+	LDLIBS := $$(sdl2-config --libs)
 endif
-LDFLAGS := -I$(INC_DIR)
+LDLIBS += -lclog -lCUTE
 
-TEST_LDLIBS := -llog
+# Linkage flags
+LDFLAGS :=
 
 
 
-.PHONY: all clean distclean doc test testclean
+## RULES ##
 
-all: testclean $(EXEC)
 
+# All rule names that do not refer to files
+.PHONY: all clean distclean doc cleandoc
+
+
+# The default rule (the one called when make is invoked without arguments)
+all: $(EXEC)
+
+# Linkage
 $(EXEC): $(OBJ)
-	mkdir -p $(OUT_DIR)
-	$(CC) -o$(OUT_DIR)/$(EXEC) $(OBJ_DIR)/*.o $(CFLAGS) $(LDLIBS)
+	@mkdir -p $(OUT_DIR)
+	$(CC) -o$(EXEC) $^ $(LDFLAGS) $(LDLIBS)
 
+# Filewise compilation
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	mkdir -p $(OBJ_DIR)
-	$(CC) -c $< -o$@ $(LDFLAGS) $(CFLAGS)
+	@mkdir -p $(OBJ_DIR)
+	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
 
-
+# Remove object files
 clean:
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
 
-distclean: clean
-	rm -rf $(OUT_DIR)
-	rm -rf $(DOC_DIR)
+# Reset project to initial state
+distclean: clean cleandoc
+	@rm -rf $(OUT_DIR)
 
-doc:
+
+# (Re)generate doc
+doc: $(DOC_CFG)
 	$(DOC_PRG) $(DOC_CFG)
 
-test: $(TEST_OBJ) $(TEST_REQ)
-	mkdir -p $(OUT_DIR)
-	$(CC) -o$(OUT_DIR)/$(TEST_EXEC) $^ $(CFLAGS) $(TEST_LDLIBS)
-	$(OUT_DIR)/$(TEST_EXEC)
+# Remove doc directory
+cleandoc:
+	@rm -rf $(DOC_DIR)
 
+# Build and launch tests
+test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
+	@mkdir -p $(OUT_DIR)
+	$(CC) -o$(TEST_EXEC) $^ $(LDLIBS) $(LDFLAGS)
+	./$(TEST_EXEC)
+
+# Remove test build files
 testclean:
-	rm -rf $(TEST_OBJ) $(OUT_DIR)/$(TEST_EXEC)
+	@rm -rf $(TEST_OBJ) $(TEST_EXEC) $(TEST_LOG)

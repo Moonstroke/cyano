@@ -1,6 +1,6 @@
 #include "board.h"
 
-#include "log.h"
+#include <clog.h>
 #include <stdlib.h>
 
 

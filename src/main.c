@@ -1,6 +1,6 @@
 #include <SDL2/SDL.h>
 
-#include "log.h"
+#include <clog.h>
 #include "board.h"
 #include "boardwindow.h"
 #include "clop.h"

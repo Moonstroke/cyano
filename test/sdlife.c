@@ -1,4 +1,4 @@
-#include "log.h"
+#include <clog.h>
 
 extern int test_board(void);
 extern int test_clop(int argc, const char *const argv[]);

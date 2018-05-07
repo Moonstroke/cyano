@@ -1,7 +1,7 @@
 #include "clop.h"
 
 #include "board.h"
-#include "log.h"
+#include <clog.h>
 
 int test_clop(const int argc, const char *const argv[]) {
 
@@ -12,7 +12,7 @@ int test_clop(const int argc, const char *const argv[]) {
 
 	if(!getvals(argc, argv, OPTSTRING, LONGOPTS))
 		error("An error happened");
-	
+
 	debug("\nw = %u, h = %u, c = %u", w, h, c);
 
 

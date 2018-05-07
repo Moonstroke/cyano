@@ -7,7 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "log.h"
+#include <clog.h>
 #include "rules.h"
 
 #define ERR_MSG_MAX_LEN 64
@@ -68,7 +68,7 @@ static void getval(const char opt, const char *const arg, unsigned int *const ds
 	else
 		*dst = tmp;
 }
- 
+
 bool getvals(const int argc, const char *const argv[], const char *so, const struct option lo[]) {
 	int ch, idx, res = 0, i;
 	bool r_met = false, v_met = false, b_met = false, n_met = false;
