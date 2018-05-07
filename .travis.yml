@@ -1,14 +1,33 @@
+# This is a C project
 language: c
-compiler: gcc
 
-# We need to be root to install the dependencies
-sudo: true
+# Generate two builds with both GCC and Clang
+compiler:
+  - gcc
+  - clang
+
+# Activate builds only for master
+branches:
+  only:
+    - master
+
+# Enable Docker
+services:
+  - docker
 
 
+# Use Docker image containing my other repos Clog and the SDL installed
 before_install:
- # Install the dependencies from the install_deps.sh script
- - sudo ./install_deps.sh
+  - docker pull joh1/clog_cute_cods_sdl
+  - docker run --detach --interactive --name clog_cute_cods_sdl
+    joh1/clog_cute_cods_sdl
 
+# Fetch the project from github inside the container
+install:
+  - docker exec clog_cute_cods_sdl
+    git clone https://github.com/Moonstroke/SDLife.git sdlife
+
+
+# Build the project and run the tests
 script:
- - make
- - make test
+  - docker exec clog_cute_cods_sdl /bin/sh -c 'cd sdlife && make && make test'
