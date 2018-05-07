@@ -100,6 +100,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
 
+# Tests compilation
+$(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) -c $< -o $@ $(CPPFLAGS) $(CFLAGS)
+
+
 # Remove object files
 clean:
 	@rm -rf $(OBJ_DIR)
