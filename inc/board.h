@@ -5,7 +5,7 @@
  * \version 0.1
  *
  * \brief This file contains the definition of the structure representing a
- *        board of the <b>Game of Life</b>.
+ *        board of John Conway's <b>Game of Life</b>.
  *
  * This game is a 0-player game, which means its evolution only depends on its
  * initial state and the set of \a rules that order it.
@@ -15,8 +15,8 @@
  * and on the next step of the game (within the biological register, we speak of
  * \e generations) the state of the cell is determined by the state of its
  * \b eight closest neighbors (\e Moore neighborhood).
- * The rules are as following:
  *
+ * The rules are as following:
  * - if the cell has less than \c 2 alive neighbors, it dies (underpopulation)
  * - if the cell is alive and has \c 2 or \c 3 alive neighbors, it remains alive
  *   (survival)
@@ -29,19 +29,19 @@
  * simpler expression, containing only the number of alive neighbors a cell
  * needs to be born and the number of alive neighbors it needs to stay alive, or
  * in a short form:
- * \code B<number of alive neighbors to be born>S<numberof neighbors to survive> \endcode.
- * So the original rules of the Game of Life as designed by Conway can be
- * expressed as \c B3/S23. Ths format is called the *Golly* format. (\e Golly is
- * a renown Life-simulation software which uses this format to characterize a
- * Life-like cellular automata)
+ * \code B<number of alive neighbors to be born>S<numberof neighbors to survive>
+ * \endcode.  So the original rules of the Game of Life as designed by Conway
+ * can be expressed as \c B3/S23. Ths format is called the *Golly* format.
+ * (\e Golly is a renown Life-simulation software which uses this format to
+ * characterize a Life-like cellular automata).
  *
- * Some famouse other rules are :
+ * Some famouse other rules are:
  * - \b Seeds, of form \c B2/S, in this scheme, <em>no cell survives more than a
  *   single generation</em>;
  * - \b HighLife, of rule \c B36/S23,
  * - <b>Day & Night</b>, of rule \c B3678/S34678, a cellular automaton were the
  *   \e dead and \e alive states are symmetrical, meaning that dead cells mirror
- *   in behavior that of alive cells.
+ *   the behavior of alive cells.
  */
 
 #ifndef BOARD_H
@@ -82,7 +82,7 @@ typedef struct board {
 	     \e Golly format. */
 	bool *(*getCell)(const struct board*, int, int);
 	/**< The function the board uses to retrieve a cell on itself (depends on
-	     whether the board's walls wrap or not). */
+	     whether the board's borders wrap or not). */
 } Board;
 
 
@@ -154,7 +154,7 @@ bool updateBoard(Board *board);
 /**
  * \brief Clears the board.
  *
- * \e Kills all the cells in the board, by turning them dead.
+ * \e Kills all the cells in the board, by turning them off.
  *
  * \param[in,out] board The board to clear
  */
