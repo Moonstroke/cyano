@@ -1,23 +1,28 @@
-#include <clog.h>
+#include <clog.h> /* for clog_init */
+#include <CUTE/cute.h>
+#include <stdlib.h> /* for EXIT_SUCCESS */
 
-extern int test_board(void);
-extern int test_clop(int argc, const char *const argv[]);
 
-int main(const int argc, const char *const argv[]) {
-	int status;
-	info("Test suite for command-line options\n");
-	status = test_clop(argc, argv);
-	if(status != 0) {
-		error("The tests have failed.");
-		return status;
-	}
 
-	info("\n\n");
-	info("Test suite for the Board structure\n");
-	status = test_board();
-	if(status != 0) {
-		error("The test have failed.");
-		return status;
-	}
-	return 0;
+extern CUTE_TestCase *case_board;
+extern void build_case_board(void);
+
+extern CUTE_TestCase *case_clop;
+extern void build_case_clop(void);
+
+int main() {
+	const CUTE_RunResults **results;
+
+	clog_init(CLOG_FORMAT_TEXT, CLOG_ATTR_FUNC | CLOG_ATTR_COLORED);
+
+	build_case_board();
+	build_case_clop();
+
+	CUTE_prepareTestSuite(2, case_board, case_clop);
+
+	results = CUTE_runTestSuite();
+
+	CUTE_printResults(2, results);
+
+	return EXIT_SUCCESS;
 }

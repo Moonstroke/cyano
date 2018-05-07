@@ -1,20 +1,39 @@
 #include "clop.h"
 
-#include "board.h"
-#include <clog.h>
+#include <clog.h> /* for logging macros */
+#include <CUTE/cute.h>
 
-int test_clop(const int argc, const char *const argv[]) {
-
-	unsigned int w = 0, h = 0, c = 0, r = 0, b = 0;
-	bool v = false, W = false;
-	const char *R = DEFAULT_BOARD_RULES;
-	setvars(&w, &h, &c, &r, &b, &v, &W, &R);
-
-	if(!getvals(argc, argv, OPTSTRING, LONGOPTS))
-		error("An error happened");
-
-	debug("\nw = %u, h = %u, c = %u", w, h, c);
+#include "board.h" /* for DEFAULT_BOARD_RULES */
 
 
-	return 0;
+
+static unsigned int width = 0, height = 0, cell_size = 0, update_rate = 0,
+                    border_size = 0;
+static bool use_vsync = false, wraps = false;
+static const char *rules = DEFAULT_BOARD_RULES;
+
+/* The instance of test case */
+CUTE_TestCase *case_clop;
+
+
+static void setUp(void) {
+	setvars(&width, &height, &cell_size, &border_size, &update_rate, &use_vsync,
+	        &wraps, &rules);
+}
+
+
+void test_clop() {
+	const unsigned int argc = 0;
+	const char *argv[] = {"argv[0]", NULL};
+	bool status;
+	notice("Test clop's getvals()");
+	status = getvals(argc, argv, OPTSTRING, LONGOPTS);
+	CUTE_assertEquals(status, true);
+}
+
+
+void build_case_clop(void) {
+	case_clop = CUTE_newTestCase("Test for clop", 1);
+	CUTE_setCaseAfter(case_clop, setUp);
+	CUTE_addCaseTest(case_clop, CUTE_makeTest(test_clop));
 }
