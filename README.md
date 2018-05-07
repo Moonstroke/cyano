@@ -2,6 +2,8 @@
 
 ## Conway's Game of Life in C using the SDL
 
+[![Build Status](https://travis-ci.org/Moonstroke/SDLife.svg?branch=master)](
+https://travis-ci.org/Moonstroke/SDLife)
 
 ### What is it?
 
