@@ -107,12 +107,25 @@ void freeBoard(Board *board);
 
 
 /**
- * \brief Switches the state of a cell: \e alive if it was \e dead, \e dead if
- *        it was \e alive.
+ * \brief Gets the status of a cell from the board.
+ *
+ * \note Since this feature is a macro, you must check carefully your indexes.
+ *
+ * \param[in] board The game board
+ * \param[in] i     The row to get
+ * \param[in] j     The column to get
+ *
+ * \return \c true if the cell at (i, j) is \i alive.
+ */
+#define getBoardCell(board, i, j)  *(board.getCell(&board, i, j))
+
+
+/**
+ * \brief Inverts the state of a cell.
  *
  * \param[in,out] board The board
- * \param[in]     x     The abscissa of the cell to toggle
- * \param[in]     y     The ordinate of the cell
+ * \param[in]     x     The row of the cell to toggle
+ * \param[in]     y     The column of the cell
  *
  * \return The new state of the cell (\c true means \e alive)
  */
