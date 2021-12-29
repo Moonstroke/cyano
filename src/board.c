@@ -120,9 +120,5 @@ bool updateBoard(Board *const b) {
 }
 
 void clearBoard(Board *const b) {
-	const unsigned int w = b->w, h = b->h;
-	unsigned int i, j;
-	for(j = 0; j < h; ++j)
-		for(i = 0; i < w; ++i)
-			*b->getCell(b, i, j) = false;
+	memset(b->cells, false, b->w * b->h);
 }
