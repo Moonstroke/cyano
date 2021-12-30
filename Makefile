@@ -25,7 +25,7 @@ DOC_DIR := doc
 
 # Enables debugging symbols (gdb)
 # y/n
-DEBUG := n
+DEBUG := y
 
 # Specify whether the libraries should be linked statically or not
 # y/n
