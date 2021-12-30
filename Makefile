@@ -62,7 +62,7 @@ EXEC := $(OUT_DIR)/$(PROJECT_NAME)
 # Preprocessor flags
 CPPFLAGS := -I$(INC_DIR)
 # Compilation flags
-CFLAGS := -std=c11 -pedantic -Wall -Wextra -Wpadded $$(sdl2-config --cflags) -O$(OPTIM_LVL)
+CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) -O$(OPTIM_LVL)
 ifeq ($(DEBUG), y)
 	CFLAGS += -g
 endif
