@@ -73,49 +73,80 @@ static inline bool willSurvive(const unsigned int n, const char *r) {
 	return *r == k;
 }
 
-static inline unsigned int neighbors(const Board *const b, unsigned int x, unsigned int y) {
-	unsigned int n = 0, i;
-	bool *cell;
-
-	const int coords[][2] = {
-	        {x - 1, y - 1},
-	        {x    , y - 1},
-	        {x + 1, y - 1},
-	        {x - 1, y    },
-	        {x + 1, y    },
-	        {x - 1, y + 1},
-	        {x    , y + 1},
-	        {x + 1, y + 1}
-	    };
-	for(i = 0; i < 8; ++i) {
-		cell = b->getCell(b, coords[i][0], coords[i][1]);
-		if(cell != NULL && *cell == true) {
-			n += 1;
-		}
+static void updateRow(Board *b, const bool *prevRowBuffer,
+                      const bool *btmPrevRow, size_t rowOffset, bool wraps) {
+	bool *row = &b->cells[rowOffset];
+	const bool *topPrevRow = prevRowBuffer, *prevRow = &prevRowBuffer[b->w];
+	unsigned int neighbors = 0;
+	neighbors = topPrevRow[0] + topPrevRow[1] + prevRow[1] + btmPrevRow[0]
+	                          + btmPrevRow[1];
+	if(wraps)
+		neighbors += topPrevRow[b->w - 1] + prevRow[b->w - 1]
+		                                  + btmPrevRow[b->w - 1];
+	if(prevRow[0])
+		row[0] = willSurvive(neighbors, b->rules);
+	else
+		row[0] = willBeBorn(neighbors, b->rules);
+	for(size_t i = 1; i < b->w - 1; ++i) {
+		neighbors = topPrevRow[i - 1] + topPrevRow[i] + topPrevRow[i + 1]
+		                              + prevRow[i - 1] + prevRow[i + 1]
+		                              + btmPrevRow[i - 1] + btmPrevRow[i]
+		                              + btmPrevRow[i + 1];
+		if(prevRow[i])
+			row[i] = willSurvive(neighbors, b->rules);
+		else
+			row[i] = willBeBorn(neighbors, b->rules);
 	}
-
-	return n;
+	neighbors = topPrevRow[b->w - 2] + topPrevRow[b->w - 1] + prevRow[b->w - 2]
+	                                 + btmPrevRow[b->w - 2]
+	                                 + btmPrevRow[b->w - 1];
+	if(wraps)
+		neighbors += topPrevRow[0] + prevRow[0] + btmPrevRow[0];
+	if(prevRow[b->w - 1])
+		row[b->w - 1] = willSurvive(neighbors, b->rules);
+	else
+		row[b->w - 1] = willBeBorn(neighbors, b->rules);
 }
 
-bool updateBoard(Board *const b) {
-	const unsigned int w = b->w, h = b->h;
-	unsigned int i, j;
-	bool *cells;
-
-	cells = malloc(w * h * sizeof(bool));
-	if(cells == NULL)
+bool updateBoard(Board *b) {
+	/* The most memory-efficient way of updating the board is to use a buffer
+	   of 3 rows to update the state of each row, where one row is the one being
+	   updated and the other is a backup of the adjacent row that was updated
+	   just before. The third row of the buffer is only used on the last row of
+	   the board.
+	   This method also works on columns, however rows are usually bigger than
+	   columns so going with the rows is an immediate compromise between memory
+	   consumption and time complexity. */
+	bool *cellsBuffer = calloc(3 * b->w, sizeof(bool));
+	if(cellsBuffer == NULL)
 		return false;
+	bool boardWraps = b->getCell == getCellWrap; /* Hacky way of checking */
+	/* First row */
+	if(boardWraps) {
+		memcpy(cellsBuffer, &b->cells[(b->h - 1) * b->w], b->w);
+		/* Save the first row's previous state for the last board row */
+		memcpy(&cellsBuffer[b->w * 2], b->cells, b->w);
+	} /* otherwise, buffer already cleared */
+	memcpy(&cellsBuffer[b->w], b->cells, b->w);
+	updateRow(b, cellsBuffer, &b->cells[b->w], 0, boardWraps);
 
-	for(j = 0; j < h; ++j) {
-		for(i = 0; i < w; ++i) {
-			if(*b->getCell(b, i, j))
-				cells[w * j + i] = willSurvive(neighbors(b, i, j), b->rules);
-			else
-				cells[w * j + i] = willBeBorn(neighbors(b, i, j), b->rules);
-		}
+	/* Middle rows */
+	for(size_t row = b->w; row < (b->h - 1) * b->w; row += b->w) {
+		/* Move second buffer row to first; blit current board row to second
+		   buffer row then perform update on board row */
+		memcpy(cellsBuffer, &cellsBuffer[b->w], b->w); // memcpy safe because no
+		                                               // overlap
+		memcpy(&cellsBuffer[b->w], &b->cells[row], b->w);
+		updateRow(b, cellsBuffer, &b->cells[row + b->w], row, boardWraps);
 	}
-	free(b->cells);
-	b->cells = cells;
+
+	/* Last row */
+	memcpy(cellsBuffer, &cellsBuffer[b->w], b->w);
+	memcpy(&cellsBuffer[b->w], &b->cells[(b->h - 1) * b->w], b->w);
+	updateRow(b, cellsBuffer, &cellsBuffer[b->w * 2], (b->h - 1) * b->w,
+	          boardWraps);
+
+	free(cellsBuffer);
 	return true;
 }
 
