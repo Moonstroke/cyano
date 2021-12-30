@@ -4,7 +4,8 @@
 
 
 
-BoardWindow *newBoardWindow(Board *board, unsigned int c, unsigned int b, const char *t, bool v) {
+BoardWindow *newBoardWindow(struct board *board, unsigned int c, unsigned int b,
+                            const char *t, bool v) {
 	BoardWindow *bw;
 	unsigned int ww = board->w * (c + b) + b,
 	             wh = board->h * (c + b) + b;
@@ -15,7 +16,8 @@ BoardWindow *newBoardWindow(Board *board, unsigned int c, unsigned int b, const 
 	if(bw == NULL)
 		return NULL;
 
-	win = SDL_CreateWindow(t, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, ww, wh, WINDOW_FLAGS);
+	win = SDL_CreateWindow(t, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	                       ww, wh, WINDOW_FLAGS);
 	if(win == NULL)
 		return NULL;
 
@@ -43,11 +45,10 @@ void updateBoardWindow(BoardWindow *bw) {
 	getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
 }
 
-static inline void drawCell(SDL_Renderer *ren, SDL_Rect *rect,
-                            unsigned int i, unsigned int j,
-                            unsigned int c, unsigned int border,
-                            unsigned char r, unsigned char g,
-                            unsigned char b, unsigned char a) {
+static inline void drawCell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
+                            unsigned int j, unsigned int c, unsigned int border,
+                            unsigned char r, unsigned char g, unsigned char b,
+                            unsigned char a) {
 	SDL_SetRenderDrawColor(ren, r, g, b, a);
 	rect->x = (c + border) * i + border;
 	rect->y = (c + border) * j + border;

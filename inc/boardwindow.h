@@ -54,7 +54,7 @@
  * \brief The type handling the graphical display of the board.
  */
 typedef struct {
-	Board *board;
+	struct board *board;
 	/**< The board included in the window. */
 	SDL_Window *win;
 	/**< The technical type used by the SDL to display a window. */
@@ -84,10 +84,8 @@ typedef struct {
  *
  * \return A new board window
  */
-BoardWindow *newBoardWindow(Board *board,
-                            unsigned int cell_pixels,
-                            unsigned int border_width,
-                            const char *window_title,
+BoardWindow *newBoardWindow(struct board *board, unsigned int cell_pixels,
+                            unsigned int border_width, const char *window_title,
                             bool use_vsync);
 
 

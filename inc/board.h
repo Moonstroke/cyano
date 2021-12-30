@@ -70,7 +70,7 @@
 /**
  * \brief The type representing the board of the game.
  */
-typedef struct board {
+struct board {
 	unsigned int w,
 	/**< The width of the board. */
 	             h;
@@ -83,7 +83,7 @@ typedef struct board {
 	bool wrap;
 	/**< A flag indicating whether the state on one side of the board affects
 	     the opposite side. */
-} Board;
+};
 
 
 /**
@@ -94,16 +94,18 @@ typedef struct board {
  * \param[in]     height The number of cells in one column
  * \param[in]     wrap   If \c true, set up the grid as toroidal
  *
- * \return \c 0 iff the board was correctly initialized, a negative value otherwise
+ * \return \c 0 iff the board was correctly initialized, a negative value
+ *         otherwise
  */
-int initBoard(Board *board, unsigned int width, unsigned int height, bool wrap);
+int initBoard(struct board *board, unsigned int width, unsigned int height,
+              bool wrap);
 
 /**
  * \brief Deallocates memory used by a board.
  *
  * \param[in,out] board The board to free
  */
-void freeBoard(Board *board);
+void freeBoard(struct board *board);
 
 
 /**
@@ -116,7 +118,7 @@ void freeBoard(Board *board);
  * \return \c true if the cell at (i, j) is "alive", or \c false if the cell is
  *         "dead" or coordinates are invalid.
  */
-bool getBoardCell(Board *board, int i, int j);
+bool getBoardCell(struct board *board, int i, int j);
 
 
 /**
@@ -129,7 +131,7 @@ bool getBoardCell(Board *board, int i, int j);
  * \return The new state of the cell (\c true means \e alive), or \c false if
  *         the coordinates are invalid
  */
-bool toggleCell(Board *board, unsigned int x, unsigned int y);
+bool toggleCell(struct board *board, unsigned int x, unsigned int y);
 
 
 /**
@@ -139,7 +141,7 @@ bool toggleCell(Board *board, unsigned int x, unsigned int y);
  *
  * \return The rules of the board, in \e Golly format
  */
-const char *getRules(const Board *board);
+const char *getRules(const struct board *board);
 
 /**
  * \brief Updates the rules of the board, using a string to represent the rules.
@@ -149,7 +151,7 @@ const char *getRules(const Board *board);
  *
  * \note The standard rules are represented by the string \c "B3/S23"
  */
-void setRules(Board *board, const char *rules);
+void setRules(struct board *board, const char *rules);
 
 
 /**
@@ -162,7 +164,7 @@ void setRules(Board *board, const char *rules);
  *
  * \return \c 0 if no error occurred (memory allocation, iteration)
  */
-int updateBoard(Board *board);
+int updateBoard(struct board *board);
 
 /**
  * \brief Clears the board.
@@ -171,7 +173,7 @@ int updateBoard(Board *board);
  *
  * \param[in,out] board The board to clear
  */
-void clearBoard(Board *board);
+void clearBoard(struct board *board);
 
 
 #endif // BOARD_H

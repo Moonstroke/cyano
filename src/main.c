@@ -10,7 +10,7 @@
 int main(int argc, char **argv) {
 
 	// Objects
-	Board b;
+	struct board b;
 	BoardWindow *bw;
 
 	// Initializers parameters
@@ -31,7 +31,8 @@ int main(int argc, char **argv) {
 	bool play = false;
 	SDL_Event event;
 
-	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync, &wrap, &game_rules);
+	setvars(&board_width, &board_height, &cell_pixels, &update_rate,
+	        &border_width, &use_vsync, &wrap, &game_rules);
 	if(getvals(argc, argv, OPTSTRING, LONGOPTS) < 0) {
 		fatal("Failure in command line options handling");
 		return 1;
@@ -45,7 +46,8 @@ int main(int argc, char **argv) {
 	initBoard(&b, board_width, board_height, wrap);
 	setRules(&b, game_rules);
 
-	bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life", use_vsync);
+	bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life",
+	                    use_vsync);
 	if(bw == NULL) {
 		fatal("Could not create the game window: %s", SDL_GetError());
 		return 1;

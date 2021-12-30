@@ -6,7 +6,7 @@
 
 
 
-int initBoard(Board *b, unsigned int w, unsigned int h, bool wrap) {
+int initBoard(struct board *b, unsigned int w, unsigned int h, bool wrap) {
 	b->w = w;
 	b->h = h;
 
@@ -16,7 +16,7 @@ int initBoard(Board *b, unsigned int w, unsigned int h, bool wrap) {
 	return cells == NULL ? -1 : 0;
 }
 
-void freeBoard(Board *b) {
+void freeBoard(struct board *b) {
 	free(b->cells);
 }
 
@@ -26,31 +26,31 @@ static inline unsigned int mod(int a, int b) {
 	return r < 0 ? r + b : r;
 }
 
-static bool getCellLimits(const Board *b, int x, int y) {
+static bool getCellLimits(const struct board *b, int x, int y) {
 	unsigned int i = (unsigned)x, j = (unsigned)y;
 	return (i < b->w && j < b->h) ? b->cells[b->w * j + i] : false;
 }
-static bool getCellWrap(const Board *b, int x, int y) {
+static bool getCellWrap(const struct board *b, int x, int y) {
 	unsigned int i = mod(x, b->w), j = mod(y, b->h);
 	return b->cells[b->w * j + i];
 }
 
-bool getBoardCell(Board *b, int i, int j) {
+bool getBoardCell(struct board *b, int i, int j) {
 	return (b->wrap ? getCellWrap : getCellLimits)(b, i, j);
 }
 
-bool toggleCell(Board *b, unsigned int x, unsigned int y) {
+bool toggleCell(struct board *b, unsigned int x, unsigned int y) {
 	if(x < b->w && y < b->h) {
 		return b->cells[b->w * y + x] = !b->cells[b->w * y + x];
 	}
 	return false;
 }
 
-const char *getRules(const Board *b) {
+const char *getRules(const struct board *b) {
 	return b->rules;
 }
 
-void setRules(Board *b, const char *r) {
+void setRules(struct board *b, const char *r) {
 	b->rules = r;
 }
 
@@ -72,7 +72,7 @@ static inline bool willSurvive(unsigned int n, const char *r) {
 	return *r == k;
 }
 
-static void updateRow(Board *b, const bool *prevRowBuffer,
+static void updateRow(struct board *b, const bool *prevRowBuffer,
                       const bool *btmPrevRow, size_t rowOffset) {
 	bool *row = &b->cells[rowOffset];
 	const bool *topPrevRow = prevRowBuffer, *prevRow = &prevRowBuffer[b->w];
@@ -107,7 +107,7 @@ static void updateRow(Board *b, const bool *prevRowBuffer,
 		row[b->w - 1] = willBeBorn(neighbors, b->rules);
 }
 
-int updateBoard(Board *b) {
+int updateBoard(struct board *b) {
 	/* The most memory-efficient way of updating the board is to use a buffer
 	   of 3 rows to update the state of each row, where one row is the one being
 	   updated and the other is a backup of the adjacent row that was updated
@@ -147,6 +147,6 @@ int updateBoard(Board *b) {
 	return 0;
 }
 
-void clearBoard(Board *b) {
+void clearBoard(struct board *b) {
 	memset(b->cells, false, b->w * b->h);
 }

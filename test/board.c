@@ -13,7 +13,7 @@ static const bool WRAPS = false;
 static const char RULES[] = DEFAULT_BOARD_RULES;
 
 /* The board to run tests on */
-static Board board;
+static struct board board;
 
 /* The instance of test case */
 CUTE_TestCase *case_board;
