@@ -69,10 +69,10 @@ static void getval(const char opt, const char *const arg, unsigned int *const ds
 		*dst = tmp;
 }
 
-int getvals(const int argc, const char *const argv[], const char *so, const struct option lo[]) {
+int getvals(const int argc, char **argv, const char *so, const struct option *lo) {
 	int ch, idx, res = 0, i;
 	bool r_met = false, v_met = false, b_met = false, n_met = false;
-	while((ch = getopt_long(argc, (char *const*)argv, so, lo, &idx)) != -1) {
+	while((ch = getopt_long(argc, argv, so, lo, &idx)) != -1) {
 		switch(ch) {
 			case 'b':
 				getval('b', optarg, _b);

@@ -7,7 +7,7 @@
 #include "timer.h"
 
 
-int main(const int argc, const char *const argv[]) {
+int main(const int argc, char **argv) {
 
 	// Objects
 	Board b;

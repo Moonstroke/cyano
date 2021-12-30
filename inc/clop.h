@@ -88,7 +88,7 @@ void setvars(unsigned int *board_width,
  *         found, nor any argument was missing or invalid), a negative value
  *         otherwise
  */
-int getvals(const int argc, const char *const argv[], const char *optstr, const struct option longopt[]);
+int getvals(const int argc, char **argv, const char *optstr, const struct option *longopt);
 
 
 #endif // CLOP_H

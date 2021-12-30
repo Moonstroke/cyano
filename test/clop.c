@@ -24,7 +24,7 @@ static void setUp(void) {
 
 void test_clop() {
 	const unsigned int argc = 0;
-	const char *argv[] = {"argv[0]", NULL};
+	char *argv[] = {"argv[0]", NULL};
 	int status;
 	notice("Test clop's getvals()");
 	status = getvals(argc, argv, OPTSTRING, LONGOPTS);
