@@ -84,10 +84,11 @@ void setvars(unsigned int *board_width,
  * \param[in] optstr  The short options to look for in the vector
  * \param[in] longopt The long options
  *
- * \return \c true if the processing ended correctly: no unknown option was
- *         found, nor any argument was missing or invalid
+ * \return \c 0 if the processing ended correctly (no unknown option was
+ *         found, nor any argument was missing or invalid), a negative value
+ *         otherwise
  */
-bool getvals(const int argc, const char *const argv[], const char *optstr, const struct option longopt[]);
+int getvals(const int argc, const char *const argv[], const char *optstr, const struct option longopt[]);
 
 
 #endif // CLOP_H

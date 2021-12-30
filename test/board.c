@@ -21,10 +21,10 @@ CUTE_TestCase *case_board;
 
 
 static void setUp(void) {
-	bool status;
+	int status;
 	debug("bonjour");
 	status = initBoard(&board, WIDTH, HEIGHT, WRAPS);
-	CUTE_assertEquals(status, true);
+	CUTE_assertEquals(status, 0);
 	setRules(&board, RULES);
 	verbose("Succesfully initialized %s board %ux%u",
 	        WRAPS ? "toroidal" : "rectangular", WIDTH, HEIGHT);

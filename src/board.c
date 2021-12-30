@@ -6,14 +6,14 @@
 
 
 
-bool initBoard(Board *const b, const unsigned int w, const unsigned int h, const bool wrap) {
+int initBoard(Board *const b, const unsigned int w, const unsigned int h, const bool wrap) {
 	b->w = w;
 	b->h = h;
 
 	bool *const cells = calloc(w * h, sizeof(bool));
 	b->cells = cells;
 	b->wrap = wrap;
-	return cells != NULL;
+	return cells == NULL ? -1 : 0;
 }
 
 void freeBoard(Board *b) {
@@ -109,7 +109,7 @@ static void updateRow(Board *b, const bool *prevRowBuffer,
 		row[b->w - 1] = willBeBorn(neighbors, b->rules);
 }
 
-bool updateBoard(Board *b) {
+int updateBoard(Board *b) {
 	/* The most memory-efficient way of updating the board is to use a buffer
 	   of 3 rows to update the state of each row, where one row is the one being
 	   updated and the other is a backup of the adjacent row that was updated
@@ -120,7 +120,7 @@ bool updateBoard(Board *b) {
 	   consumption and time complexity. */
 	bool *cellsBuffer = calloc(3 * b->w, sizeof(bool));
 	if(cellsBuffer == NULL)
-		return false;
+		return -1;
 	/* First row */
 	if(b->wrap) {
 		memcpy(cellsBuffer, &b->cells[(b->h - 1) * b->w], b->w);
@@ -146,7 +146,7 @@ bool updateBoard(Board *b) {
 	updateRow(b, cellsBuffer, &cellsBuffer[b->w * 2], (b->h - 1) * b->w);
 
 	free(cellsBuffer);
-	return true;
+	return 0;
 }
 
 void clearBoard(Board *const b) {

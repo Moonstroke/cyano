@@ -94,9 +94,9 @@ typedef struct board {
  * \param[in]     height The number of cells in one column
  * \param[in]     wrap   If \c true, set up the grid as toroidal
  *
- * \return \c true iff the board was correctly initialized
+ * \return \c 0 iff the board was correctly initialized, a negative value otherwise
  */
-bool initBoard(Board *board, unsigned int width, unsigned int height, bool wrap);
+int initBoard(Board *board, unsigned int width, unsigned int height, bool wrap);
 
 /**
  * \brief Deallocates memory used by a board.
@@ -159,9 +159,9 @@ void setRules(Board *board, const char *rules);
  *
  * \param[in,out] board The board to update
  *
- * \return \c true if no error occurred (memory allocation, iteration)
+ * \return \c 0 if no error occurred (memory allocation, iteration)
  */
-bool updateBoard(Board *board);
+int updateBoard(Board *board);
 
 /**
  * \brief Clears the board.
