@@ -126,7 +126,8 @@ bool getBoardCell(Board *board, int i, int j);
  * \param[in]     x     The row of the cell to toggle
  * \param[in]     y     The column of the cell
  *
- * \return The new state of the cell (\c true means \e alive)
+ * \return The new state of the cell (\c true means \e alive), or \c false if
+ *         the coordinates are invalid
  */
 bool toggleCell(Board *board, unsigned int x, unsigned int y);
 

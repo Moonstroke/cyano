@@ -40,10 +40,8 @@ bool getBoardCell(Board *b, int i, int j) {
 }
 
 bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
-	bool *const cell = getCellLimits(b, x, y);
-	if(cell != NULL) {
-		*cell = !*cell;
-		return true;
+	if(x < b->w && y < b->h) {
+		return b->cells[b->w * y + x] = !b->cells[b->w * y + x];
 	}
 	return false;
 }
