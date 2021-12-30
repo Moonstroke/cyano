@@ -117,7 +117,7 @@ void freeBoard(Board *board);
  *
  * \return \c true if the cell at (i, j) is \i alive.
  */
-#define getBoardCell(board, i, j)  *(board.getCell(&board, i, j))
+#define getBoardCell(board, i, j)  *((board)->getCell(board, i, j))
 
 
 /**

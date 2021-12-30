@@ -48,7 +48,7 @@ void test_blinker_after_one_gen(void) {
 
 	info("Looking for horizontal blinker from (0, 1) to (2, 1)");
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(getBoardCell(board, i, 1), true);
+		CUTE_assertEquals(getBoardCell(&board, i, 1), true);
 	}
 	info("OK");
 }
@@ -68,7 +68,7 @@ void test_blinker_after_two_gens(void) {
 
 	info("Looking for horizontal blinker from (1, 0) to (1, 2)");
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(getBoardCell(board, 1, i), true);
+		CUTE_assertEquals(getBoardCell(&board, 1, i), true);
 	}
 	info("OK");
 }
