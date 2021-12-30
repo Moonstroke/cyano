@@ -4,10 +4,10 @@
 
 
 
-BoardWindow *newBoardWindow(Board *const board, const unsigned int c, const unsigned int b, const char *const t, bool v) {
+BoardWindow *newBoardWindow(Board *board, unsigned int c, unsigned int b, const char *t, bool v) {
 	BoardWindow *bw;
-	const unsigned int ww = board->w * (c + b) + b,
-	                   wh = board->h * (c + b) + b;
+	unsigned int ww = board->w * (c + b) + b,
+	             wh = board->h * (c + b) + b;
 	SDL_Window *win;
 	SDL_Renderer *ren;
 
@@ -33,32 +33,32 @@ BoardWindow *newBoardWindow(Board *const board, const unsigned int c, const unsi
 	return bw;
 }
 
-void freeBoardWindow(BoardWindow *const bw) {
+void freeBoardWindow(BoardWindow *bw) {
 	SDL_DestroyWindow(bw->win);
 	SDL_DestroyRenderer(bw->ren);
 	free(bw);
 }
 
-void updateBoardWindow(BoardWindow *const bw) {
+void updateBoardWindow(BoardWindow *bw) {
 	getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
 }
 
-static inline void drawCell(SDL_Renderer *const ren, SDL_Rect *const rect,
-                            const unsigned int i, const unsigned int j,
-                            const unsigned int c, const unsigned int border,
-                            const unsigned char r, const unsigned char g,
-                            const unsigned char b, const unsigned char a) {
+static inline void drawCell(SDL_Renderer *ren, SDL_Rect *rect,
+                            unsigned int i, unsigned int j,
+                            unsigned int c, unsigned int border,
+                            unsigned char r, unsigned char g,
+                            unsigned char b, unsigned char a) {
 	SDL_SetRenderDrawColor(ren, r, g, b, a);
 	rect->x = (c + border) * i + border;
 	rect->y = (c + border) * j + border;
 	SDL_RenderFillRect(ren, rect);
 }
 
-void renderBoardWindow(const BoardWindow *const bw) {
-	const unsigned int w = bw->board->w,
-	                   h = bw->board->h,
-	                   c = bw->cell_pixels,
-	                   b = bw->border_width;
+void renderBoardWindow(const BoardWindow *bw) {
+	unsigned int w = bw->board->w,
+	             h = bw->board->h,
+	             c = bw->cell_pixels,
+	             b = bw->border_width;
 
 	unsigned int i, j;
 	SDL_Rect r;
@@ -69,7 +69,7 @@ void renderBoardWindow(const BoardWindow *const bw) {
 	r.h = c;
 	for(j = 0; j < h; ++j) {
 		for(i = 0; i < w; ++i) {
-			const unsigned char ch = getBoardCell(bw->board, i, j) ? 0 : 255;
+			unsigned char ch = getBoardCell(bw->board, i, j) ? 0 : 255;
 			drawCell(bw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}
@@ -78,8 +78,8 @@ void renderBoardWindow(const BoardWindow *const bw) {
 	SDL_RenderPresent(bw->ren);
 }
 
-void getHoverCoord(const BoardWindow *const bw, int *const x, int *y) {
-	const unsigned int c = bw->cell_pixels, b = bw->border_width;
+void getHoverCoord(const BoardWindow *bw, int *x, int *y) {
+	unsigned int c = bw->cell_pixels, b = bw->border_width;
 	SDL_GetMouseState(x, y);
 	*x = (*x - b) / (c + b);
 	*y = (*y - b) / (c + b);

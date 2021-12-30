@@ -33,7 +33,7 @@ static const char *const OPTSTRING = "b:c:h:nr:R:vw:W";
 /**
  * The long options array.
  */
-static const struct option const LONGOPTS[] = {
+static const struct option LONGOPTS[] = {
 	{"board-width",  required_argument, NULL, 'w'},
 	{"board-height", required_argument, NULL, 'h'},
 	{"border-size",  required_argument, NULL, 'b'},
@@ -88,7 +88,7 @@ void setvars(unsigned int *board_width,
  *         found, nor any argument was missing or invalid), a negative value
  *         otherwise
  */
-int getvals(const int argc, char **argv, const char *optstr, const struct option *longopt);
+int getvals(int argc, char **argv, const char *optstr, const struct option *longopt);
 
 
 #endif // CLOP_H

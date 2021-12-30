@@ -38,7 +38,7 @@ void startTimer(Timer *self);
  *
  * \param[in,out] self The timer to reset
  */
-inline void resetTimer(Timer *const self) {
+inline void resetTimer(Timer *self) {
 	self->ticks = 0;
 }
 
@@ -50,7 +50,7 @@ inline void resetTimer(Timer *const self) {
  * \param[in,out] self  The timer
  * \param[in]     delay The delay to set
  */
-inline void setDelay(Timer *const self, const double delay) {
+inline void setDelay(Timer *self, double delay) {
 	self->delay = delay;
 }
 
@@ -65,7 +65,7 @@ inline void setDelay(Timer *const self, const double delay) {
  * \note This value is represented as an unsigned integer. This type can last
  *       approximately \c 49 days and \c 17 hours before overflowing.
  */
-inline unsigned int getTicks(const Timer *const self) {
+inline unsigned int getTicks(const Timer *self) {
 	return self->ticks;
 }
 
@@ -86,7 +86,7 @@ unsigned int getDelta(const Timer *self);
  * \return The remaining milliseconds before the next scheduled window update
  */
 inline unsigned int getRemainingTime(const Timer *self) {
-	const int time = ((unsigned int)self->delay) - getDelta(self);
+	int time = ((unsigned int)self->delay) - getDelta(self);
 	return time < 0 ? 0 : time;
 }
 

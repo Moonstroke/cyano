@@ -6,11 +6,11 @@
 
 
 
-int initBoard(Board *const b, const unsigned int w, const unsigned int h, const bool wrap) {
+int initBoard(Board *b, unsigned int w, unsigned int h, bool wrap) {
 	b->w = w;
 	b->h = h;
 
-	bool *const cells = calloc(w * h, sizeof(bool));
+	bool *cells = calloc(w * h, sizeof(bool));
 	b->cells = cells;
 	b->wrap = wrap;
 	return cells == NULL ? -1 : 0;
@@ -22,16 +22,16 @@ void freeBoard(Board *b) {
 
 
 static inline unsigned int mod(int a, int b) {
-	const int r = a % b;
+	int r = a % b;
 	return r < 0 ? r + b : r;
 }
 
-static bool getCellLimits(const Board *const b, const int x, const int y) {
-	const unsigned int i = (unsigned)x, j = (unsigned)y;
+static bool getCellLimits(const Board *b, int x, int y) {
+	unsigned int i = (unsigned)x, j = (unsigned)y;
 	return (i < b->w && j < b->h) ? b->cells[b->w * j + i] : false;
 }
-static bool getCellWrap(const Board *const b, const int x, const int y) {
-	const unsigned int i = mod(x, b->w), j = mod(y, b->h);
+static bool getCellWrap(const Board *b, int x, int y) {
+	unsigned int i = mod(x, b->w), j = mod(y, b->h);
 	return b->cells[b->w * j + i];
 }
 
@@ -39,23 +39,23 @@ bool getBoardCell(Board *b, int i, int j) {
 	return (b->wrap ? getCellWrap : getCellLimits)(b, i, j);
 }
 
-bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
+bool toggleCell(Board *b, unsigned int x, unsigned int y) {
 	if(x < b->w && y < b->h) {
 		return b->cells[b->w * y + x] = !b->cells[b->w * y + x];
 	}
 	return false;
 }
 
-const char *getRules(const Board *const b) {
+const char *getRules(const Board *b) {
 	return b->rules;
 }
 
-void setRules(Board *const b, const char *const r) {
+void setRules(Board *b, const char *r) {
 	b->rules = r;
 }
 
-static inline bool willBeBorn(const unsigned int n, const char *r) {
-	const char k = '0' + n;
+static inline bool willBeBorn(unsigned int n, const char *r) {
+	char k = '0' + n;
 	r = strchr(r, 'B') + 1;
 	while(*r != '\0' && (*r != '/' && *r != 'S') && *r != k) {
 		r++;
@@ -63,8 +63,8 @@ static inline bool willBeBorn(const unsigned int n, const char *r) {
 	return *r == k;
 }
 
-static inline bool willSurvive(const unsigned int n, const char *r) {
-	const char k = '0' + n;
+static inline bool willSurvive(unsigned int n, const char *r) {
+	char k = '0' + n;
 	r = strchr(r, 'S') + 1;
 	while(*r != '\0' && *r != k) {
 		r++;
@@ -147,6 +147,6 @@ int updateBoard(Board *b) {
 	return 0;
 }
 
-void clearBoard(Board *const b) {
+void clearBoard(Board *b) {
 	memset(b->cells, false, b->w * b->h);
 }

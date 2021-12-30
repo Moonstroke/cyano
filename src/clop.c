@@ -17,14 +17,14 @@ static unsigned int *_w, *_h, *_c, *_r, *_b;
 static bool *_v, *_W;
 static const char **_R;
 
-void setvars(unsigned int *const w,
-             unsigned int *const h,
-             unsigned int *const c,
-             unsigned int *const r,
-             unsigned int *const b,
-             bool *const v,
-             bool *const W,
-             const char **const R) {
+void setvars(unsigned int *w,
+             unsigned int *h,
+             unsigned int *c,
+             unsigned int *r,
+             unsigned int *b,
+             bool *v,
+             bool *W,
+             const char **R) {
 	_w = w;
 	_h = h;
 	_c = c;
@@ -35,8 +35,8 @@ void setvars(unsigned int *const w,
 	_R = R;
 }
 
-static bool rvalset(const char *const a, const char **dst) {
-	const char *const r = getRuleFromName(a);
+static bool rvalset(const char *a, const char **dst) {
+	const char *r = getRuleFromName(a);
 	if(r != NULL) {
 		*dst = r;
 		return true;
@@ -44,7 +44,7 @@ static bool rvalset(const char *const a, const char **dst) {
 		regex_t re;
 		const char *fmt = "B[0-9]*/S[0-9]*";
 		bool valid;
-		const int status = regcomp(&re, fmt, REG_NOSUB);
+		int status = regcomp(&re, fmt, REG_NOSUB);
 		if(status != 0) {
 			char err[ERR_MSG_MAX_LEN];
 			regerror(status, &re, err, ERR_MSG_MAX_LEN);
@@ -61,7 +61,7 @@ static bool rvalset(const char *const a, const char **dst) {
 	}
 }
 
-static void getval(const char opt, const char *const arg, unsigned int *const dst) {
+static void getval(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
 	if(sscanf(arg, "%u", &tmp) != 1)
 		error("Option -%c needs an unsigned integer argument", opt);
@@ -69,7 +69,7 @@ static void getval(const char opt, const char *const arg, unsigned int *const ds
 		*dst = tmp;
 }
 
-int getvals(const int argc, char **argv, const char *so, const struct option *lo) {
+int getvals(int argc, char **argv, const char *so, const struct option *lo) {
 	int ch, idx, res = 0, i;
 	bool r_met = false, v_met = false, b_met = false, n_met = false;
 	while((ch = getopt_long(argc, argv, so, lo, &idx)) != -1) {

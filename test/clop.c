@@ -23,7 +23,7 @@ static void setUp(void) {
 
 
 void test_clop() {
-	const unsigned int argc = 0;
+	unsigned int argc = 0;
 	char *argv[] = {"argv[0]", NULL};
 	int status;
 	notice("Test clop's getvals()");

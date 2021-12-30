@@ -11,7 +11,7 @@ extern CUTE_TestCase *case_clop;
 extern void build_case_clop(void);
 
 int main() {
-	const CUTE_RunResults **results;
+	CUTE_RunResults **results;
 
 	clog_init(CLOG_FORMAT_TEXT, CLOG_ATTR_FUNC | CLOG_ATTR_COLORED);
 

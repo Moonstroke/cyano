@@ -10,7 +10,7 @@
 
 
 
-static const char *const names[] = {
+static const char *names[] = {
 	"2x2",
 	"34 Life",
 	"Amoeba",
@@ -45,7 +45,7 @@ static const char *const names[] = {
 	"WalledCities"
 };
 
-static const char *const rules[] = {
+static const char *rules[] = {
 	"B36/S125",
 	"B34/S34",
 	"B357/S1358",
@@ -81,11 +81,11 @@ static const char *const rules[] = {
 };
 
 
-const char *getRuleFromName(const char *const n) {
+const char *getRuleFromName(const char *n) {
 	unsigned int i = 0, s = 0, e = NB_NAMES;
 	while(!i && (e - s) > 1) {
-		const unsigned int m = (s + e) / 2;
-		const int d = strcmp(n, names[m]);
+		unsigned int m = (s + e) / 2;
+		int d = strcmp(n, names[m]);
 		if(d < 0) e = m;
 		else if(d > 0) s = m;
 		else i = m;
