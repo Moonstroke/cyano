@@ -32,7 +32,7 @@ int main(const int argc, const char *const argv[]) {
 	SDL_Event event;
 
 	setvars(&board_width, &board_height, &cell_pixels, &update_rate, &border_width, &use_vsync, &wrap, &game_rules);
-	if(!getvals(argc, argv, OPTSTRING, LONGOPTS)) {
+	if(getvals(argc, argv, OPTSTRING, LONGOPTS) < 0) {
 		fatal("Failure in command line options handling");
 		return 1;
 	}
