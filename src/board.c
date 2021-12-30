@@ -15,7 +15,7 @@ bool initBoard(Board *const b, const unsigned int w, const unsigned int h, const
 
 	bool *const cells = calloc(w * h, sizeof(bool));
 	b->cells = cells;
-	b->getCell = wrap ? &getCellWrap : &getCellLimits;
+	b->wrap = wrap;
 	return cells != NULL;
 }
 
@@ -38,8 +38,12 @@ static bool *getCellWrap(const Board *const b, const int x, const int y) {
 	return &b->cells[b->w * j + i];
 }
 
+bool getBoardCell(Board *b, int i, int j) {
+	return (b->wrap ? getCellWrap : getCellLimits)(b, i, j);
+}
+
 bool toggleCell(Board *const b, const unsigned int x, const unsigned int y) {
-	bool *const cell = b->getCell(b, x, y);
+	bool *const cell = getCellLimits(b, x, y);
 	if(cell != NULL) {
 		*cell = !*cell;
 		return true;
@@ -74,13 +78,13 @@ static inline bool willSurvive(const unsigned int n, const char *r) {
 }
 
 static void updateRow(Board *b, const bool *prevRowBuffer,
-                      const bool *btmPrevRow, size_t rowOffset, bool wraps) {
+                      const bool *btmPrevRow, size_t rowOffset) {
 	bool *row = &b->cells[rowOffset];
 	const bool *topPrevRow = prevRowBuffer, *prevRow = &prevRowBuffer[b->w];
 	unsigned int neighbors = 0;
 	neighbors = topPrevRow[0] + topPrevRow[1] + prevRow[1] + btmPrevRow[0]
 	                          + btmPrevRow[1];
-	if(wraps)
+	if(b->wrap)
 		neighbors += topPrevRow[b->w - 1] + prevRow[b->w - 1]
 		                                  + btmPrevRow[b->w - 1];
 	if(prevRow[0])
@@ -100,7 +104,7 @@ static void updateRow(Board *b, const bool *prevRowBuffer,
 	neighbors = topPrevRow[b->w - 2] + topPrevRow[b->w - 1] + prevRow[b->w - 2]
 	                                 + btmPrevRow[b->w - 2]
 	                                 + btmPrevRow[b->w - 1];
-	if(wraps)
+	if(b->wrap)
 		neighbors += topPrevRow[0] + prevRow[0] + btmPrevRow[0];
 	if(prevRow[b->w - 1])
 		row[b->w - 1] = willSurvive(neighbors, b->rules);
@@ -120,15 +124,14 @@ bool updateBoard(Board *b) {
 	bool *cellsBuffer = calloc(3 * b->w, sizeof(bool));
 	if(cellsBuffer == NULL)
 		return false;
-	bool boardWraps = b->getCell == getCellWrap; /* Hacky way of checking */
 	/* First row */
-	if(boardWraps) {
+	if(b->wrap) {
 		memcpy(cellsBuffer, &b->cells[(b->h - 1) * b->w], b->w);
 		/* Save the first row's previous state for the last board row */
 		memcpy(&cellsBuffer[b->w * 2], b->cells, b->w);
 	} /* otherwise, buffer already cleared */
 	memcpy(&cellsBuffer[b->w], b->cells, b->w);
-	updateRow(b, cellsBuffer, &b->cells[b->w], 0, boardWraps);
+	updateRow(b, cellsBuffer, &b->cells[b->w], 0);
 
 	/* Middle rows */
 	for(size_t row = b->w; row < (b->h - 1) * b->w; row += b->w) {
@@ -137,14 +140,13 @@ bool updateBoard(Board *b) {
 		memcpy(cellsBuffer, &cellsBuffer[b->w], b->w); // memcpy safe because no
 		                                               // overlap
 		memcpy(&cellsBuffer[b->w], &b->cells[row], b->w);
-		updateRow(b, cellsBuffer, &b->cells[row + b->w], row, boardWraps);
+		updateRow(b, cellsBuffer, &b->cells[row + b->w], row);
 	}
 
 	/* Last row */
 	memcpy(cellsBuffer, &cellsBuffer[b->w], b->w);
 	memcpy(&cellsBuffer[b->w], &b->cells[(b->h - 1) * b->w], b->w);
-	updateRow(b, cellsBuffer, &cellsBuffer[b->w * 2], (b->h - 1) * b->w,
-	          boardWraps);
+	updateRow(b, cellsBuffer, &cellsBuffer[b->w * 2], (b->h - 1) * b->w);
 
 	free(cellsBuffer);
 	return true;

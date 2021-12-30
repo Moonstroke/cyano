@@ -80,9 +80,9 @@ typedef struct board {
 	const char *rules;
 	/**< The rules determining the evolution of the game, as a string in
 	     \e Golly format. */
-	bool *(*getCell)(const struct board*, int, int);
-	/**< The function the board uses to retrieve a cell on itself (depends on
-	     whether the board's borders wrap or not). */
+	bool wrap;
+	/**< A flag indicating whether the state on one side of the board affects
+	     the opposite side. */
 } Board;
 
 
@@ -109,15 +109,13 @@ void freeBoard(Board *board);
 /**
  * \brief Gets the status of a cell from the board.
  *
- * \note Since this feature is a macro, you must check carefully your indexes.
- *
  * \param[in] board The game board
  * \param[in] i     The row to get
  * \param[in] j     The column to get
  *
  * \return \c true if the cell at (i, j) is \i alive.
  */
-#define getBoardCell(board, i, j)  *((board)->getCell(board, i, j))
+bool getBoardCell(Board *board, int i, int j);
 
 
 /**
