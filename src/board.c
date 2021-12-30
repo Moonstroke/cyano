@@ -6,9 +6,6 @@
 
 
 
-static bool *getCellLimits(const Board*, int, int);
-static bool *getCellWrap(const Board*, int, int);
-
 bool initBoard(Board *const b, const unsigned int w, const unsigned int h, const bool wrap) {
 	b->w = w;
 	b->h = h;
@@ -29,13 +26,13 @@ static inline unsigned int mod(int a, int b) {
 	return r < 0 ? r + b : r;
 }
 
-static bool *getCellLimits(const Board *const b, const int x, const int y) {
+static bool getCellLimits(const Board *const b, const int x, const int y) {
 	const unsigned int i = (unsigned)x, j = (unsigned)y;
-	return (i < b->w && j < b->h) ? &b->cells[b->w * j + i] : NULL;
+	return (i < b->w && j < b->h) ? b->cells[b->w * j + i] : false;
 }
-static bool *getCellWrap(const Board *const b, const int x, const int y) {
+static bool getCellWrap(const Board *const b, const int x, const int y) {
 	const unsigned int i = mod(x, b->w), j = mod(y, b->h);
-	return &b->cells[b->w * j + i];
+	return b->cells[b->w * j + i];
 }
 
 bool getBoardCell(Board *b, int i, int j) {

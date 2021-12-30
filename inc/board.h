@@ -113,7 +113,8 @@ void freeBoard(Board *board);
  * \param[in] i     The row to get
  * \param[in] j     The column to get
  *
- * \return \c true if the cell at (i, j) is \i alive.
+ * \return \c true if the cell at (i, j) is "alive", or \c false if the cell is
+ *         "dead" or coordinates are invalid.
  */
 bool getBoardCell(Board *board, int i, int j);
 
