@@ -53,7 +53,7 @@
 /**
  * \brief The type handling the graphical display of the board.
  */
-typedef struct {
+struct boardwindow {
 	struct board *board;
 	/**< The board included in the window. */
 	SDL_Window *win;
@@ -68,7 +68,7 @@ typedef struct {
 	/**< The \c x coordinate of the currently selected cell. */
 	    sel_y;
 	/**< The \c y coordinate of the currently selected cell. */
-} BoardWindow;
+};
 
 
 /**
@@ -84,9 +84,10 @@ typedef struct {
  *
  * \return A new board window
  */
-BoardWindow *newBoardWindow(struct board *board, unsigned int cell_pixels,
-                            unsigned int border_width, const char *window_title,
-                            bool use_vsync);
+struct boardwindow *newBoardWindow(struct board *board,
+                                   unsigned int cell_pixels,
+                                   unsigned int border_width,
+                                   const char *window_title, bool use_vsync);
 
 
 /**
@@ -94,7 +95,7 @@ BoardWindow *newBoardWindow(struct board *board, unsigned int cell_pixels,
  *
  * \param[in,out] self The board window to free
  */
-void freeBoardWindow(BoardWindow *self);
+void freeBoardWindow(struct boardwindow *self);
 
 
 /**
@@ -104,14 +105,14 @@ void freeBoardWindow(BoardWindow *self);
  *
  * \note The \e update is a distinct action from the rendering.
  */
-void updateBoardWindow(BoardWindow *self);
+void updateBoardWindow(struct boardwindow *self);
 
 /**
  * \brief Renders, on display, the board window.
  *
  * \param[in] self The board window to render
  */
-void renderBoardWindow(const BoardWindow *self);
+void renderBoardWindow(const struct boardwindow *self);
 
 
 /**
@@ -122,7 +123,7 @@ void renderBoardWindow(const BoardWindow *self);
  * \param[out] x    The abscissa of the mouse cursor
  * \param[out] y    The ordinate of the mosue pointer
  */
-void getHoverCoord(const BoardWindow *self, int *x, int *y);
+void getHoverCoord(const struct boardwindow *self, int *x, int *y);
 
 
 #endif // BOARDWINDOW_H

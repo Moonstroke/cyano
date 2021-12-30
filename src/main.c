@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
 
 	// Objects
 	struct board b;
-	BoardWindow *bw;
+	struct boardwindow *bw;
 
 	// Initializers parameters
 	unsigned int board_width = DEFAULT_BOARD_WIDTH,
