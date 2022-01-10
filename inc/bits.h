@@ -54,12 +54,12 @@
  * Copy a range of bits.
  *
  * \param[in]  src        The array to copy from
- * \param[out] dest       The array to copy to
  * \param[in]  srcOffset  The start position in the source array
+ * \param[out] dest       The array to copy to
  * \param[in]  destOffset The start position in the destination array
  * \param[in]  length     The number of bits to copy
  */
-void copyBits(const char* src, char *dest, size_t srcOffset, size_t destOffset,
+void copyBits(const char* src, size_t srcOffset, char *dest, size_t destOffset,
               size_t length);
 
 
