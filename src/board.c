@@ -4,13 +4,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "bits.h"
+
 
 
 int initBoard(struct board *b, unsigned int w, unsigned int h, bool wrap) {
 	b->w = w;
 	b->h = h;
 
-	bool *cells = calloc(w * h, sizeof(bool));
+	bool *cells = calloc(NUM_OCTETS(w * h), 1);
 	b->cells = cells;
 	b->wrap = wrap;
 	return cells == NULL ? -1 : 0;
@@ -28,11 +30,11 @@ static inline unsigned int mod(int a, int b) {
 
 static bool getCellLimits(const struct board *b, int x, int y) {
 	unsigned int i = (unsigned)x, j = (unsigned)y;
-	return (i < b->w && j < b->h) ? b->cells[b->w * j + i] : false;
+	return (i < b->w && j < b->h) ? GET_BIT(b->cells, b->w * j + i) : false;
 }
 static bool getCellWrap(const struct board *b, int x, int y) {
 	unsigned int i = mod(x, b->w), j = mod(y, b->h);
-	return b->cells[b->w * j + i];
+	return GET_BIT(b->cells, b->w * j + i);
 }
 
 bool getBoardCell(struct board *b, int i, int j) {
@@ -41,7 +43,8 @@ bool getBoardCell(struct board *b, int i, int j) {
 
 bool toggleCell(struct board *b, unsigned int x, unsigned int y) {
 	if(x < b->w && y < b->h) {
-		return b->cells[b->w * y + x] = !b->cells[b->w * y + x];
+		TOGGLE_BIT(b->cells, b->w * y + x);
+		return GET_BIT(b->cells, b->w * y + x);
 	}
 	return false;
 }
@@ -73,7 +76,7 @@ static inline bool willSurvive(unsigned int n, const char *r) {
 }
 
 static void updateRow(struct board *b, const bool *prevRowBuffer,
-                      const bool *btmPrevRow, size_t rowOffset) {
+                      const bool *btmPrevRow, size_t rowOffset) { // TODO update w/ copyBits
 	bool *row = &b->cells[rowOffset];
 	const bool *topPrevRow = prevRowBuffer, *prevRow = &prevRowBuffer[b->w];
 	unsigned int neighbors = 0;
@@ -116,31 +119,30 @@ int updateBoard(struct board *b) {
 	   This method also works on columns, however rows are usually bigger than
 	   columns so going with the rows is an immediate compromise between memory
 	   consumption and time complexity. */
-	bool *cellsBuffer = calloc(3 * b->w, sizeof(bool));
+	bool *cellsBuffer = calloc(NUM_OCTETS(3 * b->w), 1);
 	if(cellsBuffer == NULL)
 		return -1;
 	/* First row */
 	if(b->wrap) {
-		memcpy(cellsBuffer, &b->cells[(b->h - 1) * b->w], b->w);
+		copyBits(b->cells, (b->h - 1) * b->w, cellsBuffer, 0, b->w);
 		/* Save the first row's previous state for the last board row */
-		memcpy(&cellsBuffer[b->w * 2], b->cells, b->w);
+		copyBits(b->cells, 0, cellsBuffer, b->w * 2, b->w);
 	} /* otherwise, buffer already cleared */
-	memcpy(&cellsBuffer[b->w], b->cells, b->w);
+	copyBits(b->cells, b->w, cellsBuffer, b->w, b->w);
 	updateRow(b, cellsBuffer, &b->cells[b->w], 0);
 
 	/* Middle rows */
 	for(size_t row = b->w; row < (b->h - 1) * b->w; row += b->w) {
 		/* Move second buffer row to first; blit current board row to second
 		   buffer row then perform update on board row */
-		memcpy(cellsBuffer, &cellsBuffer[b->w], b->w); // memcpy safe because no
-		                                               // overlap
-		memcpy(&cellsBuffer[b->w], &b->cells[row], b->w);
+		copyBits(cellsBuffer, b->w, cellsBuffer, 0, b->w);
+		copyBits(b->cells, row, cellsBuffer, b->w, b->w);
 		updateRow(b, cellsBuffer, &b->cells[row + b->w], row);
 	}
 
 	/* Last row */
-	memcpy(cellsBuffer, &cellsBuffer[b->w], b->w);
-	memcpy(&cellsBuffer[b->w], &b->cells[(b->h - 1) * b->w], b->w);
+	copyBits(cellsBuffer, b->w, cellsBuffer, 0, b->w);
+	copyBits(b->cells, (b->h - 1) * b->w, cellsBuffer, b->w, b->w);
 	updateRow(b, cellsBuffer, &cellsBuffer[b->w * 2], (b->h - 1) * b->w);
 
 	free(cellsBuffer);
