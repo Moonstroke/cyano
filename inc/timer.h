@@ -70,7 +70,7 @@ inline unsigned int getTicks(const Timer *self) {
 }
 
 /**
- * \brief Retrieve the difference between the start of the timer and \b now.
+ * \brief Retrieve the difference between the start of the timer and \e now.
  *
  * \param[in] self The timer
  *

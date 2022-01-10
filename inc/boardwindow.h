@@ -7,7 +7,7 @@
  * \brief This file contains the definition of the structure used to manage the
  *        graphical rendering of a board of the Game of Life.
  *
- * It communicates with the SDL through its abstract structure \a SDL_Window.
+ * It communicates with the SDL through its abstract structure \c SDL_Window.
  */
 
 #ifndef BOARDWINDOW_H
@@ -103,7 +103,7 @@ void freeBoardWindow(struct boardwindow *self);
  *
  * \param[in,out] self The board window to update
  *
- * \note The \e update is a distinct action from the rendering.
+ * \note The \e update is a distinct action from the graphical rendering.
  */
 void updateBoardWindow(struct boardwindow *self);
 

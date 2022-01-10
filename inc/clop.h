@@ -58,7 +58,7 @@ static const struct option LONGOPTS[] = {
  * \param[in] update_rate  The number of times to update the board, per second
  * \param[in] border_width The width of the border separating cells
  * \param[in] use_vsync    Whether to follow vsync for board update or not --
- *                         either this or \a update_rate, but not both
+ *                         either this or \p update_rate, but not both
  * \param[in] wrap         Sets the grid as rectangular or toroidal (i.e. a cell
  *                         crossing a wall will appear on the other side of the
  *                         board instead of just dying)

@@ -75,7 +75,7 @@ struct board {
 	/**< The width of the board. */
 	             h;
 	/**< The height of the board. */
-	bool *cells;
+	char *cells;
 	/**< The data of the board cells. */
 	const char *rules;
 	/**< The rules determining the evolution of the game, as a string in
@@ -89,7 +89,7 @@ struct board {
 /**
  * \brief Initializes an uninitialized board with custom parameters.
  *
- * \param[in,out] board  The board to initialize
+ * \param[out] board  The board to initialize
  * \param[in]     width  The number of cells in one row
  * \param[in]     height The number of cells in one column
  * \param[in]     wrap   If \c true, set up the grid as toroidal
@@ -115,8 +115,8 @@ void freeBoard(struct board *board);
  * \param[in] i     The row to get
  * \param[in] j     The column to get
  *
- * \return \c true if the cell at (i, j) is "alive", or \c false if the cell is
- *         "dead" or coordinates are invalid.
+ * \return \c true if the cell at (i, j) is \e "alive", or \c false if the cell
+ *         is \e "dead" or coordinates are invalid.
  */
 bool getBoardCell(struct board *board, int i, int j);
 
