@@ -12,7 +12,7 @@ int initBoard(struct board *b, unsigned int w, unsigned int h, bool wrap) {
 	b->w = w;
 	b->h = h;
 
-	bool *cells = calloc(NUM_OCTETS(w * h), 1);
+	char *cells = calloc(NUM_OCTETS(w * h), 1);
 	b->cells = cells;
 	b->wrap = wrap;
 	return cells == NULL ? -1 : 0;
@@ -119,7 +119,7 @@ int updateBoard(struct board *b) {
 	   This method also works on columns, however rows are usually bigger than
 	   columns so going with the rows is an immediate compromise between memory
 	   consumption and time complexity. */
-	bool *cellsBuffer = calloc(NUM_OCTETS(3 * b->w), 1);
+	char *cellsBuffer = calloc(NUM_OCTETS(3 * b->w), 1);
 	if(cellsBuffer == NULL)
 		return -1;
 	/* First row */
@@ -150,5 +150,5 @@ int updateBoard(struct board *b) {
 }
 
 void clearBoard(struct board *b) {
-	memset(b->cells, false, b->w * b->h);
+	memset(b->cells, false, NUM_OCTETS(b->w * b->h));
 }
