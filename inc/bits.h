@@ -58,9 +58,12 @@
  * \param[out] dest       The array to copy to
  * \param[in]  destOffset The start position in the destination array
  * \param[in]  length     The number of bits to copy
+ *
+ * \note The implementation assumes that the source and destination arrays do
+ *       not overlap.
  */
-void copyBits(const char* src, size_t srcOffset, char *dest, size_t destOffset,
-              size_t length);
+void copyBits(const char *restrict src, size_t srcOffset, char *restrict dest,
+              size_t destOffset, size_t length);
 
 
 #endif /* BITS_H */
