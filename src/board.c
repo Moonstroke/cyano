@@ -75,39 +75,37 @@ static inline bool willSurvive(unsigned int n, const char *r) {
 	return *r == k;
 }
 
-static void updateRow(struct board *b, const bool *prevRowBuffer,
-                      const bool *btmPrevRow, size_t rowOffset) { // TODO update w/ copyBits
-	bool *row = &b->cells[rowOffset];
-	const bool *topPrevRow = prevRowBuffer, *prevRow = &prevRowBuffer[b->w];
+static void updateRow(struct board *b, size_t rowOffset, const char *prevRowBuffer,
+                      const char *btmPrevRow, size_t btmPrevRowOffset) {
 	unsigned int neighbors = 0;
-	neighbors = topPrevRow[0] + topPrevRow[1] + prevRow[1] + btmPrevRow[0]
-	                          + btmPrevRow[1];
+	neighbors = GET_BIT(prevRowBuffer, 0) + GET_BIT(prevRowBuffer, 1) + GET_BIT(prevRowBuffer, b->w + 1) + GET_BIT(btmPrevRow, btmPrevRowOffset)
+	                          + GET_BIT(btmPrevRow, btmPrevRowOffset + 1);
 	if(b->wrap)
-		neighbors += topPrevRow[b->w - 1] + prevRow[b->w - 1]
-		                                  + btmPrevRow[b->w - 1];
-	if(prevRow[0])
-		row[0] = willSurvive(neighbors, b->rules);
+		neighbors += GET_BIT(prevRowBuffer, b->w - 1) + GET_BIT(prevRowBuffer, b->w * 2 - 1)
+		                                  + GET_BIT(btmPrevRow, btmPrevRowOffset + b->w - 1);
+	if(GET_BIT(prevRowBuffer, b->w))
+		SET_BIT(b->cells, rowOffset, willSurvive(neighbors, b->rules));
 	else
-		row[0] = willBeBorn(neighbors, b->rules);
+		SET_BIT(b->cells, rowOffset, willBeBorn(neighbors, b->rules));
 	for(size_t i = 1; i < b->w - 1; ++i) {
-		neighbors = topPrevRow[i - 1] + topPrevRow[i] + topPrevRow[i + 1]
-		                              + prevRow[i - 1] + prevRow[i + 1]
-		                              + btmPrevRow[i - 1] + btmPrevRow[i]
-		                              + btmPrevRow[i + 1];
-		if(prevRow[i])
-			row[i] = willSurvive(neighbors, b->rules);
+		neighbors = GET_BIT(prevRowBuffer, i - 1) + GET_BIT(prevRowBuffer, i) + GET_BIT(prevRowBuffer, i + 1)
+		                              + GET_BIT(prevRowBuffer, b->w + i - 1) + GET_BIT(prevRowBuffer, b->w + i + 1)
+		                              + GET_BIT(btmPrevRow, btmPrevRowOffset + i - 1) + GET_BIT(btmPrevRow, btmPrevRowOffset + i)
+		                              + GET_BIT(btmPrevRow, btmPrevRowOffset + i + 1);
+		if(GET_BIT(prevRowBuffer, b->w + i))
+			SET_BIT(b->cells, rowOffset + i, willSurvive(neighbors, b->rules));
 		else
-			row[i] = willBeBorn(neighbors, b->rules);
+			SET_BIT(b->cells, rowOffset + i, willBeBorn(neighbors, b->rules));
 	}
-	neighbors = topPrevRow[b->w - 2] + topPrevRow[b->w - 1] + prevRow[b->w - 2]
-	                                 + btmPrevRow[b->w - 2]
-	                                 + btmPrevRow[b->w - 1];
+	neighbors = GET_BIT(prevRowBuffer, b->w - 2) + GET_BIT(prevRowBuffer, b->w - 1) + GET_BIT(prevRowBuffer, b->w * 2 - 2)
+	                                 + GET_BIT(btmPrevRow, btmPrevRowOffset + b->w - 2)
+	                                 + GET_BIT(btmPrevRow, btmPrevRowOffset + b->w - 1);
 	if(b->wrap)
-		neighbors += topPrevRow[0] + prevRow[0] + btmPrevRow[0];
-	if(prevRow[b->w - 1])
-		row[b->w - 1] = willSurvive(neighbors, b->rules);
+		neighbors += GET_BIT(prevRowBuffer, 0) + GET_BIT(prevRowBuffer, b->w) + GET_BIT(btmPrevRow, btmPrevRowOffset);
+	if(GET_BIT(prevRowBuffer, b->w * 2 - 1))
+		SET_BIT(b->cells, rowOffset + b->w - 1, willSurvive(neighbors, b->rules));
 	else
-		row[b->w - 1] = willBeBorn(neighbors, b->rules);
+		SET_BIT(b->cells, rowOffset + b->w - 1, willBeBorn(neighbors, b->rules));
 }
 
 int updateBoard(struct board *b) {
@@ -128,8 +126,8 @@ int updateBoard(struct board *b) {
 		/* Save the first row's previous state for the last board row */
 		copyBits(b->cells, 0, cellsBuffer, b->w * 2, b->w);
 	} /* otherwise, buffer already cleared */
-	copyBits(b->cells, b->w, cellsBuffer, b->w, b->w);
-	updateRow(b, cellsBuffer, &b->cells[b->w], 0);
+	copyBits(b->cells, 0, cellsBuffer, b->w, b->w);
+	updateRow(b, 0, cellsBuffer, b->cells, b->w);
 
 	/* Middle rows */
 	for(size_t row = b->w; row < (b->h - 1) * b->w; row += b->w) {
@@ -137,13 +135,13 @@ int updateBoard(struct board *b) {
 		   buffer row then perform update on board row */
 		copyBits(cellsBuffer, b->w, cellsBuffer, 0, b->w);
 		copyBits(b->cells, row, cellsBuffer, b->w, b->w);
-		updateRow(b, cellsBuffer, &b->cells[row + b->w], row);
+		updateRow(b, row, cellsBuffer, b->cells, row + b->w);
 	}
 
 	/* Last row */
 	copyBits(cellsBuffer, b->w, cellsBuffer, 0, b->w);
 	copyBits(b->cells, (b->h - 1) * b->w, cellsBuffer, b->w, b->w);
-	updateRow(b, cellsBuffer, &cellsBuffer[b->w * 2], (b->h - 1) * b->w);
+	updateRow(b, (b->h - 1) * b->w, cellsBuffer, cellsBuffer, b->w * 2);
 
 	free(cellsBuffer);
 	return 0;
