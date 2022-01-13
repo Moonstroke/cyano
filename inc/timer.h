@@ -16,14 +16,12 @@
 /**
  * \brief The structure holding the definition of a time scheduler.
  */
-typedef struct {
+struct timer {
 	double delay;
 	/**< The time to wait between two ticks */
 	unsigned int ticks;
 	/**< The number of ticks elapsed */
-	unsigned char padding[4];
-	/**< Unused value -- this is only here to pad the structure size */
-} Timer;
+};
 
 
 /**
@@ -31,43 +29,17 @@ typedef struct {
  *
  * \param[in,out] self The timer to start
  */
-void startTimer(Timer *self);
+void startTimer(struct timer *self);
 
 /**
  * \brief Resets the timer to \c 0 and stops it.
  *
  * \param[in,out] self The timer to reset
  */
-inline void resetTimer(Timer *self) {
+inline void resetTimer(struct timer *self) {
 	self->ticks = 0;
 }
 
-
-/**
- * \brief Sets the delay of the timer (i.e. the time to wait between two
-          renderings).
- *
- * \param[in,out] self  The timer
- * \param[in]     delay The delay to set
- */
-inline void setDelay(Timer *self, double delay) {
-	self->delay = delay;
-}
-
-
-/**
- * \brief Retrieves the current timing of the timer.
- *
- * \param[in] self The timer
- *
- * \return The current milliseconds since the start of the timer
- *
- * \note This value is represented as an unsigned integer. This type can last
- *       approximately \c 49 days and \c 17 hours before overflowing.
- */
-inline unsigned int getTicks(const Timer *self) {
-	return self->ticks;
-}
 
 /**
  * \brief Retrieve the difference between the start of the timer and \e now.
@@ -76,7 +48,7 @@ inline unsigned int getTicks(const Timer *self) {
  *
  * \return The elapsed time, in \c ms, since the timer started
  */
-unsigned int getDelta(const Timer *self);
+unsigned int getDelta(const struct timer *self);
 
 /**
  * \brief Calculates the remaining time to wait before the next refresh.
@@ -85,7 +57,7 @@ unsigned int getDelta(const Timer *self);
  *
  * \return The remaining milliseconds before the next scheduled window update
  */
-inline unsigned int getRemainingTime(const Timer *self) {
+inline unsigned int getRemainingTime(const struct timer *self) {
 	int time = ((unsigned int)self->delay) - getDelta(self);
 	return time < 0 ? 0 : time;
 }

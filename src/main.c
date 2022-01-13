@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
 	const char *game_rules = DEFAULT_BOARD_RULES;
 
 	// Main loop variables
-	Timer timer;
+	struct timer timer;
 	int over_x, over_y,
 	    last_x, last_y;
 	bool loop = true;
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
 	}
 
 	resetTimer(&timer);
-	setDelay(&timer, 1000. / (double)update_rate);
+	timer.delay = 1000. / (double)update_rate;
 
 	while(loop) {
 		unsigned int remTime;
