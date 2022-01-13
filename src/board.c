@@ -78,10 +78,12 @@ static inline bool willSurvive(unsigned int n, const char *r) {
 static void updateCell(struct board *b, size_t rowOffset,
                        const char *rowBuffer, size_t cellOffset,
                        unsigned int neighbors) {
+	bool (*willBeAlive)(unsigned int, const char*);
 	if(GET_BIT(rowBuffer, b->w + cellOffset))
-		SET_BIT(b->cells, rowOffset + cellOffset, willSurvive(neighbors, b->rules));
+		willBeAlive = willSurvive;
 	else
-		SET_BIT(b->cells, rowOffset + cellOffset, willBeBorn(neighbors, b->rules));
+		willBeAlive = willBeBorn;
+	SET_BIT(b->cells, rowOffset + cellOffset, willBeAlive(neighbors, b->rules));
 }
 
 static void updateRow(struct board *b, size_t rowOffset, const char *prevRowBuffer,
