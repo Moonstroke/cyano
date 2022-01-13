@@ -65,13 +65,9 @@ static const struct option LONGOPTS[] = {
  * \param[in] game_rules   The evolution rules of the game, in \e Golly format
  *                         (\c Bm/Sn where m is the number of alive neighbors)
  */
-void setvars(unsigned int *board_width,
-             unsigned int *board_height,
-             unsigned int *cell_pixels,
-             unsigned int *update_rate,
-             unsigned int *border_width,
-             bool *use_vsync,
-             bool *wrap,
+void setvars(unsigned int *board_width, unsigned int *board_height,
+             unsigned int *cell_pixels, unsigned int *update_rate,
+             unsigned int *border_width, bool *use_vsync, bool *wrap,
              const char **game_rules);
 
 

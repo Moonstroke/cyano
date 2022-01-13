@@ -33,12 +33,12 @@ int main(int argc, char **argv) {
 
 	setvars(&board_width, &board_height, &cell_pixels, &update_rate,
 	        &border_width, &use_vsync, &wrap, &game_rules);
-	if(getvals(argc, argv, OPTSTRING, LONGOPTS) < 0) {
+	if (getvals(argc, argv, OPTSTRING, LONGOPTS) < 0) {
 		fatal("Failure in command line options handling");
 		return 1;
 	}
 
-	if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fatal("Could not load the SDL: %s", SDL_GetError());
 		return 1;
 	}
@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
 
 	bw = newBoardWindow(&b, cell_pixels, border_width, "SDL Game of Life",
 	                    use_vsync);
-	if(bw == NULL) {
+	if (bw == NULL) {
 		fatal("Could not create the game window: %s", SDL_GetError());
 		return 1;
 	}
@@ -56,13 +56,13 @@ int main(int argc, char **argv) {
 	resetTimer(&timer);
 	timer.delay = 1000. / (double)update_rate;
 
-	while(loop) {
+	while (loop) {
 		unsigned int remTime;
 		startTimer(&timer);
 		updateBoardWindow(bw);
 		renderBoardWindow(bw);
-		while(SDL_PollEvent(&event)) {
-			switch(event.type) {
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
 				case SDL_MOUSEBUTTONDOWN:
 					mdown = true;
 					getHoverCoord(bw, &over_x, &over_y);
@@ -74,9 +74,9 @@ int main(int argc, char **argv) {
 					mdown = false;
 					break;
 				case SDL_MOUSEMOTION:
-					if(mdown) {
+					if (mdown) {
 						getHoverCoord(bw, &over_x, &over_y);
-						if((over_x != last_x) || (over_y != last_y)) {
+						if ((over_x != last_x) || (over_y != last_y)) {
 							toggleCell(&b, over_x, over_y);
 							last_x = over_x;
 							last_y = over_y;
@@ -84,18 +84,20 @@ int main(int argc, char **argv) {
 					}
 					break;
 				case SDL_KEYDOWN:
-					switch(event.key.keysym.sym) {
+					switch (event.key.keysym.sym) {
 						case SDLK_SPACE:
 							play = !play;
 							break;
 						case SDLK_RETURN:
-							if(!play)
+							if (!play) {
 								updateBoard(&b);
+							}
 						// The window can be closed with ESC, CTRL+q or CTRL+w
 						case SDLK_q:
 						case SDLK_w:
-							if(!(event.key.keysym.mod & KMOD_CTRL))
+							if (!(event.key.keysym.mod & KMOD_CTRL)) {
 								break;
+							}
 						case SDLK_ESCAPE:
 							loop = false;
 							break;
@@ -110,12 +112,12 @@ int main(int argc, char **argv) {
 			}
 		}
 
-		if(play) {
+		if (play) {
 			updateBoard(&b);
 		}
 
 		remTime = getRemainingTime(&timer);
-		if(!use_vsync && remTime > 0) {
+		if (!use_vsync && remTime > 0) {
 			SDL_Delay(remTime);
 		}
 	}

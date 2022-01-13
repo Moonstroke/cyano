@@ -17,14 +17,8 @@ static unsigned int *_w, *_h, *_c, *_r, *_b;
 static bool *_v, *_W;
 static const char **_R;
 
-void setvars(unsigned int *w,
-             unsigned int *h,
-             unsigned int *c,
-             unsigned int *r,
-             unsigned int *b,
-             bool *v,
-             bool *W,
-             const char **R) {
+void setvars(unsigned int *w, unsigned int *h, unsigned int *c, unsigned int *r,
+             unsigned int *b, bool *v, bool *W, const char **R) {
 	_w = w;
 	_h = h;
 	_c = c;
@@ -37,7 +31,7 @@ void setvars(unsigned int *w,
 
 static bool rvalset(const char *a, const char **dst) {
 	const char *r = getRuleFromName(a);
-	if(r != NULL) {
+	if (r != NULL) {
 		*dst = r;
 		return true;
 	} else {
@@ -45,7 +39,7 @@ static bool rvalset(const char *a, const char **dst) {
 		const char *fmt = "B[0-9]*/S[0-9]*";
 		bool valid;
 		int status = regcomp(&re, fmt, REG_NOSUB);
-		if(status != 0) {
+		if (status != 0) {
 			char err[ERR_MSG_MAX_LEN];
 			regerror(status, &re, err, ERR_MSG_MAX_LEN);
 			fatal("Could not compile regular expression for format \"%s\": %s", fmt, err);
@@ -53,27 +47,29 @@ static bool rvalset(const char *a, const char **dst) {
 		}
 		valid = regexec(&re, a, 0, NULL, 0) == 0;
 		regfree(&re);
-		if(valid)
+		if (valid) {
 			*dst = a;
-		else
+		} else {
 			error("Invalid rules: \"%s\"", a);
+		}
 		return valid;
 	}
 }
 
 static void getval(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
-	if(sscanf(arg, "%u", &tmp) != 1)
+	if (sscanf(arg, "%u", &tmp) != 1) {
 		error("Option -%c needs an unsigned integer argument", opt);
-	else
+	} else {
 		*dst = tmp;
+	}
 }
 
 int getvals(int argc, char **argv, const char *so, const struct option *lo) {
-	int ch, idx, res = 0, i;
+	int ch,idx, res = 0, i;
 	bool r_met = false, v_met = false, b_met = false, n_met = false;
-	while((ch = getopt_long(argc, argv, so, lo, &idx)) != -1) {
-		switch(ch) {
+	while ((ch = getopt_long(argc, argv, so, lo, &idx)) != -1) {
+		switch (ch) {
 			case 'b':
 				getval('b', optarg, _b);
 				b_met = true;
@@ -93,8 +89,9 @@ int getvals(int argc, char **argv, const char *so, const struct option *lo) {
 				r_met = true;
 				break;
 			case 'R':
-				if(!rvalset(optarg, _R))
+				if (!rvalset(optarg, _R)) {
 					return -1;
+				}
 				break;
 			case 'v':
 				*_v = true;
@@ -111,15 +108,15 @@ int getvals(int argc, char **argv, const char *so, const struct option *lo) {
 		}
 		res++;
 	}
-	if(v_met && r_met) {
+	if (v_met && r_met) {
 		error("You cannot provide an update rate and ask to follow vSync at the same time!");
 		return -3;
 	}
-	if(b_met && n_met) {
+	if (b_met && n_met) {
 		error("You cannot provide a border width and ask for no border between the cells at the same time!");
 		return -4;
 	}
-	for(i = optind; i < argc; ++i) {
+	for (i = optind; i < argc; ++i) {
 		res++;
 		warning("Unrecognized non-option argument \"%s\"", argv[i]);
 	}

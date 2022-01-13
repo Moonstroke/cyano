@@ -13,18 +13,18 @@ struct boardwindow *newBoardWindow(struct board *board, unsigned int c,
 	SDL_Renderer *ren;
 
 	bw = malloc(sizeof(struct boardwindow));
-	if(bw == NULL)
+	if (bw == NULL) {
 		return NULL;
-
+	}
 	win = SDL_CreateWindow(t, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 	                       ww, wh, WINDOW_FLAGS);
-	if(win == NULL)
+	if (win == NULL) {
 		return NULL;
-
+	}
 	ren = SDL_CreateRenderer(win, -1, RENDERER_FLAGS(v));
-	if(ren == NULL)
+	if (ren == NULL) {
 		return NULL;
-
+	}
 	bw->board = board;
 	bw->win = win;
 	bw->ren = ren;
@@ -68,8 +68,8 @@ void renderBoardWindow(const struct boardwindow *bw) {
 	SDL_RenderClear(bw->ren);
 	r.w = c;
 	r.h = c;
-	for(j = 0; j < h; ++j) {
-		for(i = 0; i < w; ++i) {
+	for (j = 0; j < h; ++j) {
+		for (i = 0; i < w; ++i) {
 			unsigned char ch = getBoardCell(bw->board, i, j) ? 0 : 255;
 			drawCell(bw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
