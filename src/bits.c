@@ -13,13 +13,19 @@ void copyBits(const char* restrict src, size_t srcOffset, char *restrict dest,
 		/* Source and dest share the bit alignment inside bytes: an optimization
 		   is possible by writing the partial first byte, blitting all the full
 		   bytes in a single memcpy call, and filling the final partial byte */
-		for (size_t i = 0; i < srcOffset; ++i) {
+		for (size_t i = srcOffset; i < 8; ++i) {
 			SET_BIT(dest, i, GET_BIT(src, i));
+		}
+		if (srcOffset > 0) {
+			/* If we did write a leading offset to a byte, we increment the
+			   pointers to skip it */
+			++src;
+			++dest;
 		}
 		size_t lengthBytes = (length - srcOffset) / 8;
 		memcpy(dest, src, lengthBytes);
-		for (size_t i = lengthBytes; i < lengthBytes + length % 8; ++i) {
-			SET_BIT(dest, i, GET_BIT(src, i));
+		for (size_t i = 0; i < length % 8; ++i) {
+			SET_BIT(dest + lengthBytes, i, GET_BIT(src + lengthBytes, i));
 		}
 	} else {
 		/* No usable shared alignment, fallback to naive linear copy */
