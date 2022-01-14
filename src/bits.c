@@ -5,7 +5,6 @@
 
 void copyBits(const char* restrict src, size_t srcOffset, char *restrict dest,
               size_t destOffset, size_t length) {
-	// TODO optimize: use memcpy when offsets fall on a char limit
 	src += srcOffset / 8;
 	dest += destOffset / 8;
 	srcOffset %= 8;

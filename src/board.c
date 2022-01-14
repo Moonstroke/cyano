@@ -131,9 +131,10 @@ int updateBoard(struct board *b) {
 	   updated and the other is a backup of the adjacent row that was updated
 	   just before. The third row of the buffer is only used on the last row of
 	   the board.
-	   This method also works on columns, however rows are usually bigger than
-	   columns so going with the rows is an immediate compromise between memory
-	   consumption and time complexity. */
+	   This method also works on columns, however rows are usually wider than
+	   columns are high so going with the rows mitigates time complexity (the
+	   number of passes) by allowing a higher memory consumption (by allocating
+	   a bigger buffer). */
 	char *cellsBuffer = calloc(NUM_OCTETS(3 * b->w), 1);
 	if (cellsBuffer == NULL)
 		return -1;

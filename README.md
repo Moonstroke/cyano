@@ -118,11 +118,11 @@ the program for now.
 
 Name |Rule (in Golly)|Description
 :---:|:---:|:---
-**2x2**|B36S125|This variant has the ability to evolve in blocks of `2x2` cells
-**34 Life**, or Life 3-4|B34S34| Dubbed after the fact that a cell is born or survives if it has 3 or 4 alive neighbors
+**2x2**|B36/S125|This variant has the ability to evolve in blocks of `2x2` cells
+**34 Life**, or Life 3-4|B34/S34| Dubbed after the fact that a cell is born or survives if it has 3 or 4 alive neighbors
 **Amoeba**|B357/S1358|Large areas form that resemble amoebas and can assimilate smaller ones
 **Assimilation**|B345/S4567|A rule similar to, but stabler than, Diamoeba
-**Coagulations**|B378/S235678|An explofing rule that creates stains during its expansion
+**Coagulations**|B378/S235678|An exploding rule that creates stains during its expansion
 **Conway's Life**, or **Original**|B3/S23|The original rule of the game
 **Coral**|B3/S45678|Creates structures that grow slowly and with architecture resembling coral
 **Corrosion of Conformity**|B3/S124| A decaying variation of **Mazectric**
@@ -147,15 +147,11 @@ Name |Rule (in Golly)|Description
 
 #### The SDL
 
-The SDL ([Simple DirectMedia Layer][sdl]) is a low-level C
-library that provides access to mouse, keyboard and joystick events, audio but
-mostly *graphics*.
-
-I started using it for my main project, a
-[Point & Click library in C][c-pnc].
-
-But I always wanted to make my very own Game of Life with graphics, and the SDL
-being awesome, I went for it.
+The SDL ([Simple DirectMedia Layer][sdl]) is a C library that provides access to
+media and user interaction (graphics, audio, mouse/keyboards events). Although
+it is rather low-level, its interface is clear and easy to use once you are used
+to it, and it is awesome, so it was my destination of choice when I decided to
+develop my own graphical Game of Life program.
 
 
 
@@ -163,17 +159,15 @@ being awesome, I went for it.
 
 #### Compilation
 
-The program was coded under *buntu 17.04, uses the version `2.0.5` of the SDL,
-and compiled with `gcc`; however the code should be standard compliant (compiled
-with `-pedantic -Wall` and every syntax warning possible enabled).
+The program was coded initially under *buntu 17.04, then Debian 9 (stretch),
+uses the version 2 of the SDL, and is compiled with `gcc`; however the code
+should be standard compliant (compiled with `-pedantic -Wall` and every syntax
+warning possible enabled).
 
 Apart from pre-installed packages, the source depends on the APT package
 `libsdl2-dev` to compile (and dependencies packages, of course).
 
-This project also depends on another of mine, the [logging system in C][log.git]
-
-> Header available [here][log.h],
-> and archive [here][liblog.a]
+This project also depends on another of mine, the [logging system in C][clog]
 
 The compilation process is handled by *make*, and a Makefile is provided.
 
@@ -184,7 +178,7 @@ The following rules are defined:
    (documentation, objects and output executables directories)
  - *doc*, to generate the documentation directory (*cf.* **Documentation**
    subsection)
- - *test*, to compile the test suites (every `test_*.c` files)
+ - *test*, to compile the test suites (every source in the `test` directory)
  - *testclean*, to remove every files involved in tests (because of potential
    conflicts with other object files, notably concerning definition of *main()*).
 
@@ -195,7 +189,7 @@ The following rules are defined:
 The program accepts several command-line options to specify parameters of the
 board:
 
-Short option|Long option|Description|Conflicts?
+Short option|Long option|Description|Conflicts with another option?
 :----:|:---:|:----:|:----:
 `-w WIDTH`|`--board-width WIDTH`|The width of the board|None
 `-h HEIGHT`|`--board-height  HEIGHT`|The height of the board|None
@@ -211,9 +205,9 @@ Short option|Long option|Description|Conflicts?
 #### Documentation
 
 The header files are documented, [Doxygen][dox]-style. The generated
-documentationdirectory is not included, so in order to have access to it you
+documentation directory is not included, so in order to have access to it you
 must compile the docs yourself -- this means of course that you need Doxygen
-installed.
+installed (APT package `doxygen`).
 
 
 ***
@@ -221,7 +215,7 @@ installed.
 
 ### Footnotes
 
-<a name="1">1</a>: A toroidal grid is, by opposition to a rectangular (or
+<a href="#1">1</a>: A toroidal grid is, by opposition to a rectangular (or
 standard) one, is a configuration of the board in which each cell crossing a
 wall will re-enter the board on the opposite side instead of disappearing. It
 allows to virtually replicate an infinite grid -- except that ships might wrap
@@ -230,8 +224,5 @@ behaviour that would not have occurred on a truly infinite grid.
 
 
 [sdl]: http://www.libsdl.org "The SDL website"
-[c-pnc]: https://github.com/Moonstroke/C-SDL-Point-Click.git "C+SDL / Point & Click"
-[log.git]: https://github.com/Moonstroke/C-log.git "C / log"
-[log.h]: https://drive.google.com/uc?id=1abiyY2pTgT5ADHqDJs_0YMSv3cDdelAq "log.h"
-[liblog.a]: https://drive.google.com/uc?id=10YVKVufUiqVuuotLexu5ZQHP4d_UvKq0 "liblog.a"
+[clog]: https://github.com/Moonstroke/Clog "Clog"
 [dox]: http://www.doxygen.org/index.html "Doxygen website"
