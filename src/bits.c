@@ -28,3 +28,10 @@ void copyBits(const char* restrict src, size_t srcOffset, char *restrict dest,
 		}
 	}
 }
+
+void printBits(const char *bits, size_t offset, size_t size, FILE *file) {
+	for (size_t i = 0; i < size; ++i) {
+		fputc('0' + GET_BIT(bits, offset + i), file);
+	}
+	fputc('\n', file);
+}

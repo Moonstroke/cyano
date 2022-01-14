@@ -12,6 +12,7 @@
 
 
 #include <stddef.h> /* for size_t */
+#include <stdio.h> /* for FILE */
 
 
 
@@ -64,6 +65,18 @@
  */
 void copyBits(const char *restrict src, size_t srcOffset, char *restrict dest,
               size_t destOffset, size_t length);
+
+
+/**
+ * Print the bit array to the given file or stream. Mostly intended for
+ * debugging purposes.
+ *
+ * \param[in] bits   The bit array
+ * \param[in] offset The number of bits to skip from the start of the array
+ * \param[in] size   The number of bits to print
+ * \param[in] file   The file or stream to write to
+ */
+void printBits(const char *bits, size_t offset, size_t size, FILE *file);
 
 
 #endif /* BITS_H */
