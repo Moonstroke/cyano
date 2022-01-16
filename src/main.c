@@ -92,6 +92,7 @@ int main(int argc, char **argv) {
 							if (!play) {
 								updateBoard(&b);
 							}
+							break;
 						// The window can be closed with ESC, CTRL+q or CTRL+w
 						case SDLK_q:
 						case SDLK_w:
