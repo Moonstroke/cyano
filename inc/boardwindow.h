@@ -74,7 +74,7 @@ struct boardwindow {
 /**
  * \brief Initialize the board window with the given values.
  *
- * \param[out] board_window The board window to initialize
+ * \param[out] boardwindow  The board window to initialize
  * \param[in]  board        The board to handle
  * \param[in]  cell_pixels  The dimension, in pixels, of the representation of a
  *                          single cell
@@ -85,36 +85,36 @@ struct boardwindow {
  *
  * \return \c 0 on success, a negative value on error
  */
-int initBoardWindow(struct boardwindow *board_window, struct board *board,
+int initBoardWindow(struct boardwindow *boardwindow, struct board *board,
                     unsigned int cell_pixels, unsigned int border_width,
                     const char *window_title, bool use_vsync);
 
 
 /**
- * \brief Deallocates a board window
+ * \brief Deallocate a board window
  *
- * \param[in,out] self The board window to free
+ * \param[in,out] boardwindow The board window to free
  */
-void freeBoardWindow(struct boardwindow *self);
+void freeBoardWindow(struct boardwindow *boardwindow);
 
 
 /**
- * \brief Renders, on display, the board window.
+ * \brief Render, on display, the board window.
  *
- * \param[in] self The board window to render
+ * \param[in] boardwindow The board window to render
  */
-void renderBoardWindow(const struct boardwindow *self);
+void renderBoardWindow(const struct boardwindow *boardwindow);
 
 
 /**
  * \brief Retrieve the coordinate, in cell units, of the cell whose position is
  *        under the mouse cursor.
  *
- * \param[in]  self The board window
- * \param[out] x    The abscissa of the mouse cursor
- * \param[out] y    The ordinate of the mosue pointer
+ * \param[in]  boardwindow The board window
+ * \param[out] x           The abscissa of the mouse cursor
+ * \param[out] y           The ordinate of the mosue pointer
  */
-void getHoverCoord(const struct boardwindow *self, int *x, int *y);
+void getHoverCoord(const struct boardwindow *boardwindow, int *x, int *y);
 
 
-#endif // BOARDWINDOW_H
+#endif /* BOARDWINDOW_H */

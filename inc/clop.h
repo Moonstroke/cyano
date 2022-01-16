@@ -47,7 +47,7 @@ static const struct option LONGOPTS[] = {
 };
 
 /**
- * \brief Specifies the variables to store command line options and arguments
+ * \brief Specify the variables to store command line options and arguments
  *        into.
  *
  * \param[in] board_width  The variable to hold the value for the width of the
@@ -72,7 +72,7 @@ void setvars(unsigned int *board_width, unsigned int *board_height,
 
 
 /**
- * \brief Processes the provided arguments and stores the parameters into the
+ * \brief Process the provided arguments and stores the parameters into the
  *        memory zones set in \a setvars().
  *
  * \param[in] argc    The number of arguments to process
@@ -87,4 +87,4 @@ void setvars(unsigned int *board_width, unsigned int *board_height,
 int getvals(int argc, char **argv, const char *optstr, const struct option *longopt);
 
 
-#endif // CLOP_H
+#endif /* CLOP_H */

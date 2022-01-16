@@ -20,4 +20,4 @@
 const char *getRuleFromName(const char *name);
 
 
-#endif // RULES_H
+#endif /* RULES_H */

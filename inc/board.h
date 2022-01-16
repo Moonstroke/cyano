@@ -87,12 +87,12 @@ struct board {
 
 
 /**
- * \brief Initializes an uninitialized board with custom parameters.
+ * \brief Initialize an uninitialized board with custom parameters.
  *
  * \param[out] board  The board to initialize
- * \param[in]     width  The number of cells in one row
- * \param[in]     height The number of cells in one column
- * \param[in]     wrap   If \c true, set up the grid as toroidal
+ * \param[in]  width  The number of cells in one row
+ * \param[in]  height The number of cells in one column
+ * \param[in]  wrap   If \c true, set up the grid as toroidal
  *
  * \return \c 0 iff the board was correctly initialized, a negative value
  *         otherwise
@@ -101,7 +101,7 @@ int initBoard(struct board *board, unsigned int width, unsigned int height,
               bool wrap);
 
 /**
- * \brief Deallocates memory used by a board.
+ * \brief Deallocate memory used by a board.
  *
  * \param[in,out] board The board to free
  */
@@ -109,7 +109,7 @@ void freeBoard(struct board *board);
 
 
 /**
- * \brief Gets the status of a cell from the board.
+ * \brief Get the state of a cell from the board.
  *
  * \param[in] board The game board
  * \param[in] i     The row to get
@@ -122,7 +122,7 @@ bool getBoardCell(const struct board *board, int i, int j);
 
 
 /**
- * \brief Inverts the state of a cell.
+ * \brief Invert the state of a cell.
  *
  * \param[in,out] board The board
  * \param[in]     x     The row of the cell to toggle
@@ -135,7 +135,7 @@ bool toggleCell(struct board *board, unsigned int x, unsigned int y);
 
 
 /**
- * \brief Retrieves the rules of evolution used for this board, as a string.
+ * \brief Retrieve the rules of evolution used for this board, as a string.
  *
  * \param[in] board The board
  *
@@ -144,7 +144,7 @@ bool toggleCell(struct board *board, unsigned int x, unsigned int y);
 const char *getRules(const struct board *board);
 
 /**
- * \brief Updates the rules of the board, using a string to represent the rules.
+ * \brief Update the rules of the board, using a string to represent the rules.
  *
  * \param[in,out] board The board
  * \param[in]     rules The new rules, as a string in \e Golly format
@@ -155,7 +155,7 @@ void setRules(struct board *board, const char *rules);
 
 
 /**
- * \brief Updates the board to the next generation.
+ * \brief Update the board to the next generation.
  *
  * The board is iterated, and each cell is updated according to the rules
  * determining the board.
@@ -167,7 +167,7 @@ void setRules(struct board *board, const char *rules);
 int updateBoard(struct board *board);
 
 /**
- * \brief Clears the board.
+ * \brief Clear the board.
  *
  * \e Kills all the cells in the board, by turning them off.
  *
@@ -176,4 +176,4 @@ int updateBoard(struct board *board);
 void clearBoard(struct board *board);
 
 
-#endif // BOARD_H
+#endif /* BOARD_H */

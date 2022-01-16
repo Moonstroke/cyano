@@ -3,14 +3,14 @@
 #include <SDL2/SDL_timer.h>
 
 
-void startTimer(struct timer *t) {
-	t->ticks = SDL_GetTicks();
+void startTimer(struct timer *timer) {
+	timer->ticks = SDL_GetTicks();
 }
 
-extern void resetTimer(struct timer *t);
+extern void resetTimer(struct timer*);
 
-unsigned int getDelta(const struct timer *t) {
-	return SDL_GetTicks() - t->ticks;
+unsigned int getDelta(const struct timer *timer) {
+	return SDL_GetTicks() - timer->ticks;
 }
 
-extern unsigned int getRemainingTime(const struct timer *t);
+extern unsigned int getRemainingTime(const struct timer*);

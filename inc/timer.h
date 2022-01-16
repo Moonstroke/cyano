@@ -25,19 +25,19 @@ struct timer {
 
 
 /**
- * \brief Starts the timer.
+ * \brief Start the timer.
  *
  * \param[in,out] self The timer to start
  */
-void startTimer(struct timer *self);
+void startTimer(struct timer *timer);
 
 /**
- * \brief Resets the timer to \c 0 and stops it.
+ * \brief Reset the timer to \c 0 and stops it.
  *
- * \param[in,out] self The timer to reset
+ * \param[out] self The timer to reset
  */
-inline void resetTimer(struct timer *self) {
-	self->ticks = 0;
+inline void resetTimer(struct timer *timer) {
+	timer->ticks = 0;
 }
 
 
@@ -48,19 +48,19 @@ inline void resetTimer(struct timer *self) {
  *
  * \return The elapsed time, in \c ms, since the timer started
  */
-unsigned int getDelta(const struct timer *self);
+unsigned int getDelta(const struct timer *timer);
 
 /**
- * \brief Calculates the remaining time to wait before the next refresh.
+ * \brief Calculate the remaining time to wait before the next refresh.
  *
  * \param[in] self The timer
  *
  * \return The remaining milliseconds before the next scheduled window update
  */
-inline unsigned int getRemainingTime(const struct timer *self) {
-	int time = ((unsigned int)self->delay) - getDelta(self);
+inline unsigned int getRemainingTime(const struct timer *timer) {
+	int time = ((unsigned int)timer->delay) - getDelta(timer);
 	return time < 0 ? 0 : time;
 }
 
 
-#endif // TIMER_H
+#endif /* TIMER_H */
