@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 
 #include <clog.h>
+#include <stdlib.h> /* for EXIT_* */
+
 #include "board.h"
 #include "boardwindow.h"
 #include "clop.h"
@@ -99,24 +101,26 @@ int main(int argc, char **argv) {
 	        &border_width, &use_vsync, &wrap, &game_rules);
 	if (getvals(argc, argv, OPTSTRING, LONGOPTS) < 0) {
 		fatal("Failure in command line options handling");
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fatal("Could not load the SDL: %s", SDL_GetError());
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	struct board b;
-	initBoard(&b, board_width, board_height, wrap);
+	if (initBoard(&b, board_width, board_height, wrap) < 0) {
+		fatal("Could not create the game board");
+		return EXIT_FAILURE;
+	}
 	setRules(&b, game_rules);
 
 	struct boardwindow bw;
-	int rc = initBoardWindow(&bw, &b, cell_pixels, border_width, "SDL Game of Life",
-	                         use_vsync);
-	if (rc < 0) {
+	if (initBoardWindow(&bw, &b, cell_pixels, border_width, "SDL Game of Life",
+	                    use_vsync) < 0) {
 		fatal("Could not create the game window: %s", SDL_GetError());
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	struct timer timer;
@@ -148,5 +152,5 @@ int main(int argc, char **argv) {
 	freeBoard(&b);
 	freeBoardWindow(&bw);
 	SDL_Quit();
-	return 0;
+	return EXIT_SUCCESS;
 }
