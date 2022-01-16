@@ -44,7 +44,8 @@ The *block*, the simplest still life
     @@
     @@
 
-The *blinker*, simplest oscillator (period 2):
+The *blinker*, simplest oscillator (period 2, which means that the pattern
+repeats every other generation):
 
     @
     @
@@ -67,7 +68,7 @@ A still life can be seen as a period-1 oscillator, and a spaceship as an
 oscillator of not constant position.
 
 The question of the finiteness of the evolution of a pattern has been solved
-with the iscovery of the *Glider gun*, a pattern that emits gliders, discovered
+with the discovery of the *Glider gun*, a pattern that emits gliders, discovered
 by Bill Gosper:
 
     .........................@...........
@@ -116,7 +117,7 @@ evolution function only of the *state* of the 9 cells); there are cellular
 automata that do not follow these conditions, but they are not implemented in
 the program for now.
 
-Name |Rule (in Golly)|Description
+Name |Rule (in Golly format)|Description
 :---:|:---:|:---
 **2x2**|B36/S125|This variant has the ability to evolve in blocks of `2x2` cells
 **34 Life**, or Life 3-4|B34/S34| Dubbed after the fact that a cell is born or survives if it has 3 or 4 alive neighbors
@@ -172,15 +173,15 @@ This project also depends on another of mine, the [logging system in C][clog]
 The compilation process is handled by *make*, and a Makefile is provided.
 
 The following rules are defined:
- - *all* (obviously) which cleans the test object files and compile the project,
- - *clean*, to remove the object directory,
- - *distclean*, to remove all files that are not on the base of the project
+ - `all` (obviously) which cleans the test object files and compile the project,
+ - `clean`, to remove the object directory,
+ - `distclean`, to remove all files that are not on the base of the project
    (documentation, objects and output executables directories)
- - *doc*, to generate the documentation directory (*cf.* **Documentation**
+ - `doc`, to generate the documentation directory (*cf.* **Documentation**
    subsection)
- - *test*, to compile the test suites (every source in the `test` directory)
- - *testclean*, to remove every files involved in tests (because of potential
-   conflicts with other object files, notably concerning definition of *main()*).
+ - `test`, to compile the test suites (every source in the `test` directory)
+ - `testclean`, to remove every files involved in tests (because of potential
+   conflicts with other object files, notably concerning definition of `main()`).
 
 
 
