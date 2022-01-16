@@ -24,8 +24,7 @@ int main(int argc, char **argv) {
 
 	// Main loop variables
 	struct timer timer;
-	int over_x, over_y,
-	    last_x, last_y;
+	int last_x, last_y;
 	bool loop = true;
 	bool mdown = false;
 	bool play = false;
@@ -59,27 +58,25 @@ int main(int argc, char **argv) {
 	while (loop) {
 		unsigned int remTime;
 		startTimer(&timer);
-		updateBoardWindow(bw);
 		renderBoardWindow(bw);
 		while (SDL_PollEvent(&event)) {
 			switch (event.type) {
 				case SDL_MOUSEBUTTONDOWN:
 					mdown = true;
-					getHoverCoord(bw, &over_x, &over_y);
-					toggleCell(&b, over_x, over_y);
-					last_x = over_x;
-					last_y = over_y;
+					toggleCell(&b, bw->sel_x, bw->sel_y);
+					last_x = bw->sel_x;
+					last_y = bw->sel_y;
 					break;
 				case SDL_MOUSEBUTTONUP:
 					mdown = false;
 					break;
 				case SDL_MOUSEMOTION:
+					getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
 					if (mdown) {
-						getHoverCoord(bw, &over_x, &over_y);
-						if ((over_x != last_x) || (over_y != last_y)) {
-							toggleCell(&b, over_x, over_y);
-							last_x = over_x;
-							last_y = over_y;
+						if ((bw->sel_x != last_x) || (bw->sel_y != last_y)) {
+							toggleCell(&b, bw->sel_x, bw->sel_y);
+							last_x = bw->sel_x;
+							last_y = bw->sel_y;
 						}
 					}
 					break;
@@ -94,8 +91,7 @@ int main(int argc, char **argv) {
 							}
 							break;
 						case SDLK_t:
-							getHoverCoord(bw, &over_x, &over_y);
-							toggleCell(&b, over_x, over_y);
+							toggleCell(&b, bw->sel_x, bw->sel_y);
 							break;
 						// The window can be closed with ESC, CTRL+q or CTRL+w
 						case SDLK_q:

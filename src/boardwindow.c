@@ -41,10 +41,6 @@ void freeBoardWindow(struct boardwindow *bw) {
 	free(bw);
 }
 
-void updateBoardWindow(struct boardwindow *bw) {
-	getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
-}
-
 static inline void drawCell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
                             unsigned int j, unsigned int c, unsigned int border,
                             unsigned char r, unsigned char g, unsigned char b,

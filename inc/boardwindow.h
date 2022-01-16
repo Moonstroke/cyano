@@ -99,15 +99,6 @@ void freeBoardWindow(struct boardwindow *self);
 
 
 /**
- * \brief Updates the state of a board window
- *
- * \param[in,out] self The board window to update
- *
- * \note The \e update is a distinct action from the graphical rendering.
- */
-void updateBoardWindow(struct boardwindow *self);
-
-/**
  * \brief Renders, on display, the board window.
  *
  * \param[in] self The board window to render
