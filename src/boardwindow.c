@@ -4,41 +4,32 @@
 
 
 
-struct boardwindow *newBoardWindow(struct board *board, unsigned int c,
-                                   unsigned int b, const char *t, bool v) {
-	struct boardwindow *bw;
-	unsigned int ww = board->w * (c + b) + b,
-	             wh = board->h * (c + b) + b;
-	SDL_Window *win;
-	SDL_Renderer *ren;
+int initBoardWindow(struct boardwindow *bw, struct board *board,
+                    unsigned int cell_pixels, unsigned int border_width,
+                    const char *title, bool use_vsync) {
+	unsigned int winWidth = board->w * (cell_pixels + border_width) + border_width,
+	             winHeight = board->h * (cell_pixels + border_width) + border_width;
 
-	bw = malloc(sizeof(struct boardwindow));
-	if (bw == NULL) {
-		return NULL;
+	bw->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+	                           winWidth, winHeight, WINDOW_FLAGS);
+	if (bw->win == NULL) {
+		return -1;
 	}
-	win = SDL_CreateWindow(t, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-	                       ww, wh, WINDOW_FLAGS);
-	if (win == NULL) {
-		return NULL;
-	}
-	ren = SDL_CreateRenderer(win, -1, RENDERER_FLAGS(v));
-	if (ren == NULL) {
-		return NULL;
+	bw->ren = SDL_CreateRenderer(bw->win, -1, RENDERER_FLAGS(use_vsync));
+	if (bw->ren == NULL) {
+		return -2;
 	}
 	bw->board = board;
-	bw->win = win;
-	bw->ren = ren;
-	bw->cell_pixels = c;
+	bw->cell_pixels = cell_pixels;
 	bw->sel_x = bw->sel_y = -1;
-	bw->border_width = b;
+	bw->border_width = border_width;
 
-	return bw;
+	return 0;
 }
 
 void freeBoardWindow(struct boardwindow *bw) {
 	SDL_DestroyWindow(bw->win);
 	SDL_DestroyRenderer(bw->ren);
-	free(bw);
 }
 
 static inline void drawCell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,

@@ -111,9 +111,10 @@ int main(int argc, char **argv) {
 	initBoard(&b, board_width, board_height, wrap);
 	setRules(&b, game_rules);
 
-	struct boardwindow *bw = newBoardWindow(&b, cell_pixels, border_width,
-	                                        "SDL Game of Life", use_vsync);
-	if (bw == NULL) {
+	struct boardwindow bw;
+	int rc = initBoardWindow(&bw, &b, cell_pixels, border_width, "SDL Game of Life",
+	                         use_vsync);
+	if (rc < 0) {
 		fatal("Could not create the game window: %s", SDL_GetError());
 		return 1;
 	}
@@ -128,10 +129,10 @@ int main(int argc, char **argv) {
 	while (loop) {
 		int last_x, last_y;
 		startTimer(&timer);
-		renderBoardWindow(bw);
+		renderBoardWindow(&bw);
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
-			handleEvent(&event, bw, &loop, &mdown, &play, &last_x, &last_y);
+			handleEvent(&event, &bw, &loop, &mdown, &play, &last_x, &last_y);
 		}
 
 		if (play) {
@@ -145,7 +146,7 @@ int main(int argc, char **argv) {
 	}
 
 	freeBoard(&b);
-	freeBoardWindow(bw);
+	freeBoardWindow(&bw);
 	SDL_Quit();
 	return 0;
 }

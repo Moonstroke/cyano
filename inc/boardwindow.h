@@ -72,22 +72,22 @@ struct boardwindow {
 
 
 /**
- * \brief Creates a new board window.
+ * \brief Initialize the board window with the given values.
  *
- * \param[in] board        The board to handle
- * \param[in] cell_pixels  The dimension, in pixels, of the representation of a
- *                         single cell
- * \param[in] border_width The width of the border separating the cells
- * \param[in] window_title The title to give to the window
- * \param[in] use_vsync    Whether to synchronize the update of the board with
- *                         the monitor
+ * \param[out] board_window The board window to initialize
+ * \param[in]  board        The board to handle
+ * \param[in]  cell_pixels  The dimension, in pixels, of the representation of a
+ *                          single cell
+ * \param[in]  border_width The width of the border separating the cells
+ * \param[in]  window_title The title to give to the window
+ * \param[in]  use_vsync    Whether to synchronize the update of the board with
+ *                          the monitor
  *
- * \return A new board window
+ * \return \c 0 on success, a negative value on error
  */
-struct boardwindow *newBoardWindow(struct board *board,
-                                   unsigned int cell_pixels,
-                                   unsigned int border_width,
-                                   const char *window_title, bool use_vsync);
+int initBoardWindow(struct boardwindow *board_window, struct board *board,
+                    unsigned int cell_pixels, unsigned int border_width,
+                    const char *window_title, bool use_vsync);
 
 
 /**
