@@ -37,7 +37,7 @@ static bool getCellWrap(const struct board *b, int x, int y) {
 	return GET_BIT(b->cells, b->w * j + i);
 }
 
-bool getBoardCell(struct board *b, int i, int j) {
+bool getBoardCell(const struct board *b, int i, int j) {
 	return (b->wrap ? getCellWrap : getCellLimits)(b, i, j);
 }
 

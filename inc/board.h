@@ -118,7 +118,7 @@ void freeBoard(struct board *board);
  * \return \c true if the cell at (i, j) is \e "alive", or \c false if the cell
  *         is \e "dead" or coordinates are invalid.
  */
-bool getBoardCell(struct board *board, int i, int j);
+bool getBoardCell(const struct board *board, int i, int j);
 
 
 /**
