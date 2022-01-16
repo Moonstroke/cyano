@@ -90,6 +90,26 @@ int main(int argc, char **argv) {
 								updateBoard(&b);
 							}
 							break;
+						case SDLK_UP:
+							if (--bw->sel_y < 0) {
+								bw->sel_y = b.wrap ? b.h - 1 : 0;
+							}
+							break;
+						case SDLK_DOWN:
+							if (++bw->sel_y >= (signed) b.h) {
+								bw->sel_y = b.wrap ? 0 : b.h - 1;
+							}
+							break;
+						case SDLK_LEFT:
+							if (--bw->sel_x < 0) {
+								bw->sel_x = b.wrap ? b.w - 1 : 0;
+							}
+							break;
+						case SDLK_RIGHT:
+							if (++bw->sel_x >= (signed) b.w) {
+								bw->sel_x = b.wrap ? 0 : b.w - 1;
+							}
+							break;
 						case SDLK_t:
 							toggleCell(&b, bw->sel_x, bw->sel_y);
 							break;
