@@ -93,6 +93,10 @@ int main(int argc, char **argv) {
 								updateBoard(&b);
 							}
 							break;
+						case SDLK_t:
+							getHoverCoord(bw, &over_x, &over_y);
+							toggleCell(&b, over_x, over_y);
+							break;
 						// The window can be closed with ESC, CTRL+q or CTRL+w
 						case SDLK_q:
 						case SDLK_w:
