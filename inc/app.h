@@ -19,6 +19,15 @@ int initApp(void);
 /**
  * Extract the options and values passed to the program in the given variables.
  *
+ * Considering that the program is being run in a sh-like environment in the current
+ * directory as \c sdlife, an example of invocation can be:
+ * \code{.sh}
+ * $ ./sdlife -w73 -h42 -n -c8 -v
+ * \endcode
+ * This invocation will open a board of \c 72 cells per \c 42, without borders
+ * between the cells, each cell wide of \c 8 pixels and updating synchronously
+ * with the vertical refreshing of the monitor.
+ *
  * \param[in]  argc         The number of arguments
  * \param[in]  argv         The command-line arguments
  *

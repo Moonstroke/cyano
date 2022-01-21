@@ -4,7 +4,6 @@
 
 #include "board.h"
 #include "boardwindow.h"
-#include "clop.h"
 #include "timer.h"
 
 
@@ -15,20 +14,6 @@ int initApp(void) {
 		return -1;
 	}
 
-	return 0;
-}
-
-int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
-                         unsigned int *board_height, bool *wrap,
-                         const char **game_rules, unsigned int *cell_pixels,
-                         unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync) {
-	setvars(board_width, board_height, cell_pixels, update_rate, border_width,
-	        use_vsync, wrap, game_rules);
-	if (getvals(argc, argv, OPTSTRING, LONGOPTS) < 0) {
-		fputs("Failure in command line options handling", stderr);
-		return -1;
-	}
 	return 0;
 }
 
