@@ -1,8 +1,8 @@
 #include "board.h"
 
 
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h> /* for calloc, NULL, free */
+#include <string.h> /* for strchr, memset */
 
 #include "bits.h"
 

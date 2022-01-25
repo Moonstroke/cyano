@@ -1,6 +1,4 @@
 #include <SDL2/SDL.h> /* for SDL_GetError */
-
-#include <clog.h>
 #include <stdlib.h> /* for EXIT_* */
 
 #include "app.h"
@@ -31,7 +29,7 @@ int main(int argc, char **argv) {
 
 	struct board b;
 	if (initBoard(&b, board_width, board_height, wrap) < 0) {
-		fatal("Could not create the game board");
+		fputs("Failure in creation of the game board\n", stderr);
 		return EXIT_FAILURE;
 	}
 	setRules(&b, game_rules);
@@ -39,7 +37,7 @@ int main(int argc, char **argv) {
 	struct boardwindow bw;
 	if (initBoardWindow(&bw, &b, cell_pixels, border_width, "SDL Game of Life",
 	                    use_vsync) < 0) {
-		fatal("Could not create the game window: %s", SDL_GetError());
+		fprintf(stderr, "Failure in creation of the game window: %s\n", SDL_GetError());
 		return EXIT_FAILURE;
 	}
 

@@ -1,9 +1,8 @@
 #include "rules.h"
 
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stddef.h> /* for NULL */
+#include <string.h> /* for strcmp */
 
 
 #define NB_NAMES 32
@@ -81,11 +80,11 @@ static const char *rules[] = {
 };
 
 
-const char *getRuleFromName(const char *n) {
+const char *getRuleFromName(const char *name) {
 	unsigned int i = 0, start = 0, end = NB_NAMES;
 	while (!i && (end - start) > 1) {
 		unsigned int middle = (start + end) / 2;
-		int d = strcmp(n, names[middle]);
+		int d = strcmp(name, names[middle]);
 		if (d < 0) end = middle;
 		else if (d > 0) start = middle;
 		else i = middle;

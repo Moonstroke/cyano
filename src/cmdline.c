@@ -1,15 +1,11 @@
 #include "app.h"
 
 
-#include <getopt.h>
-#include <stdio.h> /* for sscanf */
+#include <getopt.h> /* for struct option, getopt_long, optarg, optind */
+#include <stdio.h> /* for fprintf, stderr, sscanf, fputs */
 
-#include <clog.h>
 #include "rules.h"
 
-
-
-#define ERR_MSG_MAX_LEN 64
 
 
 static const char *const OPTSTRING = "b:c:h:nr:R:vw:W";
@@ -31,37 +27,36 @@ static const struct option LONGOPTS[] = {
 };
 
 
-static bool rvalset(const char *a, const char **dst) {
-	const char *r = getRuleFromName(a);
-	if (r != NULL) {
-		*dst = r;
+static bool rvalset(const char *arg, const char **dst) {
+	const char *rule = getRuleFromName(arg);
+	if (rule != NULL) {
+		*dst = rule;
 		return true;
 	} else {
-
-		if (a[0] != 'B') {
+		if (arg[0] != 'B') {
 			goto err;
 		}
 		size_t i = 1;
 		/* Check that all chars until the slash are digits in ascending order */
-		for (; '0' <= a[i] && a[i] <= '9'; ++i) {
-			if (a[i] >= a[i + 1] && a[i + 1] != '/' && a[i + 1] != 'S') {
+		for (; '0' <= arg[i] && arg[i] <= '9'; ++i) {
+			if (arg[i] >= arg[i + 1] && arg[i + 1] != '/' && arg[i + 1] != 'S') {
 				goto err;
 			}
 		}
-		if (a[i] == '/') {
+		if (arg[i] == '/') {
 			++i;
 		}
-		if (a[i++] != 'S') {
+		if (arg[i++] != 'S') {
 			goto err;
 		}
-		for (; '0' <= a[i] && a[i] <= '9'; ++i) {
-			if(a[i + 1] && a[i] >= a[i + 1]) {
+		for (; '0' <= arg[i] && arg[i] <= '9'; ++i) {
+			if(arg[i + 1] && arg[i] >= arg[i + 1]) {
 				goto err;
 			}
 		}
 		return true;
 err:
-		error("Invalid rules: \"%s\"", a);
+		fprintf(stderr, "Error: invalid rules: \"%s\"\n", arg);
 		return false;
 	}
 }
@@ -69,7 +64,7 @@ err:
 static void getval(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
-		error("Option -%c needs an unsigned integer argument", opt);
+		fprintf(stderr, "Error: option -%c needs an unsigned integer argument\n", opt);
 	} else {
 		*dst = tmp;
 	}
@@ -126,18 +121,17 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 		res++;
 	}
 	if (opt_v_met && opt_r_met) {
-		error("You cannot provide an update rate and ask to follow vSync at"
-		      " the same time!");
+		fputs("Error: options --update-rate and --vsync are incompatible\n", stderr);
 		return -3;
 	}
 	if (opt_b_met && opt_n_met) {
-		error("You cannot provide a border width and ask for no border between"
-		      " the cells at the same time!");
+		fputs("Error: options --border-width and --no-border are incompatible\n", stderr);
 		return -4;
 	}
 	for (i = optind; i < argc; ++i) {
 		res++;
-		warning("Unrecognized non-option argument \"%s\"", argv[i]);
+		fprintf(stderr, "Warning: skipping unrecognized non-option argument \"%s\"\n",
+		        argv[i]);
 	}
 	return res == argc - 1 ? 0 : -5;
 }
