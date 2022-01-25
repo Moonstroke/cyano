@@ -27,11 +27,11 @@ static const struct option LONGOPTS[] = {
 };
 
 
-static bool rvalset(const char *arg, const char **dst) {
+static int rvalset(const char *arg, const char **dst) {
 	const char *rule = getRuleFromName(arg);
 	if (rule != NULL) {
 		*dst = rule;
-		return true;
+		return 0;
 	} else {
 		if (arg[0] != 'B') {
 			goto err;
@@ -54,20 +54,21 @@ static bool rvalset(const char *arg, const char **dst) {
 				goto err;
 			}
 		}
-		return true;
+		return 0;
 err:
 		fprintf(stderr, "Error: invalid rules: \"%s\"\n", arg);
-		return false;
+		return -1;
 	}
 }
 
-static void getval(char opt, const char *arg, unsigned int *dst) {
+static int getval(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
 		fprintf(stderr, "Error: option -%c needs an unsigned integer argument\n", opt);
-	} else {
-		*dst = tmp;
+		return -1;
 	}
+	*dst = tmp;
+	return 0;
 }
 
 int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
@@ -83,26 +84,34 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
-				getval('b', optarg, border_width);
+				if (getval('b', optarg, border_width) < 0) {
+					return -1;
+				}
 				opt_b_met = true;
 				break;
 			case 'c':
-				getval('c', optarg, cell_pixels);
+				if (getval('c', optarg, cell_pixels) < 0) {
+					return -2;
+				}
 				break;
 			case 'h':
-				getval('h', optarg, board_height);
+				if (getval('h', optarg, board_height) < 0) {
+					return -3;
+				}
 				break;
 			case 'n':
 				*border_width = 0;
 				opt_n_met = true;
 				break;
 			case 'r':
-				getval('r', optarg, update_rate);
+				if (getval('r', optarg, update_rate) < 0) {
+					return -4;
+				}
 				opt_r_met = true;
 				break;
 			case 'R':
-				if (!rvalset(optarg, game_rules)) {
-					return -1;
+				if (rvalset(optarg, game_rules) < 0) {
+					return -5;
 				}
 				break;
 			case 'v':
@@ -110,7 +119,9 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				opt_v_met = true;
 				break;
 			case 'w':
-				getval('w', optarg, board_width);
+				if (getval('w', optarg, board_width) < 0) {
+					return -6;
+				}
 				break;
 			case 'W':
 				*wrap = true;
@@ -122,16 +133,16 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 	}
 	if (opt_v_met && opt_r_met) {
 		fputs("Error: options --update-rate and --vsync are incompatible\n", stderr);
-		return -3;
+		return -7;
 	}
 	if (opt_b_met && opt_n_met) {
 		fputs("Error: options --border-width and --no-border are incompatible\n", stderr);
-		return -4;
+		return -8;
 	}
 	for (i = optind; i < argc; ++i) {
 		res++;
 		fprintf(stderr, "Warning: skipping unrecognized non-option argument \"%s\"\n",
 		        argv[i]);
 	}
-	return res == argc - 1 ? 0 : -5;
+	return res == argc - 1 ? 0 : -9;
 }
