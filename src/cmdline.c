@@ -44,11 +44,14 @@ static bool rvalset(const char *a, const char **dst) {
 		size_t i = 1;
 		/* Check that all chars until the slash are digits in ascending order */
 		for (; '0' <= a[i] && a[i] <= '9'; ++i) {
-			if(a[i + 1] != '/' && a[i] >= a[i + 1]) {
+			if (a[i] >= a[i + 1] && a[i + 1] != '/' && a[i + 1] != 'S') {
 				goto err;
 			}
 		}
-		if (a[i++] != '/' || a[i++] != 'S') {
+		if (a[i] == '/') {
+			++i;
+		}
+		if (a[i++] != 'S') {
 			goto err;
 		}
 		for (; '0' <= a[i] && a[i] <= '9'; ++i) {
