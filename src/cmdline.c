@@ -2,9 +2,7 @@
 
 
 #include <getopt.h>
-#include <regex.h>
-#include <stdio.h>
-#include <string.h>
+#include <stdio.h> /* for sscanf */
 
 #include <clog.h>
 #include "rules.h"
@@ -39,24 +37,29 @@ static bool rvalset(const char *a, const char **dst) {
 		*dst = r;
 		return true;
 	} else {
-		regex_t re;
-		const char *fmt = "B[0-9]*/S[0-9]*";
-		bool valid;
-		int status = regcomp(&re, fmt, REG_NOSUB);
-		if (status != 0) {
-			char err[ERR_MSG_MAX_LEN];
-			regerror(status, &re, err, ERR_MSG_MAX_LEN);
-			fatal("Could not compile regular expression for format \"%s\": %s", fmt, err);
-			return false;
+
+		if (a[0] != 'B') {
+			goto err;
 		}
-		valid = regexec(&re, a, 0, NULL, 0) == 0;
-		regfree(&re);
-		if (valid) {
-			*dst = a;
-		} else {
-			error("Invalid rules: \"%s\"", a);
+		size_t i = 1;
+		/* Check that all chars until the slash are digits in ascending order */
+		for (; '0' <= a[i] && a[i] <= '9'; ++i) {
+			if(a[i + 1] != '/' && a[i] >= a[i + 1]) {
+				goto err;
+			}
 		}
-		return valid;
+		if (a[i++] != '/' || a[i++] != 'S') {
+			goto err;
+		}
+		for (; '0' <= a[i] && a[i] <= '9'; ++i) {
+			if(a[i + 1] && a[i] >= a[i + 1]) {
+				goto err;
+			}
+		}
+		return true;
+err:
+		error("Invalid rules: \"%s\"", a);
+		return false;
 	}
 }
 
