@@ -24,8 +24,15 @@ void freeBoard(struct board *b) {
 
 
 static inline unsigned int mod(int a, int b) {
-	int r = a % b;
-	return r < 0 ? r + b : r;
+	/* Will only enter one of the loops, and usually loop only once so the
+	  whiles are basically ifs */
+	while (a < 0) {
+		a += b;
+	}
+	while (a > b) {
+		a -= b;
+	}
+	return a;
 }
 
 static bool getCellLimits(const struct board *b, int x, int y) {

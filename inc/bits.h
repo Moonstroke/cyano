@@ -23,7 +23,7 @@
  *
  * \return The minimal number of chars (octets) necessary to hold \p size bits
  */
-#define NUM_OCTETS(size) ((size) / 8 + (((size) % 8) != 0))
+#define NUM_OCTETS(size) (((size) >> 3) + (((size) & 7) != 0))
 
 /** Access the bit at specified index in the given bit array.
  *
@@ -32,7 +32,7 @@
  *
  * \return The boolean value of the <tt>i</tt>-th bit in \p arr
  */
-#define GET_BIT(arr, i) (((arr)[(i) / 8] >> ((i) % 8)) & 1)
+#define GET_BIT(arr, i) (((arr)[(i) >> 3] >> ((i) & 7)) & 1)
 /**
  * Assign the given value to the bit at the specified index in the array.
  *
@@ -40,15 +40,15 @@
  * \param[in]  i   The index
  * \param[in]  val The value to assign
  */
-#define SET_BIT(arr, i, val) if (val) ((arr)[(i) / 8] |= 1 << ((i) % 8)); \
-                             else ((arr)[(i) / 8] &= ~(1 << ((i) % 8)))
+#define SET_BIT(arr, i, val) if (val) ((arr)[(i) >> 3] |= 1 << ((i) & 7)); \
+                             else ((arr)[(i) >> 3] &= ~(1 << ((i) & 7)))
 /**
  * Invert the value of the bit at specified index in the given bit array.
  *
  * \param[out] arr The array
  * \param[in]  i   The index
  */
-#define TOGGLE_BIT(arr, i) ((arr)[(i) / 8] ^= 1 << ((i) % 8))
+#define TOGGLE_BIT(arr, i) ((arr)[(i) >> 3] ^= 1 << ((i) & 7))
 
 
 /**
