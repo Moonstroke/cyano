@@ -7,15 +7,24 @@
 int initBoardWindow(struct boardwindow *bw, struct board *board,
                     unsigned int cell_pixels, unsigned int border_width,
                     const char *title, bool use_vsync) {
-	unsigned int winWidth = board->w * (cell_pixels + border_width) + border_width,
-	             winHeight = board->h * (cell_pixels + border_width) + border_width;
+	unsigned int winWidth = board->w * (cell_pixels + border_width)
+	                        + border_width,
+	             winHeight = board->h * (cell_pixels + border_width)
+	                         + border_width;
 
-	bw->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-	                           winWidth, winHeight, WINDOW_FLAGS);
+	Uint32 win_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS
+	                                    | SDL_WINDOW_INPUT_FOCUS;
+	bw->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,
+	                           SDL_WINDOWPOS_CENTERED, winWidth, winHeight,
+	                           win_flags);
 	if (bw->win == NULL) {
 		return -1;
 	}
-	bw->ren = SDL_CreateRenderer(bw->win, -1, RENDERER_FLAGS(use_vsync));
+	Uint32 ren_flags = SDL_RENDERER_ACCELERATED;
+	if (use_vsync) {
+		ren_flags |= SDL_RENDERER_PRESENTVSYNC;
+	}
+	bw->ren = SDL_CreateRenderer(bw->win, -1, ren_flags);
 	if (bw->ren == NULL) {
 		return -2;
 	}

@@ -19,20 +19,7 @@
 
 #include "board.h"
 
-/**
- * \brief The flags used to initialize the \a SDL_Window.
- */
-#define WINDOW_FLAGS   SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_INPUT_FOCUS
 
-/**
- * \brief The (static) default flags for the renderer.
- */
-#define REN_DEFT_FLAGS SDL_RENDERER_ACCELERATED
-/**
- * \brief The renderer flags used to initialize the renderer, with a parameter
- *        for (optionally enabled) vertical synchronization.
- */
-#define RENDERER_FLAGS(use_vsync) (use_vsync ? REN_DEFT_FLAGS | SDL_RENDERER_PRESENTVSYNC : REN_DEFT_FLAGS)
 
 /**
  * \brief default size in pixels, for the cell's representation.
