@@ -55,6 +55,7 @@ struct boardwindow {
 	/**< The \c x coordinate of the currently selected cell. */
 	    sel_y;
 	/**< The \c y coordinate of the currently selected cell. */
+	char error_msg[64]; /**< The error message if an operation fails */
 };
 
 

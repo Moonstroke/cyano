@@ -18,6 +18,7 @@ int initBoardWindow(struct boardwindow *bw, struct board *board,
 	                           SDL_WINDOWPOS_CENTERED, winWidth, winHeight,
 	                           win_flags);
 	if (bw->win == NULL) {
+		strncpy(bw->error_msg, SDL_GetError(), sizeof bw->error_msg);
 		return -1;
 	}
 	Uint32 ren_flags = SDL_RENDERER_ACCELERATED;
@@ -26,12 +27,14 @@ int initBoardWindow(struct boardwindow *bw, struct board *board,
 	}
 	bw->ren = SDL_CreateRenderer(bw->win, -1, ren_flags);
 	if (bw->ren == NULL) {
+		strncpy(bw->error_msg, SDL_GetError(), sizeof bw->error_msg);
 		return -2;
 	}
 	bw->board = board;
 	bw->cell_pixels = cell_pixels;
 	bw->sel_x = bw->sel_y = -1;
 	bw->border_width = border_width;
+	bw->error_msg[0] = '\0';
 
 	return 0;
 }
