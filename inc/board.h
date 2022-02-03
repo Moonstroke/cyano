@@ -71,18 +71,15 @@
  * \brief The type representing the board of the game.
  */
 struct board {
-	unsigned int w,
-	/**< The width of the board. */
-	             h;
-	/**< The height of the board. */
-	char *cells;
-	/**< The data of the board cells. */
+	unsigned int w; /**< The width of the board. */
+	unsigned int h; /**< The height of the board. */
+	char *cells; /**< The data of the board cells. */
+	/** The rules determining the evolution of the game, as a string in \e Golly
+	    format. */
 	const char *rules;
-	/**< The rules determining the evolution of the game, as a string in
-	     \e Golly format. */
+	/** A flag indicating whether the state on one side of the board affects the
+	    opposite side. */
 	bool wrap;
-	/**< A flag indicating whether the state on one side of the board affects
-	     the opposite side. */
 };
 
 

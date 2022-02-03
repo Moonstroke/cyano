@@ -17,24 +17,22 @@
  * \brief The structure holding the definition of a time scheduler.
  */
 struct timer {
-	double delay;
-	/**< The time to wait between two ticks */
-	unsigned int ticks;
-	/**< The number of ticks elapsed */
+	double delay; /**< The time to wait between two ticks */
+	unsigned int ticks; /**< The number of ticks elapsed */
 };
 
 
 /**
  * \brief Start the timer.
  *
- * \param[in,out] self The timer to start
+ * \param[in,out] timer The timer to start
  */
 void startTimer(struct timer *timer);
 
 /**
  * \brief Reset the timer to \c 0 and stops it.
  *
- * \param[out] self The timer to reset
+ * \param[out] timer The timer to reset
  */
 inline void resetTimer(struct timer *timer) {
 	timer->ticks = 0;
@@ -44,7 +42,7 @@ inline void resetTimer(struct timer *timer) {
 /**
  * \brief Retrieve the difference between the start of the timer and \e now.
  *
- * \param[in] self The timer
+ * \param[in] timer The timer
  *
  * \return The elapsed time, in \c ms, since the timer started
  */
@@ -53,7 +51,7 @@ unsigned int getDelta(const struct timer *timer);
 /**
  * \brief Calculate the remaining time to wait before the next refresh.
  *
- * \param[in] self The timer
+ * \param[in] timer The timer
  *
  * \return The remaining milliseconds before the next scheduled window update
  */

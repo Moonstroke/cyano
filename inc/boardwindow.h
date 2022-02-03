@@ -41,20 +41,18 @@
  * \brief The type handling the graphical display of the board.
  */
 struct boardwindow {
+	/** The board included in the window. */
 	struct board *board;
-	/**< The board included in the window. */
+	/** The technical type used by the SDL to display a window. */
 	SDL_Window *win;
-	/**< The technical type used by the SDL to display a window. */
+	/** The renderer of the SDL associated with the window. */
 	SDL_Renderer *ren;
-	/**< The renderer of the SDL associated with the window. */
+	/** The length of one cell's representation, in pixels. */
 	unsigned int cell_pixels;
-	/**< The length of one cell'srepresentation, in pixels. */
+	/** The size of the gap separating the cells. */
 	unsigned int border_width;
-	/**< The size of the gap separating the cells. */
-	int sel_x,
-	/**< The \c x coordinate of the currently selected cell. */
-	    sel_y;
-	/**< The \c y coordinate of the currently selected cell. */
+	int sel_x; /**< The \c x coordinate of the currently selected cell. */
+	int sel_y; /**< The \c y coordinate of the currently selected cell. */
 	char error_msg[64]; /**< The error message if an operation fails */
 };
 
