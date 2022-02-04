@@ -23,6 +23,7 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 	switch (event->type) {
 	case SDL_MOUSEBUTTONDOWN:
 		*mdown = true;
+		getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
 		toggleCell(bw->board, bw->sel_x, bw->sel_y);
 		*last_x = bw->sel_x;
 		*last_y = bw->sel_y;
