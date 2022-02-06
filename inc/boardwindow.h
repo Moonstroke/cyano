@@ -93,14 +93,14 @@ void renderBoardWindow(const struct boardwindow *boardwindow);
 
 
 /**
- * \brief Retrieve the coordinate, in cell units, of the cell whose position is
+ * \brief Retrieve the coordinates, in cell units, of the cell whose position is
  *        under the mouse cursor.
  *
  * \param[in]  boardwindow The board window
- * \param[out] x           The abscissa of the mouse cursor
- * \param[out] y           The ordinate of the mosue pointer
+ * \param[out] i           The column number of the hovered cell
+ * \param[out] j           The row number of the hovered cell
  */
-void getHoverCoord(const struct boardwindow *boardwindow, int *x, int *y);
+void getHoverCoord(const struct boardwindow *boardwindow, int *i, int *j);
 
 
 #endif /* BOARDWINDOW_H */

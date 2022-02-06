@@ -78,9 +78,9 @@ void renderBoardWindow(const struct boardwindow *bw) {
 	SDL_RenderPresent(bw->ren);
 }
 
-void getHoverCoord(const struct boardwindow *bw, int *x, int *y) {
-	unsigned int c = bw->cell_pixels, b = bw->border_width;
-	SDL_GetMouseState(x, y);
-	*x = (*x - b) / (c + b);
-	*y = (*y - b) / (c + b);
+void getHoverCoord(const struct boardwindow *bw, int *i, int *j) {
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	*i = (x - bw->border_width) / (bw->cell_pixels + bw->border_width);
+	*j = (y - bw->border_width) / (bw->cell_pixels + bw->border_width);
 }
