@@ -74,13 +74,26 @@ void renderBoardWindow(const struct boardwindow *bw) {
 		}
 	}
 	SDL_SetRenderDrawBlendMode(bw->ren, SDL_BLENDMODE_BLEND);
-	drawCell(bw->ren, &r, bw->sel_x, bw->sel_y, c, b, 127, 127, 127, 127);
+	if (bw->sel_x >= 0 && bw->sel_y >= 0) {
+		drawCell(bw->ren, &r, bw->sel_x, bw->sel_y, c, b, 127, 127, 127, 127);
+	}
 	SDL_RenderPresent(bw->ren);
 }
 
 void getHoverCoord(const struct boardwindow *bw, int *i, int *j) {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
-	*i = (x - bw->border_width) / (bw->cell_pixels + bw->border_width);
-	*j = (y - bw->border_width) / (bw->cell_pixels + bw->border_width);
+	unsigned int step = bw->cell_pixels + bw->border_width;
+	if ((x - bw->border_width) % step < bw->border_width) {
+		/* Hovering a vertical border */
+		*i = -1;
+	} else {
+		*i = (x - bw->border_width) / step;
+	}
+	if ((y - bw->border_width) % step < bw->border_width) {
+		/* Hovering a horizontal border */
+		*j = -1;
+	} else {
+		*j = (y - bw->border_width) / step;
+	}
 }
