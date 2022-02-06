@@ -17,6 +17,15 @@ int initApp(void) {
 	return 0;
 }
 
+static void handleMouseOnCell(struct boardwindow *bw, int *last_x,
+                              int *last_y) {
+	if (bw->sel_x > 0 && bw->sel_y > 0) {
+		toggleCell(bw->board, bw->sel_x, bw->sel_y);
+		*last_x = bw->sel_x;
+		*last_y = bw->sel_y;
+	}
+}
+
 static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
                         bool *loop, bool *mdown, bool *play,
                         int *last_x, int *last_y) {
@@ -24,11 +33,7 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 	case SDL_MOUSEBUTTONDOWN:
 		*mdown = true;
 		getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
-		if (bw->sel_x > 0 && bw->sel_y > 0) {
-			toggleCell(bw->board, bw->sel_x, bw->sel_y);
-			*last_x = bw->sel_x;
-			*last_y = bw->sel_y;
-		}
+		handleMouseOnCell(bw, last_x, last_y);
 		break;
 	case SDL_MOUSEBUTTONUP:
 		*mdown = false;
@@ -37,11 +42,7 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 		getHoverCoord(bw, &bw->sel_x, &bw->sel_y);
 		if (*mdown) {
 			if ((bw->sel_x != *last_x) || (bw->sel_y != *last_y)) {
-				if (bw->sel_x > 0 && bw->sel_y > 0) {
-					toggleCell(bw->board, bw->sel_x, bw->sel_y);
-					*last_x = bw->sel_x;
-					*last_y = bw->sel_y;
-				}
+				handleMouseOnCell(bw, last_x, last_y);
 			}
 		}
 		break;
