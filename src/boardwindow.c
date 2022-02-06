@@ -83,17 +83,20 @@ void renderBoardWindow(const struct boardwindow *bw) {
 void getHoverCoord(const struct boardwindow *bw, int *i, int *j) {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
+	/* Remove offset for up and left border */
+	x -= bw->border_width;
+	y -= bw->border_width;
 	unsigned int step = bw->cell_pixels + bw->border_width;
-	if ((x - bw->border_width) % step < bw->border_width) {
+	if (x % step < bw->border_width) {
 		/* Hovering a vertical border */
 		*i = -1;
 	} else {
-		*i = (x - bw->border_width) / step;
+		*i = x / step;
 	}
-	if ((y - bw->border_width) % step < bw->border_width) {
+	if (y % step < bw->border_width) {
 		/* Hovering a horizontal border */
 		*j = -1;
 	} else {
-		*j = (y - bw->border_width) / step;
+		*j = y / step;
 	}
 }
