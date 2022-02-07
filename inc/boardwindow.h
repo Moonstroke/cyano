@@ -91,6 +91,21 @@ void freeBoardWindow(struct boardwindow *boardwindow);
  */
 void renderBoardWindow(const struct boardwindow *boardwindow);
 
+/**
+ * \brief Transforms the window coordinates to a board cell location.
+ *
+ * \param[in]  boardwindow The board window
+ * \param[in]  x           The X window coordinate
+ * \param[in]  y           The Y window coordinate
+ * \param[out] i           The column number of the cell under (x,y)
+ * \param[out] j           The row number of the cell under (x,y)
+ *
+ * \note If either of the coordinates points over a border, \c -1 is returned in
+ *       the corresponding cell location.
+ */
+void getCellLoc(const struct boardwindow *boardwindow, int x, int y, int *i,
+                  int *j);
+
 
 /**
  * \brief Retrieve the coordinates, in cell units, of the cell whose position is
