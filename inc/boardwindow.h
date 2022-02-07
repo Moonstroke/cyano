@@ -99,6 +99,9 @@ void renderBoardWindow(const struct boardwindow *boardwindow);
  * \param[in]  boardwindow The board window
  * \param[out] i           The column number of the hovered cell
  * \param[out] j           The row number of the hovered cell
+ *
+ * \note If either of the coordinates points over a border, \c -1 is returned in
+ *       the corresponding cell location.
  */
 void getHoveredCellLoc(const struct boardwindow *boardwindow, int *i, int *j);
 
