@@ -32,14 +32,16 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 	switch (event->type) {
 	case SDL_MOUSEBUTTONDOWN:
 		*mdown = true;
-		getHoveredCellLoc(bw, &bw->sel_x, &bw->sel_y);
+		getCellLoc(bw, event->button.x, event->button.y, &bw->sel_x,
+		             &bw->sel_y);
 		handleMouseOnCell(bw, last_x, last_y);
 		break;
 	case SDL_MOUSEBUTTONUP:
 		*mdown = false;
 		break;
 	case SDL_MOUSEMOTION:
-		getHoveredCellLoc(bw, &bw->sel_x, &bw->sel_y);
+		getCellLoc(bw, event->motion.x, event->motion.y, &bw->sel_x,
+		             &bw->sel_y);
 		if (*mdown) {
 			if ((bw->sel_x != *last_x) || (bw->sel_y != *last_y)) {
 				handleMouseOnCell(bw, last_x, last_y);
