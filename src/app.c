@@ -31,13 +31,17 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
                         int *last_x, int *last_y) {
 	switch (event->type) {
 	case SDL_MOUSEBUTTONDOWN:
-		*mdown = true;
-		getCellLoc(bw, event->button.x, event->button.y, &bw->sel_x,
-		             &bw->sel_y);
-		handleMouseOnCell(bw, last_x, last_y);
+		if (event->button.button == SDL_BUTTON_LEFT) {
+			*mdown = true;
+			getCellLoc(bw, event->button.x, event->button.y, &bw->sel_x,
+			           &bw->sel_y);
+			handleMouseOnCell(bw, last_x, last_y);
+		}
 		break;
 	case SDL_MOUSEBUTTONUP:
-		*mdown = false;
+		if (event->button.button == SDL_BUTTON_LEFT) {
+			*mdown = false;
+		}
 		break;
 	case SDL_MOUSEMOTION:
 		getCellLoc(bw, event->motion.x, event->motion.y, &bw->sel_x,
