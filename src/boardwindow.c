@@ -80,7 +80,7 @@ void renderBoardWindow(const struct boardwindow *bw) {
 	SDL_RenderPresent(bw->ren);
 }
 
-void getHoverCoord(const struct boardwindow *bw, int *i, int *j) {
+void getHoveredCellLoc(const struct boardwindow *bw, int *i, int *j) {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 	/* Remove offset for up and left border */

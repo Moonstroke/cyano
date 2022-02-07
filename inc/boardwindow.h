@@ -100,7 +100,7 @@ void renderBoardWindow(const struct boardwindow *boardwindow);
  * \param[out] i           The column number of the hovered cell
  * \param[out] j           The row number of the hovered cell
  */
-void getHoverCoord(const struct boardwindow *boardwindow, int *i, int *j);
+void getHoveredCellLoc(const struct boardwindow *boardwindow, int *i, int *j);
 
 
 #endif /* BOARDWINDOW_H */
