@@ -1,6 +1,5 @@
 #include "board.h"
 
-#include <clog.h> /* for logging macros */
 #include <CUTE/cute.h>
 
 
@@ -22,11 +21,10 @@ CUTE_TestCase *case_board;
 
 static void setUp(void) {
 	int status;
-	debug("bonjour");
 	status = initBoard(&board, WIDTH, HEIGHT, WRAPS);
 	CUTE_assertEquals(status, 0);
 	setRules(&board, RULES);
-	verbose("Succesfully initialized %s board %ux%u",
+	fprintf(stderr, "Succesfully initialized %s board %ux%u\n",
 	        WRAPS ? "toroidal" : "rectangular", WIDTH, HEIGHT);
 }
 
@@ -37,16 +35,17 @@ static void tearDown(void) {
 
 void test_blinker_after_one_gen(void) {
 	unsigned int i;
-	notice("Test for the status of a blinker after one generation");
-	info("Create vertical blinker from (1, 0) to (1, 2)");
+	fputs("-- Test for the status of a blinker after one generation\n",
+	      stderr);
+	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
 	for(i = 0; i < 3; ++i) {
 		toggleCell(&board, 1, i);
 	}
 
-	info("Next generation");
+	fputs("Next generation\n", stderr);
 	updateBoard(&board);
 
-	info("Looking for horizontal blinker from (0, 1) to (2, 1)");
+	fputs("Looking for horizontal blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
 		CUTE_assertEquals(getBoardCell(&board, i, 1), true);
 	}
@@ -55,18 +54,19 @@ void test_blinker_after_one_gen(void) {
 
 void test_blinker_after_two_gens(void) {
 	unsigned int i;
-	notice("Test for the status of a blinker after two generations");
-	info("Create vertical blinker from (1, 0) to (1, 2)");
+	fputs("-- Test for the status of a blinker after two generations\n",
+	      stderr);
+	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
 	for(i = 0; i < 3; ++i) {
 		toggleCell(&board, 1, i);
 	}
 
-	info("Next generation");
+	fputs("Next generation\n", stderr);
 	updateBoard(&board);
-	info("Next generation");
+	fputs("Next generation\n", stderr);
 	updateBoard(&board);
 
-	info("Looking for horizontal blinker from (1, 0) to (1, 2)");
+	fputs("Looking for vertical blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
 		CUTE_assertEquals(getBoardCell(&board, 1, i), true);
 	}

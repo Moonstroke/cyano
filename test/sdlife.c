@@ -1,4 +1,3 @@
-#include <clog.h> /* for clog_init */
 #include <CUTE/cute.h>
 #include <stdlib.h> /* for EXIT_SUCCESS */
 
@@ -12,8 +11,6 @@ extern void build_case_clop(void);
 
 int main() {
 	CUTE_RunResults **results;
-
-	clog_init(CLOG_FORMAT_TEXT, CLOG_ATTR_FUNC | CLOG_ATTR_COLORED);
 
 	build_case_board();
 	build_case_clop();

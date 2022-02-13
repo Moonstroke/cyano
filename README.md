@@ -168,8 +168,6 @@ warning possible enabled).
 Apart from pre-installed packages, the source depends on the APT package
 `libsdl2-dev` to compile (and dependencies packages, of course).
 
-This project also depends on another of mine, the [logging system in C][clog]
-
 The compilation process is handled by *make*, and a Makefile is provided.
 
 The following rules are defined:
