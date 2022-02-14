@@ -18,6 +18,7 @@ int initBoard(struct board *b, unsigned int w, unsigned int h, bool wrap) {
 	return cells == NULL ? -1 : 0;
 }
 
+
 void freeBoard(struct board *b) {
 	free(b->cells);
 }
@@ -39,6 +40,7 @@ static bool getCellLimits(const struct board *b, int x, int y) {
 	unsigned int i = (unsigned)x, j = (unsigned)y;
 	return (i < b->w && j < b->h) ? GET_BIT(b->cells, b->w * j + i) : false;
 }
+
 static bool getCellWrap(const struct board *b, int x, int y) {
 	unsigned int i = mod(x, b->w), j = mod(y, b->h);
 	return GET_BIT(b->cells, b->w * j + i);
@@ -48,6 +50,7 @@ bool getBoardCell(const struct board *b, int i, int j) {
 	return (b->wrap ? getCellWrap : getCellLimits)(b, i, j);
 }
 
+
 bool toggleCell(struct board *b, unsigned int x, unsigned int y) {
 	if (x < b->w && y < b->h) {
 		TOGGLE_BIT(b->cells, b->w * y + x);
@@ -56,13 +59,16 @@ bool toggleCell(struct board *b, unsigned int x, unsigned int y) {
 	return false;
 }
 
+
 const char *getRules(const struct board *b) {
 	return b->rules;
 }
 
+
 void setRules(struct board *b, const char *r) {
 	b->rules = r;
 }
+
 
 static inline bool willBeBorn(unsigned int n, const char *r) {
 	char k = '0' + n;
@@ -171,6 +177,7 @@ int updateBoard(struct board *b) {
 	free(cellsBuffer);
 	return 0;
 }
+
 
 void clearBoard(struct board *b) {
 	memset(b->cells, false, NUM_OCTETS(b->w * b->h));

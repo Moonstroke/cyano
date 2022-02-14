@@ -91,6 +91,7 @@ void freeBoardWindow(struct boardwindow *boardwindow);
  */
 void renderBoardWindow(const struct boardwindow *boardwindow);
 
+
 /**
  * \brief Transforms the window coordinates to a board cell location.
  *

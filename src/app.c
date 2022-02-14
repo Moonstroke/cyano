@@ -17,6 +17,7 @@ int initApp(void) {
 	return 0;
 }
 
+
 static void handleMouseOnCell(struct boardwindow *bw, int *last_x,
                               int *last_y) {
 	if (bw->sel_x > 0 && bw->sel_y > 0) {

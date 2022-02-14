@@ -39,10 +39,12 @@ int initBoardWindow(struct boardwindow *bw, struct board *board,
 	return 0;
 }
 
+
 void freeBoardWindow(struct boardwindow *bw) {
 	SDL_DestroyWindow(bw->win);
 	SDL_DestroyRenderer(bw->ren);
 }
+
 
 static inline void drawCell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
                             unsigned int j, unsigned int c, unsigned int border,
@@ -79,6 +81,7 @@ void renderBoardWindow(const struct boardwindow *bw) {
 	}
 	SDL_RenderPresent(bw->ren);
 }
+
 
 void getCellLoc(const struct boardwindow *bw, int x, int y, int *i, int *j) {
 	/* Remove offset for up and left border */

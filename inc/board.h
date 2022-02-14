@@ -67,6 +67,7 @@
  */
 #define DEFAULT_BOARD_RULES "B3/S23"
 
+
 /**
  * \brief The type representing the board of the game.
  */
@@ -96,6 +97,7 @@ struct board {
  */
 int initBoard(struct board *board, unsigned int width, unsigned int height,
               bool wrap);
+
 
 /**
  * \brief Deallocate memory used by a board.
@@ -140,6 +142,7 @@ bool toggleCell(struct board *board, unsigned int x, unsigned int y);
  */
 const char *getRules(const struct board *board);
 
+
 /**
  * \brief Update the rules of the board, using a string to represent the rules.
  *
@@ -162,6 +165,7 @@ void setRules(struct board *board, const char *rules);
  * \return \c 0 if no error occurred (memory allocation, iteration)
  */
 int updateBoard(struct board *board);
+
 
 /**
  * \brief Clear the board.

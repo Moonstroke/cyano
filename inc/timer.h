@@ -13,6 +13,7 @@
 #define TIMER_H
 
 
+
 /**
  * \brief The structure holding the definition of a time scheduler.
  */
@@ -28,6 +29,7 @@ struct timer {
  * \param[in,out] timer The timer to start
  */
 void startTimer(struct timer *timer);
+
 
 /**
  * \brief Reset the timer to \c 0 and stops it.
@@ -47,6 +49,7 @@ inline void resetTimer(struct timer *timer) {
  * \return The elapsed time, in \c ms, since the timer started
  */
 unsigned int getDelta(const struct timer *timer);
+
 
 /**
  * \brief Calculate the remaining time to wait before the next refresh.

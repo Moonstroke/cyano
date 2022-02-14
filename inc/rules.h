@@ -10,6 +10,8 @@
 #ifndef RULES_H
 #define RULES_H
 
+
+
 /**
  * Retrieve the Golly format rule string from its corresponding name.
  *
