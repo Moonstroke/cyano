@@ -134,27 +134,6 @@ bool toggleCell(struct board *board, unsigned int x, unsigned int y);
 
 
 /**
- * \brief Retrieve the rules of evolution used for this board, as a string.
- *
- * \param[in] board The board
- *
- * \return The rules of the board, in \e Golly format
- */
-const char *getRules(const struct board *board);
-
-
-/**
- * \brief Update the rules of the board, using a string to represent the rules.
- *
- * \param[in,out] board The board
- * \param[in]     rules The new rules, as a string in \e Golly format
- *
- * \note The standard rules are represented by the string \c "B3/S23"
- */
-void setRules(struct board *board, const char *rules);
-
-
-/**
  * \brief Update the board to the next generation.
  *
  * The board is iterated, and each cell is updated according to the rules

@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 		fputs("Failure in creation of the game board\n", stderr);
 		return EXIT_FAILURE;
 	}
-	setRules(&b, game_rules);
+	b.rules = game_rules;
 
 	struct boardwindow bw;
 	if (initBoardWindow(&bw, &b, cell_pixels, border_width, "SDL Game of Life",

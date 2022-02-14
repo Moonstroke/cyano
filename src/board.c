@@ -60,16 +60,6 @@ bool toggleCell(struct board *b, unsigned int x, unsigned int y) {
 }
 
 
-const char *getRules(const struct board *b) {
-	return b->rules;
-}
-
-
-void setRules(struct board *b, const char *r) {
-	b->rules = r;
-}
-
-
 static inline bool willBeBorn(unsigned int n, const char *r) {
 	char k = '0' + n;
 	r = strchr(r, 'B') + 1;

@@ -23,7 +23,7 @@ static void setUp(void) {
 	int status;
 	status = initBoard(&board, WIDTH, HEIGHT, WRAPS);
 	CUTE_assertEquals(status, 0);
-	setRules(&board, RULES);
+	board.rules = RULES;
 	fprintf(stderr, "Succesfully initialized %s board %ux%u\n",
 	        WRAPS ? "toroidal" : "rectangular", WIDTH, HEIGHT);
 }
