@@ -100,6 +100,28 @@ int initBoard(struct board *board, unsigned int width, unsigned int height,
 
 
 /**
+ * \brief Initialize the board to the state described in the pattern string.
+ *
+ * The given string must be a representation of a Life board, as a rectangular
+ * text with dots representing dead cells and at-signs for live cells. All lines
+ * must be of the same length, which is interpreted as the board width, and the
+ * number of lines gives the board height.
+ *
+ * \note This function resets the board, so callers must pass either an
+ *       unititialized board or a board that has been passed to \c freeBoard
+ *       beforehand to avoid leaking memory.
+ *
+ * \param[out] board The board to initialize
+ * \param[in]  repr  The pattern, as a string of dots and @s
+ * \param[in]  wrap   If \c true, set up the grid as toroidal
+ *
+ * \return \c 0 iff the board was correctly initialized, a negative value
+ *         otherwise
+ */
+int loadBoard(struct board *board, const char *repr, bool wrap);
+
+
+/**
  * \brief Deallocate memory used by a board.
  *
  * \param[in,out] board The board to free
