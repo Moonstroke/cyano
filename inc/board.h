@@ -178,4 +178,20 @@ int updateBoard(struct board *board);
 void clearBoard(struct board *board);
 
 
+/**
+ * \brief Return a textual representation of the current state of the board.
+ *
+ * The returned string consists of lines of at-signs and dots to respectively
+ * represent live and dead cells, the lines separated with newline characters.
+ *
+ * \note The returned string is allocated dynamically; callers must take care of
+ * freeing it after use.
+ *
+ * \param[in] board The board
+ *
+ * \return A string representation of the current state of the board
+ */
+char *getBoardRepr(const struct board *board);
+
+
 #endif /* BOARD_H */
