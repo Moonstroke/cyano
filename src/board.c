@@ -19,6 +19,36 @@ int initBoard(struct board *b, unsigned int w, unsigned int h, bool wrap) {
 }
 
 
+static inline int initBoardFromRepr(struct board *board, const char *repr,
+                                    bool wrap) {
+	const char *itr = repr;
+	for (; *itr && *itr != '\n'; ++itr);
+	unsigned int width = itr - repr;
+	unsigned int height = 1;
+	for (; *itr; ++itr) {
+		if (*itr == '\n') {
+			++height;
+		}
+	}
+	return initBoard(board, width, height, wrap);
+}
+
+int loadBoard(struct board *board, const char *repr, bool wrap) {
+	int rc = initBoardFromRepr(board, repr, wrap);
+	if (rc < 0) {
+		return rc;
+	}
+
+	for (size_t i = 0; repr[i]; ++i) {
+		if (repr[i] == '@') {
+			SET_BIT(board->cells, i, true);
+		} else if (repr[i] != '.' && repr[i] != '\n') {
+			return -2;
+		}
+	}
+	return 0;
+}
+
 void freeBoard(struct board *b) {
 	free(b->cells);
 }
