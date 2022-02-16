@@ -25,9 +25,13 @@ static inline int initBoardFromRepr(struct board *board, const char *repr,
 	for (; *itr && *itr != '\n'; ++itr);
 	unsigned int width = itr - repr;
 	unsigned int height = 1;
-	for (; *itr; ++itr) {
+	/* Stepping width characters is faster, but assumes repr is well-formed */
+	for (; *itr; itr += width) {
 		if (*itr == '\n') {
 			++height;
+		} else {
+			/* We did not fall on a line break: repr is ill-formed */
+			return -2;
 		}
 	}
 	return initBoard(board, width, height, wrap);
@@ -43,7 +47,7 @@ int loadBoard(struct board *board, const char *repr, bool wrap) {
 		if (repr[i] == '@') {
 			SET_BIT(board->cells, i, true);
 		} else if (repr[i] != '.' && repr[i] != '\n') {
-			return -2;
+			return -3;
 		}
 	}
 	return 0;
