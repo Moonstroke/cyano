@@ -13,8 +13,9 @@ static inline int initBoardFromRepr(struct board *board, const char *repr,
 	for (; *itr && *itr != '\n'; ++itr);
 	unsigned int width = itr - repr;
 	unsigned int height = 1;
-	/* Stepping width characters is faster, but assumes repr is well-formed */
-	for (; *itr; itr += width) {
+	/* Stepping width + 1 characters is faster, but assumes repr is
+	   well-formed */
+	for (; *itr; itr += width + 1) {
 		if (*itr == '\n') {
 			++height;
 		} else {
