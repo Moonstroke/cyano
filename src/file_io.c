@@ -24,12 +24,15 @@ char *readFile(const char *path) {
 		fclose(file);
 		return NULL;
 	}
-	if (fread(text, 1, filesize, file) < (unsigned) filesize && ferror(file)) {
+	rewind(file);
+	if (fread(text, 1, filesize, file) < (unsigned) filesize || ferror(file)) {
 		free(text);
 		fclose(file);
 		return NULL;
 	}
-	if (text[filesize] == '\n') {
+	if (text[filesize - 1] == '\n') {
+		text[filesize - 1] = '\0';
+	} else {
 		text[filesize] = '\0';
 	}
 	fclose(file);
