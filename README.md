@@ -199,6 +199,7 @@ Short option|Long option|Description|Conflicts with another option?
 `-R RULE`|`--game-rule RULE`|The evolution rule of the game|None
 `-v`|`--vsync`|Follow vertical synchronization for refresh rate|`--update-rate`
 `-W`|`--wrap`|Create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
+`-f FILE`|`--file`|The path to the file to read from/to write to|None
 
 
 #### Documentation

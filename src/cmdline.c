@@ -8,7 +8,7 @@
 
 
 
-static const char *const OPTSTRING = "b:c:h:nr:R:vw:W";
+static const char *const OPTSTRING = "b:c:h:nr:R:vw:Wf:";
 
 /**
  * The long options array.
@@ -23,6 +23,7 @@ static const struct option LONGOPTS[] = {
 	{"update-rate",  required_argument, NULL, 'r'},
 	{"vsync",        no_argument      , NULL, 'v'},
 	{"wrap",         no_argument      , NULL, 'W'},
+	{"file",         required_argument, NULL, 'f'},
 	{"", 0, NULL, 0}
 };
 
@@ -75,7 +76,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
                          unsigned int *board_height, bool *wrap,
                          const char **game_rules, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync) {
+                         bool *use_vsync, const char **file) {
 	int ch, idx, res = 0, i;
 	bool opt_r_met = false,
 	     opt_v_met = false,
@@ -125,6 +126,9 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				break;
 			case 'W':
 				*wrap = true;
+				break;
+			case 'f':
+				*file = optarg;
 				break;
 			default:
 				break;

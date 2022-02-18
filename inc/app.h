@@ -43,6 +43,7 @@ int initApp(void);
  * \param[out] update_rate  The number of times the board evolves per second
  * \param[out] use_vsync    Whether the update rate is fixed to the monitor's
  *                          refresh rate
+ * \param[out] file         The file with which to communicate (reading, writing)
  *
  * \return \c 0 on success
  */
@@ -50,7 +51,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
                          unsigned int *board_height, bool *wrap,
                          const char **game_rules, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync);
+                         bool *use_vsync, const char **file);
 
 
 /**

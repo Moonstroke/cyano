@@ -15,10 +15,11 @@ int main(int argc, char **argv) {
 	             border_width = DEFAULT_BORDER_WIDTH;
 	bool use_vsync = false, wrap = false;
 	const char *game_rules = DEFAULT_BOARD_RULES;
+	const char *file = NULL;
 
 	if (parseCommandLineArgs(argc, argv, &board_width, &board_height, &wrap,
 	                         &game_rules, &cell_pixels, &border_width,
-	                         &update_rate, &use_vsync) < 0) {
+	                         &update_rate, &use_vsync, &file) < 0) {
 		return EXIT_FAILURE;
 	}
 
