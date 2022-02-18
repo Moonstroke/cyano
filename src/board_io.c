@@ -32,10 +32,12 @@ int loadBoard(struct board *board, const char *repr, bool wrap) {
 		return rc;
 	}
 
-	for (size_t i = 0; repr[i]; ++i) {
-		if (repr[i] == '@') {
+	for (size_t i = 0; *repr; ++i, ++repr) {
+		if (*repr == '@') {
 			SET_BIT(board->cells, i, true);
-		} else if (repr[i] != '.' && repr[i] != '\n') {
+		} else if (*repr == '\n') {
+			++repr;
+		} else if (*repr != '.') {
 			return -3;
 		}
 	}
