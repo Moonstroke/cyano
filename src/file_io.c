@@ -24,7 +24,7 @@ char *readFile(const char *path) {
 		fclose(file);
 		return NULL;
 	}
-	if (fread(text, 1, filesize, file) < filesize && ferror(file)) {
+	if (fread(text, 1, filesize, file) < (unsigned) filesize && ferror(file)) {
 		free(text);
 		fclose(file);
 		return NULL;
