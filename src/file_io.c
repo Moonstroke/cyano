@@ -29,6 +29,9 @@ char *readFile(const char *path) {
 		fclose(file);
 		return NULL;
 	}
+	if (text[filesize] == '\n') {
+		text[filesize] = '\0';
+	}
 	fclose(file);
 	return text;
 }

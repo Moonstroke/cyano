@@ -15,6 +15,9 @@
 /**
  * \brief Read the content of the file of given path in a string and return it.
  *
+ * If there is a trailing newline at the end of the file, this function removes
+ * it.
+ *
  * \note The returned value is allocated on the heap and needs to be freed.
  *
  * \param[in] path The path to the source file
