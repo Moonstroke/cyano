@@ -1,4 +1,4 @@
-#include <stdlib.h> /* for EXIT_* */
+#include <stdlib.h> /* for EXIT_*, free */
 
 #include "app.h"
 #include "board.h"
@@ -29,14 +29,14 @@ int main(int argc, char **argv) {
 	}
 
 	struct board b;
+	char *repr = NULL;
 	if (file != NULL && isFile(file)) {
-		char *repr = readFile(file);
+		repr = readFile(file);
 		if (repr == NULL) {
 			fprintf(stderr, "Could not read from file \"%s\"\n", file);
 			return EXIT_FAILURE;
 		}
 		int rc = loadBoard(&b, repr, wrap);
-		free(repr);
 		if (rc < 0) {
 			fputs("Failure in creation of the game board\n", stderr);
 			return EXIT_FAILURE;
@@ -55,8 +55,9 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	runApp(&bw, update_rate, use_vsync);
+	runApp(&bw, update_rate, use_vsync, repr);
 
+	free(repr);
 	freeBoard(&b);
 	freeBoardWindow(&bw);
 	terminateApp();

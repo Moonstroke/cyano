@@ -27,9 +27,24 @@ static void handleMouseOnCell(struct boardwindow *bw, int *last_x,
 	}
 }
 
+static inline void resetBoard(struct board *board, const char *repr, bool *play,
+                             bool *loop) {
+	if (repr != NULL) {
+		if (*play) {
+			*play = false;
+		}
+		bool wrap = board->wrap;
+		freeBoard(board);
+		if (loadBoard(board, repr, wrap) < 0) {
+			fputs("Error while resetting the board\n", stderr);
+			*loop = false;
+		}
+	}
+}
+
 static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
                         bool *loop, bool *mdown, bool *play,
-                        int *last_x, int *last_y) {
+                        int *last_x, int *last_y, const char *repr) {
 	switch (event->type) {
 	case SDL_MOUSEBUTTONDOWN:
 		if (event->button.button == SDL_BUTTON_LEFT) {
@@ -86,6 +101,9 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 			case SDLK_t:
 				toggleCell(bw->board, bw->sel_x, bw->sel_y);
 				break;
+			case SDLK_r:
+				resetBoard(bw->board, repr, play, loop);
+				break;
 			/* The window can be closed with ESC, CTRL+q or CTRL+w */
 			case SDLK_q:
 			case SDLK_w:
@@ -106,7 +124,8 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 	}
 }
 
-void runApp(struct boardwindow *bw, unsigned int update_rate, bool use_vsync) {
+void runApp(struct boardwindow *bw, unsigned int update_rate, bool use_vsync,
+            const char *repr) {
 	struct timer timer;
 	resetTimer(&timer);
 	timer.delay = 1000. / (double)update_rate;
@@ -120,7 +139,8 @@ void runApp(struct boardwindow *bw, unsigned int update_rate, bool use_vsync) {
 		renderBoardWindow(bw);
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
-			handleEvent(&event, bw, &loop, &mdown, &play, &last_x, &last_y);
+			handleEvent(&event, bw, &loop, &mdown, &play, &last_x, &last_y,
+			            repr);
 		}
 
 		if (play) {

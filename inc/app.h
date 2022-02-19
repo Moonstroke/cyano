@@ -61,9 +61,10 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
  * \param[in] update_rate The number of times the board evolves per second
  * \param[in] use_vsync   Whether the update rate is fixed to the monitor's
  *                        refresh rate
+ * \param[in] repr        The representation of the initial state to reset to
  */
 void runApp(struct boardwindow *boardwindow, unsigned int update_rate,
-           bool use_vsync);
+           bool use_vsync, const char *repr);
 
 
 /**
