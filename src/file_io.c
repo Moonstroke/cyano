@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h> /* for access */
 
 
 
@@ -37,4 +38,8 @@ char *readFile(const char *path) {
 	}
 	fclose(file);
 	return text;
+}
+
+bool isFile(const char *path) {
+	return access(path, F_OK) == 0;
 }

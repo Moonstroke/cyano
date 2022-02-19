@@ -11,6 +11,9 @@
 #define FILE_IO_H
 
 
+#include <stdbool.h>
+
+
 
 /**
  * \brief Read the content of the file of given path in a string and return it.
@@ -39,5 +42,14 @@ char *readFile(const char *path);
  */
 int writeFile(const char *path, const char *text);
 
+
+/**
+ * \brief Determines whether the given path is a regular file or not.
+ *
+ * \param[in] path The path to check for existence
+ *
+ * \return \c true iff the path names an existing regular file
+ */
+bool isFile(const char *path);
 
 #endif /* FILE_IO_H */
