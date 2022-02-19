@@ -29,7 +29,7 @@ int main(int argc, char **argv) {
 	}
 
 	struct board b;
-	if (file != NULL) {
+	if (file != NULL && isFile(file)) {
 		char *repr = readFile(file);
 		if (repr == NULL) {
 			fprintf(stderr, "Could not read from file \"%s\"\n", file);
