@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	runApp(&bw, update_rate, use_vsync, repr);
+	runApp(&bw, update_rate, use_vsync, repr, file);
 
 	free(repr);
 	freeBoard(&b);

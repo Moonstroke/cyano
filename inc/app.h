@@ -62,9 +62,10 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
  * \param[in] use_vsync   Whether the update rate is fixed to the monitor's
  *                        refresh rate
  * \param[in] repr        The representation of the initial state to reset to
+ * \param[in] out_file    The path to the file where to write the board state
  */
 void runApp(struct boardwindow *boardwindow, unsigned int update_rate,
-           bool use_vsync, const char *repr);
+           bool use_vsync, const char *repr, const char *out_file);
 
 
 /**
