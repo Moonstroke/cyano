@@ -4,6 +4,7 @@
 
 #include "board.h"
 #include "boardwindow.h"
+#include "file_io.h" /* for writeFile */
 #include "timer.h"
 
 
@@ -40,6 +41,17 @@ static inline void resetBoard(struct board *board, const char *repr, bool *play,
 			*loop = false;
 		}
 	}
+}
+
+static inline int outputBoard(const struct board *board,
+                              const char *out_file) {
+	char *repr = getBoardRepr(board);
+	if (repr == NULL) {
+		return -1;
+	}
+	int rc = writeFile(out_file, repr);
+	free(repr);
+	return rc;
 }
 
 static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
@@ -105,9 +117,15 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 			case SDLK_r:
 				resetBoard(bw->board, repr, play, loop);
 				break;
-			/* The window can be closed with ESC, CTRL+q or CTRL+w */
-			case SDLK_q:
+			/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
+			   writes the board state */
 			case SDLK_w:
+				if (event->key.keysym.mod & KMOD_CTRL) {
+					*loop = false;
+				} else {
+					outputBoard(bw->board, out_file);
+				}
+			case SDLK_q:
 				if (!(event->key.keysym.mod & KMOD_CTRL)) {
 					break;
 				}
