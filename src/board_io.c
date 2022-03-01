@@ -53,9 +53,10 @@ char *getBoardRepr(const struct board *board) {
 	}
 	for (unsigned int j = 0; j < board->h; ++j) {
 		for (unsigned int i = 0; i < board->w; ++i) {
-			repr[j * board->h + i] = getBoardCell(board, i, j) ? '@' : '.';
+			repr[j * (board->w + 1) + i] = getBoardCell(board, i, j) ? '@'
+			                                                         : '.';
 		}
-		repr[j + board->w] = '\n';
+		repr[j * (board->w + 1) + board->w] = '\n';
 	}
 	repr[(board->w + 1) * board->h - 1] = '\0';
 	return repr;
