@@ -47,11 +47,15 @@ int writeFile(const char *path, const char *text) {
 		return -1;
 	}
 	size_t len = strlen(text);
-	size_t written = fwrite(text, 1, len, file);
-	fclose(file);
-	if (written < len) {
+	if (fwrite(text, 1, len, file) < len) {
+		fclose(file);
 		return -2;
 	}
+	if (text[len - 1] != '\n' && fputc('\n', file) != '\n') {
+		fclose(file);
+		return -3;
+	}
+	fclose(file);
 	return 0;
 }
 
