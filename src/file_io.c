@@ -7,7 +7,36 @@
 
 
 
+static char *readStdin(void) {
+	/* Since stdin is a stream and not a regular file, fseek won't work on it.
+	   The only way is to iterate with a buffer and append to the result
+	   string */
+	char *text = NULL;
+	char buffer[128];
+	size_t len = 0;
+	size_t read;
+	while ((read = fread(buffer, 1, sizeof buffer, stdin)) > 0) {
+		text = realloc(text, len + read);
+		if (text == NULL) {
+			return NULL;
+		}
+		strncpy(text + len, buffer, read);
+		len += read;
+	}
+	if (ferror(stdin)) {
+		free(text);
+		return NULL;
+	}
+	if (text[len - 1] == '\n') {
+		text[len - 1] = '\0';
+	}
+	return text;
+}
+
 char *readFile(const char *path) {
+	if (strcmp(path, "-") == 0) {
+		return readStdin();
+	}
 	FILE *file = fopen(path, "r");
 	if (file == NULL) {
 		return NULL;
