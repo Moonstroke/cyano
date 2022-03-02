@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 
 	struct board b;
 	char *repr = NULL;
-	if (file != NULL && isFile(file)) {
+	if (file != NULL && (strcmp(file, "-") == 0 || isFile(file))) {
 		repr = readFile(file);
 		if (repr == NULL) {
 			fprintf(stderr, "Could not read from file \"%s\"\n", file);
