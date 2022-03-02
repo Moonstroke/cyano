@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> /* for strlen */
+#include <string.h> /* for strcmp, strlen */
 #include <unistd.h> /* for access */
 
 
@@ -41,7 +41,22 @@ char *readFile(const char *path) {
 	return text;
 }
 
+
+static int writeStdout(const char *text) {
+	size_t len = strlen(text);
+	if (fwrite(text, 1, len, stdout) < len) {
+		return -1;
+	}
+	if (text[len - 1] != '\n' && fputc('\n', stdout) != '\n') {
+		return -2;
+	}
+	return 0;
+}
+
 int writeFile(const char *path, const char *text) {
+	if (strcmp(path, "-") == 0) {
+		return writeStdout(text);
+	}
 	FILE *file = fopen(path, "w");
 	if (file == NULL) {
 		return -1;

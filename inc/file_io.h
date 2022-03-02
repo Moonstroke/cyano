@@ -33,9 +33,13 @@ char *readFile(const char *path);
 /**
  * \brief Write the given text to the file of given path.
  *
+ * If the input path is simply \c "-", the text will be written to the standard
+ * output stream.
+ *
  * \note If the file does not exist, it will be created, otherwise its content
  *       will be overwritten.
- * \param[in] path The path to the destination file
+ *
+ * \param[in] path The path to the destination file, or \c "-"
  * \param[in] text The value to write in the file
  *
  * \return \c 0 on success, a negative value on error
