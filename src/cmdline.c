@@ -84,6 +84,11 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 	     opt_v_met = false,
 	     opt_b_met = false,
 	     opt_n_met = false;
+	bool opt_w_met = false;
+	bool opt_h_met = false;
+	bool opt_f_met = false;
+	bool opt_i_met = false;
+	bool opt_o_met = false;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
@@ -101,6 +106,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				if (getval('h', optarg, board_height) < 0) {
 					return -3;
 				}
+				opt_h_met = true;
 				break;
 			case 'n':
 				*border_width = 0;
@@ -125,6 +131,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				if (getval('w', optarg, board_width) < 0) {
 					return -6;
 				}
+				opt_w_met = true;
 				break;
 			case 'W':
 				*wrap = true;
@@ -135,9 +142,11 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				break;
 			case 'i':
 				// TODO
+				opt_i_met = true;
 				break;
 			case 'o':
 				// TODO
+				opt_o_met = true;
 				break;
 			default:
 				break;
@@ -152,10 +161,20 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 		fputs("Error: options --border-width and --no-border are incompatible\n", stderr);
 		return -8;
 	}
+	if (opt_f_met && (opt_i_met || opt_o_met)) {
+		fputs("Error: options --file is incompatible with --input-file and --output-file",
+		      stderr);
+		return -9;
+	}
+	if (opt_i_met && (opt_w_met || opt_h_met)) {
+		fputs("Error: options --width and --height are incompatible with --input-file",
+		      stderr);
+		return -10;
+	}
 	for (i = optind; i < argc; ++i) {
 		res++;
 		fprintf(stderr, "Warning: skipping unrecognized non-option argument \"%s\"\n",
 		        argv[i]);
 	}
-	return res == argc - 1 ? 0 : -9;
+	return res == argc - 1 ? 0 : -11;
 }
