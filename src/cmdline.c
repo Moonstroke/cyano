@@ -8,7 +8,7 @@
 
 
 
-static const char *const OPTSTRING = "b:c:h:nr:R:vw:Wf:";
+static const char *const OPTSTRING = "b:c:h:nr:R:vw:Wf:i:o:";
 
 /**
  * The long options array.
@@ -24,6 +24,8 @@ static const struct option LONGOPTS[] = {
 	{"vsync",        no_argument      , NULL, 'v'},
 	{"wrap",         no_argument      , NULL, 'W'},
 	{"file",         required_argument, NULL, 'f'},
+	{"input-file",   required_argument, NULL, 'i'},
+	{"output-file",  required_argument, NULL, 'o'},
 	{"", 0, NULL, 0}
 };
 
@@ -129,6 +131,13 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				break;
 			case 'f':
 				*file = optarg;
+				opt_f_met = true;
+				break;
+			case 'i':
+				// TODO
+				break;
+			case 'o':
+				// TODO
 				break;
 			default:
 				break;
