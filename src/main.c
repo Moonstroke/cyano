@@ -16,11 +16,13 @@ int main(int argc, char **argv) {
 	             border_width = DEFAULT_BORDER_WIDTH;
 	bool use_vsync = false, wrap = false;
 	const char *game_rules = DEFAULT_BOARD_RULES;
-	const char *file = NULL;
+	const char *in_file = NULL;
+	const char *out_file = NULL;
 
 	if (parseCommandLineArgs(argc, argv, &board_width, &board_height, &wrap,
 	                         &game_rules, &cell_pixels, &border_width,
-	                         &update_rate, &use_vsync, &file) < 0) {
+	                         &update_rate, &use_vsync, &in_file,
+	                         &out_file) < 0) {
 		return EXIT_FAILURE;
 	}
 
@@ -30,10 +32,10 @@ int main(int argc, char **argv) {
 
 	struct board b;
 	char *repr = NULL;
-	if (file != NULL && (strcmp(file, "-") == 0 || isFile(file))) {
-		repr = readFile(file);
+	if (in_file != NULL && strcmp(in_file, "-") == 0) {
+		repr = readFile(in_file);
 		if (repr == NULL) {
-			fprintf(stderr, "Could not read from file \"%s\"\n", file);
+			fprintf(stderr, "Could not read from file \"%s\"\n", in_file);
 			return EXIT_FAILURE;
 		}
 		int rc = loadBoard(&b, repr, wrap);
@@ -55,7 +57,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	runApp(&bw, update_rate, use_vsync, repr, file);
+	runApp(&bw, update_rate, use_vsync, repr, out_file);
 
 	free(repr);
 	freeBoard(&b);

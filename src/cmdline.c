@@ -78,7 +78,8 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
                          unsigned int *board_height, bool *wrap,
                          const char **game_rules, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync, const char **file) {
+                         bool *use_vsync, const char **in_file,
+                         const char **out_file) {
 	int ch, idx, res = 0, i;
 	bool opt_r_met = false,
 	     opt_v_met = false,
@@ -137,15 +138,15 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				*wrap = true;
 				break;
 			case 'f':
-				*file = optarg;
+				*in_file = *out_file = optarg;
 				opt_f_met = true;
 				break;
 			case 'i':
-				// TODO
+				*in_file = optarg;
 				opt_i_met = true;
 				break;
 			case 'o':
-				// TODO
+				*out_file = optarg;
 				opt_o_met = true;
 				break;
 			default:
