@@ -1,5 +1,6 @@
 #include "board.h"
 
+#include <ctype.h> /* for isspace */
 #include <stddef.h> /* for size_t */
 #include <stdio.h> /* for sscanf */
 #include <stdlib.h> /* for malloc */
@@ -8,6 +9,78 @@
 #include "bits.h" /* for SET_BIT */
 
 
+
+static inline int setRunLength(struct board *board, unsigned int *i,
+                               const char **repr) {
+	char *end = NULL;
+	long length = strtol(*repr, &end, 10);
+	*repr = end;
+	if (*i + length > board->w) {
+		return -4;
+	}
+	char state = *++*repr;
+	if (state == 'o') {
+		for (int n = 0; n < length; ++n) {
+			SET_BIT(board->cells, *i + n, true);
+		}
+	} else if (state != 'b') { /* Invalid character */
+		return -5;
+	}
+	*i += length;
+	return 0;
+}
+
+static inline int initCellsFromRLE(struct board *board, const char *repr) {
+	unsigned int i = 0;
+	unsigned int j = 0;
+	int rc;
+	while (*repr++) {
+		switch (*repr) {
+			case '!': /* End of repr */
+				return 0;
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				if ((rc = setRunLength(board, &i, &repr)) < 0) {
+					return rc;
+				}
+				break;
+			case 'o':
+				SET_BIT(board->cells, j * board->w + i, true);
+			/* Fall-through intended */
+			case 'b':
+				if (++i >= board->w) {
+					return -1;
+				}
+				break;
+			case '$':
+				/* No board width checking because end of row can be omitted if
+				   all cells are blank */
+				if (++j >= board->h) {
+					return -2;
+				}
+				break;
+ 			default:
+				if (isspace(*repr)) {
+					/* Whitespace is ignored anywhere outside of run length
+					   specifications to allow for line wrapping and pattern
+					   readability */
+					break;
+				}
+				/* Unexpected character, may be a 0 starting a run length, NUL
+				   byte, anything that is not handled in the cases is considered
+				   invalid. */
+				return -3;
+		}
+	}
+	return 0;
+}
 
 static inline int initBoardFromRLE(struct board *board, const char *repr,
                                    bool wrap) {
@@ -34,8 +107,7 @@ static inline int initBoardFromRLE(struct board *board, const char *repr,
 		strcpy(rule, rule_buffer);
 		board->rules = rule;
 	}
-	// TODO init board cells
-	return 0;
+	return initCellsFromRLE(board, strchr(repr, '\n') + 1);
 }
 
 static inline int initBoardFromRepr(struct board *board, const char *repr,
