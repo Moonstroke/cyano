@@ -1,11 +1,42 @@
 #include "board.h"
 
 #include <stddef.h> /* for size_t */
+#include <stdio.h> /* for sscanf */
 #include <stdlib.h> /* for malloc */
+#include <string.h> /* for strlen, strcpy */
 
 #include "bits.h" /* for SET_BIT */
 
 
+
+static inline int initBoardFromRLE(struct board *board, const char *repr,
+                                   bool wrap) {
+	char rule_buffer[22] = {0};
+	unsigned int w, h;
+	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
+	if (rc < 2) {
+		/* No proper RLE header line, probably not RLE at all */
+		return -2;
+	}
+	/* x and y specifications are mandatory, rule is optional */
+	bool add_rules = rc == 3;
+	rc = initBoard(board, w, h, wrap);
+	if (rc < 0) {
+		return rc;
+	}
+	if (add_rules) {
+		size_t len = strlen(rule_buffer);
+		char *rule = malloc(len);
+		if (rule == NULL) {
+			freeBoard(board);
+			return -3;
+		}
+		strcpy(rule, rule_buffer);
+		board->rules = rule;
+	}
+	// TODO init board cells
+	return 0;
+}
 
 static inline int initBoardFromRepr(struct board *board, const char *repr,
                                     bool wrap) {
@@ -27,7 +58,11 @@ static inline int initBoardFromRepr(struct board *board, const char *repr,
 }
 
 int loadBoard(struct board *board, const char *repr, bool wrap) {
-	int rc = initBoardFromRepr(board, repr, wrap);
+	int rc = initBoardFromRLE(board, repr, wrap);
+	if (rc <= 0) { /* > 0 means not RLE */
+		return rc;
+	}
+	rc = initBoardFromRepr(board, repr, wrap);
 	if (rc < 0) {
 		return rc;
 	}
