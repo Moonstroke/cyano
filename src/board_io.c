@@ -11,17 +11,17 @@
 
 
 static inline int setRunLength(struct board *board, unsigned int *i,
-                               const char **repr) {
+                               unsigned int j, const char **repr) {
 	char *end = NULL;
 	long length = strtol(*repr, &end, 10);
 	*repr = end;
 	if (*i + length > board->w) {
 		return -4;
 	}
-	char state = *++*repr;
+	char state = **repr;
 	if (state == 'o') {
 		for (int n = 0; n < length; ++n) {
-			SET_BIT(board->cells, *i + n, true);
+			SET_BIT(board->cells, j * board->w + *i + n, true);
 		}
 	} else if (state != 'b') { /* Invalid character */
 		return -5;
@@ -34,7 +34,7 @@ static inline int initCellsFromRLE(struct board *board, const char *repr) {
 	unsigned int i = 0;
 	unsigned int j = 0;
 	int rc;
-	while (*repr++) {
+	for (; *repr; ++repr) {
 		switch (*repr) {
 			case '!': /* End of repr */
 				return 0;
@@ -47,7 +47,7 @@ static inline int initCellsFromRLE(struct board *board, const char *repr) {
 			case '7':
 			case '8':
 			case '9':
-				if ((rc = setRunLength(board, &i, &repr)) < 0) {
+				if ((rc = setRunLength(board, &i, j, &repr)) < 0) {
 					return rc;
 				}
 				break;
@@ -55,7 +55,7 @@ static inline int initCellsFromRLE(struct board *board, const char *repr) {
 				SET_BIT(board->cells, j * board->w + i, true);
 			/* Fall-through intended */
 			case 'b':
-				if (++i >= board->w) {
+				if (++i > board->w) {
 					return -1;
 				}
 				break;
@@ -65,6 +65,7 @@ static inline int initCellsFromRLE(struct board *board, const char *repr) {
 				if (++j >= board->h) {
 					return -2;
 				}
+				i = 0;
 				break;
  			default:
 				if (isspace(*repr)) {
