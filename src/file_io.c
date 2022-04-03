@@ -7,7 +7,7 @@
 
 
 
-static char *readStdin(void) {
+static char *_readStdin(void) {
 	/* Since stdin is a stream and not a regular file, fseek won't work on it.
 	   The only way is to iterate with a buffer and append to the result
 	   string */
@@ -35,7 +35,7 @@ static char *readStdin(void) {
 
 char *readFile(const char *path) {
 	if (strcmp(path, "-") == 0) {
-		return readStdin();
+		return _readStdin();
 	}
 	FILE *file = fopen(path, "r");
 	if (file == NULL) {
@@ -71,7 +71,7 @@ char *readFile(const char *path) {
 }
 
 
-static int writeStdout(const char *text) {
+static int _writeStdout(const char *text) {
 	size_t len = strlen(text);
 	if (fwrite(text, 1, len, stdout) < len) {
 		return -1;
@@ -84,7 +84,7 @@ static int writeStdout(const char *text) {
 
 int writeFile(const char *path, const char *text) {
 	if (strcmp(path, "-") == 0) {
-		return writeStdout(text);
+		return _writeStdout(text);
 	}
 	FILE *file = fopen(path, "w");
 	if (file == NULL) {

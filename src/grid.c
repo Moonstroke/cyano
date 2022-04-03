@@ -36,18 +36,18 @@ static inline unsigned int mod(int a, int b) {
 	return a;
 }
 
-static bool getCellLimits(const struct grid *g, int x, int y) {
+static bool _getCellLimits(const struct grid *g, int x, int y) {
 	unsigned int i = (unsigned)x, j = (unsigned)y;
 	return (i < g->w && j < g->h) ? GET_BIT(g->cells, g->w * j + i) : false;
 }
 
-static bool getCellWrap(const struct grid *g, int x, int y) {
+static bool _getCellWrap(const struct grid *g, int x, int y) {
 	unsigned int i = mod(x, g->w), j = mod(y, g->h);
 	return GET_BIT(g->cells, g->w * j + i);
 }
 
 bool getGridCell(const struct grid *g, int i, int j) {
-	return (g->wrap ? getCellWrap : getCellLimits)(g, i, j);
+	return (g->wrap ? _getCellWrap : _getCellLimits)(g, i, j);
 }
 
 
@@ -60,7 +60,7 @@ bool toggleCell(struct grid *g, unsigned int x, unsigned int y) {
 }
 
 
-static inline bool willBeBorn(unsigned int n, const char *r) {
+static inline bool _willBeBorn(unsigned int n, const char *r) {
 	char k = '0' + n;
 	r = strchr(r, 'B') + 1;
 	while (*r != '\0' && (*r != '/' && *r != 'S') && *r != k) {
@@ -69,7 +69,7 @@ static inline bool willBeBorn(unsigned int n, const char *r) {
 	return *r == k;
 }
 
-static inline bool willSurvive(unsigned int n, const char *r) {
+static inline bool _willSurvive(unsigned int n, const char *r) {
 	char k = '0' + n;
 	r = strchr(r, 'S') + 1;
 	while (*r != '\0' && *r != k) {
@@ -78,19 +78,19 @@ static inline bool willSurvive(unsigned int n, const char *r) {
 	return *r == k;
 }
 
-static void updateCell(struct grid *g, size_t rowOffset, const char *rowBuffer,
-                       size_t cellOffset, unsigned int neighbors) {
+static void _updateCell(struct grid *g, size_t rowOffset, const char *rowBuffer,
+                        size_t cellOffset, unsigned int neighbors) {
 	bool (*willBeAlive)(unsigned int, const char*);
 	if (GET_BIT(rowBuffer, g->w + cellOffset)) {
-		willBeAlive = willSurvive;
+		willBeAlive = _willSurvive;
 	} else {
-		willBeAlive = willBeBorn;
+		willBeAlive = _willBeBorn;
 	}
 	SET_BIT(g->cells, rowOffset + cellOffset, willBeAlive(neighbors, g->rule));
 }
 
-static void updateRow(struct grid *g, size_t rowOffset, const char *rowBuffer,
-                      const char *btmRow, size_t btmRowOffset) {
+static void _updateRow(struct grid *g, size_t rowOffset, const char *rowBuffer,
+                       const char *btmRow, size_t btmRowOffset) {
 	unsigned int neighbors = 0;
 	neighbors = GET_BIT(rowBuffer, 0)
 	          + GET_BIT(rowBuffer, 1)
@@ -102,7 +102,7 @@ static void updateRow(struct grid *g, size_t rowOffset, const char *rowBuffer,
 		           + GET_BIT(rowBuffer, g->w * 2 - 1)
 		           + GET_BIT(btmRow, btmRowOffset + g->w - 1);
 	}
-	updateCell(g, rowOffset, rowBuffer, 0, neighbors);
+	_updateCell(g, rowOffset, rowBuffer, 0, neighbors);
 	for (size_t i = 1; i < g->w - 1; ++i) {
 		neighbors = GET_BIT(rowBuffer, i - 1)
 		          + GET_BIT(rowBuffer, i)
@@ -112,7 +112,7 @@ static void updateRow(struct grid *g, size_t rowOffset, const char *rowBuffer,
 		          + GET_BIT(btmRow, btmRowOffset + i - 1)
 		          + GET_BIT(btmRow, btmRowOffset + i)
 		          + GET_BIT(btmRow, btmRowOffset + i + 1);
-		updateCell(g, rowOffset, rowBuffer, i, neighbors);
+		_updateCell(g, rowOffset, rowBuffer, i, neighbors);
 	}
 	neighbors = GET_BIT(rowBuffer, g->w - 2)
 	          + GET_BIT(rowBuffer, g->w - 1)
@@ -124,7 +124,7 @@ static void updateRow(struct grid *g, size_t rowOffset, const char *rowBuffer,
 		           + GET_BIT(rowBuffer, g->w)
 		           + GET_BIT(btmRow, btmRowOffset);
 	}
-	updateCell(g, rowOffset, rowBuffer, g->w - 1, neighbors);
+	_updateCell(g, rowOffset, rowBuffer, g->w - 1, neighbors);
 }
 
 int updateGrid(struct grid *g) {
@@ -147,7 +147,7 @@ int updateGrid(struct grid *g) {
 		copyBits(g->cells, 0, cellsBuffer, g->w * 2, g->w);
 	} /* otherwise, buffer already cleared */
 	copyBits(g->cells, 0, cellsBuffer, g->w, g->w);
-	updateRow(g, 0, cellsBuffer, g->cells, g->w);
+	_updateRow(g, 0, cellsBuffer, g->cells, g->w);
 
 	/* Middle rows */
 	for (size_t row = g->w; row < (g->h - 1) * g->w; row += g->w) {
@@ -155,13 +155,13 @@ int updateGrid(struct grid *g) {
 		   buffer row then perform update on grid row */
 		copyBits(cellsBuffer, g->w, cellsBuffer, 0, g->w);
 		copyBits(g->cells, row, cellsBuffer, g->w, g->w);
-		updateRow(g, row, cellsBuffer, g->cells, row + g->w);
+		_updateRow(g, row, cellsBuffer, g->cells, row + g->w);
 	}
 
 	/* Last row */
 	copyBits(cellsBuffer, g->w, cellsBuffer, 0, g->w);
 	copyBits(g->cells, (g->h - 1) * g->w, cellsBuffer, g->w, g->w);
-	updateRow(g, (g->h - 1) * g->w, cellsBuffer, cellsBuffer, g->w * 2);
+	_updateRow(g, (g->h - 1) * g->w, cellsBuffer, cellsBuffer, g->w * 2);
 
 	free(cellsBuffer);
 	return 0;

@@ -19,8 +19,8 @@ int initApp(void) {
 }
 
 
-static void handleMouseOnCell(struct gridwindow *gw, int *last_x,
-                              int *last_y) {
+static void _handleMouseOnCell(struct gridwindow *gw, int *last_x,
+                               int *last_y) {
 	if (gw->sel_x > 0 && gw->sel_y > 0) {
 		toggleCell(gw->grid, gw->sel_x, gw->sel_y);
 		*last_x = gw->sel_x;
@@ -28,8 +28,8 @@ static void handleMouseOnCell(struct gridwindow *gw, int *last_x,
 	}
 }
 
-static inline void resetGrid(struct grid *grid, const char *repr, bool *play,
-                             bool *loop) {
+static inline void _resetGrid(struct grid *grid, const char *repr, bool *play,
+                              bool *loop) {
 	if (repr != NULL) {
 		if (*play) {
 			*play = false;
@@ -43,8 +43,7 @@ static inline void resetGrid(struct grid *grid, const char *repr, bool *play,
 	}
 }
 
-static inline int outputGrid(const struct grid *grid,
-                              const char *out_file) {
+static inline int _outputGrid(const struct grid *grid, const char *out_file) {
 	char *repr = getGridRepr(grid);
 	if (repr == NULL) {
 		return -1;
@@ -54,7 +53,7 @@ static inline int outputGrid(const struct grid *grid,
 	return rc;
 }
 
-static void handleEvent(const SDL_Event *event, struct gridwindow *gw,
+static void _handleEvent(const SDL_Event *event, struct gridwindow *gw,
                         bool *loop, bool *mdown, bool *play,
                         int *last_x, int *last_y, const char *repr,
                         const char *out_file) {
@@ -64,7 +63,7 @@ static void handleEvent(const SDL_Event *event, struct gridwindow *gw,
 			*mdown = true;
 			getCellLoc(gw, event->button.x, event->button.y, &gw->sel_x,
 			           &gw->sel_y);
-			handleMouseOnCell(gw, last_x, last_y);
+			_handleMouseOnCell(gw, last_x, last_y);
 		}
 		break;
 	case SDL_MOUSEBUTTONUP:
@@ -77,7 +76,7 @@ static void handleEvent(const SDL_Event *event, struct gridwindow *gw,
 		             &gw->sel_y);
 		if (*mdown) {
 			if ((gw->sel_x != *last_x) || (gw->sel_y != *last_y)) {
-				handleMouseOnCell(gw, last_x, last_y);
+				_handleMouseOnCell(gw, last_x, last_y);
 			}
 		}
 		break;
@@ -115,7 +114,7 @@ static void handleEvent(const SDL_Event *event, struct gridwindow *gw,
 				toggleCell(gw->grid, gw->sel_x, gw->sel_y);
 				break;
 			case SDLK_r:
-				resetGrid(gw->grid, repr, play, loop);
+				_resetGrid(gw->grid, repr, play, loop);
 				break;
 			/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
 			   writes the grid state */
@@ -123,7 +122,7 @@ static void handleEvent(const SDL_Event *event, struct gridwindow *gw,
 				if (event->key.keysym.mod & KMOD_CTRL) {
 					*loop = false;
 				} else {
-					outputGrid(gw->grid, out_file);
+					_outputGrid(gw->grid, out_file);
 				}
 			case SDLK_q:
 				if (!(event->key.keysym.mod & KMOD_CTRL)) {
@@ -158,7 +157,7 @@ void runApp(struct gridwindow *gw, unsigned int update_rate, bool use_vsync,
 		renderGridWindow(gw);
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
-			handleEvent(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
+			_handleEvent(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
 			            repr, out_file);
 		}
 

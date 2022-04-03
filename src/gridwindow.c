@@ -46,10 +46,11 @@ void freeGridWindow(struct gridwindow *gw) {
 }
 
 
-static inline void drawCell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
-                            unsigned int j, unsigned int c, unsigned int border,
-                            unsigned char r, unsigned char g, unsigned char b,
-                            unsigned char a) {
+static inline void _drawCell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
+                             unsigned int j, unsigned int c,
+                             unsigned int border, unsigned char r,
+                             unsigned char g, unsigned char b,
+                             unsigned char a) {
 	SDL_SetRenderDrawColor(ren, r, g, b, a);
 	rect->x = (c + border) * i + border;
 	rect->y = (c + border) * j + border;
@@ -72,12 +73,12 @@ void renderGridWindow(const struct gridwindow *gw) {
 	for (j = 0; j < h; ++j) {
 		for (i = 0; i < w; ++i) {
 			unsigned char ch = getGridCell(gw->grid, i, j) ? 0 : 255;
-			drawCell(gw->ren, &r, i, j, c, b, ch, ch, ch, 255);
+			_drawCell(gw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}
 	SDL_SetRenderDrawBlendMode(gw->ren, SDL_BLENDMODE_BLEND);
 	if (gw->sel_x >= 0 && gw->sel_y >= 0) {
-		drawCell(gw->ren, &r, gw->sel_x, gw->sel_y, c, b, 127, 127, 127, 127);
+		_drawCell(gw->ren, &r, gw->sel_x, gw->sel_y, c, b, 127, 127, 127, 127);
 	}
 	SDL_RenderPresent(gw->ren);
 }

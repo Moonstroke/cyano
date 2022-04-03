@@ -30,7 +30,7 @@ static const struct option LONGOPTS[] = {
 };
 
 
-static int rvalset(const char *arg, const char **dst) {
+static int _rvalset(const char *arg, const char **dst) {
 	const char *rule = getRuleFromName(arg);
 	if (rule != NULL) {
 		*dst = rule;
@@ -64,7 +64,7 @@ err:
 	}
 }
 
-static int getval(char opt, const char *arg, unsigned int *dst) {
+static int _getval(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
 		fprintf(stderr, "Error: option -%c needs an unsigned integer argument\n", opt);
@@ -93,18 +93,18 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
-				if (getval('b', optarg, border_width) < 0) {
+				if (_getval('b', optarg, border_width) < 0) {
 					return -1;
 				}
 				opt_b_met = true;
 				break;
 			case 'c':
-				if (getval('c', optarg, cell_pixels) < 0) {
+				if (_getval('c', optarg, cell_pixels) < 0) {
 					return -2;
 				}
 				break;
 			case 'h':
-				if (getval('h', optarg, grid_height) < 0) {
+				if (_getval('h', optarg, grid_height) < 0) {
 					return -3;
 				}
 				opt_h_met = true;
@@ -114,13 +114,13 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_n_met = true;
 				break;
 			case 'r':
-				if (getval('r', optarg, update_rate) < 0) {
+				if (_getval('r', optarg, update_rate) < 0) {
 					return -4;
 				}
 				opt_r_met = true;
 				break;
 			case 'R':
-				if (rvalset(optarg, game_rule) < 0) {
+				if (_rvalset(optarg, game_rule) < 0) {
 					return -5;
 				}
 				break;
@@ -129,7 +129,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_v_met = true;
 				break;
 			case 'w':
-				if (getval('w', optarg, grid_width) < 0) {
+				if (_getval('w', optarg, grid_width) < 0) {
 					return -6;
 				}
 				opt_w_met = true;

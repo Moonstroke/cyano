@@ -10,8 +10,8 @@
 
 
 
-static inline int setRunLength(struct grid *grid, unsigned int *i,
-                               unsigned int j, const char **repr) {
+static inline int _setRunLength(struct grid *grid, unsigned int *i,
+                                unsigned int j, const char **repr) {
 	char *end = NULL;
 	long length = strtol(*repr, &end, 10);
 	*repr = end;
@@ -30,7 +30,7 @@ static inline int setRunLength(struct grid *grid, unsigned int *i,
 	return 0;
 }
 
-static inline int initCellsFromRLE(struct grid *grid, const char *repr) {
+static inline int _initCellsFromRLE(struct grid *grid, const char *repr) {
 	unsigned int i = 0;
 	unsigned int j = 0;
 	int rc;
@@ -47,7 +47,7 @@ static inline int initCellsFromRLE(struct grid *grid, const char *repr) {
 			case '7':
 			case '8':
 			case '9':
-				if ((rc = setRunLength(grid, &i, j, &repr)) < 0) {
+				if ((rc = _setRunLength(grid, &i, j, &repr)) < 0) {
 					return rc;
 				}
 				break;
@@ -83,7 +83,7 @@ static inline int initCellsFromRLE(struct grid *grid, const char *repr) {
 	return 0;
 }
 
-static inline int initGridFromRLE(struct grid *grid, const char *repr,
+static inline int _initGridFromRLE(struct grid *grid, const char *repr,
                                    bool wrap) {
 	char rule_buffer[22] = {0};
 	unsigned int w, h;
@@ -108,10 +108,10 @@ static inline int initGridFromRLE(struct grid *grid, const char *repr,
 		strcpy(rule, rule_buffer);
 		grid->rule = rule;
 	}
-	return initCellsFromRLE(grid, strchr(repr, '\n') + 1);
+	return _initCellsFromRLE(grid, strchr(repr, '\n') + 1);
 }
 
-static inline int initGridFromRepr(struct grid *grid, const char *repr,
+static inline int _initGridFromRepr(struct grid *grid, const char *repr,
                                     bool wrap) {
 	const char *itr = repr;
 	for (; *itr && *itr != '\n'; ++itr);
@@ -131,11 +131,11 @@ static inline int initGridFromRepr(struct grid *grid, const char *repr,
 }
 
 int loadGrid(struct grid *grid, const char *repr, bool wrap) {
-	int rc = initGridFromRLE(grid, repr, wrap);
+	int rc = _initGridFromRLE(grid, repr, wrap);
 	if (rc <= 0) { /* > 0 means not RLE */
 		return rc;
 	}
-	rc = initGridFromRepr(grid, repr, wrap);
+	rc = _initGridFromRepr(grid, repr, wrap);
 	if (rc < 0) {
 		return rc;
 	}
