@@ -186,12 +186,12 @@ The following rules are defined:
 #### Execution
 
 The program accepts several command-line options to specify parameters of the
-board:
+grid:
 
 Short option|Long option|Description|Conflicts with another option?
 :----:|:---:|:----:|:----:
-`-w WIDTH`|`--board-width WIDTH`|The width of the board|None
-`-h HEIGHT`|`--board-height  HEIGHT`|The height of the board|None
+`-w WIDTH`|`--grid-width WIDTH`|The width of the grid|None
+`-h HEIGHT`|`--grid-height  HEIGHT`|The height of the grid|None
 `-b BORDER`|`--border-size`|The size of the gap between two cells|`--no-border`
 `-c SIZE`|`--cell-size`|The size of the representation of one cell, in pixels|None
 `-n`|`--no-border`|Disable the borders between the cells|`--border-size`, because equivalent to `-b0`
@@ -259,8 +259,8 @@ installed (APT package `doxygen`).
 ### Footnotes
 
 <a href="#1">1</a>: A toroidal grid is, by opposition to a rectangular (or
-standard) one, is a configuration of the board in which each cell crossing a
-wall will re-enter the board on the opposite side instead of disappearing. It
+standard) one, is a configuration of the grid in which each cell crossing a
+boundary will re-enter the grid on the opposite side instead of disappearing. It
 allows to virtually replicate an infinite grid -- except that ships might wrap
 around and interact with the original pattern that launched it, resulting in
 behaviour that would not have occurred on a truly infinite grid.

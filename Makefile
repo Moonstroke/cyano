@@ -47,7 +47,7 @@ TEST_EXEC := $(OUT_DIR)/test_$(PROJECT_NAME)
 TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
-TEST_REQUIRED_OBJ := $(OBJ_DIR)/board.o $(OBJ_DIR)/clop.o $(OBJ_DIR)/rules.o
+TEST_REQUIRED_OBJ := $(OBJ_DIR)/grid.o $(OBJ_DIR)/clop.o $(OBJ_DIR)/rules.o
 TEST_LOG := test.log
 
 # Variables describing the architecture of the project directory

@@ -1,35 +1,35 @@
-#include "board.h"
+#include "grid.h"
 
 #include <CUTE/cute.h>
 
 
 
-/* The dimensions of the board */
+/* The dimensions of the grid */
 static const unsigned int WIDTH = 3, HEIGHT = 3;
-/* Does the board wrap or not? */
+/* Does the grid wrap or not? */
 static const bool WRAPS = false;
 /* The rules of the game to run */
-static const char RULES[] = DEFAULT_BOARD_RULES;
+static const char RULES[] = DEFAULT_GRID_RULES;
 
-/* The board to run tests on */
-static struct board board;
+/* The grid to run tests on */
+static struct grid grid;
 
 /* The instance of test case */
-CUTE_TestCase *case_board;
+CUTE_TestCase *case_grid;
 
 
 
 static void setUp(void) {
 	int status;
-	status = initBoard(&board, WIDTH, HEIGHT, WRAPS);
+	status = initGrid(&grid, WIDTH, HEIGHT, WRAPS);
 	CUTE_assertEquals(status, 0);
-	board.rules = RULES;
-	fprintf(stderr, "Succesfully initialized %s board %ux%u\n",
+	grid.rules = RULES;
+	fprintf(stderr, "Succesfully initialized %s grid %ux%u\n",
 	        WRAPS ? "toroidal" : "rectangular", WIDTH, HEIGHT);
 }
 
 static void tearDown(void) {
-	freeBoard(&board);
+	freeGrid(&grid);
 }
 
 
@@ -39,15 +39,15 @@ void test_blinker_after_one_gen(void) {
 	      stderr);
 	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		toggleCell(&board, 1, i);
+		toggleCell(&grid, 1, i);
 	}
 
 	fputs("Next generation\n", stderr);
-	updateBoard(&board);
+	updateGrid(&grid);
 
 	fputs("Looking for horizontal blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(getBoardCell(&board, i, 1), true);
+		CUTE_assertEquals(getGridCell(&grid, i, 1), true);
 	}
 	info("OK");
 }
@@ -58,25 +58,25 @@ void test_blinker_after_two_gens(void) {
 	      stderr);
 	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		toggleCell(&board, 1, i);
+		toggleCell(&grid, 1, i);
 	}
 
 	fputs("Next generation\n", stderr);
-	updateBoard(&board);
+	updateGrid(&grid);
 	fputs("Next generation\n", stderr);
-	updateBoard(&board);
+	updateGrid(&grid);
 
 	fputs("Looking for vertical blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(getBoardCell(&board, 1, i), true);
+		CUTE_assertEquals(getGridCell(&grid, 1, i), true);
 	}
 	info("OK");
 }
 
-void build_case_board(void) {
-	case_board = CUTE_newTestCase("Tests for the Board structure", 2);
-	CUTE_setCaseBefore(case_board, setUp);
-	CUTE_setCaseAfter(case_board, tearDown);
-	CUTE_addCaseTest(case_board, CUTE_makeTest(test_blinker_after_one_gen));
-	CUTE_addCaseTest(case_board, CUTE_makeTest(test_blinker_after_two_gens));
+void build_case_grid(void) {
+	case_grid = CUTE_newTestCase("Tests for the grid structure", 2);
+	CUTE_setCaseBefore(case_grid, setUp);
+	CUTE_setCaseAfter(case_grid, tearDown);
+	CUTE_addCaseTest(case_grid, CUTE_makeTest(test_blinker_after_one_gen));
+	CUTE_addCaseTest(case_grid, CUTE_makeTest(test_blinker_after_two_gens));
 }

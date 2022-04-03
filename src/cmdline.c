@@ -14,18 +14,18 @@ static const char *const OPTSTRING = "b:c:h:nr:R:vw:Wf:i:o:";
  * The long options array.
  */
 static const struct option LONGOPTS[] = {
-	{"board-width",  required_argument, NULL, 'w'},
-	{"board-height", required_argument, NULL, 'h'},
-	{"border-size",  required_argument, NULL, 'b'},
-	{"cell-size",    required_argument, NULL, 'c'},
-	{"no-border",    no_argument,       NULL, 'n'},
-	{"game-rules",   required_argument, NULL, 'R'},
-	{"update-rate",  required_argument, NULL, 'r'},
-	{"vsync",        no_argument      , NULL, 'v'},
-	{"wrap",         no_argument      , NULL, 'W'},
-	{"file",         required_argument, NULL, 'f'},
-	{"input-file",   required_argument, NULL, 'i'},
-	{"output-file",  required_argument, NULL, 'o'},
+	{"grid-width",  required_argument, NULL, 'w'},
+	{"grid-height", required_argument, NULL, 'h'},
+	{"border-size", required_argument, NULL, 'b'},
+	{"cell-size",   required_argument, NULL, 'c'},
+	{"no-border",   no_argument,       NULL, 'n'},
+	{"game-rules",  required_argument, NULL, 'R'},
+	{"update-rate", required_argument, NULL, 'r'},
+	{"vsync",       no_argument      , NULL, 'v'},
+	{"wrap",        no_argument      , NULL, 'W'},
+	{"file",        required_argument, NULL, 'f'},
+	{"input-file",  required_argument, NULL, 'i'},
+	{"output-file", required_argument, NULL, 'o'},
 	{"", 0, NULL, 0}
 };
 
@@ -74,8 +74,8 @@ static int getval(char opt, const char *arg, unsigned int *dst) {
 	return 0;
 }
 
-int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
-                         unsigned int *board_height, bool *wrap,
+int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
+                         unsigned int *grid_height, bool *wrap,
                          const char **game_rules, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
@@ -104,7 +104,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				}
 				break;
 			case 'h':
-				if (getval('h', optarg, board_height) < 0) {
+				if (getval('h', optarg, grid_height) < 0) {
 					return -3;
 				}
 				opt_h_met = true;
@@ -129,7 +129,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				opt_v_met = true;
 				break;
 			case 'w':
-				if (getval('w', optarg, board_width) < 0) {
+				if (getval('w', optarg, grid_width) < 0) {
 					return -6;
 				}
 				opt_w_met = true;

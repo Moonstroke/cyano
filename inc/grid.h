@@ -1,11 +1,11 @@
 /**
- * \file "board.h"
+ * \file "grid.h"
  * \author joH1
  *
  * \version 0.1
  *
  * \brief This file contains the definition of the structure representing a
- *        board of John Conway's <b>Game of Life</b>.
+ *        grid of John Conway's <b>Game of Life</b>.
  *
  * This game is a 0-player game, which means its evolution only depends on its
  * initial state and the set of \a rules that order it.
@@ -25,7 +25,7 @@
  * - and if the cell is dead and has exactly \c 3 alive neighbors, it is born
  *   (reproduction).
  *
- * The rules guiding the evolution of a Game of Life board can be reduced to a
+ * The rules guiding the evolution of a Game of Life grid can be reduced to a
  * simpler expression, containing only the number of alive neighbors a cell
  * needs to be born and the number of alive neighbors it needs to stay alive, or
  * in a short form:
@@ -44,142 +44,142 @@
  *   the behavior of alive cells.
  */
 
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef GRID_H
+#define GRID_H
 
 
 #include <stdbool.h>
 
 
 /**
- * \brief The default number of cells in a row of the board.
+ * \brief The default number of cells in a row of the grid.
  */
-#define DEFAULT_BOARD_WIDTH  80
+#define DEFAULT_GRID_WIDTH  80
 
 /**
- * \brief The default number of cells in a column of the board.
+ * \brief The default number of cells in a column of the grid.
  */
-#define DEFAULT_BOARD_HEIGHT 60
+#define DEFAULT_GRID_HEIGHT 60
 
 /**
  * \brief The default rules of evolution for the <i>Game of Life</i>, as
  * originally devised by Conway.
  */
-#define DEFAULT_BOARD_RULES "B3/S23"
+#define DEFAULT_GRID_RULES "B3/S23"
 
 
 /**
- * \brief The type representing the board of the game.
+ * \brief The type representing the grid of the game.
  */
-struct board {
-	unsigned int w; /**< The width of the board. */
-	unsigned int h; /**< The height of the board. */
-	char *cells; /**< The data of the board cells. */
+struct grid {
+	unsigned int w; /**< The width of the grid. */
+	unsigned int h; /**< The height of the grid. */
+	char *cells; /**< The data of the grid cells. */
 	/** The rules determining the evolution of the game, as a string in \e Golly
 	    format. */
 	const char *rules;
-	/** A flag indicating whether the state on one side of the board affects the
+	/** A flag indicating whether the state on one side of the grid affects the
 	    opposite side. */
 	bool wrap;
 };
 
 
 /**
- * \brief Initialize an uninitialized board with custom parameters.
+ * \brief Initialize an uninitialized grid with custom parameters.
  *
- * \param[out] board  The board to initialize
+ * \param[out] grid  The grid to initialize
  * \param[in]  width  The number of cells in one row
  * \param[in]  height The number of cells in one column
  * \param[in]  wrap   If \c true, set up the grid as toroidal
  *
- * \return \c 0 iff the board was correctly initialized, a negative value
+ * \return \c 0 iff the grid was correctly initialized, a negative value
  *         otherwise
  */
-int initBoard(struct board *board, unsigned int width, unsigned int height,
+int initGrid(struct grid *grid, unsigned int width, unsigned int height,
               bool wrap);
 
 
 /**
- * \brief Initialize the board to the state described in the pattern string.
+ * \brief Initialize the grid to the state described in the pattern string.
  *
- * The given string must be a representation of a Life board, as a rectangular
+ * The given string must be a representation of a Life grid, as a rectangular
  * text with dots representing dead cells and at-signs for live cells. All lines
- * must be of the same length, which is interpreted as the board width, and the
- * number of lines gives the board height.
+ * must be of the same length, which is interpreted as the grid width, and the
+ * number of lines gives the grid height.
  *
- * \note This function resets the board, so callers must pass either an
- *       unititialized board or a board that has been passed to \c freeBoard
+ * \note This function resets the grid, so callers must pass either an
+ *       unititialized grid or a grid that has been passed to \c freeGrid
  *       beforehand to avoid leaking memory.
  *
- * \param[out] board The board to initialize
+ * \param[out] grid The grid to initialize
  * \param[in]  repr  The pattern, as a string of dots and @s
  * \param[in]  wrap   If \c true, set up the grid as toroidal
  *
- * \return \c 0 iff the board was correctly initialized, a negative value
+ * \return \c 0 iff the grid was correctly initialized, a negative value
  *         otherwise
  */
-int loadBoard(struct board *board, const char *repr, bool wrap);
+int loadGrid(struct grid *grid, const char *repr, bool wrap);
 
 
 /**
- * \brief Deallocate memory used by a board.
+ * \brief Deallocate memory used by a grid.
  *
- * \param[in,out] board The board to free
+ * \param[in,out] grid The grid to free
  */
-void freeBoard(struct board *board);
+void freeGrid(struct grid *grid);
 
 
 /**
- * \brief Get the state of a cell from the board.
+ * \brief Get the state of a cell from the grid.
  *
- * \param[in] board The game board
+ * \param[in] grid The game grid
  * \param[in] i     The row to get
  * \param[in] j     The column to get
  *
  * \return \c true if the cell at (i, j) is \e "alive", or \c false if the cell
  *         is \e "dead" or coordinates are invalid.
  */
-bool getBoardCell(const struct board *board, int i, int j);
+bool getGridCell(const struct grid *grid, int i, int j);
 
 
 /**
  * \brief Invert the state of a cell.
  *
- * \param[in,out] board The board
+ * \param[in,out] grid The grid
  * \param[in]     x     The row of the cell to toggle
  * \param[in]     y     The column of the cell
  *
  * \return The new state of the cell (\c true means \e alive), or \c false if
  *         the coordinates are invalid
  */
-bool toggleCell(struct board *board, unsigned int x, unsigned int y);
+bool toggleCell(struct grid *grid, unsigned int x, unsigned int y);
 
 
 /**
- * \brief Update the board to the next generation.
+ * \brief Update the grid to the next generation.
  *
- * The board is iterated, and each cell is updated according to the rules
- * determining the board.
+ * The grid is iterated, and each cell is updated according to the rules
+ * determining the grid.
  *
- * \param[in,out] board The board to update
+ * \param[in,out] grid The grid to update
  *
  * \return \c 0 if no error occurred (memory allocation, iteration)
  */
-int updateBoard(struct board *board);
+int updateGrid(struct grid *grid);
 
 
 /**
- * \brief Clear the board.
+ * \brief Clear the grid.
  *
- * \e Kills all the cells in the board, by turning them off.
+ * \e Kills all the cells in the grid, by turning them off.
  *
- * \param[in,out] board The board to clear
+ * \param[in,out] grid The grid to clear
  */
-void clearBoard(struct board *board);
+void clearGrid(struct grid *grid);
 
 
 /**
- * \brief Return a textual representation of the current state of the board.
+ * \brief Return a textual representation of the current state of the grid.
  *
  * The returned string consists of lines of at-signs and dots to respectively
  * represent live and dead cells, the lines separated with newline characters.
@@ -187,11 +187,11 @@ void clearBoard(struct board *board);
  * \note The returned string is allocated dynamically; callers must take care of
  * freeing it after use.
  *
- * \param[in] board The board
+ * \param[in] grid The grid
  *
- * \return A string representation of the current state of the board
+ * \return A string representation of the current state of the grid
  */
-char *getBoardRepr(const struct board *board);
+char *getGridRepr(const struct grid *grid);
 
 
-#endif /* BOARD_H */
+#endif /* grid_H */

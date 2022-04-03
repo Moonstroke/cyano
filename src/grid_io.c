@@ -1,4 +1,4 @@
-#include "board.h"
+#include "grid.h"
 
 #include <ctype.h> /* for isspace */
 #include <stddef.h> /* for size_t */
@@ -10,18 +10,18 @@
 
 
 
-static inline int setRunLength(struct board *board, unsigned int *i,
+static inline int setRunLength(struct grid *grid, unsigned int *i,
                                unsigned int j, const char **repr) {
 	char *end = NULL;
 	long length = strtol(*repr, &end, 10);
 	*repr = end;
-	if (*i + length > board->w) {
+	if (*i + length > grid->w) {
 		return -4;
 	}
 	char state = **repr;
 	if (state == 'o') {
 		for (int n = 0; n < length; ++n) {
-			SET_BIT(board->cells, j * board->w + *i + n, true);
+			SET_BIT(grid->cells, j * grid->w + *i + n, true);
 		}
 	} else if (state != 'b') { /* Invalid character */
 		return -5;
@@ -30,7 +30,7 @@ static inline int setRunLength(struct board *board, unsigned int *i,
 	return 0;
 }
 
-static inline int initCellsFromRLE(struct board *board, const char *repr) {
+static inline int initCellsFromRLE(struct grid *grid, const char *repr) {
 	unsigned int i = 0;
 	unsigned int j = 0;
 	int rc;
@@ -47,22 +47,22 @@ static inline int initCellsFromRLE(struct board *board, const char *repr) {
 			case '7':
 			case '8':
 			case '9':
-				if ((rc = setRunLength(board, &i, j, &repr)) < 0) {
+				if ((rc = setRunLength(grid, &i, j, &repr)) < 0) {
 					return rc;
 				}
 				break;
 			case 'o':
-				SET_BIT(board->cells, j * board->w + i, true);
+				SET_BIT(grid->cells, j * grid->w + i, true);
 			/* Fall-through intended */
 			case 'b':
-				if (++i > board->w) {
+				if (++i > grid->w) {
 					return -1;
 				}
 				break;
 			case '$':
-				/* No board width checking because end of row can be omitted if
+				/* No grid width checking because end of row can be omitted if
 				   all cells are blank */
-				if (++j >= board->h) {
+				if (++j >= grid->h) {
 					return -2;
 				}
 				i = 0;
@@ -83,7 +83,7 @@ static inline int initCellsFromRLE(struct board *board, const char *repr) {
 	return 0;
 }
 
-static inline int initBoardFromRLE(struct board *board, const char *repr,
+static inline int initGridFromRLE(struct grid *grid, const char *repr,
                                    bool wrap) {
 	char rule_buffer[22] = {0};
 	unsigned int w, h;
@@ -94,7 +94,7 @@ static inline int initBoardFromRLE(struct board *board, const char *repr,
 	}
 	/* x and y specifications are mandatory, rule is optional */
 	bool add_rules = rc == 3;
-	rc = initBoard(board, w, h, wrap);
+	rc = initGrid(grid, w, h, wrap);
 	if (rc < 0) {
 		return rc;
 	}
@@ -102,16 +102,16 @@ static inline int initBoardFromRLE(struct board *board, const char *repr,
 		size_t len = strlen(rule_buffer);
 		char *rule = malloc(len);
 		if (rule == NULL) {
-			freeBoard(board);
+			freeGrid(grid);
 			return -3;
 		}
 		strcpy(rule, rule_buffer);
-		board->rules = rule;
+		grid->rules = rule;
 	}
-	return initCellsFromRLE(board, strchr(repr, '\n') + 1);
+	return initCellsFromRLE(grid, strchr(repr, '\n') + 1);
 }
 
-static inline int initBoardFromRepr(struct board *board, const char *repr,
+static inline int initGridFromRepr(struct grid *grid, const char *repr,
                                     bool wrap) {
 	const char *itr = repr;
 	for (; *itr && *itr != '\n'; ++itr);
@@ -127,22 +127,22 @@ static inline int initBoardFromRepr(struct board *board, const char *repr,
 			return -2;
 		}
 	}
-	return initBoard(board, width, height, wrap);
+	return initGrid(grid, width, height, wrap);
 }
 
-int loadBoard(struct board *board, const char *repr, bool wrap) {
-	int rc = initBoardFromRLE(board, repr, wrap);
+int loadGrid(struct grid *grid, const char *repr, bool wrap) {
+	int rc = initGridFromRLE(grid, repr, wrap);
 	if (rc <= 0) { /* > 0 means not RLE */
 		return rc;
 	}
-	rc = initBoardFromRepr(board, repr, wrap);
+	rc = initGridFromRepr(grid, repr, wrap);
 	if (rc < 0) {
 		return rc;
 	}
 
 	for (size_t i = 0; *repr; ++i, ++repr) {
 		if (*repr == '@') {
-			SET_BIT(board->cells, i, true);
+			SET_BIT(grid->cells, i, true);
 		} else if (*repr == '\n') {
 			++repr;
 		} else if (*repr != '.') {
@@ -153,19 +153,19 @@ int loadBoard(struct board *board, const char *repr, bool wrap) {
 }
 
 
-char *getBoardRepr(const struct board *board) {
+char *getGridRepr(const struct grid *grid) {
 	/* Additional height characters for newlines and null terminator */
-	char *repr = malloc((board->w + 1) * board->h);
+	char *repr = malloc((grid->w + 1) * grid->h);
 	if (repr == NULL) {
 		return NULL;
 	}
-	for (unsigned int j = 0; j < board->h; ++j) {
-		for (unsigned int i = 0; i < board->w; ++i) {
-			repr[j * (board->w + 1) + i] = getBoardCell(board, i, j) ? '@'
+	for (unsigned int j = 0; j < grid->h; ++j) {
+		for (unsigned int i = 0; i < grid->w; ++i) {
+			repr[j * (grid->w + 1) + i] = getGridCell(grid, i, j) ? '@'
 			                                                         : '.';
 		}
-		repr[j * (board->w + 1) + board->w] = '\n';
+		repr[j * (grid->w + 1) + grid->w] = '\n';
 	}
-	repr[(board->w + 1) * board->h - 1] = '\0';
+	repr[(grid->w + 1) * grid->h - 1] = '\0';
 	return repr;
 }

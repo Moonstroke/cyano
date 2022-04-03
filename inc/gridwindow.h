@@ -1,23 +1,23 @@
 /**
- * \file "boardwindow.h"
+ * \file "gridwindow.h"
  * \author joH1
  *
  * \version 0.1
  *
  * \brief This file contains the definition of the structure used to manage the
- *        graphical rendering of a board of the Game of Life.
+ *        graphical rendering of a grid of the Game of Life.
  *
  * It communicates with the SDL through its abstract structure \c SDL_Window.
  */
 
-#ifndef BOARDWINDOW_H
-#define BOARDWINDOW_H
+#ifndef GRIDWINDOW_H
+#define GRIDWINDOW_H
 
 
 #include <SDL2/SDL_render.h>
 #include <stdbool.h>
 
-#include "board.h"
+#include "grid.h"
 
 
 
@@ -27,7 +27,7 @@
 #define DEFAULT_CELLS_PIXELS 16
 
 /**
- * \brief The default update rate of the board.
+ * \brief The default update rate of the grid.
  */
 #define DEFAULT_UPDATE_RATE 25
 
@@ -38,11 +38,11 @@
 
 
 /**
- * \brief The type handling the graphical display of the board.
+ * \brief The type handling the graphical display of the grid.
  */
-struct boardwindow {
-	/** The board included in the window. */
-	struct board *board;
+struct gridwindow {
+	/** The grid included in the window. */
+	struct grid *grid;
 	/** The technical type used by the SDL to display a window. */
 	SDL_Window *win;
 	/** The renderer of the SDL associated with the window. */
@@ -58,44 +58,44 @@ struct boardwindow {
 
 
 /**
- * \brief Initialize the board window with the given values.
+ * \brief Initialize the grid window with the given values.
  *
- * \param[out] boardwindow  The board window to initialize
- * \param[in]  board        The board to handle
+ * \param[out] gridwindow  The grid window to initialize
+ * \param[in]  grid        The grid to handle
  * \param[in]  cell_pixels  The dimension, in pixels, of the representation of a
  *                          single cell
  * \param[in]  border_width The width of the border separating the cells
  * \param[in]  window_title The title to give to the window
- * \param[in]  use_vsync    Whether to synchronize the update of the board with
+ * \param[in]  use_vsync    Whether to synchronize the update of the grid with
  *                          the monitor
  *
  * \return \c 0 on success, a negative value on error
  */
-int initBoardWindow(struct boardwindow *boardwindow, struct board *board,
+int initGridWindow(struct gridwindow *gridwindow, struct grid *grid,
                     unsigned int cell_pixels, unsigned int border_width,
                     const char *window_title, bool use_vsync);
 
 
 /**
- * \brief Deallocate a board window
+ * \brief Deallocate a grid window
  *
- * \param[in,out] boardwindow The board window to free
+ * \param[in,out] gridwindow The grid window to free
  */
-void freeBoardWindow(struct boardwindow *boardwindow);
+void freeGridWindow(struct gridwindow *gridwindow);
 
 
 /**
- * \brief Render, on display, the board window.
+ * \brief Render, on display, the grid window.
  *
- * \param[in] boardwindow The board window to render
+ * \param[in] gridwindow The grid window to render
  */
-void renderBoardWindow(const struct boardwindow *boardwindow);
+void renderGridWindow(const struct gridwindow *gridwindow);
 
 
 /**
- * \brief Transforms the window coordinates to a board cell location.
+ * \brief Transforms the window coordinates to a grid cell location.
  *
- * \param[in]  boardwindow The board window
+ * \param[in]  gridwindow The grid window
  * \param[in]  x           The X window coordinate
  * \param[in]  y           The Y window coordinate
  * \param[out] i           The column number of the cell under (x,y)
@@ -104,7 +104,7 @@ void renderBoardWindow(const struct boardwindow *boardwindow);
  * \note If either of the coordinates points over a border, \c -1 is returned in
  *       the corresponding cell location.
  */
-void getCellLoc(const struct boardwindow *boardwindow, int x, int y, int *i,
+void getCellLoc(const struct gridwindow *gridwindow, int x, int y, int *i,
                   int *j);
 
 
@@ -112,14 +112,14 @@ void getCellLoc(const struct boardwindow *boardwindow, int x, int y, int *i,
  * \brief Retrieve the coordinates, in cell units, of the cell whose position is
  *        under the mouse cursor.
  *
- * \param[in]  boardwindow The board window
+ * \param[in]  gridwindow The grid window
  * \param[out] i           The column number of the hovered cell
  * \param[out] j           The row number of the hovered cell
  *
  * \note If either of the coordinates points over a border, \c -1 is returned in
  *       the corresponding cell location.
  */
-void getHoveredCellLoc(const struct boardwindow *boardwindow, int *i, int *j);
+void getHoveredCellLoc(const struct gridwindow *gridwindow, int *i, int *j);
 
 
-#endif /* BOARDWINDOW_H */
+#endif /* GRIDWINDOW_H */

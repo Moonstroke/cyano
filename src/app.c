@@ -2,8 +2,8 @@
 
 #include <SDL2/SDL.h>
 
-#include "board.h"
-#include "boardwindow.h"
+#include "grid.h"
+#include "gridwindow.h"
 #include "file_io.h" /* for writeFile */
 #include "timer.h"
 
@@ -19,33 +19,33 @@ int initApp(void) {
 }
 
 
-static void handleMouseOnCell(struct boardwindow *bw, int *last_x,
+static void handleMouseOnCell(struct gridwindow *gw, int *last_x,
                               int *last_y) {
-	if (bw->sel_x > 0 && bw->sel_y > 0) {
-		toggleCell(bw->board, bw->sel_x, bw->sel_y);
-		*last_x = bw->sel_x;
-		*last_y = bw->sel_y;
+	if (gw->sel_x > 0 && gw->sel_y > 0) {
+		toggleCell(gw->grid, gw->sel_x, gw->sel_y);
+		*last_x = gw->sel_x;
+		*last_y = gw->sel_y;
 	}
 }
 
-static inline void resetBoard(struct board *board, const char *repr, bool *play,
+static inline void resetGrid(struct grid *grid, const char *repr, bool *play,
                              bool *loop) {
 	if (repr != NULL) {
 		if (*play) {
 			*play = false;
 		}
-		bool wrap = board->wrap;
-		freeBoard(board);
-		if (loadBoard(board, repr, wrap) < 0) {
-			fputs("Error while resetting the board\n", stderr);
+		bool wrap = grid->wrap;
+		freeGrid(grid);
+		if (loadGrid(grid, repr, wrap) < 0) {
+			fputs("Error while resetting the grid\n", stderr);
 			*loop = false;
 		}
 	}
 }
 
-static inline int outputBoard(const struct board *board,
+static inline int outputGrid(const struct grid *grid,
                               const char *out_file) {
-	char *repr = getBoardRepr(board);
+	char *repr = getGridRepr(grid);
 	if (repr == NULL) {
 		return -1;
 	}
@@ -54,7 +54,7 @@ static inline int outputBoard(const struct board *board,
 	return rc;
 }
 
-static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
+static void handleEvent(const SDL_Event *event, struct gridwindow *gw,
                         bool *loop, bool *mdown, bool *play,
                         int *last_x, int *last_y, const char *repr,
                         const char *out_file) {
@@ -62,9 +62,9 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 	case SDL_MOUSEBUTTONDOWN:
 		if (event->button.button == SDL_BUTTON_LEFT) {
 			*mdown = true;
-			getCellLoc(bw, event->button.x, event->button.y, &bw->sel_x,
-			           &bw->sel_y);
-			handleMouseOnCell(bw, last_x, last_y);
+			getCellLoc(gw, event->button.x, event->button.y, &gw->sel_x,
+			           &gw->sel_y);
+			handleMouseOnCell(gw, last_x, last_y);
 		}
 		break;
 	case SDL_MOUSEBUTTONUP:
@@ -73,11 +73,11 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 		}
 		break;
 	case SDL_MOUSEMOTION:
-		getCellLoc(bw, event->motion.x, event->motion.y, &bw->sel_x,
-		             &bw->sel_y);
+		getCellLoc(gw, event->motion.x, event->motion.y, &gw->sel_x,
+		             &gw->sel_y);
 		if (*mdown) {
-			if ((bw->sel_x != *last_x) || (bw->sel_y != *last_y)) {
-				handleMouseOnCell(bw, last_x, last_y);
+			if ((gw->sel_x != *last_x) || (gw->sel_y != *last_y)) {
+				handleMouseOnCell(gw, last_x, last_y);
 			}
 		}
 		break;
@@ -88,42 +88,42 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 				break;
 			case SDLK_RETURN:
 				if (!*play) {
-					updateBoard(bw->board);
+					updateGrid(gw->grid);
 				}
 				break;
 			case SDLK_UP:
-				if (--bw->sel_y < 0) {
-					bw->sel_y = bw->board->wrap ? bw->board->h - 1 : 0;
+				if (--gw->sel_y < 0) {
+					gw->sel_y = gw->grid->wrap ? gw->grid->h - 1 : 0;
 				}
 				break;
 			case SDLK_DOWN:
-				if (++bw->sel_y >= (signed) bw->board->h) {
-					bw->sel_y = bw->board->wrap ? 0 : bw->board->h - 1;
+				if (++gw->sel_y >= (signed) gw->grid->h) {
+					gw->sel_y = gw->grid->wrap ? 0 : gw->grid->h - 1;
 				}
 				break;
 			case SDLK_LEFT:
-				if (--bw->sel_x < 0) {
-					bw->sel_x = bw->board->wrap ? bw->board->w - 1 : 0;
+				if (--gw->sel_x < 0) {
+					gw->sel_x = gw->grid->wrap ? gw->grid->w - 1 : 0;
 				}
 				break;
 			case SDLK_RIGHT:
-				if (++bw->sel_x >= (signed) bw->board->w) {
-					bw->sel_x = bw->board->wrap ? 0 : bw->board->w - 1;
+				if (++gw->sel_x >= (signed) gw->grid->w) {
+					gw->sel_x = gw->grid->wrap ? 0 : gw->grid->w - 1;
 				}
 				break;
 			case SDLK_t:
-				toggleCell(bw->board, bw->sel_x, bw->sel_y);
+				toggleCell(gw->grid, gw->sel_x, gw->sel_y);
 				break;
 			case SDLK_r:
-				resetBoard(bw->board, repr, play, loop);
+				resetGrid(gw->grid, repr, play, loop);
 				break;
 			/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
-			   writes the board state */
+			   writes the grid state */
 			case SDLK_w:
 				if (event->key.keysym.mod & KMOD_CTRL) {
 					*loop = false;
 				} else {
-					outputBoard(bw->board, out_file);
+					outputGrid(gw->grid, out_file);
 				}
 			case SDLK_q:
 				if (!(event->key.keysym.mod & KMOD_CTRL)) {
@@ -133,7 +133,7 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 				*loop = false;
 				break;
 			case SDLK_c:
-				clearBoard(bw->board);
+				clearGrid(gw->grid);
 				break;
 		}
 		break;
@@ -143,7 +143,7 @@ static void handleEvent(const SDL_Event *event, struct boardwindow *bw,
 	}
 }
 
-void runApp(struct boardwindow *bw, unsigned int update_rate, bool use_vsync,
+void runApp(struct gridwindow *gw, unsigned int update_rate, bool use_vsync,
             const char *repr, const char *out_file) {
 	struct timer timer;
 	resetTimer(&timer);
@@ -155,15 +155,15 @@ void runApp(struct boardwindow *bw, unsigned int update_rate, bool use_vsync,
 	while (loop) {
 		int last_x, last_y;
 		startTimer(&timer);
-		renderBoardWindow(bw);
+		renderGridWindow(gw);
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
-			handleEvent(&event, bw, &loop, &mdown, &play, &last_x, &last_y,
+			handleEvent(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
 			            repr, out_file);
 		}
 
 		if (play) {
-			updateBoard(bw->board);
+			updateGrid(gw->grid);
 		}
 
 		unsigned int remTime = getRemainingTime(&timer);

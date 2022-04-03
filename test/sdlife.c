@@ -3,15 +3,15 @@
 
 
 
-extern CUTE_TestCase *case_board;
-extern void build_case_board(void);
+extern CUTE_TestCase *case_grid;
+extern void build_case_grid(void);
 
 int main() {
 	CUTE_RunResults **results;
 
-	build_case_board();
+	build_case_grid();
 
-	CUTE_prepareTestSuite(1, case_board);
+	CUTE_prepareTestSuite(1, case_grid);
 
 	results = CUTE_runTestSuite();
 
