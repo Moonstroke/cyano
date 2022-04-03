@@ -1,3 +1,12 @@
+/**
+ * \file "app.h"
+ * \author joH1
+ *
+ * \version 0.1
+ *
+ * \brief This header provides functions that define the main steps in the
+ *        execution of the program: initialization, running, termination.
+ */
 #ifndef APP_H
 #define APP_H
 
