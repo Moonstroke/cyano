@@ -200,7 +200,7 @@ Short option|Long option|Description|Conflicts with another option?
 `-v`|`--vsync`|Follow vertical synchronization for refresh rate|`--update-rate`
 `-W`|`--wrap`|Create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
 `-f FILE`|`--file`|The path to the file to read from/to write to|`--input-file` and `--output-file`
-`-i INPUT_FILE`|`--output-file`|Path to a file to read from|`--file`, `--height` and `--width`
+`-i INPUT_FILE`|`--input-file`|Path to a file to read from|`--file`, `--height` and `--width`
 `-o OUTPUT_FILE`|`--output-file`|Path to a file to write to|`--file`
 
 #### Documentation
