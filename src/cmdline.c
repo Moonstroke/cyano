@@ -30,7 +30,7 @@ static const struct option LONGOPTS[] = {
 };
 
 
-static int _rvalset(const char *arg, const char **dst) {
+static int _setRule(const char *arg, const char **dst) {
 	const char *rule = getRuleFromName(arg);
 	if (rule != NULL) {
 		*dst = rule;
@@ -42,7 +42,8 @@ static int _rvalset(const char *arg, const char **dst) {
 		size_t i = 1;
 		/* Check that all chars until the slash are digits in ascending order */
 		for (; '0' <= arg[i] && arg[i] <= '9'; ++i) {
-			if (arg[i] >= arg[i + 1] && arg[i + 1] != '/' && arg[i + 1] != 'S') {
+			if (arg[i] >= arg[i + 1] && arg[i + 1] != '/'
+			                         && arg[i + 1] != 'S') {
 				goto err;
 			}
 		}
@@ -64,10 +65,11 @@ err:
 	}
 }
 
-static int _getval(char opt, const char *arg, unsigned int *dst) {
+static int _getUIntValue(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
-		fprintf(stderr, "Error: option -%c needs an unsigned integer argument\n", opt);
+		fprintf(stderr,
+		        "Error: option -%c needs an unsigned integer argument\n", opt);
 		return -1;
 	}
 	*dst = tmp;
@@ -80,31 +82,33 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
                          const char **out_file) {
-	int ch, idx, res = 0, i;
-	bool opt_r_met = false,
-	     opt_v_met = false,
-	     opt_b_met = false,
-	     opt_n_met = false;
+	int res = 0;
+	bool opt_r_met = false;
+	bool opt_v_met = false;
+	bool opt_b_met = false;
+	bool opt_n_met = false;
 	bool opt_w_met = false;
 	bool opt_h_met = false;
 	bool opt_f_met = false;
 	bool opt_i_met = false;
 	bool opt_o_met = false;
+	int ch;
+	int idx;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
-				if (_getval('b', optarg, border_width) < 0) {
+				if (_getUIntValue('b', optarg, border_width) < 0) {
 					return -1;
 				}
 				opt_b_met = true;
 				break;
 			case 'c':
-				if (_getval('c', optarg, cell_pixels) < 0) {
+				if (_getUIntValue('c', optarg, cell_pixels) < 0) {
 					return -2;
 				}
 				break;
 			case 'h':
-				if (_getval('h', optarg, grid_height) < 0) {
+				if (_getUIntValue('h', optarg, grid_height) < 0) {
 					return -3;
 				}
 				opt_h_met = true;
@@ -114,13 +118,13 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_n_met = true;
 				break;
 			case 'r':
-				if (_getval('r', optarg, update_rate) < 0) {
+				if (_getUIntValue('r', optarg, update_rate) < 0) {
 					return -4;
 				}
 				opt_r_met = true;
 				break;
 			case 'R':
-				if (_rvalset(optarg, game_rule) < 0) {
+				if (_setRule(optarg, game_rule) < 0) {
 					return -5;
 				}
 				break;
@@ -129,7 +133,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_v_met = true;
 				break;
 			case 'w':
-				if (_getval('w', optarg, grid_width) < 0) {
+				if (_getUIntValue('w', optarg, grid_width) < 0) {
 					return -6;
 				}
 				opt_w_met = true;
@@ -155,26 +159,29 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 		res++;
 	}
 	if (opt_v_met && opt_r_met) {
-		fputs("Error: options --update-rate and --vsync are incompatible\n", stderr);
+		fputs("Error: options --update-rate and --vsync are incompatible\n",
+		      stderr);
 		return -7;
 	}
 	if (opt_b_met && opt_n_met) {
-		fputs("Error: options --border-width and --no-border are incompatible\n", stderr);
+		fputs("Error: options --border-width and --no-border are"
+		      " incompatible\n", stderr);
 		return -8;
 	}
 	if (opt_f_met && (opt_i_met || opt_o_met)) {
-		fputs("Error: options --file is incompatible with --input-file and --output-file",
-		      stderr);
+		fputs("Error: options --file is incompatible with --input-file and"
+		      " --output-file", stderr);
 		return -9;
 	}
 	if (opt_i_met && (opt_w_met || opt_h_met)) {
-		fputs("Error: options --width and --height are incompatible with --input-file",
-		      stderr);
+		fputs("Error: options --width and --height are incompatible with"
+		      " --input-file", stderr);
 		return -10;
 	}
-	for (i = optind; i < argc; ++i) {
+	for (int i = optind; i < argc; ++i) {
 		res++;
-		fprintf(stderr, "Warning: skipping unrecognized non-option argument \"%s\"\n",
+		fprintf(stderr,
+		        "Warning: skipping unrecognized non-option argument \"%s\"\n",
 		        argv[i]);
 	}
 	return res == argc - 1 ? 0 : -11;
