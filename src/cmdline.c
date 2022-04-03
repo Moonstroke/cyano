@@ -41,7 +41,7 @@ static int _setRule(const char *arg, const char **dst) {
 		}
 		size_t i = 1;
 		/* Check that all chars until the slash are digits in ascending order */
-		for (; '0' <= arg[i] && arg[i] <= '9'; ++i) {
+		for (; '0' <= arg[i] && arg[i] <= '8'; ++i) {
 			if (arg[i] >= arg[i + 1] && arg[i + 1] != '/'
 			                         && arg[i + 1] != 'S') {
 				goto err;
@@ -53,11 +53,12 @@ static int _setRule(const char *arg, const char **dst) {
 		if (arg[i++] != 'S') {
 			goto err;
 		}
-		for (; '0' <= arg[i] && arg[i] <= '9'; ++i) {
+		for (; '0' <= arg[i] && arg[i] <= '8'; ++i) {
 			if(arg[i + 1] && arg[i] >= arg[i + 1]) {
 				goto err;
 			}
 		}
+		*dst = arg;
 		return 0;
 err:
 		fprintf(stderr, "Error: invalid rule: \"%s\"\n", arg);
