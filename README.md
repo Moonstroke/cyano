@@ -199,6 +199,50 @@ Short option|Long option|Description|Conflicts with another option?
 `-R RULE`|`--game-rule RULE`|The evolution rule of the game|None
 `-v`|`--vsync`|Follow vertical synchronization for refresh rate|`--update-rate`
 `-W`|`--wrap`|Create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
+`-f FILE`|`--file`|The path to the file to read from/to write to|`--input-file` and `--output-file`
+`-i INPUT_FILE`|`--input-file`|Path to a file to read from|`--file`, `--height` and `--width`
+`-o OUTPUT_FILE`|`--output-file`|Path to a file to write to|`--file`
+
+#### File input/output
+
+The program can communicate with external files, either to load a grid from or
+to write the current state to. At launch time, the program reads from the input file specified with the `--input-file` option and initializes the grid with the
+pattern read. At any time during execution, the grid can be reset to its initial
+state using the `r` key (the pattern is kept in memory for the duration of the
+execution, so this action is independent of the actual file used for input), and the current state can be output to the file specified by the `--output-file`
+option by pressing the `w` key.
+
+If the input path is simply `-`, the standard input will be used. Likewise, if
+the output path is `-`, the standard output is used. The option `--file` is a
+shortcut to define the input and output paths to the same file (except if the argument is `-`, in which case the standard input and output are used).
+
+The input file can be provided in two different format: an exact and
+rectangular textual image of the pattern, using `@` characters for live cells
+and `.` for dead cells, and line breaks to separate the rows, or RLE
+representation.
+
+The RLE (run-length encoding) is a compressed representation of a pattern that
+reduces contiguous cells in the same state to a single cell and the number of
+cells merged. This is particularly useful for huge patterns, with big homogenous
+chunks of cells. The program follows the xlife representation, using `b` for
+dead cells, `o` for live cells, `$` to indicate end of row and `!` to indicate
+end of pattern, and the digits to indicate run lengths immediately followed by
+the state of the cells in the run. Whitespace is ignored everywhere, except
+between run length and the consecutive state character. Since this is a
+compressed representation, blank end of rows can be omitted in the string, thus
+for information about the grid to be complete, it is necessary to include a
+header row, indicating grid width and height, and optionnaly the game rule.
+
+Here are the representation in both formats of a simple Life glider:
+
+    .@.
+    ..@
+    @@@
+
+    x = 3, y = 3, rule = B3/S23
+    bo$2bo$3o!
+
+The output file is always written using the textual image form.
 
 
 #### Documentation

@@ -8,7 +8,7 @@
 
 
 
-static const char *const OPTSTRING = "b:c:h:nr:R:vw:W";
+static const char *const OPTSTRING = "b:c:h:nr:R:vw:Wf:i:o:";
 
 /**
  * The long options array.
@@ -23,6 +23,9 @@ static const struct option LONGOPTS[] = {
 	{"update-rate",  required_argument, NULL, 'r'},
 	{"vsync",        no_argument      , NULL, 'v'},
 	{"wrap",         no_argument      , NULL, 'W'},
+	{"file",         required_argument, NULL, 'f'},
+	{"input-file",   required_argument, NULL, 'i'},
+	{"output-file",  required_argument, NULL, 'o'},
 	{"", 0, NULL, 0}
 };
 
@@ -75,12 +78,18 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
                          unsigned int *board_height, bool *wrap,
                          const char **game_rules, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync) {
+                         bool *use_vsync, const char **in_file,
+                         const char **out_file) {
 	int ch, idx, res = 0, i;
 	bool opt_r_met = false,
 	     opt_v_met = false,
 	     opt_b_met = false,
 	     opt_n_met = false;
+	bool opt_w_met = false;
+	bool opt_h_met = false;
+	bool opt_f_met = false;
+	bool opt_i_met = false;
+	bool opt_o_met = false;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
@@ -98,6 +107,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				if (getval('h', optarg, board_height) < 0) {
 					return -3;
 				}
+				opt_h_met = true;
 				break;
 			case 'n':
 				*border_width = 0;
@@ -122,9 +132,22 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 				if (getval('w', optarg, board_width) < 0) {
 					return -6;
 				}
+				opt_w_met = true;
 				break;
 			case 'W':
 				*wrap = true;
+				break;
+			case 'f':
+				*in_file = *out_file = optarg;
+				opt_f_met = true;
+				break;
+			case 'i':
+				*in_file = optarg;
+				opt_i_met = true;
+				break;
+			case 'o':
+				*out_file = optarg;
+				opt_o_met = true;
 				break;
 			default:
 				break;
@@ -139,10 +162,20 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *board_width,
 		fputs("Error: options --border-width and --no-border are incompatible\n", stderr);
 		return -8;
 	}
+	if (opt_f_met && (opt_i_met || opt_o_met)) {
+		fputs("Error: options --file is incompatible with --input-file and --output-file",
+		      stderr);
+		return -9;
+	}
+	if (opt_i_met && (opt_w_met || opt_h_met)) {
+		fputs("Error: options --width and --height are incompatible with --input-file",
+		      stderr);
+		return -10;
+	}
 	for (i = optind; i < argc; ++i) {
 		res++;
 		fprintf(stderr, "Warning: skipping unrecognized non-option argument \"%s\"\n",
 		        argv[i]);
 	}
-	return res == argc - 1 ? 0 : -9;
+	return res == argc - 1 ? 0 : -11;
 }

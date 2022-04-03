@@ -1,8 +1,9 @@
-#include <stdlib.h> /* for EXIT_* */
+#include <stdlib.h> /* for EXIT_*, free */
 
 #include "app.h"
 #include "board.h"
 #include "boardwindow.h"
+#include "file_io.h"
 
 
 
@@ -15,10 +16,13 @@ int main(int argc, char **argv) {
 	             border_width = DEFAULT_BORDER_WIDTH;
 	bool use_vsync = false, wrap = false;
 	const char *game_rules = DEFAULT_BOARD_RULES;
+	const char *in_file = NULL;
+	const char *out_file = NULL;
 
 	if (parseCommandLineArgs(argc, argv, &board_width, &board_height, &wrap,
 	                         &game_rules, &cell_pixels, &border_width,
-	                         &update_rate, &use_vsync) < 0) {
+	                         &update_rate, &use_vsync, &in_file,
+	                         &out_file) < 0) {
 		return EXIT_FAILURE;
 	}
 
@@ -27,7 +31,19 @@ int main(int argc, char **argv) {
 	}
 
 	struct board b;
-	if (initBoard(&b, board_width, board_height, wrap) < 0) {
+	char *repr = NULL;
+	if (in_file != NULL) {
+		repr = readFile(in_file);
+		if (repr == NULL) {
+			fprintf(stderr, "Could not read from file \"%s\"\n", in_file);
+			return EXIT_FAILURE;
+		}
+		int rc = loadBoard(&b, repr, wrap);
+		if (rc < 0) {
+			fputs("Failure in creation of the game board\n", stderr);
+			return EXIT_FAILURE;
+		}
+	} else if (initBoard(&b, board_width, board_height, wrap) < 0) {
 		fputs("Failure in creation of the game board\n", stderr);
 		return EXIT_FAILURE;
 	}
@@ -41,8 +57,9 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	runApp(&bw, update_rate, use_vsync);
+	runApp(&bw, update_rate, use_vsync, repr, out_file);
 
+	free(repr);
 	freeBoard(&b);
 	freeBoardWindow(&bw);
 	terminateApp();
