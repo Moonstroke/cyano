@@ -15,12 +15,12 @@ int main(int argc, char **argv) {
 	             update_rate = DEFAULT_UPDATE_RATE,
 	             border_width = DEFAULT_BORDER_WIDTH;
 	bool use_vsync = false, wrap = false;
-	const char *game_rules = DEFAULT_GRID_RULES;
+	const char *game_rule = DEFAULT_GRID_RULE;
 	const char *in_file = NULL;
 	const char *out_file = NULL;
 
 	if (parseCommandLineArgs(argc, argv, &grid_width, &grid_height, &wrap,
-	                         &game_rules, &cell_pixels, &border_width,
+	                         &game_rule, &cell_pixels, &border_width,
 	                         &update_rate, &use_vsync, &in_file,
 	                         &out_file) < 0) {
 		return EXIT_FAILURE;
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 		fputs("Failure in creation of the game grid\n", stderr);
 		return EXIT_FAILURE;
 	}
-	g.rules = game_rules;
+	g.rule = game_rule;
 
 	struct gridwindow gw;
 	if (initGridWindow(&gw, &g, cell_pixels, border_width, "SDL Game of Life",

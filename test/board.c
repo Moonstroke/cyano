@@ -9,7 +9,7 @@ static const unsigned int WIDTH = 3, HEIGHT = 3;
 /* Does the grid wrap or not? */
 static const bool WRAPS = false;
 /* The rules of the game to run */
-static const char RULES[] = DEFAULT_GRID_RULES;
+static const char RULE[] = DEFAULT_GRID_RULE;
 
 /* The grid to run tests on */
 static struct grid grid;
@@ -23,7 +23,7 @@ static void setUp(void) {
 	int status;
 	status = initGrid(&grid, WIDTH, HEIGHT, WRAPS);
 	CUTE_assertEquals(status, 0);
-	grid.rules = RULES;
+	grid.rule = RULE;
 	fprintf(stderr, "Succesfully initialized %s grid %ux%u\n",
 	        WRAPS ? "toroidal" : "rectangular", WIDTH, HEIGHT);
 }

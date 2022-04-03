@@ -19,7 +19,7 @@ static const struct option LONGOPTS[] = {
 	{"border-size", required_argument, NULL, 'b'},
 	{"cell-size",   required_argument, NULL, 'c'},
 	{"no-border",   no_argument,       NULL, 'n'},
-	{"game-rules",  required_argument, NULL, 'R'},
+	{"game-rule",  required_argument, NULL, 'R'},
 	{"update-rate", required_argument, NULL, 'r'},
 	{"vsync",       no_argument      , NULL, 'v'},
 	{"wrap",        no_argument      , NULL, 'W'},
@@ -59,7 +59,7 @@ static int rvalset(const char *arg, const char **dst) {
 		}
 		return 0;
 err:
-		fprintf(stderr, "Error: invalid rules: \"%s\"\n", arg);
+		fprintf(stderr, "Error: invalid rule: \"%s\"\n", arg);
 		return -1;
 	}
 }
@@ -76,7 +76,7 @@ static int getval(char opt, const char *arg, unsigned int *dst) {
 
 int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
                          unsigned int *grid_height, bool *wrap,
-                         const char **game_rules, unsigned int *cell_pixels,
+                         const char **game_rule, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
                          const char **out_file) {
@@ -120,7 +120,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_r_met = true;
 				break;
 			case 'R':
-				if (rvalset(optarg, game_rules) < 0) {
+				if (rvalset(optarg, game_rule) < 0) {
 					return -5;
 				}
 				break;

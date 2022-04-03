@@ -93,12 +93,12 @@ static inline int initGridFromRLE(struct grid *grid, const char *repr,
 		return -2;
 	}
 	/* x and y specifications are mandatory, rule is optional */
-	bool add_rules = rc == 3;
+	bool add_rule = rc == 3;
 	rc = initGrid(grid, w, h, wrap);
 	if (rc < 0) {
 		return rc;
 	}
-	if (add_rules) {
+	if (add_rule) {
 		size_t len = strlen(rule_buffer);
 		char *rule = malloc(len);
 		if (rule == NULL) {
@@ -106,7 +106,7 @@ static inline int initGridFromRLE(struct grid *grid, const char *repr,
 			return -3;
 		}
 		strcpy(rule, rule_buffer);
-		grid->rules = rule;
+		grid->rule = rule;
 	}
 	return initCellsFromRLE(grid, strchr(repr, '\n') + 1);
 }

@@ -86,7 +86,7 @@ static void updateCell(struct grid *g, size_t rowOffset, const char *rowBuffer,
 	} else {
 		willBeAlive = willBeBorn;
 	}
-	SET_BIT(g->cells, rowOffset + cellOffset, willBeAlive(neighbors, g->rules));
+	SET_BIT(g->cells, rowOffset + cellOffset, willBeAlive(neighbors, g->rule));
 }
 
 static void updateRow(struct grid *g, size_t rowOffset, const char *rowBuffer,

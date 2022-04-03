@@ -34,7 +34,7 @@ The original rule of the game, as designed by Conway, is as follow:
  - And finally, if the cell is dead and has exactly 3 alive neighbors, it is
    born on the next generation (**reproduction**)
 
-The original rules were chosen by Conway for their particularly interesting
+The original rule was chosen by Conway for their particularly interesting
 behavior; he discovered the existence of patterns that do not evolve (*still
 lifes*), repeat over time (*oscillators*) and even patterns that move through
 the grid! (*spaceships*) Here are some famous examples:
@@ -87,16 +87,16 @@ by Bill Gosper:
 Golly is a renown Life-simulation software, and it uses a particular
 characterization of the evolution rules of the Game of Life.
 
-The rules of the game can be reduced to a more concise expression: a cell is
-born on the next generation if it has 2 or 3 alive neighbors, and it survives if
-it has 3 alive neighbors; otherwise it dies or stays dead. The *Golly* format
+The rule of the game can be reduced to a more concise expression: a cell is born
+on the next generation if it has 2 or 3 alive neighbors, and it survives if it
+has 3 alive neighbors; otherwise it dies or stays dead. The *Golly* format
 represents the latter in a short fashion, which is a character string of the
 form `Bx/Sy`, where `x` is the concatenation of the different number of alive
 neighbors one dead cell needs to be born on the next generation, and `y` is the
 concatenation of the numbers of alive neighbors one alive cell needs to survive
 to the next generation.
 
-So Conway's rules can be expressed, in this format, as `B3/S23`.
+So Conway's rule can be expressed, in this format, as `B3/S23`.
 
 
 ##### Variants of the Game of Life
@@ -104,7 +104,7 @@ So Conway's rules can be expressed, in this format, as `B3/S23`.
 The interest of the Golly format is that it allows to classify with simplicity
 the differents variations of the original Game of Life.
 
-Though Conway focused on the rules he chose for their particularities, other
+Though Conway focused on the rule he chose for its particularities, other
 rules have been studied, and several presented enough interest for enthusiasts
 to look into.
 

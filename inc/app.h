@@ -43,7 +43,7 @@ int initApp(void);
  * \param[out] grid_width   The number of columns in the app's grid
  * \param[out] grid_height  The number of rows in the app's grid
  * \param[out] wrap         Whether the grid's borders connect
- * \param[out] game_rules   The name or \e Golly representation of the rules that
+ * \param[out] game_rule   The name or \e Golly representation of the  that
  *                          govern the evolution of the grid
  *
  * \param[out] cell_pixels  The dimension in pixels of a single cell in the
@@ -59,7 +59,7 @@ int initApp(void);
  */
 int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
                          unsigned int *grid_height, bool *wrap,
-                         const char **game_rules, unsigned int *cell_pixels,
+                         const char **game_rule, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
                          const char **out_file);

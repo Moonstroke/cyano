@@ -8,7 +8,7 @@
  *        grid of John Conway's <b>Game of Life</b>.
  *
  * This game is a 0-player game, which means its evolution only depends on its
- * initial state and the set of \a rules that order it.
+ * initial state and the \a rule that orders it.
  *
  * The principle of the game is simple: given a (virtually) infinite
  * 2-dimensional grid of cells, each \e cell can be either \b dead or \b alive,
@@ -16,7 +16,7 @@
  * \e generations) the state of the cell is determined by the state of its
  * \b eight closest neighbors (\e Moore neighborhood).
  *
- * The rules are as following:
+ * The rule is:
  * - if the cell has less than \c 2 alive neighbors, it dies (underpopulation)
  * - if the cell is alive and has \c 2 or \c 3 alive neighbors, it remains alive
  *   (survival)
@@ -25,17 +25,17 @@
  * - and if the cell is dead and has exactly \c 3 alive neighbors, it is born
  *   (reproduction).
  *
- * The rules guiding the evolution of a Game of Life grid can be reduced to a
+ * The rule guiding the evolution of a Game of Life grid can be reduced to a
  * simpler expression, containing only the number of alive neighbors a cell
  * needs to be born and the number of alive neighbors it needs to stay alive, or
  * in a short form:
  * \code B<number of alive neighbors to be born>S<numberof neighbors to survive>
- * \endcode.  So the original rules of the Game of Life as designed by Conway
+ * \endcode.  So the original rule of the Game of Life as designed by Conway
  * can be expressed as \c B3/S23. Ths format is called the *Golly* format.
  * (\e Golly is a renown Life-simulation software which uses this format to
  * characterize a Life-like cellular automata).
  *
- * Some famouse other rules are:
+ * Some famous other rules are:
  * - \b Seeds, of form \c B2/S, in this scheme, <em>no cell survives more than a
  *   single generation</em>;
  * - \b HighLife, of rule \c B36/S23,
@@ -62,10 +62,10 @@
 #define DEFAULT_GRID_HEIGHT 60
 
 /**
- * \brief The default rules of evolution for the <i>Game of Life</i>, as
+ * \brief The default rule of evolution for the <i>Game of Life</i>, as
  * originally devised by Conway.
  */
-#define DEFAULT_GRID_RULES "B3/S23"
+#define DEFAULT_GRID_RULE "B3/S23"
 
 
 /**
@@ -75,9 +75,9 @@ struct grid {
 	unsigned int w; /**< The width of the grid. */
 	unsigned int h; /**< The height of the grid. */
 	char *cells; /**< The data of the grid cells. */
-	/** The rules determining the evolution of the game, as a string in \e Golly
+	/** The rule determining the evolution of the game, as a string in \e Golly
 	    format. */
-	const char *rules;
+	const char *rule;
 	/** A flag indicating whether the state on one side of the grid affects the
 	    opposite side. */
 	bool wrap;
@@ -158,7 +158,7 @@ bool toggleCell(struct grid *grid, unsigned int x, unsigned int y);
 /**
  * \brief Update the grid to the next generation.
  *
- * The grid is iterated, and each cell is updated according to the rules
+ * The grid is iterated, and each cell is updated according to the rule
  * determining the grid.
  *
  * \param[in,out] grid The grid to update
