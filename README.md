@@ -1,271 +1,554 @@
-# SDLife
+SDLife
+======
 
-## Conway's Game of Life in C using the SDL
+> A Game of Life implementation in C using the SDL v2
 
-[![Build Status](https://travis-ci.org/Moonstroke/SDLife.svg?branch=master)](
-https://travis-ci.org/Moonstroke/SDLife)
 
-### What is it?
+## 1. Presentation of the Game of Life
 
-#### The Game of Life
+### 1.1. Cellular automata
 
-##### Original
+The Game of Life is a mathematical game devised in 1970 by John Conway. It is
+the most famous *cellular automaton*, a simulation game taking no interaction
+from the player (Conway called it a zero-player game) consisting in a grid of
+"cells" evolving over time between different states according to a specific set
+of rules and constituting many unique multicellular patterns. Every such set of
+rules designates a specific cellular automaton.
 
-The Game of Life is a cellular automaton, a 0-player game where *alive* or
-*dead* cells on a grid interact.
+Initially a mathematical curiosity, cellular automata gained popularity for
+their display of complex and seemingly organical behavior, with cell patterns
+that no longer evolve, others that repeat, and others that displace across the
+grid. Macroscopically, observing the continuous evolution of a grid evokes the
+(accelerated) growth of microorganisms cultures, hence the name.
 
-The interaction is determined by an evolution rule, which is function of the
-cell's current state and the state of its eight closer neighbors:
+The fact that the complex interactions between cells arise directly from a
+seemingly simple ruleset has been source of study and reflexion, and the
+principle was successfully applied to entirely different fields, such as
+finance, or fluid dynamics.
 
-    ###
-    #@#
-    ###
+The systematical nature of the game makes it an excellent development
+exercise--this very project is just one example of the countless Life
+implementations existing either online or on hacker kids' laptops.
 
-where `@` is the cell, the `#` are its neighbors. (This scheme is know as the
-Moore neighborhood).
+A striking property of some cellular automata, including Conway's, is their
+Turing-completeness, which means that they can emulate a universal computation
+machine, and in theory perform any mathematical computation.
 
-The original rule of the game, as designed by Conway, is as follow:
- - If the cell is alive and has fewer than 2 alive neighbors, it dies
-   (**underpopulation**)
- - If the cell is alive and has 2 or 3 alive neighbors, it stays alive to the
-   next generation (**survival**)
- - If the cell is alive and has more than 4 alive neighbors, it dies
-   (**overpopulation**)
- - And finally, if the cell is dead and has exactly 3 alive neighbors, it is
-   born on the next generation (**reproduction**)
 
-The original rule was chosen by Conway for their particularly interesting
-behavior; he discovered the existence of patterns that do not evolve (*still
-lifes*), repeat over time (*oscillators*) and even patterns that move through
-the grid! (*spaceships*) Here are some famous examples:
+### 1.2. Grid properties
 
-The *block*, the simplest still life
+The evolution of the game takes into account the eight cells directly neighbors
+of each cell. This selection is called Moore neighborhood of range 1.
+
+The cells neighbor to the central cell (represented by the `@`) according to
+this criterion are represented here by `#` characters:
+
+    .....
+    .###.
+    .#@#.
+    .###.
+    .....
+
+The game is *binary*, there are only two states a cell can be in: "alive", or
+"dead".
+
+The grid is *orthogonal*: the cells are arranged along perpendicular axes.
+
+The evolution is *outer-totalistic*, meaning that the next state is a function
+of the total of live neighbor cells and the current state of the cell. (A fully
+*totalistic* cellular automaton is one where the cell is included in the total
+number of live cells.)
+
+The grid is *isotropic*, meaning the neighbor cells contribute indistinctly to
+the evolution rule, the location of a cell bears no meaning in itself (only
+matters the number of live and dead neighbors).
+
+The grid is *homogenous*, the rule applies indiscriminately everywhere in the
+same way.
+
+Cellular automata that exhibit these properties are called *Life-like cellular
+automata*, or *LLCA*.
+
+
+#### 1.2.1. Size of the grid
+
+The theoretical grid has an infinite size, so that the patterns can evolve
+without bounds, however the physical reality does not allow the implementation
+of such a grid.
+
+The boundaries are usually implemented as "walls", beyond which no cell can be
+born, and thus cells on the border of the grid have three less neighbors (five
+for cells in a corner) and their evolution will be affected.
+
+A solution to this problem is to use a grid large enough to let the pattern grow
+without hitting the boundaries.
+
+A usual implementation to mimic infinite grid, is by wrapping the grid, meaning
+that patterns that cross a boundary reappear on the opposite side. Such a grid
+is often called *toroidal*, since it behaves like a torus (a three-dimensional
+geometrical figure shaped like a donut, or a bike tube). This is not ideal
+though, as patterns can travel back and interact with their origin (for example
+a glider circling all the way back and destroy the gun that emitted it).
+
+
+### 1.3. Cell state transitions
+
+Since there are only two states for a cell, it can only go through four
+transitions:
+
+ - from alive, it stays alive (survival)
+ - from alive, it turns dead (death)
+ - from dead, it turns alive (birth)
+ - from dead, it stays dead.
+
+Every generation, the transition is chosen according to the number of live
+neighbors. If a live cell has too much live neighbors, it dies of
+overpopulation, if too few, it dies of underpopulation. Only if it has an
+acceptable number of neighbors can it survive, or be born.
+
+The original rule dictates that a cell is born if it has exactly three live
+neighbors, and that it survives if it has two or three live neighbors.
+
+
+### 1.4. Cell patterns
+
+The original rule allows for various types of patterns to exist. There are
+immobile patterns (*still lifes*), that repeat over time (*oscillators*), that
+displace across the grid (*spaceships*), that emit smaller patterns (*guns*),
+that move and leave a trail of debris behind them (*puffers*), that move and
+generate smaller spaceships in their wake (*rakes*), etc.
+
+
+#### 1.4.1. Basic patterns in the original Game of Life
+
+In the following examples, `@` are used to represent live cells and `.` dead
+ones.
+
+The *block*, a simple square, the most basic still life:
 
     @@
     @@
 
-The *blinker*, simplest oscillator (period 2, which means that the pattern
-repeats every other generation):
+The *tub*, a hollow plus sign, the only other still life with four cells:
 
-    @
-    @
-    @
+    .@.
+    @.@
+    .@.
 
-evolves into
+The *blinker*, a period-2 oscillator alternating between a horizontal and a
+vertical line of three cells:
 
+    ...
     @@@
+    ...
 
-and repeats.
+becomes
 
-The *glider*, simplest and first discovered spaceship:
+    .@.
+    .@.
+    .@.
+
+The *barberpole*, a period-2 ocillator that can be extended indefinitely:
+
+    Bipole    Tripole    Quadpole
+    ....@@    .....@@    .......@@
+    ...@.@    ....@.@    ......@.@
+    ......    .......    .........
+    .@.@..    ..@.@..    ....@.@..
+    .@@...    .......    .........    etc.
+    ......    @.@....    ..@.@....
+    ......    @@.....    .........
+    ......    .......    @.@......
+    ......    .......    @@.......
+
+become
+
+    Bipole    Tripole    Quadpole
+    ....@@    .....@@    .......@@
+    .....@    ......@    ........@
+    ..@.@.    ...@.@.    .....@.@.
+    .@....    .......    .........
+    .@@...    .@.@...    ...@.@...    etc.
+    ......    @......    .........
+    ......    @@.....    .@.@.....
+    ......    .......    @........
+    ......    .......    @@.......
+
+The *glider*, the smallest spaceship, moves diagonally by one cell in four
+generations:
+
+    .@..    ....    ....    ....    ....
+    ..@.    @.@.    ..@.    @...    ..@.
+    @@@.    .@@.    @.@.    ..@@    ...@
+    ....    .@..    .@@.    .@@.    .@@@
+
+The glider is probably the most important pattern of the Game of Life, notably
+in the construction of Turing machines, as it constitutes a support for
+information transmission (the presence of a glider can be interpreted as a `1`
+bit and its absence a `0` bit, for instance) and it is also used to collide with
+other patterns to elicit interesting reactions. In fact, there is a hunt for
+smallest configurations of glider generating specific patterns.
+
+Of all the existing patterns the glider is also the most recognizable pattern,
+making it the epitome of the Game of Life.
+
+
+#### 1.4.2. Consideration on the speed of spaceships
+
+Since the transition only accounts for the immediate neighbor cells, a spaceship
+cannot move by more than one cell in any direction by generation. This limit is
+called `c`, in reference to the speed of light, the physical speed limit.
+
+The speed of a spaceship is therefore represented as a fraction of `c`: the
+speed of the glider is thus `c/4`.
+
+There are no `c` spaceships in Life, although Life-like variants, especially
+explosive ones, comprise some.
+
+In other, non-Life-like flavours of cellular automata, the evolution rule can
+consider cells further than the immediate neighbors, allowing the transmission
+of information to more than one cell par generation, allowing for a greater
+value for `c`. In these versions, it is therefore possible to find spaceships
+that move more than one cell per generation (but their speed will never be
+greater than their value of `c`).
+
+
+### 1.5. Rulestring formula
+
+The rulestring is a condensed format allowing to represent summarily, but
+completely, all Life-like CA, by listing the exact numbers of live neighbors a
+cell requires to be alive the next generation. Only the birth and survival
+transitions are described, any configuration that does not match either state
+leads to a dead cell. Since there are less than ten neighbor cells, the numbers
+can be conveniently represented by a single digit each.
+
+The digits for the birth and survival transitions are written in ascending
+order, preceded by the initial of the transition (B or S) and the sections are
+separated by a single slash character.
+
+The original rule is written, according to this formula, as `B3/S23`: the cell
+is born if it has three neighbors, it survives with two or three, otherwise it
+will be dead, whether it dies or was not alive in the first place.
+
+The format presented here (*B* preceding *S*) is also called B/S notation, to
+differentiate from the S/B notation (with *S* before *B*) that has fallen into
+disuse.
+
+Technically, for absolute terseness either the B and S or the slash can be
+dropped (and the program happily accepts formulas omitting either), but keeping
+them increases readability and is a matter of personal taste.
+
+
+### 1.6. Variants of Life
+
+In fifty years, many cellular automata have been explored, and some exhibiting
+interesting properties have been noted, and even given a name, usually related
+to their specificities.
+
+Here is a list of the names of Life-like cellular automata this program
+recognizes, along with their rulestring:
+
+ - 2x2 (B36/S125)
+   This variant has the ability to evolve in square blocks of two-by-two cells
+ - 34 Life, or Life 3-4 (B34/S34)
+   Named after its transition numbers, both three and four
+ - Amoeba (B357/S1358)
+   Large areas form that resembles amoebas and that can assimilate smaller ones
+ - Assimilation (B345/S4567)
+   A rule similar, albeit stabler, to Diamoeba
+ - Coagulations (B378/S235678)
+   An exploding rule that creates stains during its expansion
+ - Coral (B3/S45678)
+   Creates slow-growing structures resembling coral
+ - Corrosion of Conformity (B3/S124)
+   A deacaying variant of Mazectric
+ - Day & Night (B3678/S34678)
+   In this variant, patterns of dead cells over live cells behave similarly to
+   patterns of live cell over dead ones (as if its colors were inverted)
+ - Diamoeba (B35678/S5678)
+   Creates diamond-shaped amoebas
+ - Flakes, Life without Death, or LwoD (B3/S012345678)
+   Creates beautiful snowflake-like structures (note that cells, once born,
+   never die)
+ - Gnarl (B1/S1)
+   Start with a single cell, and see for yourself.
+ - HighLife, or Highlife (B36/S23)
+   A rule mostly similar to the original, but interesting for the presence of
+   the *replicator*, a pattern that evolves into two versions of itself
+ - InverseLife, aka. Inverse life (B0123478/S34678)
+   A "negative" version of the original rule
+ - Long Life, or Long life (B345/S5)
+   Patterns with high longevity
+ - Maze (B3/S12345)
+   Structures expand slowly and form labyrinthic patterns
+ - Mazectric (B3/S1234)
+   A variant of Maze with longer and straighter corridors
+ - Move (B368/S245)
+   A slowly evolving rule, with many spaceships and puffers
+ - Pseudo Life, or Pseudo life (B357/S238)
+   Looks like the original rule, but no pattern from it behave the same way
+ - Replicator (B1357/S1357)
+   Every pattern replicates itself
+ - Seeds (B2/S)
+   Every living cell unconditionally dies one the next generation. Nevertheless
+   most patterns evolve explosively
+ - Serviettes (B234/S)
+   Produces magnificent Persian rug-like geometries
+ - Stains (B3678/S235678)
+   Evolves into big stable "ink" stains
+ - WalledCities (B45678/S2345)
+   Stabilizes into cities, areas of high activity surrounded by a continuous wall
+
+
+## 2. The program
+
+This program is a simulator for the Life-like cellular automata identified
+above.
+
+
+### 2.1. Execution
+
+#### 2.1.1. Command-line options
+
+The program is invoked from the command-line and accepts a set of options.
+
+<table><tr><th>Category</th><th>Short option (with optional argument)</th>
+<th>Long option</th><th>Description</th><th>Default value</th><th>Conflict with
+another option</th></tr>
+<tr><td rowspan="4">Grid management</td><td>`-w WIDTH`</td><td>`--width`</td>
+<td>Specifies the width of the grid</td><td>`80`</td><td>`-i`</td></tr>
+<tr><td>`-h HEIGHT`</td><td>`--height`</td><td>Specifies the height of the
+grid</td><td>`60`</td><td>`-i`</td></tr>
+<tr><td>`-W`</td><td>`--wrap`</td><td>Enables wrapping grid (cf.
+section 1.2.1.)</td><td>False</td><td>None</td></tr>
+<tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Specifies the Life variant to run
+(either by its name if recognized, or its rulestring)</td><td>`B3/S23`</td>
+<td>None<td></td></tr>
+<tr><td rowspan="5">Grid display</td><td>`-b BORDER`</td><td>`--border`</td>
+<td>The size of the gap between two cells, in pixels</td><td>`1`</td>
+<td>`-n`</td></tr>
+<tr><td>`-n`</td><td>`--no-border`</td><td>Disables the gap between cells</td>
+<td></td><td>`-b`, because equivalent to `-b0`</td></tr>
+<tr><td>`-c CELL_SIZE`</td><td>`--cell-size`</td><td>Gives the size of a cell,
+in pixels</td><td>`16`</td><td>None</td></tr>
+<tr><td>`-r RATE`</td><td>`--update-rate`</td><td>The number of generations per
+second</td><td>`25`</td><td>`-v`</td></tr>
+<tr><td>`-v`</td><td>`--vsync`</td><td>Updates the grid in simultaneity with the
+monitor's vertical synchronization</td><td>False</td><td>`-r`</td></tr>
+<tr><td rowspan="3">File I/O</td><td>`-f FILE`</td><td>`--file`</td><td>Gives
+the name of the file to read from and write to</td><td>None</td><td>`-i` and
+`-o`</td></tr>
+<tr><td>`-i INPUT_FILE`</td><td>`--input-file`</td><td>Gives the path to the
+file from which to read the grid's initial configuration</td><td>None</td>
+<td>`-f`, `-w` and `-h`</td></tr>
+<tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Gives the path to the
+file to write the grid state to</td><td>None</td><td>`-f`</td></tr></table>
+
+Any file path argument (to `-f`, `-i` or `-o`) can be `-`, which specifies to
+read from the standard input stream or write to the standard output stream. It
+is the only case where the argument to `-f` does not refer to the same file for
+input and output: `-f-` is a shortcut to `-i- -o-`.
+
+
+#### 2.1.2. Graphical interface
+
+The graphical interface of the program is minimalistic; only the grid is
+displayed. The cells are displayed as squares; white represent dead cells and
+black, live ones. There is a medium-grey border around the cells to distinguish
+them visually. The active cell is marked with a semi-opaque grey mask: when it
+is alive, it will appear as dark grey, when dead, it will appear light grey.
+
+Only the cell size and border width (or presence altogether) can be changed (see
+previous section); the colors are not currently configurable.
+
+There are two evolution modes in the program. It can be run continuously at the
+rate specified on the command-line (see above), or be in a paused state, giving
+the user time to modify the cells or draw full patterns before they evolve. In
+this state, the grid can still be updated by steps.
+
+
+#### 2.1.3. Mouse and keyboard interaction
+
+The program window can be interacted with using the mouse and the keyboard.
+Moving the mouse cursor changes the active cell to the one under the mouse tip.
+The left mouse button can be clicked to toggle the state of the active cell (if
+alive, the cell will die, if already dead it will be born). The button can also
+be kept pressed and the mouse dragged, to toggle every cell the cursor hovers.
+If the mouse is dragged too quickly, some cells may be skipped: this is due to a
+known limitation in the implementation of the regulation of the program update
+frequency.
+
+The keyboard can also be used to change the active cell, using the arrow keys.
+Some keys, or key combinations, also have a defined action:
+
+<table><tr><th>Key</th><th>Action</th></tr>
+<tr><td>`Esc`</td><td rowspan="3">Quit the program</td></tr>
+<tr><td>`Ctrl` + `Q`</td></tr>
+<tr><td>`Ctrl` + `W`</td></tr>
+<tr><td>`Space`</td><td>Toggle run mode</td></tr>
+<tr><td>`Enter`</td><td>When paused, update the grid once</td></tr>
+<tr><td>`T`</td><td>Toggle the active cell</td></tr>
+<tr><td>`R`</td><td>Reset the grid to the configuration in the input file. If
+no file was specified, do nothing</td></tr>
+<tr><td>`W`</td><td>Write the current state to the given output file. If the
+file does not exist, create it. If no file was specified, do nothing</td></tr>
+<tr><td>`C`</td><td>Clears the grid (kills all cells)</td></tr></table>
+
+
+#### 2.1.4. File input/output
+
+The program can read and write to text files whose content describe a grid state
+(dimensions, state of cells and sometimes rulestring). These file can come in
+two distinct formats, *plain text* and *RLE* (run-length encoding).
+
+The input file can be in either format, but the output file will always be
+generated in plain-text format.
+
+
+##### 2.1.4.1. Plain text format
+
+The plain text format is a textual representation of the grid as a rectangular
+block of text with `.` for dead cells and `@` for live ones. The grid must be
+written fully, the number of lines gives the height of the grid and the number
+of characters per line (which must be identical throughout the lines) gives the
+grid width. The format accepts no data apart from the grid itself.
+
+Example: a down-left-oriented glider in plain text
 
     .@.
     @..
     @@@
 
 
-A still life can be seen as a period-1 oscillator, and a spaceship as an
-oscillator of not constant position.
+##### 2.1.4.2. RLE format
 
-The question of the finiteness of the evolution of a pattern has been solved
-with the discovery of the *Glider gun*, a pattern that emits gliders, discovered
-by Bill Gosper:
+RLE is a compressed format where a range of contiguous cells in the same state
+are represented with a single cell and the number of cells in the range. This
+format accepts a header line specifying the dimensions of the grid and
+optionally the rulestring. The header is mandatory; since the configuration is
+compressed, blank line endings can be omitted, and the grid dimensions cannot be
+determined solely from the grid data.
 
-    .........................@...........
-    .......................@.@...........
-    .............@@......@@............@@
-    ............@...@....@@............@@
-    .@@........@.....@...@@..............
-    .@@........@...@.@@....@.@...........
-    ...........@.....@.......@...........
-    ............@...@....................
-    .............@@......................
+Live cells are denoted by a `o`, dead cells by `b`, a `$` represents the end of
+a row (and the start of the next) and `!` indicates the end of the pattern.
+Whitespace is non significant (but is not allowed within a run compression),
+this allows to wrap lines anywhere without constraint. Everything after the
+terminating `!` is considered comment text and will not be parsed.
 
-
-##### Golly format
-
-Golly is a renown Life-simulation software, and it uses a particular
-characterization of the evolution rules of the Game of Life.
-
-The rule of the game can be reduced to a more concise expression: a cell is born
-on the next generation if it has 2 or 3 alive neighbors, and it survives if it
-has 3 alive neighbors; otherwise it dies or stays dead. The *Golly* format
-represents the latter in a short fashion, which is a character string of the
-form `Bx/Sy`, where `x` is the concatenation of the different number of alive
-neighbors one dead cell needs to be born on the next generation, and `y` is the
-concatenation of the numbers of alive neighbors one alive cell needs to survive
-to the next generation.
-
-So Conway's rule can be expressed, in this format, as `B3/S23`.
-
-
-##### Variants of the Game of Life
-
-The interest of the Golly format is that it allows to classify with simplicity
-the differents variations of the original Game of Life.
-
-Though Conway focused on the rule he chose for its particularities, other
-rules have been studied, and several presented enough interest for enthusiasts
-to look into.
-
-These rules were often dubbed by their discoverer(s), and their name generally
-reflects one of their particularity.
-
-The following tables references a number of Life-like cellular automata (2
-states, no distinction of the neighbors by their position around the cell,
-evolution function only of the *state* of the 9 cells); there are cellular
-automata that do not follow these conditions, but they are not implemented in
-the program for now.
-
-Name |Rule (in Golly format)|Description
-:---:|:---:|:---
-**2x2**|B36/S125|This variant has the ability to evolve in blocks of `2x2` cells
-**34 Life**, or Life 3-4|B34/S34| Dubbed after the fact that a cell is born or survives if it has 3 or 4 alive neighbors
-**Amoeba**|B357/S1358|Large areas form that resemble amoebas and can assimilate smaller ones
-**Assimilation**|B345/S4567|A rule similar to, but stabler than, Diamoeba
-**Coagulations**|B378/S235678|An exploding rule that creates stains during its expansion
-**Conway's Life**, or **Original**|B3/S23|The original rule of the game
-**Coral**|B3/S45678|Creates structures that grow slowly and with architecture resembling coral
-**Corrosion of Conformity**|B3/S124| A decaying variation of **Mazectric**
-**Day & Night**|B3678/S34678|In this rule, dead cells have the same behavior than live cells and reverse patterns can be created
-**Diamoeba**|B35678/S5678|Creates *"amoeabas"* in shape of diamonds
-**Flakes**, or **Life without Death** (or **LwoD**)|B3/S012345678|Creates magnificent structures like snow flakes (note that the cells, once born, do not die)
-**Gnarl**|B1/S1|Start with a single cell, and behold!
-**HighLife**, or **Highlife**|B36/S23|A rule similar to Conway's, but interesting with the existence of a simple *replicator* (a pattern that creates 2 copies of itself)
-**InverseLife**, or **Inverse life**|B0123478/S34678|A *"negative"* version of Conway's rule
-**Long Life**, or **Long life**|B345/S5|Patterns with very high longevity
-**Maze**|B3/S12345|Expanding structures forming a vast maze
-**Mazectric**|B3/S1234|A variant of **Maze** where the maze corridors are straighter and longer
-**Move**|B368/S245|A slowly evolving rule, with many spaceships and puffers
-**Pseudo Life**, or **Pseudo life**|B357/S238|Looks like Conway's, but no common pattern from it behave the same way.
-**Replicator**|B1357/S1357|Every pattern is a replicator
-**Seeds**|B2/S|Though every cell dies on the next generation, most patterns explode
-**Serviettes**|B234/S|Produces beautiful persian rugs-like geometries
-**Stains**|B3678/S235678|Evolves into stable big ink stains
-**WalledCities**|B3678/235678|Stabilizes into *"cities"*, areas of high activities delimited by a continuous wall
-
-
-
-#### The SDL
-
-The SDL ([Simple DirectMedia Layer][sdl]) is a C library that provides access to
-media and user interaction (graphics, audio, mouse/keyboards events). Although
-it is rather low-level, its interface is clear and easy to use once you are used
-to it, and it is awesome, so it was my destination of choice when I decided to
-develop my own graphical Game of Life program.
-
-
-
-### Technicals
-
-#### Compilation
-
-The program was coded initially under *buntu 17.04, then Debian 9 (stretch),
-uses the version 2 of the SDL, and is compiled with `gcc`; however the code
-should be standard compliant (compiled with `-pedantic -Wall` and every syntax
-warning possible enabled).
-
-Apart from pre-installed packages, the source depends on the APT package
-`libsdl2-dev` to compile (and dependencies packages, of course).
-
-The compilation process is handled by *make*, and a Makefile is provided.
-
-The following rules are defined:
- - `all` (obviously) which cleans the test object files and compile the project,
- - `clean`, to remove the object directory,
- - `distclean`, to remove all files that are not on the base of the project
-   (documentation, objects and output executables directories)
- - `doc`, to generate the documentation directory (*cf.* **Documentation**
-   subsection)
- - `test`, to compile the test suites (every source in the `test` directory)
- - `testclean`, to remove every files involved in tests (because of potential
-   conflicts with other object files, notably concerning definition of `main()`).
-
-
-
-#### Execution
-
-The program accepts several command-line options to specify parameters of the
-grid:
-
-Short option|Long option|Description|Conflicts with another option?
-:----:|:---:|:----:|:----:
-`-w WIDTH`|`--grid-width WIDTH`|The width of the grid|None
-`-h HEIGHT`|`--grid-height  HEIGHT`|The height of the grid|None
-`-b BORDER`|`--border-size`|The size of the gap between two cells|`--no-border`
-`-c SIZE`|`--cell-size`|The size of the representation of one cell, in pixels|None
-`-n`|`--no-border`|Disable the borders between the cells|`--border-size`, because equivalent to `-b0`
-`-r RATE`|`--update-rate RATE`|The frequency of the generations|`--vsync`
-`-R RULE`|`--game-rule RULE`|The evolution rule of the game|None
-`-v`|`--vsync`|Follow vertical synchronization for refresh rate|`--update-rate`
-`-W`|`--wrap`|Create a *toroidal*<sup>[1](#1)</sup> grid instead of a rectangular one|None
-`-f FILE`|`--file`|The path to the file to read from/to write to|`--input-file` and `--output-file`
-`-i INPUT_FILE`|`--input-file`|Path to a file to read from|`--file`, `--height` and `--width`
-`-o OUTPUT_FILE`|`--output-file`|Path to a file to write to|`--file`
-
-#### File input/output
-
-The program can communicate with external files, either to load a grid from or
-to write the current state to. At launch time, the program reads from the input file specified with the `--input-file` option and initializes the grid with the
-pattern read. At any time during execution, the grid can be reset to its initial
-state using the `r` key (the pattern is kept in memory for the duration of the
-execution, so this action is independent of the actual file used for input), and the current state can be output to the file specified by the `--output-file`
-option by pressing the `w` key.
-
-If the input path is simply `-`, the standard input will be used. Likewise, if
-the output path is `-`, the standard output is used. The option `--file` is a
-shortcut to define the input and output paths to the same file (except if the argument is `-`, in which case the standard input and output are used).
-
-The input file can be provided in two different format: an exact and
-rectangular textual image of the pattern, using `@` characters for live cells
-and `.` for dead cells, and line breaks to separate the rows, or RLE
-representation.
-
-The RLE (run-length encoding) is a compressed representation of a pattern that
-reduces contiguous cells in the same state to a single cell and the number of
-cells merged. This is particularly useful for huge patterns, with big homogenous
-chunks of cells. The program follows the xlife representation, using `b` for
-dead cells, `o` for live cells, `$` to indicate end of row and `!` to indicate
-end of pattern, and the digits to indicate run lengths immediately followed by
-the state of the cells in the run. Whitespace is ignored everywhere, except
-between run length and the consecutive state character. Since this is a
-compressed representation, blank end of rows can be omitted in the string, thus
-for information about the grid to be complete, it is necessary to include a
-header row, indicating grid width and height, and optionnaly the game rule.
-
-Here are the representation in both formats of a simple Life glider:
-
-    .@.
-    ..@
-    @@@
+Example : the southwestward glider in RLE format
 
     x = 3, y = 3, rule = B3/S23
-    bo$2bo$3o!
-
-The output file is always written using the textual image form.
+    bo$b$3o!
 
 
-#### Documentation
+### 2.2. Developement
 
-The header files are documented, [Doxygen][dox]-style. The generated
-documentation directory is not included, so in order to have access to it you
-must compile the docs yourself -- this means of course that you need Doxygen
-installed (APT package `doxygen`).
+The code is written in C, the ubiquitous "low-level" language. It began as a
+project to learn and familiarize with the language, and eventually grew into
+something actually usable.
 
-
-***
-
-
-### Footnotes
-
-<a href="#1">1</a>: A toroidal grid is, by opposition to a rectangular (or
-standard) one, is a configuration of the grid in which each cell crossing a
-boundary will re-enter the grid on the opposite side instead of disappearing. It
-allows to virtually replicate an infinite grid -- except that ships might wrap
-around and interact with the original pattern that launched it, resulting in
-behaviour that would not have occurred on a truly infinite grid.
+I strived to keep the headers well-documented, in case anyone is interested in
+taking a look; the code formatting is homogenous, readable (for me, at least)
+and obscure sections are commented.
 
 
-[sdl]: http://www.libsdl.org "The SDL website"
-[clog]: https://github.com/Moonstroke/Clog "Clog"
-[dox]: http://www.doxygen.org/index.html "Doxygen website"
+#### 2.2.1. The SDL
+
+The program uses the [SDL](http://www.libsdl.org "The SDL website") (Simple
+DirectMedia Layer) version 2 for the graphical part. It is a low-level graphical
+library; it provides a powerful yet easy to use API. It is also widespread and
+supported on the majority of platforms, which improves the portability of the
+project.
+
+
+#### 2.2.2. Compilation
+
+The code is written following the C11 standard, and uses C-exclusive constructs,
+so C++ is not supported and the code is not expected to compile in it.
+Development is made with GCC, with all compilation warnings enabled
+(`-Wall -Wextra -pedantic`), in an effort to make the code as close to
+standard-compliant as possible. I also refrained from using GNU-specific
+extensions to the language (some POSIX functions are called, but no code
+construct like pragmas or `__attribute__` are used).
+
+The compilation process is handled with `make`, with a Makefile provided with
+the usual rules:
+ - `all` to build the executable in the `out` directory,
+ - `clean` to delete object files in the `obj` directory,
+ - `doc` to generate the documentation in `doc` directory,
+ - `cleandoc` to remove the latter directory,
+ - `distclean` to reset the project in a clean state,
+ - and file-based rules to compile individual object files.
+
+
+#### 2.2.3. Environment
+
+The code was developed initially under Ubuntu 17, then Debian 9. Debian-based
+distros are supported, and major GNU/Linux platforms should be as well.
+
+For Windows, compilation using MinGW or Cygwin should be doable, but I have not
+tried. (An adaptation to native Win32 is in the box).
+
+The only package necessary for the sources to compile is `libsdl2-dev`.
+Recommended packages are `make` to provide the compilation utility and `doxygen`
+for the documentation processor.
+
+
+#### 2.2.4. Documentation
+
+The definitions of the structures and functions declarations in the headers are
+fully (hopefully; or at least mostly) documented in
+[Doxygen](http://www.doxygen.org/index.html "Doxygen website") syntax. The
+documentation files is not part of the repository, however it can be generated
+quite easily (cf. previous section). The resulting documentation is in HTML and
+can be read with any browser; the entry point is the file `doc/html/index.html`.
+
+
+## 3. Considered evolutions
+
+This project was revived after a substantial hiatus, and becomes increasingly
+viable (although utterly redundant). Here is a set of evolutions I have in mind
+for the program, some of which shorter-term than others.
+
+ - Achieving a stable version 1.0
+   This is probably more a spiritual guideline than a concrete goal; it depends
+   on me only to decide when to officially put the version tag out, but I want
+   to be entirely satisfied with the state of the project for that.
+ - Native Windows port
+   As briefly mentioned above, I intend to port the code to Windows and have it
+   compile natively. I got my hands on a copy of Visual Studio, so this is one
+   of the very next features.
+ - OpenGL implementation
+   I am working locally on a version backed with OpenGL for the rendering, it is
+   functional, but barely, and needs a lot of polishing.
+ - Increased configurability
+   The colors of the grid display, the characters used for the plain text file
+   format are fixed (even hard-coded). A means to configure these would be
+   welcome, but I am not sure of how to introduce it; I do not want the program
+   to depend on an external config file, and I am reluctant to introduce yet
+   more command-line options. Macros could be a solution, but that would mean no
+   runtime configuration.
+ - A better plain text file format
+   Says it all. As implemented the plain text format is sufficient, but poor;
+   support for comments, omitted blank line endings would be a plus. Guessing
+   the statuses characters on reading could be an idea too.
+ - GUI
+   To decorate the interface, and augment it with controls, and menus.
+   Unfortunaltely I do not know any SDL GUI toolkit, and developing one myself
+   from scratch is too big a project to even consider it.
+ - Headless run mode
+   This would introduce a totally different type of execution (that would
+   justify adding a command-line option). The idea would be to provide input and
+   output files and a number of generations, and write to the output file the
+   configuration in the input file after this many generations. It would be a
+   sort of pattern incubator.
+ - Non-totalistic or anisotropic Life-like CA
+   While I do not consider non-binary CA (the grid is backed by a bit array,
+   changing the number of states would be a huge work I do not want to tackle),
+   this type of CA is one that would be interesting to take on. It would
+   involve updating the evolution and next-state-calculation code, that could
+   use some reworking anyway.
+ - Internationalization
+   Mostly for French, at least initially, and would affect the README and docs.
+   This would involve twice the amount of documentation to maintain, which is
+   already a full-time job by itself.
