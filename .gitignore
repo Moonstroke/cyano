@@ -2,5 +2,8 @@
 obj/
 out/
 
+# Visual Studio config directory
+.vs
+
 # Documentation directory (use doxygen to compile docs from the configuration file Doxyfile)
 doc/
