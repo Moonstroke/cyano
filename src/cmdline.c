@@ -8,7 +8,7 @@
 
 
 
-static const char *const OPTSTRING = "b:c:h:nr:R:vw:Wf:i:o:";
+static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:";
 
 /**
  * The long options array.
@@ -94,6 +94,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	bool opt_o_met = false;
 	int ch;
 	int idx;
+	opterr = 0;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
@@ -153,29 +154,37 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				*out_file = optarg;
 				opt_o_met = true;
 				break;
+			case '?':
+				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);
+				break;
+			case ':':
+				fprintf(stderr, "Error: missing argument for option -%c\n",
+				        optopt);
+				return -7;
 			default:
+				fprintf(stderr, "Unexpected getopt return: '%c'\n", ch);
 				break;
 		}
 	}
 	if (opt_v_met && opt_r_met) {
 		fputs("Error: options --update-rate and --vsync are incompatible\n",
 		      stderr);
-		return -7;
+		return -8;
 	}
 	if (opt_b_met && opt_n_met) {
 		fputs("Error: options --border-width and --no-border are"
 		      " incompatible\n", stderr);
-		return -8;
+		return -9;
 	}
 	if (opt_f_met && (opt_i_met || opt_o_met)) {
 		fputs("Error: options --file is incompatible with --input-file and"
 		      " --output-file", stderr);
-		return -9;
+		return -10;
 	}
 	if (opt_i_met && (opt_w_met || opt_h_met)) {
 		fputs("Error: options --width and --height are incompatible with"
 		      " --input-file", stderr);
-		return -10;
+		return -11;
 	}
 	for (int i = optind; i < argc; ++i) {
 		fprintf(stderr,
