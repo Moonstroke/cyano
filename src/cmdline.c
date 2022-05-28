@@ -83,7 +83,6 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
                          const char **out_file) {
-	int res = 0;
 	bool opt_r_met = false;
 	bool opt_v_met = false;
 	bool opt_b_met = false;
@@ -157,7 +156,6 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 			default:
 				break;
 		}
-		res++;
 	}
 	if (opt_v_met && opt_r_met) {
 		fputs("Error: options --update-rate and --vsync are incompatible\n",
@@ -180,10 +178,9 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 		return -10;
 	}
 	for (int i = optind; i < argc; ++i) {
-		res++;
 		fprintf(stderr,
 		        "Warning: skipping unrecognized non-option argument \"%s\"\n",
 		        argv[i]);
 	}
-	return res == argc - 1 ? 0 : -11;
+	return 0;
 }
