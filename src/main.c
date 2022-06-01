@@ -20,11 +20,15 @@ int main(int argc, char **argv) {
 	const char *in_file = NULL;
 	const char *out_file = NULL;
 
-	if (parseCommandLineArgs(argc, argv, &grid_width, &grid_height, &wrap,
-	                         &game_rule, &cell_pixels, &border_width,
-	                         &update_rate, &use_vsync, &in_file,
-	                         &out_file) < 0) {
+	int rc = parseCommandLineArgs(argc, argv, &grid_width, &grid_height, &wrap,
+	                              &game_rule, &cell_pixels, &border_width,
+	                              &update_rate, &use_vsync, &in_file,
+	                              &out_file);
+	if (rc < 0) {
 		return EXIT_FAILURE;
+	} else if (rc > 0) {
+		/* Found option which mandates termination: --help, --usage */
+		return EXIT_SUCCESS;
 	}
 
 	if (initApp() < 0) {

@@ -8,6 +8,40 @@
 
 
 
+/* Split into two strings because only the first line needs formatting */
+static const char USAGE_HEADER[] = "Usage: %s [OPTION]...\n";
+static const char USAGE[] = "where OPTION is any of the following:\n"
+	"\t-w WIDTH, --grid-width=WIDTH\n"
+	"\t\tSpecify the width of the grid (integer argument, default 80)\n"
+	"\t-h HEIGHT, --grid-height=HEIGHT\n"
+	"\t\tSpecify the height of the grid (integer arg, default 60)\n"
+	"\t-c CELL_SIZE, --cell-size=CELL_SIZE\n"
+	"\t\tSpecify the size of each cell (integer arg, default 16)\n"
+	"\t-b BORDER_SIZE, --border-size=BORDER_SIZE\n"
+	"\t\tSpecify the width of the gap between the cells (integer arg, default "
+	"1)\n"
+	"\t-n, --no-border\n"
+	"\t\tDisable the gap beetween the cells\n"
+	"\t-R GAME_RULE, --game-rule=GAME_RULE\n"
+	"\t\tSpecify the rulestring or name of the variant to run (string arg, "
+	"default \"B3/S23\")\n"
+	"\t-r UPDATE_RATE, --update-rate=UPDATE_RATE\n"
+	"\t\tSpecify the number of generations to compute per second (integer arg, "
+	"default 25)\n"
+	"\t-v, --vsync\n"
+	"\t\tSpecify to match the update rate with the monitor refresh rate\n"
+	"\t-W, --wrap\n"
+	"\t\tSpecify to make the grid wrap (opposite sides connect)\n"
+	"\t-f FILE, --file=FILE\n"
+	"\t\tSpecify the file for input and output (string arg, default none)\n"
+	"\t-i INPUT_FILE, --input-file=INPUT_FILE\n"
+	"\t\tSpecify the file for input (string argument, default none)\n"
+	"\t-o OUTPUT_FILE, --output-file=OUTPUT_FILE\n"
+	"\t\tSpecify the file for output (string argument, default none)\n"
+	"\t--help, --usage\n"
+	"\t\tPrint this message and exit\n";
+
+
 static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:";
 
 /**
@@ -26,9 +60,17 @@ static const struct option LONGOPTS[] = {
 	{"file",        required_argument, NULL, 'f'},
 	{"input-file",  required_argument, NULL, 'i'},
 	{"output-file", required_argument, NULL, 'o'},
+	{"usage",       no_argument      , NULL, 'u'},
+	{"help",        no_argument      , NULL, 'u'},
 	{"", 0, NULL, 0}
 };
 
+
+static int _printUsage(const char *argv0) {
+	fprintf(stderr, USAGE_HEADER, argv0);
+	fwrite(USAGE, sizeof USAGE, 1, stderr);
+	return -1;
+}
 
 static int _setRule(const char *arg, const char **dst) {
 	const char *rule = getRuleFromName(arg);
@@ -97,6 +139,9 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	opterr = 0;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
+			case 'u':
+				_printUsage(argv[0]);
+				return 1;
 			case 'b':
 				if (_getUIntValue('b', optarg, border_width) < 0) {
 					return -1;
