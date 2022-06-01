@@ -9,12 +9,13 @@
 
 int main(int argc, char **argv) {
 
-	unsigned int grid_width = DEFAULT_GRID_WIDTH,
-	             grid_height = DEFAULT_GRID_HEIGHT,
-	             cell_pixels = DEFAULT_CELLS_PIXELS,
-	             update_rate = DEFAULT_UPDATE_RATE,
-	             border_width = DEFAULT_BORDER_WIDTH;
-	bool use_vsync = false, wrap = false;
+	unsigned int grid_width = DEFAULT_GRID_WIDTH;
+	unsigned int grid_height = DEFAULT_GRID_HEIGHT;
+	unsigned int cell_pixels = DEFAULT_CELLS_PIXELS;
+	unsigned int update_rate = DEFAULT_UPDATE_RATE;
+	unsigned int border_width = DEFAULT_BORDER_WIDTH;
+	bool use_vsync = false;
+	bool wrap = false;
 	const char *game_rule = DEFAULT_GRID_RULE;
 	const char *in_file = NULL;
 	const char *out_file = NULL;

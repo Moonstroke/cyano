@@ -1,5 +1,6 @@
 #include "gridwindow.h"
 
+#include <stdint.h> /* for uint8_t */
 #include <SDL2/SDL_mouse.h>
 
 
@@ -8,8 +9,8 @@ int initGridWindow(struct gridwindow *gw, struct grid *grid,
                     unsigned int cell_pixels, unsigned int border_width,
                     const char *title, bool use_vsync) {
 	unsigned int winWidth = grid->w * (cell_pixels + border_width)
-	                        + border_width,
-	             winHeight = grid->h * (cell_pixels + border_width)
+	                        + border_width;
+	unsigned int winHeight = grid->h * (cell_pixels + border_width)
 	                         + border_width;
 
 	Uint32 win_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS
@@ -48,9 +49,8 @@ void freeGridWindow(struct gridwindow *gw) {
 
 static inline void _drawCell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
                              unsigned int j, unsigned int c,
-                             unsigned int border, unsigned char r,
-                             unsigned char g, unsigned char b,
-                             unsigned char a) {
+                             unsigned int border, uint8_t r, uint8_t g,
+                             uint8_t b, uint8_t a) {
 	SDL_SetRenderDrawColor(ren, r, g, b, a);
 	rect->x = (c + border) * i + border;
 	rect->y = (c + border) * j + border;
@@ -72,7 +72,7 @@ void renderGridWindow(const struct gridwindow *gw) {
 	r.h = c;
 	for (j = 0; j < h; ++j) {
 		for (i = 0; i < w; ++i) {
-			unsigned char ch = getGridCell(gw->grid, i, j) ? 0 : 255;
+			uint8_t ch = getGridCell(gw->grid, i, j) ? 0 : 255;
 			_drawCell(gw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}

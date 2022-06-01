@@ -37,7 +37,8 @@ static inline unsigned int mod(int a, int b) {
 }
 
 static bool _getCellLimits(const struct grid *g, int x, int y) {
-	unsigned int i = (unsigned)x, j = (unsigned)y;
+	unsigned int i = (unsigned) x;
+	unsigned int j = (unsigned) y;
 	return (i < g->w && j < g->h) ? GET_BIT(g->cells, g->w * j + i) : false;
 }
 

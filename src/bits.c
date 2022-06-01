@@ -4,7 +4,7 @@
 
 
 
-void copyBits(const char* restrict src, size_t srcOffset, char *restrict dest,
+void copyBits(const char *restrict src, size_t srcOffset, char *restrict dest,
               size_t destOffset, size_t length) {
 	src += srcOffset >> 3;
 	dest += destOffset >> 3;

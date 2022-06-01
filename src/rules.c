@@ -81,7 +81,9 @@ static const char *rules[] = {
 
 
 const char *getRuleFromName(const char *name) {
-	unsigned int i = 0, start = 0, end = NB_NAMES;
+	unsigned int i = 0;
+	unsigned int start = 0;
+	unsigned int end = NB_NAMES;
 	while (!i && (end - start) > 1) {
 		unsigned int middle = (start + end) / 2;
 		int d = strcmp(name, names[middle]);
