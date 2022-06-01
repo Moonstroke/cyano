@@ -42,8 +42,8 @@ int initGridWindow(struct gridwindow *gw, struct grid *grid,
 
 
 void freeGridWindow(struct gridwindow *gw) {
-	SDL_DestroyWindow(gw->win);
 	SDL_DestroyRenderer(gw->ren);
+	SDL_DestroyWindow(gw->win);
 }
 
 
