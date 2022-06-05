@@ -5,5 +5,8 @@ out/
 # Visual Studio config directory
 .vs
 
+# Program database file (MS storage of debugging symbols)
+*.pdb
+
 # Documentation directory (use doxygen to compile docs from the configuration file Doxyfile)
 doc/
