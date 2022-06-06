@@ -1,6 +1,7 @@
 #include "app.h"
 
 #include <SDL2/SDL.h>
+#include <stdio.h> /* for fprintf, stderr, fputs */
 
 #include "grid.h"
 #include "gridwindow.h"
@@ -146,7 +147,7 @@ void runApp(struct gridwindow *gw, unsigned int update_rate, bool use_vsync,
             const char *repr, const char *out_file) {
 	struct timer timer;
 	resetTimer(&timer);
-	timer.delay = 1000. / (double)update_rate;
+	timer.delay = 1000. / (double) update_rate;
 
 	bool loop = true;
 	bool mdown = false;

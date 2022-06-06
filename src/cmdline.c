@@ -8,7 +8,41 @@
 
 
 
-static const char *const OPTSTRING = "b:c:h:nr:R:vw:Wf:i:o:";
+/* Split into two strings because only the first line needs formatting */
+static const char USAGE_HEADER[] = "Usage: %s [OPTION]...\n";
+static const char USAGE[] = "where OPTION is any of the following:\n"
+	"\t-w WIDTH, --grid-width=WIDTH\n"
+	"\t\tSpecify the width of the grid (integer argument, default 80)\n"
+	"\t-h HEIGHT, --grid-height=HEIGHT\n"
+	"\t\tSpecify the height of the grid (integer arg, default 60)\n"
+	"\t-c CELL_SIZE, --cell-size=CELL_SIZE\n"
+	"\t\tSpecify the size of each cell (integer arg, default 16)\n"
+	"\t-b BORDER_SIZE, --border-size=BORDER_SIZE\n"
+	"\t\tSpecify the width of the gap between the cells (integer arg, default "
+	"1)\n"
+	"\t-n, --no-border\n"
+	"\t\tDisable the gap beetween the cells\n"
+	"\t-R GAME_RULE, --game-rule=GAME_RULE\n"
+	"\t\tSpecify the rulestring or name of the variant to run (string arg, "
+	"default \"B3/S23\")\n"
+	"\t-r UPDATE_RATE, --update-rate=UPDATE_RATE\n"
+	"\t\tSpecify the number of generations to compute per second (integer arg, "
+	"default 25)\n"
+	"\t-v, --vsync\n"
+	"\t\tSpecify to match the update rate with the monitor refresh rate\n"
+	"\t-W, --wrap\n"
+	"\t\tSpecify to make the grid wrap (opposite sides connect)\n"
+	"\t-f FILE, --file=FILE\n"
+	"\t\tSpecify the file for input and output (string arg, default none)\n"
+	"\t-i INPUT_FILE, --input-file=INPUT_FILE\n"
+	"\t\tSpecify the file for input (string argument, default none)\n"
+	"\t-o OUTPUT_FILE, --output-file=OUTPUT_FILE\n"
+	"\t\tSpecify the file for output (string argument, default none)\n"
+	"\t--help, --usage\n"
+	"\t\tPrint this message and exit\n";
+
+
+static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:";
 
 /**
  * The long options array.
@@ -26,9 +60,17 @@ static const struct option LONGOPTS[] = {
 	{"file",        required_argument, NULL, 'f'},
 	{"input-file",  required_argument, NULL, 'i'},
 	{"output-file", required_argument, NULL, 'o'},
+	{"usage",       no_argument      , NULL, 'u'},
+	{"help",        no_argument      , NULL, 'u'},
 	{"", 0, NULL, 0}
 };
 
+
+static int _printUsage(const char *argv0) {
+	fprintf(stderr, USAGE_HEADER, argv0);
+	fwrite(USAGE, sizeof USAGE, 1, stderr);
+	return -1;
+}
 
 static int _setRule(const char *arg, const char **dst) {
 	const char *rule = getRuleFromName(arg);
@@ -83,7 +125,6 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
                          const char **out_file) {
-	int res = 0;
 	bool opt_r_met = false;
 	bool opt_v_met = false;
 	bool opt_b_met = false;
@@ -95,8 +136,12 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	bool opt_o_met = false;
 	int ch;
 	int idx;
+	opterr = 0;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
+			case 'u':
+				_printUsage(argv[0]);
+				return 1;
 			case 'b':
 				if (_getUIntValue('b', optarg, border_width) < 0) {
 					return -1;
@@ -154,36 +199,42 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				*out_file = optarg;
 				opt_o_met = true;
 				break;
+			case '?':
+				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);
+				break;
+			case ':':
+				fprintf(stderr, "Error: missing argument for option -%c\n",
+				        optopt);
+				return -7;
 			default:
+				fprintf(stderr, "Unexpected getopt return: '%c'\n", ch);
 				break;
 		}
-		res++;
 	}
 	if (opt_v_met && opt_r_met) {
 		fputs("Error: options --update-rate and --vsync are incompatible\n",
 		      stderr);
-		return -7;
+		return -8;
 	}
 	if (opt_b_met && opt_n_met) {
 		fputs("Error: options --border-width and --no-border are"
 		      " incompatible\n", stderr);
-		return -8;
+		return -9;
 	}
 	if (opt_f_met && (opt_i_met || opt_o_met)) {
 		fputs("Error: options --file is incompatible with --input-file and"
 		      " --output-file", stderr);
-		return -9;
+		return -10;
 	}
 	if (opt_i_met && (opt_w_met || opt_h_met)) {
 		fputs("Error: options --width and --height are incompatible with"
 		      " --input-file", stderr);
-		return -10;
+		return -11;
 	}
 	for (int i = optind; i < argc; ++i) {
-		res++;
 		fprintf(stderr,
 		        "Warning: skipping unrecognized non-option argument \"%s\"\n",
 		        argv[i]);
 	}
-	return res == argc - 1 ? 0 : -11;
+	return 0;
 }
