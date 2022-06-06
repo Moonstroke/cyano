@@ -14,6 +14,12 @@
 #include <stddef.h> /* for size_t */
 #include <stdio.h> /* for FILE */
 
+/* MSVC does not support the standard restrict keyword but provides its own equivalent */
+#ifdef _WIN32
+# define RESTRICT __restrict
+#else
+# define RESTRICT restrict
+#endif
 
 
 /**
@@ -63,7 +69,7 @@
  * \note The implementation assumes that the source and destination arrays do
  *       not overlap.
  */
-void copyBits(const char *restrict src, size_t srcOffset, char *restrict dest,
+void copyBits(const char *RESTRICT src, size_t srcOffset, char *RESTRICT dest,
               size_t destOffset, size_t length);
 
 
