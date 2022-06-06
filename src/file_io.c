@@ -3,8 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* for strcmp, strlen */
-#include <unistd.h> /* for access */
-
+#ifdef _WIN32
+# include <io.h> /* for _access */
+#else
+# include <unistd.h> /* for access */
+#endif
 
 
 static char *_readStdin(void) {
@@ -104,5 +107,9 @@ int writeFile(const char *path, const char *text) {
 }
 
 bool isFile(const char *path) {
+#ifdef _WIN32
+	return _access(path, 0) == 0;
+#else
 	return access(path, F_OK) == 0;
+#endif
 }
