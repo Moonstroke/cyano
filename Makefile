@@ -46,7 +46,7 @@ CFLAGS = /nologo /std:c11 /Wall
 
 # Linkage flags
 LDFLAGS = /nologo
-LDLIBS = # TODO libSDL2
+LDLIBS = SDL2.lib
 
 # Translate GCC optimization levels into MSVC equivalent
 !if "$(OPTIM_LVL)" == "0"
@@ -67,6 +67,7 @@ CFLAGS = $(CFLAGS) /Zi /Fd$(PDB_FILE)
 LDFLAGS = $(LDFLAGS) /debug
 !else
 CPPFLAGS = $(CPPFLAGS) /DNDEBUG
+LDFLAGS = $(LDFLAGS) /release
 !endif
 
 
@@ -81,7 +82,7 @@ CPPFLAGS = $(CPPFLAGS) /DNDEBUG
 # Linkage (has to be first to be the default rule)
 $(EXEC): $(OBJ)
 	@if not exist $(OUT_DIR) md $(OUT_DIR)
-	link /out:$(EXEC) $** $(LDFLAGS) $(LDLIBS)
+	link $(LDFLAGS) /out:$(EXEC) $** $(LDLIBS)
 
 # Filewise compilation
 {$(SRC_DIR)}.c{$(OBJ_DIR)}.obj:
@@ -116,7 +117,7 @@ cleandoc:
 # Build and launch tests
 test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 	@if not exist $(OUT_DIR) md $(OUT_DIR)
-	link /out:$(TEST_EXEC) $** $(LDLIBS) $(LDFLAGS)
+	link $(LDFLAGS) /out:$(TEST_EXEC) $** $(LDLIBS)
 	.\$(TEST_EXEC)
 
 # Remove test build files
