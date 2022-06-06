@@ -1,6 +1,7 @@
 #include "app.h"
 
 #include <SDL2/SDL.h>
+#include <stdio.h> /* for fprintf, stderr, fputs */
 
 #include "grid.h"
 #include "gridwindow.h"

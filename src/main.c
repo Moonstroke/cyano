@@ -1,3 +1,4 @@
+#include <stdio.h> /* for fprintf, stderr, fputs */
 #include <stdlib.h> /* for EXIT_*, free */
 
 #include "app.h"
