@@ -1,7 +1,30 @@
 #include "app.h"
 
 
-#include <getopt.h> /* for struct option, getopt_long, optarg, optind */
+#ifdef _GNU_SOURCE
+# include <getopt.h> /* for struct option, getopt_long, optarg, optind */
+#else
+enum arg_type {
+	no_argument,
+	required_argument
+};
+
+struct option {
+	char *name;
+	enum arg_type arg_type;
+	void *flag;
+	char val;
+};
+
+static char *optarg;
+static int optopt;
+static int opterr;
+static int optind;
+
+/* Forward declaration, definition at bottom of file */
+int getopt_long(int argc, char *const argv[], const char *optstring,
+                const struct option *longopts, int *longindex);
+#endif
 #include <stdio.h> /* for fprintf, stderr, sscanf, fputs */
 
 #include "rules.h"
