@@ -159,6 +159,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	bool opt_o_met = false;
 	int ch;
 	int idx;
+	optind = 1;
 	opterr = 0;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
