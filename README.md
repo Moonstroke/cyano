@@ -493,7 +493,7 @@ Makefile provided for each platform with the usual rules:
  - `doc` to generate the documentation in `doc` directory,
  - `cleandoc` to remove the latter directory,
  - `distclean` to reset the project in a clean state,
- - and file-based rules to compile individual object files.
+and file-based rules to compile individual object files.
 
 Development under GNU/Linux is made with GCC and with MSVC under Windows,
 with all compilation warnings enabled (`-Wall -Wextra -pedantic` and `/Wall`
@@ -508,9 +508,9 @@ possible. I also refrained from using GNU-specific extensions to the language
 The definitions of the structures and functions declarations in the headers are
 fully (hopefully; or at least mostly) documented in
 [Doxygen](http://www.doxygen.org/index.html "Doxygen website") syntax. The
-documentation files is not part of the repository, however it can be generated
-quite easily (cf. previous section). The resulting documentation is in HTML and
-can be read with any browser; the entry point is the file `doc/html/index.html`.
+documentation files are not part of the repository, but can be generated quite
+easily (cf. previous section). The resulting documentation is in HTML and can be
+read with any browser; the entry point is the file `doc/html/index.html`.
 
 
 ## 3. Considered evolutions
