@@ -5,7 +5,7 @@
 
 
 # Test executable
-TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME)
+TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME).exe
 
 # Tests files
 TEST_SRC = $(TEST_DIR)\board.c \
@@ -33,7 +33,7 @@ SRC = $(SRC_DIR)\app.c \
 OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\\%.obj,$(SRC))
 
 # Output executable
-EXEC = $(OUT_DIR)\$(PROJECT_NAME)
+EXEC = $(OUT_DIR)\$(PROJECT_NAME).exe
 
 # Debugging symbols
 PDB_FILE = $(PROJECT_NAME).pdb
