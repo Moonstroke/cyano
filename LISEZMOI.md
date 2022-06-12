@@ -403,12 +403,12 @@ L’utilisateur peut interagir avec la fenêtre du programme au travers du clavi
 aussi bien que de la souris. Déplacer la souris au-dessus de la grille change la
 cellule active pour celle sous le curseur.
 
-Le bouton gauche de la souris peut être actionné pour inverser l'état de la
+Le bouton gauche de la souris peut être actionné pour inverser l’état de la
 cellule active (si elle est vivante, elle meurt, si déjà morte, elle naît). le
 bouton peut également être mainteu pressé et la souris déplacée, pour inverser
 chaque cellule que le curseur survole. Cependant, si la souris est déplacée trop
-rapidement, certaines cellules peuvent être manquées : c'est une limitation
-connue de l'implémentation de la régulation de la fréquence de mise à jour du
+rapidement, certaines cellules peuvent être manquées : c’est une limitation
+connue de l’implémentation de la régulation de la fréquence de mise à jour du
 programme.
 
 Le clavier peut également être utilisé pour changer la cellule active, en
@@ -420,13 +420,13 @@ aussi une action définie :
 <tr><td>`Ctrl` + `Q`</td></tr>
 <tr><td>`Ctrl` + `W`</td></tr>
 <tr><td>`Space`</td><td>Lance ou arrête le mode continu</td></tr>
-<tr><td>`Enter`</td><td>Quand en pause, évolue la grille d'une seule
+<tr><td>`Enter`</td><td>Quand en pause, évolue la grille d’une seule
 génération</td></tr>
 <tr><td>`T`</td><td>Inverse la cellule active</td></tr>
 <tr><td>`R`</td><td>Réinitialise la grille à la configuration dans le fichier
-d'entrée. Si aucun fichier n'a été spécifié, ne fait rien</td></tr>
-<tr><td>`W`</td><td>Écrit l'état actuel de la grille dans le fichier de sortie ;
-Si le fichier n'existe pas, le crée. Si aucun fichier spécifié, ne fait
+d’entrée. Si aucun fichier n’a été spécifié, ne fait rien</td></tr>
+<tr><td>`W`</td><td>Écrit l’état actuel de la grille dans le fichier de sortie ;
+si le fichier n’existe pas, le crée. Si aucun fichier spécifié, ne fait
 rien</td></tr>
 <tr><td>`C`</td><td>Efface la grille (tue toutes les cellules)</td></tr></table>
 
@@ -438,7 +438,7 @@ configuration de grille (dimensions, état des cellules et parfois *rulestring*)
 Ces fichiers viennet en deux formats distincts, *texte brut* et *RLE* (pour
 *run-length encoding*, encodage par longueur de suite).
 
-Le fichier d'entrée peut être fourni dans l'un des deux formats, mais le fichier
+Le fichier d’entrée peut être fourni dans l’un des deux formats, mais le fichier
 de sortie sera toujours écrit en format texte brut.
 
 
@@ -448,7 +448,7 @@ Le format texte brut est une représentation textuelle de la grille en un bloc d
 texte rectangulaire, avec des `.` pour les cellules mortes et des `@` pour les
 vivantes. La grille doit être écrite intégralement, le nombre de lignes donne la
 hauteur de la grille et le nombre de caractères par ligne (qui doit être
-constant tout au long du fichier) en donne la largeur. Ce format n'accepte
+constant tout au long du fichier) en donne la largeur. Ce format n’accepte
 aucune information dans le fichier à part la grille elle-même.
 
 
@@ -463,7 +463,7 @@ Exemple : un planeur orienté vers le bas et la gauche en texte brut
 
 Le *RLE* est un format compressé où une suite contigüe de cellules dans le même
 état est réduite à une seule cellule et la longueur de la suite. Ce format
-attend une ligne d'en-tête donnant les dimensions de la grille et éventuellement
+attend une ligne d’en-tête donnant les dimensions de la grille et éventuellement
 la *rulestring* de la règle à utiliser. Cet en-tête est obligatoire : la
 configuration étant compressée, les fins de ligne mortes peuvent être omises et
 les dimensions de la grille ne peuvent pas être inférés seulement des données de
@@ -471,13 +471,13 @@ la grille.
 
 Les cellules vivantes sont notées par un `o`, les mortes par un `b`, un `$`
 indique une fin de ligne (et le début de la suivante) et un `!` représente la
-fin de la configuration. Les caractères d'espacement (espaces, tabulations,
+fin de la configuration. Les caractères d’espacement (espaces, tabulations,
 retours chariot) ne sont pas significatifs (mais ne sont pas autorisés à
-l'intérieur d'une contraction de série), cela permet de sauter des lignes
+l’intérieur d’une contraction de série), cela permet de sauter des lignes
 partout sans contrainte. Tout ce qui vient après le `!` terminal est considéré
-comme du texte commentaire et n'est pas parcouru.
+comme du texte commentaire et n’est pas parcouru.
 
-Exemple : le planeur orienté sud-ouest en format *RLE
+Exemple : le planeur orienté sud-ouest en format *RLE*
 
     x = 3, y = 3, rule = B3/S23
     bo$b$3o!
@@ -485,12 +485,12 @@ Exemple : le planeur orienté sud-ouest en format *RLE
 
 ### 2.2. Développement
 
-Le code est écrit en C, le fameux langage « bas niveau ». Tout est parti d'un
-projet d'apprendre et me familiariser avec le langage, et au bout d'un moment
-a fini par ressembler à quelque chose d'utilisable.
+Le code est écrit en C, le fameux langage « bas niveau ». Tout est parti d’un
+projet d’apprendre et me familiariser avec le langage, et au bout d’un moment
+a fini par ressembler à quelque chose d’utilisable.
 
-Je me suis efforcé de garder les fichiers d'en-tête bien documentés, au cas où
-quelqu'un serait intéressé par y jeter un coup d'œil ; le formatage du code est
+Je me suis efforcé de garder les fichiers d’en-tête bien documentés, au cas où
+quelqu’un serait intéressé par y jeter un coup d’œil ; le formatage du code est
 homogène, lisible (en tout cas en ce qui me concerne) et les parties absconses
 du texte sont commentées.
 
@@ -498,108 +498,108 @@ du texte sont commentées.
 #### 2.2.1. La SDL
 
 Le programme utilise la [SDL](http://www.libsdl.org "Le site web de la SDL")
-(*Simple DirectMedia Layer*), version 2 pour la partie graphique. C'est une
+(*Simple DirectMedia Layer*), version 2 pour la partie graphique. C’est une
 bibliothèque bas niveau qui fournit une API puissante mais cependant facile
-d'utilisation. Elle est également populaire et supportée sur la majorité des
+d’utilisation. Elle est également populaire et supportée sur la majorité des
 plateformes, ce qui améliore la portabilité du projet.
 
 
 #### 2.2.2. Compilation
 
 Le code est écrit suivant le standard C11, et emploie des fonctionnalités
-exclusives au C, C++ n'est pas supporté et on ne doit pas s'attendre à ce que le
+exclusives au C, C++ n’est pas supporté et on ne doit pas s’attendre à ce que le
 code compile en C++. Le développement est effectué en utilisant GCC avec tous
-ses avertissements activés (`-Wall -Wextra -pedantic`), afin de rendre le code
+les avertissements activés (`-Wall -Wextra -pedantic`), afin de rendre le code
 le plus conforme possible au standard.
-Je me suis également abstenu d'utiliser des spécificités GNU (quelques fonctions
-POSIX sont bien appelées, mais aucun élément de code tels que des pragmas ou
-`__attribute__` sont utilisés).
+Je me suis également abstenu d’utiliser des spécificités GNU (quelques fonctions
+POSIX sont bien appelées, mais aucun élément de code tels que les pragmas ou
+`__attribute__` ne sont utilisés).
 
 Le processus de compilation est géré par `make`, avec un Makefile fourni donnant
 les règles usuelles :
- - `all` pour construire l'exécutable dans le dossier `out`,
+ - `all` pour construire l’exécutable dans le dossier `out`,
  - `clean` pour supprimer les fichiers objet du dossier `obj`,
  - `doc` pour générer la documentation dans le dossier `doc`,
  - `cleandoc` pour supprimer ce dernier,
- - `distclean` pour réinitialiser l'état du projet,
- - et des règles basées sur les différents fichiers pour compiler des fichiers
-   objet individuels.
+ - `distclean` pour réinitialiser l’état du projet,
+et des règles basées sur les différents fichiers pour compiler des fichiers
+objet individuels.
 
 
 #### 2.2.3. Environnement
 
 Le code a été développé initiallement sous Ubuntu 17, puis Debian 9. Les distros
 basées sur Debian sont supportées, et les plateformes principales GNU/Linux
-devraient l'être également.
+devraient l’être également.
 
 Concernant Windows, la compilation sous MinGW ou Cygwin devrait être faisable,
-mais je n'ai pas essayé. (Une adaptation en Windows natif est dans les cartons).
+mais je n’ai pas essayé. (Une adaptation en Windows natif est dans les cartons).
 
 Le seul paquet nécessaire pour compiler les sources est `libsdl2-dev`. Les
-paquets recommandés sont `make` pour fournir l'utilitaire de compilation et
+paquets recommandés sont `make` pour fournir l’utilitaire de compilation et
 `doxygen` pour le traitement de la documentation.
 
 
 #### 2.2.4. Documentation
 
 Les définitions de structures et déclarations de fonctions dans les en-têtes
-sont intégralement (je l'espère ; en tout cas majoritairement) documentées dans
+sont intégralement (je l’espère ; en tout cas majoritairement) documentées dans
 la syntaxe [Doxygen](http://www.doxygen.org/index.html "Site web de Doxygen").
 Les fichiers de la documentation ne font pas partie du dépôt, cependant ils
 peuvent être générés plutôt facilement (cf. section précédente). La
 documentation résultante est au format HTML et peut être parcourue avec tout
-navigateur ; le point d'entrée est le fichier `doc/html/index.html`.
+navigateur ; le point d’entrée est le fichier `doc/html/index.html`.
 
 
 ## 3. Évolutions envisagées
 
 Ce projet a été relancé après un hiatus notable, et devient de plus en plus
-viable (bien que tout à fait superflu). Voici une liste d'évolutions que j'ai
-en tête pour le programme, certaines de plus court terme que d'autres.
+viable (bien que tout à fait superflu). Voici une liste d’évolutions que j’ai
+en tête pour le programme, certaines de plus court terme que d’autres.
 
  - Atteindre une version 1.0 stable
-   C'est plus une directive spirituelle qu'un objectif concret ; il ne tient
-   qu'à moi de décider quand apposer officiellement le numéro de version, mais
-   j'attends d'être entièrement satisfait de l'état du projet pour cela.
+   C’est plus une directive spirituelle qu’un objectif concret ; il ne tient
+   qu’à moi de décider quand apposer officiellement le numéro de version, mais
+   j’attends d’être entièrement satisfait de l’état du projet pour cela.
  - Port Windows natif
-   Comme mentionné brièvement ci-dessus, je prévois d'adapter le code pour
-   Windows afin qu'il y compile nativement. J'ai obtenu une copie de Visual
-   Studio, c'est donc une des évolutions les plus imminentes.
+   Comme mentionné brièvement ci-dessus, je prévois d’adapter le code pour
+   Windows afin qu’il y compile nativement. J’ai obtenu une copie de Visual
+   Studio, c’est donc une des évolutions les plus imminentes.
  - Implémentation avec OpenGL
    Je suis en local sur une version utilisant OpenGL pour le rendu graphique,
    cela fonctionne, mais tout juste, le code nécessite encore beaucoup
-   d'affinage.
+   d’affinage.
  - Amélioration de la configurabilité
-   Les couleurs de l'affichage de la grille, les caractères utilisés pour le
+   Les couleurs de l’affichage de la grille, les caractères utilisés pour le
    format texte brut des fichiers sont fixes (et codés en dur). Un moyen de les
    configurer serait le bienvenu, mais je ne suis pas sûr de comment
-   l'introduire ; je ne veux pas rendre le programme dépendant d'un fichier
-   externe de configuration, et je suis réticent à l'idée d'introduire encore
-   d'autres options de ligne de commande. Les macros de préprocesseur pourraient
-   s'avérer une solutions, mais cela priverait de cofiguration à l'exécution.
+   l’introduire ; je ne veux pas rendre le programme dépendant d’un fichier
+   externe de configuration, et je suis réticent à l’idée d’introduire encore
+   d’autres options de ligne de commande. Les macros de préprocesseur pourraient
+   s’avérer une solutions, mais cela priverait de cofiguration à l’exécution.
  - Un meilleur format texte brut
-   Tout est dit. tel qu'implémenté, le format texte brut est suffisant, mais
+   Tout est dit. tel qu’implémenté, le format texte brut est suffisant, mais
    maigre ; un support pour des commentaires, une omission des fin de ligne
    mortes seraient des ajouts judicieux. Deviner les caractères désignant les
    états de cellule au moment de la lecture pourrait également être une idée.
  - Interface utilisateur
-   Dans le but de décorer l'interface, et de l'augmenter de contrôles et menus.
+   Dans le but de décorer l’interface, et de l’augmenter de contrôles et menus.
    Malheureusement je ne connais pas de framework GUI pour la SDL, et en
    développer un moi-même à partir de rien est un bien trop grand projet pour
    même y penser.
- - Mode d'exécution sans affichage
-   Cela introduirait une type d'exécution totallement différent (qui
-   justifierait l'ajout d'une option de ligne de commande attitrée). L'idée
-   serait de fournir fichiers d'entrée et de sortie et un nombre de générations,
-   et d'écrire dans le fichier de sortie l'évolution après autant de générations
-   de la configuration dans le fichier d'entrée. Ce serait une forme d'incubateur
+ - Mode d’exécution sans affichage
+   Cela introduirait une type d’exécution totallement différent (qui
+   justifierait l’ajout d’une option de ligne de commande attitrée). L’idée
+   serait de fournir fichiers d’entrée et de sortie et un nombre de générations,
+   et d’écrire dans le fichier de sortie l’évolution après autant de générations
+   de la configuration dans le fichier d’entrée. Ce serait une forme d’incubateur
    pour motifs.
  - LLCA non-totalistes ou anisotropes
    Si je ne considère pas les AC non binaires (la grille est basée sur un
-   tableau de bits, changer le nombre d'états serait un trop gros travail pour
-   que j'aie l'envie de m'y atteler), ces types d'AC seraient intéressants à
-   étudier. Cela demanderait de modifier le code d'évolution et calcul de la
-   génération suivante, qui bénéficierait d'une refonte de toute manière.
+   tableau de bits, changer le nombre d’états serait un trop gros travail pour
+   que j’aie l’envie de m’y atteler), ces types d’AC seraient intéressants à
+   étudier. Cela demanderait de modifier le code d’évolution et calcul de la
+   génération suivante, qui bénéficierait d’une refonte de toute manière.
  - Internationalisation
    Principalement en ce qui concerne la langue de notre bon vieux Molière (on ne
    se refait pas), en tout cas pour commencer, cela affecterait les docs en plus
