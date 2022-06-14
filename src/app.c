@@ -54,6 +54,29 @@ static inline int _outputGrid(const struct grid *grid, const char *out_file) {
 	return rc;
 }
 
+static inline int _printHelp(void) {
+	fputs("Interface usage:\n"
+	      " - Using the mouse\n"
+	      "Move the mouse cursor to highlight a cell, and click the left\n"
+	      " button to toggle\nits state.\n"
+	      " - Using the keyboard\n"
+	      "The following keys or key combinations have an action defined:\n"
+	      "    Key    Action\n"
+	      "     c     Clear the grid\n"
+	      "     h     Display this message\n"
+	      " Ctrl + q  Quit the program\n"
+	      "     r     Reset the grid to the input file\n"
+	      "     t     Toggle the state of the highlighted cell\n"
+	      "     w     Write the state of the grid to the output file in plain"
+	      " text\n"
+	      " Ctrl + w  Quit the program\n"
+	      "   Space   Toggle pause mode\n"
+	      "   Enter   When paused, evolve the grid by one generation\n"
+	      "    Esc    Quit the program\n"
+	      "Arrow keys Move the highlight by one cell in the key's direction\n",
+		  stdout);
+}
+
 static void _handleEvent(const SDL_Event *event, struct gridwindow *gw,
                         bool *loop, bool *mdown, bool *play,
                         int *last_x, int *last_y, const char *repr,
@@ -134,6 +157,9 @@ static void _handleEvent(const SDL_Event *event, struct gridwindow *gw,
 				break;
 			case SDLK_c:
 				clearGrid(gw->grid);
+				break;
+			case SDLK_h:
+				_printHelp();
 				break;
 		}
 		break;
