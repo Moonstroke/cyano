@@ -19,6 +19,10 @@ DOC_CFG = Doxyfile
 DOC_DIR = doc
 
 
+# Resources (images, other data)
+DATA_DIR = data
+
+
 
 ## BUILD SETTINGS ##
 
