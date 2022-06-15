@@ -4,10 +4,6 @@
 #include <SDL2/SDL_mouse.h>
 
 
-#define ICONSIZE 64
-
-
-
 static const uint16_t iconData[] = {
 #if ICONSIZE == 16
 	/* 1 image row = two lines */
