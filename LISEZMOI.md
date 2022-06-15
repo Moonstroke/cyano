@@ -428,7 +428,9 @@ d’entrée. Si aucun fichier n’a été spécifié, ne fait rien</td></tr>
 <tr><td>`W`</td><td>Écrit l’état actuel de la grille dans le fichier de sortie ;
 si le fichier n’existe pas, le crée. Si aucun fichier spécifié, ne fait
 rien</td></tr>
-<tr><td>`C`</td><td>Efface la grille (tue toutes les cellules)</td></tr></table>
+<tr><td>`C`</td><td>Efface la grille (tue toutes les cellules)</td></tr>
+<tr><td>`H`</td><td>Affiche dans la console un résumé des actions de clavier et
+souris</td></tr></table>
 
 
 #### 2.1.4. Entrée/Sortie de fichiers

@@ -392,7 +392,9 @@ Some keys, or key combinations, also have a defined action:
 no file was specified, do nothing</td></tr>
 <tr><td>`W`</td><td>Write the current state to the given output file. If the
 file does not exist, create it. If no file was specified, do nothing</td></tr>
-<tr><td>`C`</td><td>Clears the grid (kills all cells)</td></tr></table>
+<tr><td>`C`</td><td>Clears the grid (kills all cells)</td></tr>
+<tr><td>`H`</td><td>Display in the console a summary of the mouse and key
+actions</td></tr></table>
 
 
 #### 2.1.4. File input/output

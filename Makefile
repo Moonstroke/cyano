@@ -40,7 +40,7 @@ PDB_FILE = $(PROJECT_NAME).pdb
 
 
 # Preprocessor flags
-CPPFLAGS = /I$(INC_DIR)
+CPPFLAGS = /I$(INC_DIR) /DICONSIZE=64
 # Compilation flags
 CFLAGS = /nologo /std:c11 /Wall
 
