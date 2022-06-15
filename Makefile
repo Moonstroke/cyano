@@ -80,11 +80,11 @@ LDFLAGS = $(LDFLAGS) /release
 
 
 # Defines the file names extensions for file-wise compilation
-.SUFFIXES: .c .obj
+.SUFFIXES: .c .obj .rc .res
 
 
 # Linkage (has to be first to be the default rule)
-$(EXEC): $(OBJ)
+$(EXEC): $(OBJ) $(OBJ_DIR)\$(RES_FILE)
 	@if not exist $(OUT_DIR) md $(OUT_DIR)
 	link $(LDFLAGS) /out:$(EXEC) $** $(LDLIBS)
 
@@ -99,6 +99,11 @@ $(EXEC): $(OBJ)
 	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
 	$(CC) /c $< /Fo$@ $(CPPFLAGS) $(CFLAGS)
 
+# Resource compilation
+{$(DATA_DIR)}.rc{$(OBJ_DIR)}.res:
+	@echo Compiling resource file $< to $@
+	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
+	rc /nologo /fo $@ $<
 
 # Remove object files
 clean:
