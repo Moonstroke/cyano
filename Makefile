@@ -38,6 +38,10 @@ EXEC = $(OUT_DIR)\$(PROJECT_NAME).exe
 # Debugging symbols
 PDB_FILE = $(PROJECT_NAME).pdb
 
+# Resource files (source and compiled)
+RC_FILE = $(PROJECT_NAME).rc
+RES_FILE = $(PROJECT_NAME).res
+
 
 # Preprocessor flags
 CPPFLAGS = /I$(INC_DIR) /DICONSIZE=64
