@@ -53,7 +53,7 @@ static const struct option LONGOPTS[] = {
 	{"border-size", required_argument, NULL, 'b'},
 	{"cell-size",   required_argument, NULL, 'c'},
 	{"no-border",   no_argument,       NULL, 'n'},
-	{"game-rule",  required_argument, NULL, 'R'},
+	{"game-rule",   required_argument, NULL, 'R'},
 	{"update-rate", required_argument, NULL, 'r'},
 	{"vsync",       no_argument      , NULL, 'v'},
 	{"wrap",        no_argument      , NULL, 'W'},
