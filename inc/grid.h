@@ -100,6 +100,18 @@ int initGrid(struct grid *grid, unsigned int width, unsigned int height,
 
 
 /**
+ * \brief Flags to specify the format of a grid representation: plain text,
+ *        run length-encoded, or unknown.
+ */
+enum grid_format {
+	GRID_FORMAT_UNKNOWN, /**< Unknown grid representation format */
+	GRID_FORMAT_PLAIN, /**< 1:1 textual representation of the grid */
+	/** The grid is encoded by compressing runs of identical cells */
+	GRID_FORMAT_RLE
+};
+
+
+/**
  * \brief Initialize the grid to the state described in the pattern string.
  *
  * The given string must be a representation of a Life grid, as a rectangular
