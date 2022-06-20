@@ -342,7 +342,9 @@ the name of the file to read from and write to</td><td>None</td><td>`-i` and
 file from which to read the grid's initial configuration</td><td>None</td>
 <td>`-f`, `-w` and `-h`</td></tr>
 <tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Gives the path to the
-file to write the grid state to</td><td>None</td><td>`-f`</td></tr></table>
+file to write the grid state to</td><td>None</td><td>`-f`</td></tr>
+<tr><td>`-F FORMAT`</td><td>`--format`</td><td>Specifies the format of the grid
+representation in the input file. Either *plain*, *plaintext* or *RLE* (case-insensitive)</td><td>None</td><td>None</td></tr></table>
 
 Any file path argument (to `-f`, `-i` or `-o`) can be `-`, which specifies to
 read from the standard input stream or write to the standard output stream. It

@@ -39,6 +39,10 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t\tSpecify the file for input (string argument, default none)\n"
 	"\t-o OUTPUT_FILE, --output-file=OUTPUT_FILE\n"
 	"\t\tSpecify the file for output (string argument, default none)\n"
+	"\t-F FORMAT, --format=FORMAT\n"
+	"\t\tSpecify the grid representation format in the input file: one of "
+	"\"plain\", \"plaintext\" or \"RLE\" case not significant(string argument, "
+	"default none)\n"
 	"\t--help, --usage\n"
 	"\t\tPrint this message and exit\n";
 

@@ -368,7 +368,8 @@ fichier d’où lire la configuration initiale de la grille</td><td>Aucun</td>
 <td>`-f`, `-w` et `-h`</td></tr>
 <tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Donne le chemin vers le
 fichier où écrire l’état de la grille</td><td>Aucun</td><td>`-f`</td></tr>
-</table>
+<tr><td>`-F FORMAT`</td><td>`--format`</td><td>Spécifie le format de la
+représentation de la grille dans le fichier d’entrée. Soit *plain*, *plaintext* ou *RLE* (casse indifférenciée)</td><td>Aucun</td><td>Aucun</td></tr></table>
 
 Tout argument représentant un chemin vers un fichier (pour l’une des options
 `-f`, `-i` ou `-o`) peut être `-`, ce qui spécifie de lire depuis le flux
