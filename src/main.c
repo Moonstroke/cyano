@@ -1,5 +1,6 @@
 #include <stdio.h> /* for fprintf, stderr, fputs */
 #include <stdlib.h> /* for EXIT_*, free */
+#include <string.h> /* for strlen, memcmp */
 
 #include "app.h"
 #include "grid.h"
@@ -7,6 +8,12 @@
 #include "file_io.h"
 
 
+
+static bool _endswith(const char *restrict s1, const char *restrict s2) {
+	size_t l1 = strlen(s1);
+	size_t l2 = strlen(s2);
+	return l1 >= l2 && memcmp(&s1[l1 - l2], s2, l2) == 0;
+}
 
 int main(int argc, char **argv) {
 
@@ -44,6 +51,10 @@ int main(int argc, char **argv) {
 		if (repr == NULL) {
 			fprintf(stderr, "Could not read from file \"%s\"\n", in_file);
 			return EXIT_FAILURE;
+		}
+		/* Override format on recognized file extension */
+		if (format == GRID_FORMAT_UNKNOWN && _endswith(in_file, ".rle")) {
+			format = GRID_FORMAT_RLE;
 		}
 		int rc = loadGrid(&g, repr, format, wrap);
 		if (rc < 0) {
