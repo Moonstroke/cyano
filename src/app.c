@@ -29,15 +29,15 @@ static void _handleMouseOnCell(struct gridwindow *gw, int *last_x,
 	}
 }
 
-static inline void _resetGrid(struct grid *grid, const char *repr, bool *play,
-                              bool *loop) {
+static inline void _resetGrid(struct grid *grid, const char *repr,
+                              enum grid_format format, bool *play, bool *loop) {
 	if (repr != NULL) {
 		if (*play) {
 			*play = false;
 		}
 		bool wrap = grid->wrap;
 		freeGrid(grid);
-		if (loadGrid(grid, repr, wrap) < 0) {
+		if (loadGrid(grid, repr, format, wrap) < 0) {
 			fputs("Error while resetting the grid\n", stderr);
 			*loop = false;
 		}
@@ -80,7 +80,7 @@ static inline int _printHelp(void) {
 static void _handleEvent(const SDL_Event *event, struct gridwindow *gw,
                         bool *loop, bool *mdown, bool *play,
                         int *last_x, int *last_y, const char *repr,
-                        const char *out_file) {
+                        enum grid_format format, const char *out_file) {
 	switch (event->type) {
 	case SDL_MOUSEBUTTONDOWN:
 		if (event->button.button == SDL_BUTTON_LEFT) {
@@ -138,7 +138,7 @@ static void _handleEvent(const SDL_Event *event, struct gridwindow *gw,
 				toggleCell(gw->grid, gw->sel_x, gw->sel_y);
 				break;
 			case SDLK_r:
-				_resetGrid(gw->grid, repr, play, loop);
+				_resetGrid(gw->grid, repr, format, play, loop);
 				break;
 			/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
 			   writes the grid state */
@@ -170,7 +170,7 @@ static void _handleEvent(const SDL_Event *event, struct gridwindow *gw,
 }
 
 void runApp(struct gridwindow *gw, unsigned int update_rate, bool use_vsync,
-            const char *repr, const char *out_file) {
+            const char *repr, enum grid_format format, const char *out_file) {
 	struct timer timer;
 	resetTimer(&timer);
 	timer.delay = 1000. / (double) update_rate;
@@ -185,7 +185,7 @@ void runApp(struct gridwindow *gw, unsigned int update_rate, bool use_vsync,
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			_handleEvent(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
-			            repr, out_file);
+			            repr, format, out_file);
 		}
 
 		if (play) {

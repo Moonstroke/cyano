@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	runApp(&gw, update_rate, use_vsync, repr, out_file);
+	runApp(&gw, update_rate, use_vsync, repr, format, out_file);
 
 	free(repr);
 	freeGrid(&g);
