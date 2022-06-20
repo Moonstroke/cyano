@@ -132,9 +132,14 @@ static inline int _initGridFromRepr(struct grid *grid, const char *repr,
 
 int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
              bool wrap) {
-	int rc = _initGridFromRLE(grid, repr, wrap);
-	if (rc <= 0) { /* > 0 means not RLE */
-		return rc;
+	int rc;
+	if (format == GRID_FORMAT_RLE || format == GRID_FORMAT_UNKNOWN) {
+		rc = _initGridFromRLE(grid, repr, wrap);
+		if (rc <= 0) { /* > 0 means not RLE */
+			return rc;
+		} else if (format == GRID_FORMAT_RLE) {
+			return -1;
+		}
 	}
 	rc = _initGridFromRepr(grid, repr, wrap);
 	if (rc < 0) {
