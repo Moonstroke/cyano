@@ -10,6 +10,26 @@
 
 
 
+static const char UI_HELP[] = "Interface usage:\n"
+	" - Using the mouse\n"
+	"Move the mouse cursor to highlight a cell, and click the left button to "
+	"toggle\nits state.\n"
+	" - Using the keyboard\n"
+	"The following keys or key combinations have an action defined:\n"
+	"    Key    Action\n"
+	"     C     Clear the grid\n"
+	"     H     Display this message\n"
+	" Ctrl + Q  Quit the program\n"
+	"     R     Reset the grid to the input file\n"
+	"     T     Toggle the state of the highlighted cell\n"
+	"     W     Write the state of the grid to the output file in plain text\n"
+	" Ctrl + W  Quit the program\n"
+	"   Space   Toggle pause mode\n"
+	"   Enter   When paused, evolve the grid by one generation\n"
+	"    Esc    Quit the program\n"
+	"Arrow keys Move the highlight by one cell in the key's direction\n";
+
+
 int initApp(void) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Could not load the SDL: %s\n", SDL_GetError());
@@ -54,27 +74,8 @@ static inline int _outputGrid(const struct grid *grid, const char *out_file) {
 	return rc;
 }
 
-static inline int _printHelp(void) {
-	fputs("Interface usage:\n"
-	      " - Using the mouse\n"
-	      "Move the mouse cursor to highlight a cell, and click the left\n"
-	      " button to toggle\nits state.\n"
-	      " - Using the keyboard\n"
-	      "The following keys or key combinations have an action defined:\n"
-	      "    Key    Action\n"
-	      "     C     Clear the grid\n"
-	      "     H     Display this message\n"
-	      " Ctrl + Q  Quit the program\n"
-	      "     R     Reset the grid to the input file\n"
-	      "     T     Toggle the state of the highlighted cell\n"
-	      "     W     Write the state of the grid to the output file in plain"
-	      " text\n"
-	      " Ctrl + W  Quit the program\n"
-	      "   Space   Toggle pause mode\n"
-	      "   Enter   When paused, evolve the grid by one generation\n"
-	      "    Esc    Quit the program\n"
-	      "Arrow keys Move the highlight by one cell in the key's direction\n",
-		  stdout);
+static inline void _printHelp(void) {
+	fwrite(UI_HELP, sizeof UI_HELP, 1, stdout);
 }
 
 static void _handleEvent(const SDL_Event *event, struct gridwindow *gw,
