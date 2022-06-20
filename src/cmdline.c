@@ -42,7 +42,7 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t\tPrint this message and exit\n";
 
 
-static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:";
+static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:F:";
 
 /**
  * The long options array.
@@ -62,6 +62,7 @@ static const struct option LONGOPTS[] = {
 	{"output-file", required_argument, NULL, 'o'},
 	{"usage",       no_argument      , NULL, 'u'},
 	{"help",        no_argument      , NULL, 'u'},
+	{"format",      required_argument, NULL, 'F'},
 	{"", 0, NULL, 0}
 };
 
@@ -198,6 +199,8 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 			case 'o':
 				*out_file = optarg;
 				opt_o_met = true;
+				break;
+			case 'F':
 				break;
 			case '?':
 				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);
