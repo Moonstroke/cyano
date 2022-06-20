@@ -3,6 +3,7 @@
 
 #include <getopt.h> /* for struct option, getopt_long, optarg, optind */
 #include <stdio.h> /* for fprintf, stderr, sscanf, fputs */
+#include <string.h> /* for strcasecmp */
 
 #include "rules.h"
 
@@ -120,12 +121,24 @@ static int _getUIntValue(char opt, const char *arg, unsigned int *dst) {
 	return 0;
 }
 
+static void parseFormat(const char *arg, enum grid_format *format) {
+	if (strcasecmp(arg, "RLE")) {
+		*format = GRID_FORMAT_RLE;
+	} else if (strcasecmp(arg, "plaintext") || strcasecmp(arg, "plain")) {
+		*format = GRID_FORMAT_PLAIN;
+	} else {
+		fprintf(stderr, "Warning: unrecognized grid representationformat: "
+		                "\"%s\"\n", optarg);
+		*format = GRID_FORMAT_UNKNOWN;
+	}
+}
+
 int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
                          unsigned int *grid_height, bool *wrap,
                          const char **game_rule, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
-                         const char **out_file) {
+                         const char **out_file, enum grid_format *format) {
 	bool opt_r_met = false;
 	bool opt_v_met = false;
 	bool opt_b_met = false;
@@ -201,6 +214,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_o_met = true;
 				break;
 			case 'F':
+				parseFormat(optarg, format);
 				break;
 			case '?':
 				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);

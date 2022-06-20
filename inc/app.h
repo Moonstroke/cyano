@@ -54,6 +54,7 @@ int initApp(void);
  *                          refresh rate
  * \param[out] in_file      The path to the file from which to read
  * \param[out] out_file     The pat to the file where to write
+ * \param[out] format       The grid representation format in the input file
  *
  * \return \c 0 on success
  */
@@ -62,7 +63,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
                          const char **game_rule, unsigned int *cell_pixels,
                          unsigned int *border_width, unsigned int *update_rate,
                          bool *use_vsync, const char **in_file,
-                         const char **out_file);
+                         const char **out_file, enum grid_format *format);
 
 
 /**

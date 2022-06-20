@@ -20,11 +20,12 @@ int main(int argc, char **argv) {
 	const char *game_rule = DEFAULT_GRID_RULE;
 	const char *in_file = NULL;
 	const char *out_file = NULL;
+	enum grid_format format = GRID_FORMAT_UNKNOWN;
 
 	int rc = parseCommandLineArgs(argc, argv, &grid_width, &grid_height, &wrap,
 	                              &game_rule, &cell_pixels, &border_width,
 	                              &update_rate, &use_vsync, &in_file,
-	                              &out_file);
+	                              &out_file, &format);
 	if (rc < 0) {
 		return EXIT_FAILURE;
 	} else if (rc > 0) {
