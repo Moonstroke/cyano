@@ -123,14 +123,16 @@ enum grid_format {
  *       unititialized grid or a grid that has been passed to \c freeGrid
  *       beforehand to avoid leaking memory.
  *
- * \param[out] grid The grid to initialize
- * \param[in]  repr  The pattern, as a string of dots and @s
+ * \param[out] grid   The grid to initialize
+ * \param[in]  repr   The pattern, as a string of dots and @s
+ * \param[in]  format Flag for the format of the grid representation
  * \param[in]  wrap   If \c true, set up the grid as toroidal
  *
  * \return \c 0 iff the grid was correctly initialized, a negative value
  *         otherwise
  */
-int loadGrid(struct grid *grid, const char *repr, bool wrap);
+int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
+             bool wrap);
 
 
 /**

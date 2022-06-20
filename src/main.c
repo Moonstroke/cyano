@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "Could not read from file \"%s\"\n", in_file);
 			return EXIT_FAILURE;
 		}
-		int rc = loadGrid(&g, repr, wrap);
+		int rc = loadGrid(&g, repr, format, wrap);
 		if (rc < 0) {
 			fputs("Failure in creation of the game grid\n", stderr);
 			return EXIT_FAILURE;

@@ -130,7 +130,8 @@ static inline int _initGridFromRepr(struct grid *grid, const char *repr,
 	return initGrid(grid, width, height, wrap);
 }
 
-int loadGrid(struct grid *grid, const char *repr, bool wrap) {
+int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
+             bool wrap) {
 	int rc = _initGridFromRLE(grid, repr, wrap);
 	if (rc <= 0) { /* > 0 means not RLE */
 		return rc;
