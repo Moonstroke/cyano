@@ -21,7 +21,7 @@ CUTE_TestCase *case_grid;
 
 static void setUp(void) {
 	int status;
-	status = initGrid(&grid, WIDTH, HEIGHT, WRAPS);
+	status = init_grid(&grid, WIDTH, HEIGHT, WRAPS);
 	CUTE_assertEquals(status, 0);
 	grid.rule = RULE;
 	fprintf(stderr, "Succesfully initialized %s grid %ux%u\n",
@@ -29,7 +29,7 @@ static void setUp(void) {
 }
 
 static void tearDown(void) {
-	freeGrid(&grid);
+	free_grid(&grid);
 }
 
 
@@ -39,15 +39,15 @@ void test_blinker_after_one_gen(void) {
 	      stderr);
 	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		toggleCell(&grid, 1, i);
+		toggle_cell(&grid, 1, i);
 	}
 
 	fputs("Next generation\n", stderr);
-	updateGrid(&grid);
+	update_grid(&grid);
 
 	fputs("Looking for horizontal blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(getGridCell(&grid, i, 1), true);
+		CUTE_assertEquals(get_grid_gell(&grid, i, 1), true);
 	}
 	info("OK");
 }
@@ -58,17 +58,17 @@ void test_blinker_after_two_gens(void) {
 	      stderr);
 	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		toggleCell(&grid, 1, i);
+		toggle_cell(&grid, 1, i);
 	}
 
 	fputs("Next generation\n", stderr);
-	updateGrid(&grid);
+	update_grid(&grid);
 	fputs("Next generation\n", stderr);
-	updateGrid(&grid);
+	update_grid(&grid);
 
 	fputs("Looking for vertical blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(getGridCell(&grid, 1, i), true);
+		CUTE_assertEquals(get_grid_gell(&grid, 1, i), true);
 	}
 	info("OK");
 }

@@ -10,8 +10,8 @@
 
 
 
-static inline int _setRunLength(struct grid *grid, unsigned int *i,
-                                unsigned int j, const char **repr) {
+static inline int _set_run_length(struct grid *grid, unsigned int *i,
+                                  unsigned int j, const char **repr) {
 	char *end = NULL;
 	long length = strtol(*repr, &end, 10);
 	*repr = end;
@@ -30,7 +30,7 @@ static inline int _setRunLength(struct grid *grid, unsigned int *i,
 	return 0;
 }
 
-static inline int _initCellsFromRLE(struct grid *grid, const char *repr) {
+static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 	unsigned int i = 0;
 	unsigned int j = 0;
 	int rc;
@@ -47,7 +47,7 @@ static inline int _initCellsFromRLE(struct grid *grid, const char *repr) {
 			case '7':
 			case '8':
 			case '9':
-				if ((rc = _setRunLength(grid, &i, j, &repr)) < 0) {
+				if ((rc = _set_run_length(grid, &i, j, &repr)) < 0) {
 					return rc;
 				}
 				break;
@@ -83,8 +83,8 @@ static inline int _initCellsFromRLE(struct grid *grid, const char *repr) {
 	return 0;
 }
 
-static inline int _initGridFromRLE(struct grid *grid, const char *repr,
-                                   bool wrap) {
+static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
+                                      bool wrap) {
 	char rule_buffer[22] = {0};
 	unsigned int w, h;
 	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
@@ -94,7 +94,7 @@ static inline int _initGridFromRLE(struct grid *grid, const char *repr,
 	}
 	/* x and y specifications are mandatory, rule is optional */
 	bool add_rule = rc == 3;
-	rc = initGrid(grid, w, h, wrap);
+	rc = init_grid(grid, w, h, wrap);
 	if (rc < 0) {
 		return rc;
 	}
@@ -102,17 +102,17 @@ static inline int _initGridFromRLE(struct grid *grid, const char *repr,
 		size_t len = strlen(rule_buffer);
 		char *rule = malloc(len);
 		if (rule == NULL) {
-			freeGrid(grid);
+			free_grid(grid);
 			return -__LINE__;
 		}
 		strcpy(rule, rule_buffer);
 		grid->rule = rule;
 	}
-	return _initCellsFromRLE(grid, strchr(repr, '\n') + 1);
+	return _init_cells_from_rle(grid, strchr(repr, '\n') + 1);
 }
 
-static inline int _initGridFromRepr(struct grid *grid, const char *repr,
-                                    bool wrap) {
+static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
+                                        bool wrap) {
 	const char *itr = repr;
 	for (; *itr && *itr != '\n'; ++itr);
 	unsigned int width = itr - repr;
@@ -127,21 +127,21 @@ static inline int _initGridFromRepr(struct grid *grid, const char *repr,
 			return -__LINE__;
 		}
 	}
-	return initGrid(grid, width, height, wrap);
+	return init_grid(grid, width, height, wrap);
 }
 
-int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
-             bool wrap) {
+int load_grid(struct grid *grid, const char *repr, enum grid_format format,
+              bool wrap) {
 	int rc;
 	if (format == GRID_FORMAT_RLE || format == GRID_FORMAT_UNKNOWN) {
-		rc = _initGridFromRLE(grid, repr, wrap);
+		rc = _init_grid_from_rle(grid, repr, wrap);
 		if (rc <= 0) { /* > 0 means not RLE */
 			return rc;
 		} else if (format == GRID_FORMAT_RLE) {
 			return -__LINE__;
 		}
 	}
-	rc = _initGridFromRepr(grid, repr, wrap);
+	rc = _init_grid_from_plain(grid, repr, wrap);
 	if (rc < 0) {
 		return rc;
 	}
@@ -159,7 +159,7 @@ int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
 }
 
 
-char *getGridRepr(const struct grid *grid) {
+char *get_grid_repr(const struct grid *grid) {
 	/* Additional height characters for newlines and null terminator */
 	char *repr = malloc((grid->w + 1) * grid->h);
 	if (repr == NULL) {
@@ -167,7 +167,7 @@ char *getGridRepr(const struct grid *grid) {
 	}
 	for (unsigned int j = 0; j < grid->h; ++j) {
 		for (unsigned int i = 0; i < grid->w; ++i) {
-			repr[j * (grid->w + 1) + i] = getGridCell(grid, i, j) ? '@'
+			repr[j * (grid->w + 1) + i] = get_grid_gell(grid, i, j) ? '@'
 			                                                      : '.';
 		}
 		repr[j * (grid->w + 1) + grid->w] = '\n';

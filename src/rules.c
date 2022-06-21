@@ -80,7 +80,7 @@ static const char *rules[] = {
 };
 
 
-const char *getRuleFromName(const char *name) {
+const char *get_rule_from_name(const char *name) {
 	unsigned int i = 0;
 	unsigned int start = 0;
 	unsigned int end = NB_NAMES;

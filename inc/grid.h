@@ -95,7 +95,7 @@ struct grid {
  * \return \c 0 iff the grid was correctly initialized, a negative value
  *         otherwise
  */
-int initGrid(struct grid *grid, unsigned int width, unsigned int height,
+int init_grid(struct grid *grid, unsigned int width, unsigned int height,
               bool wrap);
 
 
@@ -120,7 +120,7 @@ enum grid_format {
  * number of lines gives the grid height.
  *
  * \note This function resets the grid, so callers must pass either an
- *       unititialized grid or a grid that has been passed to \c freeGrid
+ *       unititialized grid or a grid that has been passed to \c free_grid
  *       beforehand to avoid leaking memory.
  *
  * \param[out] grid   The grid to initialize
@@ -131,8 +131,8 @@ enum grid_format {
  * \return \c 0 iff the grid was correctly initialized, a negative value
  *         otherwise
  */
-int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
-             bool wrap);
+int load_grid(struct grid *grid, const char *repr, enum grid_format format,
+              bool wrap);
 
 
 /**
@@ -140,7 +140,7 @@ int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
  *
  * \param[in,out] grid The grid to free
  */
-void freeGrid(struct grid *grid);
+void free_grid(struct grid *grid);
 
 
 /**
@@ -153,7 +153,7 @@ void freeGrid(struct grid *grid);
  * \return \c true if the cell at (i, j) is \e "alive", or \c false if the cell
  *         is \e "dead" or coordinates are invalid.
  */
-bool getGridCell(const struct grid *grid, int i, int j);
+bool get_grid_gell(const struct grid *grid, int i, int j);
 
 
 /**
@@ -166,7 +166,7 @@ bool getGridCell(const struct grid *grid, int i, int j);
  * \return The new state of the cell (\c true means \e alive), or \c false if
  *         the coordinates are invalid
  */
-bool toggleCell(struct grid *grid, unsigned int x, unsigned int y);
+bool toggle_cell(struct grid *grid, unsigned int x, unsigned int y);
 
 
 /**
@@ -179,7 +179,7 @@ bool toggleCell(struct grid *grid, unsigned int x, unsigned int y);
  *
  * \return \c 0 if no error occurred (memory allocation, iteration)
  */
-int updateGrid(struct grid *grid);
+int update_grid(struct grid *grid);
 
 
 /**
@@ -189,7 +189,7 @@ int updateGrid(struct grid *grid);
  *
  * \param[in,out] grid The grid to clear
  */
-void clearGrid(struct grid *grid);
+void clear_grid(struct grid *grid);
 
 
 /**
@@ -205,7 +205,7 @@ void clearGrid(struct grid *grid);
  *
  * \return A string representation of the current state of the grid
  */
-char *getGridRepr(const struct grid *grid);
+char *get_grid_repr(const struct grid *grid);
 
 
 #endif /* grid_H */

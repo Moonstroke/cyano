@@ -72,14 +72,14 @@ static const struct option LONGOPTS[] = {
 };
 
 
-static int _printUsage(const char *argv0) {
+static int _print_usage(const char *argv0) {
 	fprintf(stderr, USAGE_HEADER, argv0);
 	fwrite(USAGE, sizeof USAGE, 1, stderr);
 	return -__LINE__;
 }
 
-static int _setRule(const char *arg, const char **dst) {
-	const char *rule = getRuleFromName(arg);
+static int _set_rule(const char *arg, const char **dst) {
+	const char *rule = get_rule_from_name(arg);
 	if (rule != NULL) {
 		*dst = rule;
 		return 0;
@@ -114,7 +114,7 @@ err:
 	}
 }
 
-static int _getUIntValue(char opt, const char *arg, unsigned int *dst) {
+static int _get_uint_value(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
 		fprintf(stderr,
@@ -125,7 +125,7 @@ static int _getUIntValue(char opt, const char *arg, unsigned int *dst) {
 	return 0;
 }
 
-static void parseFormat(const char *arg, enum grid_format *format) {
+static void _parse_format(const char *arg, enum grid_format *format) {
 	if (strcasecmp(arg, "RLE")) {
 		*format = GRID_FORMAT_RLE;
 	} else if (strcasecmp(arg, "plaintext") || strcasecmp(arg, "plain")) {
@@ -137,12 +137,12 @@ static void parseFormat(const char *arg, enum grid_format *format) {
 	}
 }
 
-int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
-                         unsigned int *grid_height, bool *wrap,
-                         const char **game_rule, unsigned int *cell_pixels,
-                         unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync, const char **in_file,
-                         const char **out_file, enum grid_format *format) {
+int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
+                  unsigned int *grid_height, bool *wrap, const char **game_rule,
+                  unsigned int *cell_pixels, unsigned int *border_width,
+                  unsigned int *update_rate, bool *use_vsync,
+                  const char **in_file, const char **out_file,
+                  enum grid_format *format) {
 	bool opt_r_met = false;
 	bool opt_v_met = false;
 	bool opt_b_met = false;
@@ -158,21 +158,21 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'u':
-				_printUsage(argv[0]);
+				_print_usage(argv[0]);
 				return 1;
 			case 'b':
-				if (_getUIntValue('b', optarg, border_width) < 0) {
+				if (_get_uint_value('b', optarg, border_width) < 0) {
 					return -__LINE__;
 				}
 				opt_b_met = true;
 				break;
 			case 'c':
-				if (_getUIntValue('c', optarg, cell_pixels) < 0) {
+				if (_get_uint_value('c', optarg, cell_pixels) < 0) {
 					return -__LINE__;
 				}
 				break;
 			case 'h':
-				if (_getUIntValue('h', optarg, grid_height) < 0) {
+				if (_get_uint_value('h', optarg, grid_height) < 0) {
 					return -__LINE__;
 				}
 				opt_h_met = true;
@@ -182,13 +182,13 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_n_met = true;
 				break;
 			case 'r':
-				if (_getUIntValue('r', optarg, update_rate) < 0) {
+				if (_get_uint_value('r', optarg, update_rate) < 0) {
 					return -__LINE__;
 				}
 				opt_r_met = true;
 				break;
 			case 'R':
-				if (_setRule(optarg, game_rule) < 0) {
+				if (_set_rule(optarg, game_rule) < 0) {
 					return -__LINE__;
 				}
 				break;
@@ -197,7 +197,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_v_met = true;
 				break;
 			case 'w':
-				if (_getUIntValue('w', optarg, grid_width) < 0) {
+				if (_get_uint_value('w', optarg, grid_width) < 0) {
 					return -__LINE__;
 				}
 				opt_w_met = true;
@@ -218,7 +218,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_o_met = true;
 				break;
 			case 'F':
-				parseFormat(optarg, format);
+				_parse_format(optarg, format);
 				break;
 			case '?':
 				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);

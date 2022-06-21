@@ -4,17 +4,17 @@
 
 
 
-void startTimer(struct timer *timer) {
+void start_timer(struct timer *timer) {
 	timer->ticks = SDL_GetTicks();
 }
 
 
-extern void resetTimer(struct timer*);
+extern void reset_timer(struct timer*);
 
 
-unsigned int getDelta(const struct timer *timer) {
+unsigned int get_timer_delta(const struct timer *timer) {
 	return SDL_GetTicks() - timer->ticks;
 }
 
 
-extern unsigned int getRemainingTime(const struct timer*);
+extern unsigned int get_remaining_time(const struct timer*);
