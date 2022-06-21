@@ -140,7 +140,7 @@ int updateGrid(struct grid *g) {
 	   a bigger buffer). */
 	char *cellsBuffer = calloc(NUM_OCTETS(3 * g->w), 1);
 	if (cellsBuffer == NULL)
-		return -1;
+		return -__LINE__;
 	/* First row */
 	if (g->wrap) {
 		copyBits(g->cells, (g->h - 1) * g->w, cellsBuffer, 0, g->w);

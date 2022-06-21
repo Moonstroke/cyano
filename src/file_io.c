@@ -74,10 +74,10 @@ char *readFile(const char *path) {
 static int _writeStdout(const char *text) {
 	size_t len = strlen(text);
 	if (fwrite(text, 1, len, stdout) < len) {
-		return -1;
+		return -__LINE__;
 	}
 	if (text[len - 1] != '\n' && fputc('\n', stdout) != '\n') {
-		return -2;
+		return -__LINE__;
 	}
 	return 0;
 }
@@ -88,16 +88,16 @@ int writeFile(const char *path, const char *text) {
 	}
 	FILE *file = fopen(path, "w");
 	if (file == NULL) {
-		return -1;
+		return -__LINE__;
 	}
 	size_t len = strlen(text);
 	if (fwrite(text, 1, len, file) < len) {
 		fclose(file);
-		return -2;
+		return -__LINE__;
 	}
 	if (text[len - 1] != '\n' && fputc('\n', file) != '\n') {
 		fclose(file);
-		return -3;
+		return -__LINE__;
 	}
 	fclose(file);
 	return 0;

@@ -16,7 +16,7 @@ static inline int _setRunLength(struct grid *grid, unsigned int *i,
 	long length = strtol(*repr, &end, 10);
 	*repr = end;
 	if (*i + length > grid->w) {
-		return -4;
+		return -__LINE__;
 	}
 	char state = **repr;
 	if (state == 'o') {
@@ -24,7 +24,7 @@ static inline int _setRunLength(struct grid *grid, unsigned int *i,
 			SET_BIT(grid->cells, j * grid->w + *i + n, true);
 		}
 	} else if (state != 'b') { /* Invalid character */
-		return -5;
+		return -__LINE__;
 	}
 	*i += length;
 	return 0;
@@ -56,14 +56,14 @@ static inline int _initCellsFromRLE(struct grid *grid, const char *repr) {
 			/* Fall-through intended */
 			case 'b':
 				if (++i > grid->w) {
-					return -1;
+					return -__LINE__;
 				}
 				break;
 			case '$':
 				/* No grid width checking because end of row can be omitted if
 				   all cells are blank */
 				if (++j >= grid->h) {
-					return -2;
+					return -__LINE__;
 				}
 				i = 0;
 				break;
@@ -77,7 +77,7 @@ static inline int _initCellsFromRLE(struct grid *grid, const char *repr) {
 				/* Unexpected character, may be a 0 starting a run length, NUL
 				   byte, anything that is not handled in the cases is considered
 				   invalid. */
-				return -3;
+				return -__LINE__;
 		}
 	}
 	return 0;
@@ -90,7 +90,7 @@ static inline int _initGridFromRLE(struct grid *grid, const char *repr,
 	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
 	if (rc < 2) {
 		/* No proper RLE header line, probably not RLE at all */
-		return -2;
+		return -__LINE__;
 	}
 	/* x and y specifications are mandatory, rule is optional */
 	bool add_rule = rc == 3;
@@ -103,7 +103,7 @@ static inline int _initGridFromRLE(struct grid *grid, const char *repr,
 		char *rule = malloc(len);
 		if (rule == NULL) {
 			freeGrid(grid);
-			return -3;
+			return -__LINE__;
 		}
 		strcpy(rule, rule_buffer);
 		grid->rule = rule;
@@ -124,7 +124,7 @@ static inline int _initGridFromRepr(struct grid *grid, const char *repr,
 			++height;
 		} else {
 			/* We did not fall on a line break: repr is ill-formed */
-			return -2;
+			return -__LINE__;
 		}
 	}
 	return initGrid(grid, width, height, wrap);
@@ -138,7 +138,7 @@ int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
 		if (rc <= 0) { /* > 0 means not RLE */
 			return rc;
 		} else if (format == GRID_FORMAT_RLE) {
-			return -1;
+			return -__LINE__;
 		}
 	}
 	rc = _initGridFromRepr(grid, repr, wrap);
@@ -152,7 +152,7 @@ int loadGrid(struct grid *grid, const char *repr, enum grid_format format,
 		} else if (*repr == '\n') {
 			++repr;
 		} else if (*repr != '.') {
-			return -3;
+			return -__LINE__;
 		}
 	}
 	return 0;

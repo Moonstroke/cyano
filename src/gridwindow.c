@@ -635,7 +635,7 @@ int initGridWindow(struct gridwindow *gw, struct grid *grid,
 	                           win_flags);
 	if (gw->win == NULL) {
 		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
-		return -1;
+		return -__LINE__;
 	}
 	Uint32 ren_flags = SDL_RENDERER_ACCELERATED;
 	if (use_vsync) {
@@ -644,7 +644,7 @@ int initGridWindow(struct gridwindow *gw, struct grid *grid,
 	gw->ren = SDL_CreateRenderer(gw->win, -1, ren_flags);
 	if (gw->ren == NULL) {
 		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
-		return -2;
+		return -__LINE__;
 	}
 	gw->grid = grid;
 	gw->cell_pixels = cell_pixels;

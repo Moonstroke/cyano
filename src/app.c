@@ -33,7 +33,7 @@ static const char UI_HELP[] = "Interface usage:\n"
 int initApp(void) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Could not load the SDL: %s\n", SDL_GetError());
-		return -1;
+		return -__LINE__;
 	}
 
 	return 0;
@@ -67,7 +67,7 @@ static inline void _resetGrid(struct grid *grid, const char *repr,
 static inline int _outputGrid(const struct grid *grid, const char *out_file) {
 	char *repr = getGridRepr(grid);
 	if (repr == NULL) {
-		return -1;
+		return -__LINE__;
 	}
 	int rc = writeFile(out_file, repr);
 	free(repr);

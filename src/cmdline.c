@@ -75,7 +75,7 @@ static const struct option LONGOPTS[] = {
 static int _printUsage(const char *argv0) {
 	fprintf(stderr, USAGE_HEADER, argv0);
 	fwrite(USAGE, sizeof USAGE, 1, stderr);
-	return -1;
+	return -__LINE__;
 }
 
 static int _setRule(const char *arg, const char **dst) {
@@ -110,7 +110,7 @@ static int _setRule(const char *arg, const char **dst) {
 		return 0;
 err:
 		fprintf(stderr, "Error: invalid rule: \"%s\"\n", arg);
-		return -1;
+		return -__LINE__;
 	}
 }
 
@@ -119,7 +119,7 @@ static int _getUIntValue(char opt, const char *arg, unsigned int *dst) {
 	if (sscanf(arg, "%u", &tmp) != 1) {
 		fprintf(stderr,
 		        "Error: option -%c needs an unsigned integer argument\n", opt);
-		return -1;
+		return -__LINE__;
 	}
 	*dst = tmp;
 	return 0;
@@ -162,18 +162,18 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				return 1;
 			case 'b':
 				if (_getUIntValue('b', optarg, border_width) < 0) {
-					return -1;
+					return -__LINE__;
 				}
 				opt_b_met = true;
 				break;
 			case 'c':
 				if (_getUIntValue('c', optarg, cell_pixels) < 0) {
-					return -2;
+					return -__LINE__;
 				}
 				break;
 			case 'h':
 				if (_getUIntValue('h', optarg, grid_height) < 0) {
-					return -3;
+					return -__LINE__;
 				}
 				opt_h_met = true;
 				break;
@@ -183,13 +183,13 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				break;
 			case 'r':
 				if (_getUIntValue('r', optarg, update_rate) < 0) {
-					return -4;
+					return -__LINE__;
 				}
 				opt_r_met = true;
 				break;
 			case 'R':
 				if (_setRule(optarg, game_rule) < 0) {
-					return -5;
+					return -__LINE__;
 				}
 				break;
 			case 'v':
@@ -198,7 +198,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				break;
 			case 'w':
 				if (_getUIntValue('w', optarg, grid_width) < 0) {
-					return -6;
+					return -__LINE__;
 				}
 				opt_w_met = true;
 				break;
@@ -226,7 +226,7 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 			case ':':
 				fprintf(stderr, "Error: missing argument for option -%c\n",
 				        optopt);
-				return -7;
+				return -__LINE__;
 			default:
 				fprintf(stderr, "Unexpected getopt return: '%c'\n", ch);
 				break;
@@ -235,22 +235,22 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	if (opt_v_met && opt_r_met) {
 		fputs("Error: options --update-rate and --vsync are incompatible\n",
 		      stderr);
-		return -8;
+		return -__LINE__;
 	}
 	if (opt_b_met && opt_n_met) {
 		fputs("Error: options --border-width and --no-border are"
 		      " incompatible\n", stderr);
-		return -9;
+		return -__LINE__;
 	}
 	if (opt_f_met && (opt_i_met || opt_o_met)) {
 		fputs("Error: options --file is incompatible with --input-file and"
 		      " --output-file", stderr);
-		return -10;
+		return -__LINE__;
 	}
 	if (opt_i_met && (opt_w_met || opt_h_met)) {
 		fputs("Error: options --width and --height are incompatible with"
 		      " --input-file", stderr);
-		return -11;
+		return -__LINE__;
 	}
 	for (int i = optind; i < argc; ++i) {
 		fprintf(stderr,
