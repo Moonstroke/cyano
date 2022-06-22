@@ -60,17 +60,17 @@
 /**
  * Copy a range of bits.
  *
- * \param[in]  src        The array to copy from
- * \param[in]  srcOffset  The start position in the source array
- * \param[out] dest       The array to copy to
- * \param[in]  destOffset The start position in the destination array
- * \param[in]  length     The number of bits to copy
+ * \param[in]  src         The array to copy from
+ * \param[in]  src_offset  The start position in the source array
+ * \param[out] dest        The array to copy to
+ * \param[in]  dest_offset The start position in the destination array
+ * \param[in]  length      The number of bits to copy
  *
  * \note The implementation assumes that the source and destination arrays do
  *       not overlap.
  */
-void copyBits(const char *RESTRICT src, size_t srcOffset, char *RESTRICT dest,
-              size_t destOffset, size_t length);
+void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
+               size_t dest_offset, size_t length);
 
 
 /**
@@ -82,7 +82,7 @@ void copyBits(const char *RESTRICT src, size_t srcOffset, char *RESTRICT dest,
  * \param[in] size   The number of bits to print
  * \param[in] file   The file or stream to write to
  */
-void printBits(const char *bits, size_t offset, size_t size, FILE *file);
+void print_bits(const char *bits, size_t offset, size_t size, FILE *file);
 
 
 #endif /* BITS_H */

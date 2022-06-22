@@ -26,6 +26,7 @@ int getopt_long(int argc, char *const argv[], const char *optstring,
                 const struct option *longopts, int *longindex);
 #endif
 #include <stdio.h> /* for fprintf, stderr, sscanf, fputs */
+#include <string.h> /* for strcasecmp / _stricmp */
 
 #include "rules.h"
 
@@ -61,11 +62,15 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t\tSpecify the file for input (string argument, default none)\n"
 	"\t-o OUTPUT_FILE, --output-file=OUTPUT_FILE\n"
 	"\t\tSpecify the file for output (string argument, default none)\n"
+	"\t-F FORMAT, --format=FORMAT\n"
+	"\t\tSpecify the grid representation format in the input file: one of "
+	"\"plain\", \"plaintext\" or \"RLE\" case not significant(string argument, "
+	"default none)\n"
 	"\t--help, --usage\n"
 	"\t\tPrint this message and exit\n";
 
 
-static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:";
+static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:F:";
 
 /**
  * The long options array.
@@ -76,7 +81,7 @@ static const struct option LONGOPTS[] = {
 	{"border-size", required_argument, NULL, 'b'},
 	{"cell-size",   required_argument, NULL, 'c'},
 	{"no-border",   no_argument,       NULL, 'n'},
-	{"game-rule",  required_argument, NULL, 'R'},
+	{"game-rule",   required_argument, NULL, 'R'},
 	{"update-rate", required_argument, NULL, 'r'},
 	{"vsync",       no_argument      , NULL, 'v'},
 	{"wrap",        no_argument      , NULL, 'W'},
@@ -85,18 +90,19 @@ static const struct option LONGOPTS[] = {
 	{"output-file", required_argument, NULL, 'o'},
 	{"usage",       no_argument      , NULL, 'u'},
 	{"help",        no_argument      , NULL, 'u'},
+	{"format",      required_argument, NULL, 'F'},
 	{"", 0, NULL, 0}
 };
 
 
-static int _printUsage(const char *argv0) {
+static int _print_usage(const char *argv0) {
 	fprintf(stderr, USAGE_HEADER, argv0);
 	fwrite(USAGE, sizeof USAGE, 1, stderr);
-	return -1;
+	return -__LINE__;
 }
 
-static int _setRule(const char *arg, const char **dst) {
-	const char *rule = getRuleFromName(arg);
+static int _set_rule(const char *arg, const char **dst) {
+	const char *rule = get_rule_from_name(arg);
 	if (rule != NULL) {
 		*dst = rule;
 		return 0;
@@ -127,27 +133,45 @@ static int _setRule(const char *arg, const char **dst) {
 		return 0;
 err:
 		fprintf(stderr, "Error: invalid rule: \"%s\"\n", arg);
-		return -1;
+		return -__LINE__;
 	}
 }
 
-static int _getUIntValue(char opt, const char *arg, unsigned int *dst) {
+static int _get_uint_value(char opt, const char *arg, unsigned int *dst) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
 		fprintf(stderr,
 		        "Error: option -%c needs an unsigned integer argument\n", opt);
-		return -1;
+		return -__LINE__;
 	}
 	*dst = tmp;
 	return 0;
 }
 
-int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
-                         unsigned int *grid_height, bool *wrap,
-                         const char **game_rule, unsigned int *cell_pixels,
-                         unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync, const char **in_file,
-                         const char **out_file) {
+static void _parse_format(const char *arg, enum grid_format *format) {
+	int (*cmp_func)(const char*, const char*);
+#ifdef _WIN32
+	cmp_func = _stricmp;
+#else
+	cmp_func = strcasecmp;
+#endif
+	if (cmp_func(arg, "RLE") == 0) {
+		*format = GRID_FORMAT_RLE;
+	} else if (cmp_func(arg, "plaintext") == 0 || cmp_func(arg, "plain") == 0) {
+		*format = GRID_FORMAT_PLAIN;
+	} else {
+		fprintf(stderr, "Warning: unrecognized grid representationformat: "
+		                "\"%s\"\n", optarg);
+		*format = GRID_FORMAT_UNKNOWN;
+	}
+}
+
+int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
+                  unsigned int *grid_height, bool *wrap, const char **game_rule,
+                  unsigned int *cell_pixels, unsigned int *border_width,
+                  unsigned int *update_rate, bool *use_vsync,
+                  const char **in_file, const char **out_file,
+                  enum grid_format *format) {
 	bool opt_r_met = false;
 	bool opt_v_met = false;
 	bool opt_b_met = false;
@@ -164,22 +188,22 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'u':
-				_printUsage(argv[0]);
+				_print_usage(argv[0]);
 				return 1;
 			case 'b':
-				if (_getUIntValue('b', optarg, border_width) < 0) {
-					return -1;
+				if (_get_uint_value('b', optarg, border_width) < 0) {
+					return -__LINE__;
 				}
 				opt_b_met = true;
 				break;
 			case 'c':
-				if (_getUIntValue('c', optarg, cell_pixels) < 0) {
-					return -2;
+				if (_get_uint_value('c', optarg, cell_pixels) < 0) {
+					return -__LINE__;
 				}
 				break;
 			case 'h':
-				if (_getUIntValue('h', optarg, grid_height) < 0) {
-					return -3;
+				if (_get_uint_value('h', optarg, grid_height) < 0) {
+					return -__LINE__;
 				}
 				opt_h_met = true;
 				break;
@@ -188,14 +212,14 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_n_met = true;
 				break;
 			case 'r':
-				if (_getUIntValue('r', optarg, update_rate) < 0) {
-					return -4;
+				if (_get_uint_value('r', optarg, update_rate) < 0) {
+					return -__LINE__;
 				}
 				opt_r_met = true;
 				break;
 			case 'R':
-				if (_setRule(optarg, game_rule) < 0) {
-					return -5;
+				if (_set_rule(optarg, game_rule) < 0) {
+					return -__LINE__;
 				}
 				break;
 			case 'v':
@@ -203,8 +227,8 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				opt_v_met = true;
 				break;
 			case 'w':
-				if (_getUIntValue('w', optarg, grid_width) < 0) {
-					return -6;
+				if (_get_uint_value('w', optarg, grid_width) < 0) {
+					return -__LINE__;
 				}
 				opt_w_met = true;
 				break;
@@ -223,13 +247,16 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 				*out_file = optarg;
 				opt_o_met = true;
 				break;
+			case 'F':
+				_parse_format(optarg, format);
+				break;
 			case '?':
 				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);
 				break;
 			case ':':
 				fprintf(stderr, "Error: missing argument for option -%c\n",
 				        optopt);
-				return -7;
+				return -__LINE__;
 			default:
 				fprintf(stderr, "Unexpected getopt return: '%c'\n", ch);
 				break;
@@ -238,22 +265,22 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
 	if (opt_v_met && opt_r_met) {
 		fputs("Error: options --update-rate and --vsync are incompatible\n",
 		      stderr);
-		return -8;
+		return -__LINE__;
 	}
 	if (opt_b_met && opt_n_met) {
 		fputs("Error: options --border-width and --no-border are"
 		      " incompatible\n", stderr);
-		return -9;
+		return -__LINE__;
 	}
 	if (opt_f_met && (opt_i_met || opt_o_met)) {
 		fputs("Error: options --file is incompatible with --input-file and"
 		      " --output-file", stderr);
-		return -10;
+		return -__LINE__;
 	}
 	if (opt_i_met && (opt_w_met || opt_h_met)) {
 		fputs("Error: options --width and --height are incompatible with"
 		      " --input-file", stderr);
-		return -11;
+		return -__LINE__;
 	}
 	for (int i = optind; i < argc; ++i) {
 		fprintf(stderr,

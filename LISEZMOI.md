@@ -348,7 +348,7 @@ grille</td><td>`60`</td><td>`-i`</td></tr>
 section 1.2.1.)</td><td>Faux</td><td>Aucun</td></tr>
 <tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Spécifie la variante du Jeu à
 lancer (par son nom s’il est connu, sinon par sa
-*rulestring*)</td><td>`B3/S23`</td><td>Aucun<td></td></tr>
+*rulestring*)</td><td>`B3/S23`</td><td>Aucun</td></tr>
 <tr><td rowspan="5">Affichage de la
 grille</td><td>`-b BORDER`</td><td>`--border`</td><td>La taille de l’espace
 entre les cellules, en pixels</td><td>`1`</td><td>`-n`</td></tr>
@@ -361,14 +361,15 @@ seconde</td><td>`25`</td><td>`-v`</td></tr>
 <tr><td>`-v`</td><td>`--vsync`</td><td>Fait évoluer la grille en simultané avec
 la synchronisation verticale du moniteur</td><td>Faux</td><td>`-r`</td></tr>
 <tr><td rowspan="3">E/S de fichier</td><td>`-f FILE`</td><td>`--file`</td>
-<td>Donne le chemin du fichier d’où lire et où écrire</td><td>Aucun</td><td>`-i`
+<td>Donne le chemin du fichier d’où lire et où écrire</td><td>Aucune</td><td>`-i`
 et `-o`</td></tr>
 <tr><td>`-i INPUT_FILE`</td><td>`--input-file`</td><td>Donne le chemin vers le
-fichier d’où lire la configuration initiale de la grille</td><td>Aucun</td>
+fichier d’où lire la configuration initiale de la grille</td><td>Aucune</td>
 <td>`-f`, `-w` et `-h`</td></tr>
 <tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Donne le chemin vers le
-fichier où écrire l’état de la grille</td><td>Aucun</td><td>`-f`</td></tr>
-</table>
+fichier où écrire l’état de la grille</td><td>Aucune</td><td>`-f`</td></tr>
+<tr><td>`-F FORMAT`</td><td>`--format`</td><td>Spécifie le format de la
+représentation de la grille dans le fichier d’entrée. Soit *plain*, *plaintext* ou *RLE* (casse indifférenciée)</td><td>Aucune</td><td>Aucun</td></tr></table>
 
 Tout argument représentant un chemin vers un fichier (pour l’une des options
 `-f`, `-i` ou `-o`) peut être `-`, ce qui spécifie de lire depuis le flux

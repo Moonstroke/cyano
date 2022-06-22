@@ -28,7 +28,7 @@ struct timer {
  *
  * \param[in,out] timer The timer to start
  */
-void startTimer(struct timer *timer);
+void start_timer(struct timer *timer);
 
 
 /**
@@ -36,7 +36,7 @@ void startTimer(struct timer *timer);
  *
  * \param[out] timer The timer to reset
  */
-inline void resetTimer(struct timer *timer) {
+inline void reset_timer(struct timer *timer) {
 	timer->ticks = 0;
 }
 
@@ -48,7 +48,7 @@ inline void resetTimer(struct timer *timer) {
  *
  * \return The elapsed time, in \c ms, since the timer started
  */
-unsigned int getDelta(const struct timer *timer);
+unsigned int get_timer_delta(const struct timer *timer);
 
 
 /**
@@ -58,8 +58,8 @@ unsigned int getDelta(const struct timer *timer);
  *
  * \return The remaining milliseconds before the next scheduled window update
  */
-inline unsigned int getRemainingTime(const struct timer *timer) {
-	int time = ((unsigned int)timer->delay) - getDelta(timer);
+inline unsigned int get_remaining_time(const struct timer *timer) {
+	int time = ((unsigned int)timer->delay) - get_timer_delta(timer);
 	return time < 0 ? 0 : time;
 }
 

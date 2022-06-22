@@ -10,7 +10,7 @@
 #endif
 
 
-static char *_readStdin(void) {
+static char *_read_stdin(void) {
 	/* Since stdin is a stream and not a regular file, fseek won't work on it.
 	   The only way is to iterate with a buffer and append to the result
 	   string */
@@ -36,9 +36,9 @@ static char *_readStdin(void) {
 	return text;
 }
 
-char *readFile(const char *path) {
+char *read_file(const char *path) {
 	if (strcmp(path, "-") == 0) {
-		return _readStdin();
+		return _read_stdin();
 	}
 	FILE *file = fopen(path, "r");
 	if (file == NULL) {
@@ -74,39 +74,39 @@ char *readFile(const char *path) {
 }
 
 
-static int _writeStdout(const char *text) {
+static int _write_stdout(const char *text) {
 	size_t len = strlen(text);
 	if (fwrite(text, 1, len, stdout) < len) {
-		return -1;
+		return -__LINE__;
 	}
 	if (text[len - 1] != '\n' && fputc('\n', stdout) != '\n') {
-		return -2;
+		return -__LINE__;
 	}
 	return 0;
 }
 
-int writeFile(const char *path, const char *text) {
+int write_file(const char *path, const char *text) {
 	if (strcmp(path, "-") == 0) {
-		return _writeStdout(text);
+		return _write_stdout(text);
 	}
 	FILE *file = fopen(path, "w");
 	if (file == NULL) {
-		return -1;
+		return -__LINE__;
 	}
 	size_t len = strlen(text);
 	if (fwrite(text, 1, len, file) < len) {
 		fclose(file);
-		return -2;
+		return -__LINE__;
 	}
 	if (text[len - 1] != '\n' && fputc('\n', file) != '\n') {
 		fclose(file);
-		return -3;
+		return -__LINE__;
 	}
 	fclose(file);
 	return 0;
 }
 
-bool isFile(const char *path) {
+bool is_file(const char *path) {
 #ifdef _WIN32
 	return _access(path, 0) == 0;
 #else

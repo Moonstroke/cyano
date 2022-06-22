@@ -19,7 +19,7 @@
  *
  * \return The Golly format string description, or \c NULL if not found.
  */
-const char *getRuleFromName(const char *name);
+const char *get_rule_from_name(const char *name);
 
 
 #endif /* RULES_H */

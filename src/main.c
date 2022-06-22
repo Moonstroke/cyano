@@ -1,10 +1,12 @@
 #include <stdio.h> /* for fprintf, stderr, fputs */
 #include <stdlib.h> /* for EXIT_*, free */
+#include <string.h> /* for strlen, strnlen, memcmp */
 
 #include "app.h"
 #include "grid.h"
 #include "gridwindow.h"
 #include "file_io.h"
+#include "stringutils.h"
 
 
 
@@ -20,11 +22,12 @@ int main(int argc, char **argv) {
 	const char *game_rule = DEFAULT_GRID_RULE;
 	const char *in_file = NULL;
 	const char *out_file = NULL;
+	enum grid_format format = GRID_FORMAT_UNKNOWN;
 
-	int rc = parseCommandLineArgs(argc, argv, &grid_width, &grid_height, &wrap,
-	                              &game_rule, &cell_pixels, &border_width,
-	                              &update_rate, &use_vsync, &in_file,
-	                              &out_file);
+	int rc = parse_cmdline(argc, argv, &grid_width, &grid_height, &wrap,
+	                       &game_rule, &cell_pixels, &border_width,
+	                       &update_rate, &use_vsync, &in_file, &out_file,
+	                       &format);
 	if (rc < 0) {
 		return EXIT_FAILURE;
 	} else if (rc > 0) {
@@ -32,43 +35,47 @@ int main(int argc, char **argv) {
 		return EXIT_SUCCESS;
 	}
 
-	if (initApp() < 0) {
+	if (init_app() < 0) {
 		return EXIT_FAILURE;
 	}
 
 	struct grid g;
 	char *repr = NULL;
 	if (in_file != NULL) {
-		repr = readFile(in_file);
+		repr = read_file(in_file);
 		if (repr == NULL) {
 			fprintf(stderr, "Could not read from file \"%s\"\n", in_file);
 			return EXIT_FAILURE;
 		}
-		int rc = loadGrid(&g, repr, wrap);
+		/* Override format on recognized file extension */
+		if (format == GRID_FORMAT_UNKNOWN && endswith(in_file, ".rle")) {
+			format = GRID_FORMAT_RLE;
+		}
+		rc = load_grid(&g, repr, format, wrap);
 		if (rc < 0) {
 			fputs("Failure in creation of the game grid\n", stderr);
 			return EXIT_FAILURE;
 		}
-	} else if (initGrid(&g, grid_width, grid_height, wrap) < 0) {
+	} else if (init_grid(&g, grid_width, grid_height, wrap) < 0) {
 		fputs("Failure in creation of the game grid\n", stderr);
 		return EXIT_FAILURE;
 	}
 	g.rule = game_rule;
 
-	struct gridwindow gw;
-	if (initGridWindow(&gw, &g, cell_pixels, border_width, "SDL Game of Life",
+	struct grid_window gw;
+	if (init_grid_window(&gw, &g, cell_pixels, border_width, "SDL Game of Life",
 	                    use_vsync) < 0) {
 		fprintf(stderr, "Failure in creation of the game window: %s\n",
 		        gw.error_msg);
 		return EXIT_FAILURE;
 	}
 
-	runApp(&gw, update_rate, use_vsync, repr, out_file);
+	run_app(&gw, update_rate, use_vsync, repr, format, out_file);
 
 	free(repr);
-	freeGrid(&g);
-	freeGridWindow(&gw);
-	terminateApp();
+	free_grid(&g);
+	free_grid_window(&gw);
+	terminate_app();
 
 	return EXIT_SUCCESS;
 }

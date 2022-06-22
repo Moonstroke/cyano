@@ -30,7 +30,7 @@
  *
  * \return The content of the file, or \c NULL if an error occurred
  */
-char *readFile(const char *path);
+char *read_file(const char *path);
 
 
 /**
@@ -47,7 +47,7 @@ char *readFile(const char *path);
  *
  * \return \c 0 on success, a negative value on error
  */
-int writeFile(const char *path, const char *text);
+int write_file(const char *path, const char *text);
 
 
 /**
@@ -57,6 +57,6 @@ int writeFile(const char *path, const char *text);
  *
  * \return \c true iff the path names an existing regular file
  */
-bool isFile(const char *path);
+bool is_file(const char *path);
 
 #endif /* FILE_IO_H */

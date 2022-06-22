@@ -22,7 +22,7 @@
  *
  * @return \c 0 on success
  */
-int initApp(void);
+int init_app(void);
 
 
 /**
@@ -54,15 +54,16 @@ int initApp(void);
  *                          refresh rate
  * \param[out] in_file      The path to the file from which to read
  * \param[out] out_file     The pat to the file where to write
+ * \param[out] format       The grid representation format in the input file
  *
  * \return \c 0 on success
  */
-int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
-                         unsigned int *grid_height, bool *wrap,
-                         const char **game_rule, unsigned int *cell_pixels,
-                         unsigned int *border_width, unsigned int *update_rate,
-                         bool *use_vsync, const char **in_file,
-                         const char **out_file);
+int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
+                  unsigned int *grid_height, bool *wrap, const char **game_rule,
+                  unsigned int *cell_pixels, unsigned int *border_width,
+                  unsigned int *update_rate, bool *use_vsync,
+                  const char **in_file, const char **out_file,
+                  enum grid_format *format);
 
 
 /**
@@ -73,16 +74,18 @@ int parseCommandLineArgs(int argc, char **argv, unsigned int *grid_width,
  * \param[in] use_vsync   Whether the update rate is fixed to the monitor's
  *                        refresh rate
  * \param[in] repr        The representation of the initial state to reset to
+ * \param[in] format      The format of the \a repr, RLE or plain text
  * \param[in] out_file    The path to the file where to write the grid state
  */
-void runApp(struct gridwindow *gridwindow, unsigned int update_rate,
-           bool use_vsync, const char *repr, const char *out_file);
+void run_app(struct grid_window *gridwindow, unsigned int update_rate,
+             bool use_vsync, const char *repr, enum grid_format format,
+             const char *out_file);
 
 
 /**
  * Destroy and terminate the application.
  */
-void terminateApp(void);
+void terminate_app(void);
 
 
 #endif /* APP_H */

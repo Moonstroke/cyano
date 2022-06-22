@@ -321,9 +321,9 @@ another option</th></tr>
 grid</td><td>`60`</td><td>`-i`</td></tr>
 <tr><td>`-W`</td><td>`--wrap`</td><td>Enables wrapping grid (cf.
 section 1.2.1.)</td><td>False</td><td>None</td></tr>
-<tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Specifies the Life variant to run
-(either by its name if recognized, or its rulestring)</td><td>`B3/S23`</td>
-<td>None<td></td></tr>
+<tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Specifies the Life variant to
+run (either by its name if recognized, or its rulestring)</td><td>`B3/S23`</td>
+<td>None</td></tr>
 <tr><td rowspan="5">Grid display</td><td>`-b BORDER`</td><td>`--border`</td>
 <td>The size of the gap between two cells, in pixels</td><td>`1`</td>
 <td>`-n`</td></tr>
@@ -342,7 +342,9 @@ the name of the file to read from and write to</td><td>None</td><td>`-i` and
 file from which to read the grid's initial configuration</td><td>None</td>
 <td>`-f`, `-w` and `-h`</td></tr>
 <tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Gives the path to the
-file to write the grid state to</td><td>None</td><td>`-f`</td></tr></table>
+file to write the grid state to</td><td>None</td><td>`-f`</td></tr>
+<tr><td>`-F FORMAT`</td><td>`--format`</td><td>Specifies the format of the grid
+representation in the input file. Either *plain*, *plaintext* or *RLE* (case-insensitive)</td><td>None</td><td>None</td></tr></table>
 
 Any file path argument (to `-f`, `-i` or `-o`) can be `-`, which specifies to
 read from the standard input stream or write to the standard output stream. It
@@ -392,7 +394,7 @@ Some keys, or key combinations, also have a defined action:
 no file was specified, do nothing</td></tr>
 <tr><td>`W`</td><td>Write the current state to the given output file. If the
 file does not exist, create it. If no file was specified, do nothing</td></tr>
-<tr><td>`C`</td><td>Clears the grid (kills all cells)</td></tr>
+<tr><td>`C`</td><td>Clear the grid (kill all cells)</td></tr>
 <tr><td>`H`</td><td>Display in the console a summary of the mouse and key
 actions</td></tr></table>
 

@@ -29,6 +29,7 @@ SRC = $(SRC_DIR)\app.c \
       $(SRC_DIR)\grid_io.c \
       $(SRC_DIR)\main.c \
       $(SRC_DIR)\rules.c \
+      $(SRC_DIR)\stringutils.c \
       $(SRC_DIR)\timer.c
 OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\\%.obj,$(SRC))
 
