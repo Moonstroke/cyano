@@ -126,9 +126,9 @@ static int _get_uint_value(char opt, const char *arg, unsigned int *dst) {
 }
 
 static void _parse_format(const char *arg, enum grid_format *format) {
-	if (strcasecmp(arg, "RLE")) {
+	if (strcasecmp(arg, "RLE") == 0) {
 		*format = GRID_FORMAT_RLE;
-	} else if (strcasecmp(arg, "plaintext") || strcasecmp(arg, "plain")) {
+	} else if (strcasecmp(arg, "plaintext") == 0 || strcasecmp(arg, "plain") == 0) {
 		*format = GRID_FORMAT_PLAIN;
 	} else {
 		fprintf(stderr, "Warning: unrecognized grid representationformat: "
