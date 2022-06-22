@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 		if (format == GRID_FORMAT_UNKNOWN && endswith(in_file, ".rle")) {
 			format = GRID_FORMAT_RLE;
 		}
-		int rc = load_grid(&g, repr, format, wrap);
+		rc = load_grid(&g, repr, format, wrap);
 		if (rc < 0) {
 			fputs("Failure in creation of the game grid\n", stderr);
 			return EXIT_FAILURE;
