@@ -150,7 +150,7 @@ static int _get_uint_value(char opt, const char *arg, unsigned int *dst) {
 
 static void _parse_format(const char *arg, enum grid_format *format) {
 	int (*cmp_func)(const char*, const char*);
-#ifdef _WIN32
+#ifdef _MSC_VER
 	cmp_func = _stricmp;
 #else
 	cmp_func = strcasecmp;

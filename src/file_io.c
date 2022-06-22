@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* for strcmp, strlen */
-#ifdef _WIN32
+#ifdef _MSC_VER
 # include <io.h> /* for _access */
 #else
 # include <unistd.h> /* for access */
@@ -107,7 +107,7 @@ int write_file(const char *path, const char *text) {
 }
 
 bool is_file(const char *path) {
-#ifdef _WIN32
+#ifdef _MSC_VER
 	return _access(path, 0) == 0;
 #else
 	return access(path, F_OK) == 0;

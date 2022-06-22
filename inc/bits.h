@@ -15,7 +15,7 @@
 #include <stdio.h> /* for FILE */
 
 /* MSVC does not support the standard restrict keyword but provides its own equivalent */
-#ifdef _WIN32
+#ifdef _MSC_VER
 # define RESTRICT __restrict
 #else
 # define RESTRICT restrict
