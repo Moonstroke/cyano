@@ -69,7 +69,7 @@ CFLAGS = $(CFLAGS) /O2 /Ob3
 !if "$(DEBUG)" == "y"
 CPPFLAGS = $(CPPFLAGS) /D_DEBUG
 CFLAGS = $(CFLAGS) /Zi /Fd$(PDB_FILE)
-LDFLAGS = $(LDFLAGS) /debug
+LDFLAGS = $(LDFLAGS) /debug /pdb:$(PDB_FILE)
 !else
 CPPFLAGS = $(CPPFLAGS) /DNDEBUG
 LDFLAGS = $(LDFLAGS) /release
