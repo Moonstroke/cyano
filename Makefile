@@ -45,9 +45,9 @@ RES_FILE = $(PROJECT_NAME).res
 
 
 # Preprocessor flags
-CPPFLAGS = /I$(INC_DIR) /DICONSIZE=64
+CPPFLAGS = /I$(INC_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64
 # Compilation flags
-CFLAGS = /nologo /std:c11 /Wall
+CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820
 
 # Linkage flags
 LDFLAGS = /nologo
