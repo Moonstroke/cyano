@@ -92,17 +92,15 @@ $(EXEC): $(OBJ) $(OBJ_DIR)\$(RES_FILE)
 # Filewise compilation
 {$(SRC_DIR)}.c{$(OBJ_DIR)}.obj:
 	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
-	$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
+	@$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
 
 # Tests compilation
 {$(TEST_DIR)}.c{$(OBJ_DIR)\$(TEST_DIR)}.obj:
-	@echo Compiling test $@ from $<
 	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
-	$(CC) /c $< /Fo$@ $(CPPFLAGS) $(CFLAGS)
+	@$(CC) /c $< /Fo$@ $(CPPFLAGS) $(CFLAGS)
 
 # Resource compilation
 {$(DATA_DIR)}.rc{$(OBJ_DIR)}.res:
-	@echo Compiling resource file $< to $@
 	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
 	rc /nologo /fo $@ $<
 
