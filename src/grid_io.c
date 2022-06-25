@@ -153,6 +153,11 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 			return -__LINE__;
 		}
 	}
+
+	while (*repr == '!') {
+		repr = strchr(repr, '\n') + 1;
+	}
+
 	rc = _init_grid_from_plain(grid, repr, wrap);
 	if (rc < 0) {
 		return rc;
