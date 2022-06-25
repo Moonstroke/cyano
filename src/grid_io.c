@@ -67,6 +67,9 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				}
 				i = 0;
 				break;
+			case '#':
+				repr = strchr(repr, '\n');
+				break;
  			default:
 				if (isspace(*repr)) {
 					/* Whitespace is ignored anywhere outside of run length
@@ -87,6 +90,10 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
                                       bool wrap) {
 	char rule_buffer[22] = {0};
 	unsigned int w, h;
+
+	while (*repr == '#') { /* Ignore pre-header comment lines */
+		repr = strchr(repr, '\n') + 1;
+	}
 	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
 	if (rc < 2) {
 		/* No proper RLE header line, probably not RLE at all */
@@ -108,7 +115,12 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 		strcpy(rule, rule_buffer);
 		grid->rule = rule;
 	}
-	return _init_cells_from_rle(grid, strchr(repr, '\n') + 1);
+
+	do { /* Skip header and comments afterwards, if any */
+		repr = strchr(repr, '\n') + 1;
+	} while (*repr == '#');
+
+	return _init_cells_from_rle(grid, repr);
 }
 
 static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
