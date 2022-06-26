@@ -136,26 +136,22 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 
 static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
                                         bool wrap) {
-	const char *itr = repr;
-	for (; *itr && *itr != '\n'; ++itr);
-	unsigned int width = itr - repr;
+	const char *first_nl = strchr(repr, '\n');
+	if (first_nl == NULL) {
+		return -__LINE__;
+	}
+	unsigned int width = first_nl - repr;
 	unsigned int height = 1;
-	/* Stepping width + 1 characters is faster, but assumes repr is
-	   well-formed */
-	for (; *itr; itr += width + 1) {
-		if (*itr == '\n') {
+	const char *next_nl;
+	while ((next_nl = strchr(repr, '\n')) != NULL) {
+		if (next_nl - repr == width) {
+			/* Ensure that the grid repr is rectangular */
 			++height;
-		} else if (*(itr - width) == '!') {
-			/* Locating from itr - width in case comment line is shorter than
-			   width */
-			itr = strchr(itr - width + 1, '\n');
-			if (itr == NULL) {
-				return -__LINE__;
-			}
-		} else {
-			/* Did not fall on a line break or a comment: repr is ill-formed */
+		} else if (*repr != '!') {
+			/* Invalid line length and current line is not a comment */
 			return -__LINE__;
 		}
+		repr = next_nl + 1;
 	}
 	return init_grid(grid, width, height, wrap);
 }
