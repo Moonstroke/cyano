@@ -163,14 +163,15 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 		return rc;
 	}
 
-	for (size_t i = 0; *repr; ++i, ++repr) {
+	for (size_t i = 0; *repr; ++repr) {
 		if (*repr == '@') {
 			SET_BIT(grid->cells, i, true);
 		} else if (*repr == '\n') {
-			++repr;
+			continue;
 		} else if (*repr != '.') {
 			return -__LINE__;
 		}
+		++i;
 	}
 	return 0;
 }
