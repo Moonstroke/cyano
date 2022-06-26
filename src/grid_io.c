@@ -134,8 +134,12 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 	for (; *itr; itr += width + 1) {
 		if (*itr == '\n') {
 			++height;
+		} else if (*(itr - width) == '!') {
+			/* Locating from itr - width in case comment line is shorter than
+			   width */
+			itr = strchr(itr - width, '\n');
 		} else {
-			/* We did not fall on a line break: repr is ill-formed */
+			/* Did not fall on a line break or a comment: repr is ill-formed */
 			return -__LINE__;
 		}
 	}
@@ -167,6 +171,9 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 		if (*repr == '@') {
 			SET_BIT(grid->cells, i, true);
 		} else if (*repr == '\n') {
+			if (*(repr + 1) == '!') {
+				repr = strchr(repr + 1, '\n');
+			}
 			continue;
 		} else if (*repr != '.') {
 			return -__LINE__;
