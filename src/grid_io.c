@@ -68,7 +68,10 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				i = 0;
 				break;
 			case '#':
-				repr = strchr(repr, '\n');
+				repr = strchr(repr + 1, '\n');
+				if (repr == NULL) {
+					return -__LINE__;
+				}
 				break;
  			default:
 				if (isspace(*repr)) {
@@ -92,7 +95,11 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	unsigned int w, h;
 
 	while (*repr == '#') { /* Ignore pre-header comment lines */
-		repr = strchr(repr, '\n') + 1;
+		repr = strchr(repr + 1, '\n');
+		if (repr == NULL) {
+			return -__LINE__;
+		}
+		++repr;
 	}
 	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
 	if (rc < 2) {
@@ -117,7 +124,11 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	}
 
 	do { /* Skip header and comments afterwards, if any */
-		repr = strchr(repr, '\n') + 1;
+		repr = strchr(repr + 1, '\n');
+		if (repr == NULL) {
+			return -__LINE__;
+		}
+		++repr;
 	} while (*repr == '#');
 
 	return _init_cells_from_rle(grid, repr);
@@ -137,7 +148,10 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 		} else if (*(itr - width) == '!') {
 			/* Locating from itr - width in case comment line is shorter than
 			   width */
-			itr = strchr(itr - width, '\n');
+			itr = strchr(itr - width + 1, '\n');
+			if (itr == NULL) {
+				return -__LINE__;
+			}
 		} else {
 			/* Did not fall on a line break or a comment: repr is ill-formed */
 			return -__LINE__;
@@ -159,7 +173,11 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 	}
 
 	while (*repr == '!') {
-		repr = strchr(repr, '\n') + 1;
+		repr = strchr(repr + 1, '\n');
+		if (repr == NULL) {
+			return -__LINE__;
+		}
+		++repr;
 	}
 
 	rc = _init_grid_from_plain(grid, repr, wrap);
@@ -172,7 +190,10 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 			SET_BIT(grid->cells, i, true);
 		} else if (*repr == '\n') {
 			if (*(repr + 1) == '!') {
-				repr = strchr(repr + 1, '\n');
+				repr = strchr(repr + 2, '\n');
+				if (repr == NULL) { /* No more comments, reached end of file */
+					break;
+				}
 			}
 			continue;
 		} else if (*repr != '.') {
