@@ -423,7 +423,7 @@ generated in plain-text format.
 ##### 2.1.4.1. Plain text format
 
 The plain text format is a textual representation of the grid as a rectangular
-block of text with `.` for dead cells and `@` for live ones. The grid must be
+block of text with `.` for dead cells and `@` or `O` for live ones. Although both characters are recognized, they should not be mixed; if the data contain both a warning message will be printed on the standard error. The grid must be
 written fully, the number of lines gives the height of the grid and the number
 of characters per line (which must be identical throughout the lines) gives the
 grid width. Lines starting with a `!` are considered comments and are ignored.

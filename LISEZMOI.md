@@ -460,14 +460,18 @@ de sortie sera toujours écrit en format texte brut.
 ##### 2.1.4.1. Format texte brut
 
 Le format texte brut est une représentation textuelle de la grille en un bloc de
-texte rectangulaire, avec des `.` pour les cellules mortes et des `@` pour les
-vivantes. La grille doit être écrite intégralement, le nombre de lignes donne la
-hauteur de la grille et le nombre de caractères par ligne (qui doit être
-constant tout au long du fichier) en donne la largeur. Toute ligne commençant par un `!` est considérée comme du commantaire et ignorée. Ces commentaires
-peuvent apparaître partout dans le fichier (avant comme après le motif, comme
-au milieu) et ne sont pas concernés par les restrictions de longueur de ligne.
-Cependant le point d’interrogation doit être le premier caractère de la ligne ;
-le commentaire continue jusqu’au saut de ligne suivant.
+texte rectangulaire, avec des `.` pour les cellules mortes et des `@` ou `O`
+pour les vivantes. Bien que ces deux caractères soient reconnus, ils ne
+devraient pas être mélangés ; si les données contiennent les deux un message
+d'avertissement sera affiché sur la sortie d'erreur standard. La grille doit
+être écrite intégralement, le nombre de lignes donne la hauteur de la grille et
+le nombre de caractères par ligne (qui doit être constant tout au long du
+fichier) en donne la largeur. Toute ligne commençant par un `!` est considérée
+comme du commentaire et ignorée. Ces commentaires peuvent apparaître partout
+dans le fichier (avant comme après le motif, comme au milieu) et ne sont pas
+concernés par les restrictions de longueur de ligne. Cependant le point
+d’interrogation doit être le premier caractère de la ligne ; le commentaire
+continue jusqu’au saut de ligne suivant.
 
 
 Exemple : un planeur orienté vers le bas et la gauche en texte brut
