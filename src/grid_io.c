@@ -67,6 +67,12 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				}
 				i = 0;
 				break;
+			case '#':
+				repr = strchr(repr + 1, '\n');
+				if (repr == NULL) {
+					return -__LINE__;
+				}
+				break;
  			default:
 				if (isspace(*repr)) {
 					/* Whitespace is ignored anywhere outside of run length
@@ -87,6 +93,14 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
                                       bool wrap) {
 	char rule_buffer[22] = {0};
 	unsigned int w, h;
+
+	while (*repr == '#') { /* Ignore pre-header comment lines */
+		repr = strchr(repr + 1, '\n');
+		if (repr == NULL) {
+			return -__LINE__;
+		}
+		++repr;
+	}
 	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
 	if (rc < 2) {
 		/* No proper RLE header line, probably not RLE at all */
@@ -108,24 +122,36 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 		strcpy(rule, rule_buffer);
 		grid->rule = rule;
 	}
-	return _init_cells_from_rle(grid, strchr(repr, '\n') + 1);
+
+	do { /* Skip header and comments afterwards, if any */
+		repr = strchr(repr + 1, '\n');
+		if (repr == NULL) {
+			return -__LINE__;
+		}
+		++repr;
+	} while (*repr == '#');
+
+	return _init_cells_from_rle(grid, repr);
 }
 
 static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
                                         bool wrap) {
-	const char *itr = repr;
-	for (; *itr && *itr != '\n'; ++itr);
-	unsigned int width = itr - repr;
+	const char *first_nl = strchr(repr, '\n');
+	if (first_nl == NULL) {
+		return -__LINE__;
+	}
+	unsigned int width = first_nl - repr;
 	unsigned int height = 1;
-	/* Stepping width + 1 characters is faster, but assumes repr is
-	   well-formed */
-	for (; *itr; itr += width + 1) {
-		if (*itr == '\n') {
+	const char *next_nl;
+	while ((next_nl = strchr(repr, '\n')) != NULL) {
+		if (next_nl - repr == width) {
+			/* Ensure that the grid repr is rectangular */
 			++height;
-		} else {
-			/* We did not fall on a line break: repr is ill-formed */
+		} else if (*repr != '!') {
+			/* Invalid line length and current line is not a comment */
 			return -__LINE__;
 		}
+		repr = next_nl + 1;
 	}
 	return init_grid(grid, width, height, wrap);
 }
@@ -141,19 +167,52 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 			return -__LINE__;
 		}
 	}
+
+	while (*repr == '!') {
+		repr = strchr(repr + 1, '\n');
+		if (repr == NULL) {
+			return -__LINE__;
+		}
+		++repr;
+	}
+
 	rc = _init_grid_from_plain(grid, repr, wrap);
 	if (rc < 0) {
 		return rc;
 	}
 
-	for (size_t i = 0; *repr; ++i, ++repr) {
+	/* Memorized "on" character, to detect when both @ and O are mixed within a
+	   same file. Blank means uninitialized, ! means warning already output */
+	char on_char = ' ';
+	for (size_t i = 0; *repr; ++repr) {
 		if (*repr == '@') {
 			SET_BIT(grid->cells, i, true);
+			if (on_char == 'O') {
+				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
+				on_char = '!';
+			} else if (on_char == ' ') {
+				on_char = '@';
+			}
+		} else if (*repr == 'O') {
+			SET_BIT(grid->cells, i, true);
+			if (on_char == '@') {
+				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
+				on_char = '!';
+			} else if (on_char == ' ') {
+				on_char = 'O';
+			}
 		} else if (*repr == '\n') {
-			++repr;
+			if (*(repr + 1) == '!') {
+				repr = strchr(repr + 2, '\n');
+				if (repr == NULL) { /* No more comments, reached end of file */
+					break;
+				}
+			}
+			continue;
 		} else if (*repr != '.') {
 			return -__LINE__;
 		}
+		++i;
 	}
 	return 0;
 }

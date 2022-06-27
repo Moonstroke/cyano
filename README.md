@@ -405,6 +405,17 @@ The program can read and write to text files whose content describe a grid state
 (dimensions, state of cells and sometimes rulestring). These file can come in
 two distinct formats, *plain text* and *RLE* (run-length encoding).
 
+The format of the input file can be specified with the `-F` command-line
+option. If the format is not specified, the program will try to guess the
+format. First from its name: if it ends with `.rle`, the RLE format is assumed;
+on the contrary if it ends with `.cells`, the plain text format is assumed
+instead. Otherwise, the program tries to interpret the contents of the input
+file as RLE, then if it does not matches as plain text, before failing.
+
+The option `-F` can also be used to override the format that would be guessed
+from the file name or contents, although it is not advised to name grid pattern
+files with a non-matching extension.
+
 The input file can be in either format, but the output file will always be
 generated in plain-text format.
 
@@ -412,14 +423,19 @@ generated in plain-text format.
 ##### 2.1.4.1. Plain text format
 
 The plain text format is a textual representation of the grid as a rectangular
-block of text with `.` for dead cells and `@` for live ones. The grid must be
+block of text with `.` for dead cells and `@` or `O` for live ones. Although both characters are recognized, they should not be mixed; if the data contain both a warning message will be printed on the standard error. The grid must be
 written fully, the number of lines gives the height of the grid and the number
 of characters per line (which must be identical throughout the lines) gives the
-grid width. The format accepts no data apart from the grid itself.
+grid width. Lines starting with a `!` are considered comments and are ignored.
+Such comments can appear anywhere in the file (before and after the pattern,
+but also in the middle of it) and are not concerned by line width restrictions.
+However, the bang must be the first character of the line, and the comment runs
+to the next line break.
 
 Example: a down-left-oriented glider in plain text
 
     .@.
+    ! this is a comment
     @..
     @@@
 
@@ -436,13 +452,18 @@ determined solely from the grid data.
 Live cells are denoted by a `o`, dead cells by `b`, a `$` represents the end of
 a row (and the start of the next) and `!` indicates the end of the pattern.
 Whitespace is non significant (but is not allowed within a run compression),
-this allows to wrap lines anywhere without constraint. Everything after the
-terminating `!` is considered comment text and will not be parsed.
+this allows to wrap lines anywhere without constraint. A `#` starts a comment,
+and text until the next line break will be ignored. Everything after the
+terminating `!` is also considered comment text and will not be parsed.
 
 Example : the southwestward glider in RLE format
 
+    # Comment at the top of the file
     x = 3, y = 3, rule = B3/S23
-    bo$b$3o!
+    bo$
+    b$ # Same-line comments!
+    3o!
+    This text after the terminating ! is not parsed
 
 
 ### 2.2. Developement
