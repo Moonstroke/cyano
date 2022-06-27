@@ -405,6 +405,17 @@ The program can read and write to text files whose content describe a grid state
 (dimensions, state of cells and sometimes rulestring). These file can come in
 two distinct formats, *plain text* and *RLE* (run-length encoding).
 
+The format of the input file can be specified with the `-F` command-line
+option. If the format is not specified, the program will try to guess the
+format. First from its name: if it ends with `.rle`, the RLE format is assumed;
+on the contrary if it ends with `.cells`, the plain text format is assumed
+instead. Otherwise, the program tries to interpret the contents of the input
+file as RLE, then if it does not matches as plain text, before failing.
+
+The option `-F` can also be used to override the format that would be guessed
+from the file name or contents, although it is not advised to name grid pattern
+files with a non-matching extension.
+
 The input file can be in either format, but the output file will always be
 generated in plain-text format.
 

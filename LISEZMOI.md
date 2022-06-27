@@ -441,6 +441,18 @@ configuration de grille (dimensions, état des cellules et parfois *rulestring*)
 Ces fichiers viennet en deux formats distincts, *texte brut* et *RLE* (pour
 *run-length encoding*, encodage par longueur de suite).
 
+le format du fichier d’entrée peut être spécifié par l’option de ligne de
+commande `-F`. Si l’option n’est pas donnée, le programme tente de deviner le
+format du fichier. Tout d’abord à partir de son nom : si celui-ci se termine
+par `.rle`, le format RLE est supposé. Au contraire, si le nom finit en
+`.cells`, c’est le format texte brut qui est supposé. En tout autre cas, le
+programme tente d’interpréter le contenu du fichier comme RLE, puis en cas de non-correspondance en tant que texte brut, avant de terminer en erreur.
+
+L’option `-F` peut également être utilisée pour forcer le format de fichier
+qui serait deviné depuis le nom ou le contenu du fichier, mais il n’est pas
+conseillé de nommer un fichier de motif de grille avec une extension qui ne
+corresponde pas.
+
 Le fichier d’entrée peut être fourni dans l’un des deux formats, mais le fichier
 de sortie sera toujours écrit en format texte brut.
 
@@ -492,7 +504,7 @@ Exemple : le planeur orienté sud-ouest en format *RLE*
     bo$
     b$ # Commentaire sur la même ligne !
     3o!
-    Ce texte après le ! final n'est pas parcouru
+    Ce texte après le ! final n’est pas parcouru
 
 
 ### 2.2. Développement
