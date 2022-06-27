@@ -415,11 +415,16 @@ The plain text format is a textual representation of the grid as a rectangular
 block of text with `.` for dead cells and `@` for live ones. The grid must be
 written fully, the number of lines gives the height of the grid and the number
 of characters per line (which must be identical throughout the lines) gives the
-grid width. The format accepts no data apart from the grid itself.
+grid width. Lines starting with a `!` are considered comments and are ignored.
+Such comments can appear anywhere in the file (before and after the pattern,
+but also in the middle of it) and are not concerned by line width restrictions.
+However, the bang must be the first character of the line, and the comment runs
+to the next line break.
 
 Example: a down-left-oriented glider in plain text
 
     .@.
+    ! this is a comment
     @..
     @@@
 
@@ -436,13 +441,18 @@ determined solely from the grid data.
 Live cells are denoted by a `o`, dead cells by `b`, a `$` represents the end of
 a row (and the start of the next) and `!` indicates the end of the pattern.
 Whitespace is non significant (but is not allowed within a run compression),
-this allows to wrap lines anywhere without constraint. Everything after the
-terminating `!` is considered comment text and will not be parsed.
+this allows to wrap lines anywhere without constraint. A `#` starts a comment,
+and text until the next line break will be ignored. Everything after the
+terminating `!` is also considered comment text and will not be parsed.
 
 Example : the southwestward glider in RLE format
 
+    # Comment at the top of the file
     x = 3, y = 3, rule = B3/S23
-    bo$b$3o!
+    bo$
+    b$ # Same-line comments!
+    3o!
+    This text after the terminating ! is not parsed
 
 
 ### 2.2. Developement
