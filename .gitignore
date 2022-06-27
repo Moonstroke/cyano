@@ -4,3 +4,7 @@ out/
 
 # Documentation directory (use doxygen to compile docs from the configuration file Doxyfile)
 doc/
+
+# Test input files
+**.rle
+**.cells
