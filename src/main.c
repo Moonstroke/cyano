@@ -48,8 +48,12 @@ int main(int argc, char **argv) {
 			return EXIT_FAILURE;
 		}
 		/* Override format on recognized file extension */
-		if (format == GRID_FORMAT_UNKNOWN && endswith(in_file, ".rle")) {
-			format = GRID_FORMAT_RLE;
+		if (format == GRID_FORMAT_UNKNOWN) {
+			if (endswith(in_file, ".rle")) {
+				format = GRID_FORMAT_RLE;
+			} else if (endswith(in_file, ".cells")) {
+				format = GRID_FORMAT_PLAIN;
+			}
 		}
 		rc = load_grid(&g, repr, format, wrap);
 		if (rc < 0) {
