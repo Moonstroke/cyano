@@ -1,7 +1,7 @@
 #include "app.h"
 
 
-#ifdef _GNU_SOURCE
+#ifdef __GNUC__
 # include <getopt.h> /* for struct option, getopt_long, optarg, optind */
 #else
 enum arg_type {
@@ -291,7 +291,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 }
 
 
-#ifndef _GNU_SOURCE
+#ifndef __GNUC__
 
 #include <string.h> /* for strcmp */
 
