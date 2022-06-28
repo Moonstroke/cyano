@@ -441,6 +441,18 @@ configuration de grille (dimensions, état des cellules et parfois *rulestring*)
 Ces fichiers viennet en deux formats distincts, *texte brut* et *RLE* (pour
 *run-length encoding*, encodage par longueur de suite).
 
+le format du fichier d’entrée peut être spécifié par l’option de ligne de
+commande `-F`. Si l’option n’est pas donnée, le programme tente de deviner le
+format du fichier. Tout d’abord à partir de son nom : si celui-ci se termine
+par `.rle`, le format RLE est supposé. Au contraire, si le nom finit en
+`.cells`, c’est le format texte brut qui est supposé. En tout autre cas, le
+programme tente d’interpréter le contenu du fichier comme RLE, puis en cas de non-correspondance en tant que texte brut, avant de terminer en erreur.
+
+L’option `-F` peut également être utilisée pour forcer le format de fichier
+qui serait deviné depuis le nom ou le contenu du fichier, mais il n’est pas
+conseillé de nommer un fichier de motif de grille avec une extension qui ne
+corresponde pas.
+
 Le fichier d’entrée peut être fourni dans l’un des deux formats, mais le fichier
 de sortie sera toujours écrit en format texte brut.
 
@@ -448,16 +460,24 @@ de sortie sera toujours écrit en format texte brut.
 ##### 2.1.4.1. Format texte brut
 
 Le format texte brut est une représentation textuelle de la grille en un bloc de
-texte rectangulaire, avec des `.` pour les cellules mortes et des `@` pour les
-vivantes. La grille doit être écrite intégralement, le nombre de lignes donne la
-hauteur de la grille et le nombre de caractères par ligne (qui doit être
-constant tout au long du fichier) en donne la largeur. Ce format n’accepte
-aucune information dans le fichier à part la grille elle-même.
+texte rectangulaire, avec des `.` pour les cellules mortes et des `@` ou `O`
+pour les vivantes. Bien que ces deux caractères soient reconnus, ils ne
+devraient pas être mélangés ; si les données contiennent les deux un message
+d'avertissement sera affiché sur la sortie d'erreur standard. La grille doit
+être écrite intégralement, le nombre de lignes donne la hauteur de la grille et
+le nombre de caractères par ligne (qui doit être constant tout au long du
+fichier) en donne la largeur. Toute ligne commençant par un `!` est considérée
+comme du commentaire et ignorée. Ces commentaires peuvent apparaître partout
+dans le fichier (avant comme après le motif, comme au milieu) et ne sont pas
+concernés par les restrictions de longueur de ligne. Cependant le point
+d’interrogation doit être le premier caractère de la ligne ; le commentaire
+continue jusqu’au saut de ligne suivant.
 
 
 Exemple : un planeur orienté vers le bas et la gauche en texte brut
 
     .@.
+    ! ceci est un commentaire
     @..
     @@@
 
@@ -477,13 +497,18 @@ indique une fin de ligne (et le début de la suivante) et un `!` représente la
 fin de la configuration. Les caractères d’espacement (espaces, tabulations,
 retours chariot) ne sont pas significatifs (mais ne sont pas autorisés à
 l’intérieur d’une contraction de série), cela permet de sauter des lignes
-partout sans contrainte. Tout ce qui vient après le `!` terminal est considéré
-comme du texte commentaire et n’est pas parcouru.
+partout sans contrainte. Un `#` commence un commentaire, et le texte jusqu’à
+la ligne suivante est ignoré. Tout ce qui vient après le `!` terminal est
+considéré comme du texte commentaire et n’est pas parcouru.
 
 Exemple : le planeur orienté sud-ouest en format *RLE*
 
+    # Commentaire en tête de fichier
     x = 3, y = 3, rule = B3/S23
-    bo$b$3o!
+    bo$
+    b$ # Commentaire sur la même ligne !
+    3o!
+    Ce texte après le ! final n’est pas parcouru
 
 
 ### 2.2. Développement

@@ -653,7 +653,7 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 	gw->border_width = border_width;
 	gw->error_msg[0] = '\0';
 
-	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom((uint16_t*)icon_data,
+	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom((uint16_t*) icon_data,
 	                                             ICONSIZE, ICONSIZE, 16,
 	                                             ICONSIZE * sizeof *icon_data,
 	                                             0xf000, 0x0f00, 0x00f0,
