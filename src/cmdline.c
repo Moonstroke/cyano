@@ -1,7 +1,7 @@
 #include "app.h"
 
 
-#ifdef _GNU_SOURCE
+#ifdef __GNUC__
 # include <getopt.h> /* for struct option, getopt_long, optarg, optind */
 #else
 enum arg_type {
@@ -291,13 +291,13 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 }
 
 
-#ifndef _GNU_SOURCE
+#ifndef __GNUC__
 
 #include <string.h> /* for strcmp */
 
 
 
-static int _locateLongOpt(const char *name, const struct option *longopts, int *argindex) {
+static int _locate_long_opt(const char *name, const struct option *longopts, int *argindex) {
 	const char *eqsignindex = strchr(name, '=');
 	if (eqsignindex == NULL) {
 		*argindex = -1;
@@ -317,9 +317,10 @@ static int _locateLongOpt(const char *name, const struct option *longopts, int *
 	return -1;
 }
 
-static int _handleLongOpt(char *token, char *const *argv, const struct option *longopts, int *longindex) {
+static int _handle_long_opt(char *token, char *const *argv,
+                            const struct option *longopts, int *longindex) {
 	int argindex;
-	int longoptindex = _locateLongOpt(&token[2], longopts, &argindex);
+	int longoptindex = _locate_long_opt(&token[2], longopts, &argindex);
 	if (longindex != NULL) {
 		*longindex = longoptindex;
 	}
@@ -345,7 +346,7 @@ static int _handleLongOpt(char *token, char *const *argv, const struct option *l
 	return optchar;
 }
 
-static int _optArgType(char opt, const char *optstring, enum arg_type *arg_type) {
+static int _opt_arg_type(char opt, const char *optstring, enum arg_type *arg_type) {
 	for (; *optstring != '\0'; ++optstring) {
 		if (*optstring == opt) {
 			*arg_type = *(optstring + 1) == ':' ? required_argument : no_argument;
@@ -369,14 +370,14 @@ int getopt_long(int argc, char *const argv[], const char *optstring,
 		char optchar = token[1];
 		if (optchar == '-') { /* Two leading hyphens: long option */
 			nextchar = 0;
-			return _handleLongOpt(token, argv, longopts, longindex);
+			return _handle_long_opt(token, argv, longopts, longindex);
 		} else {
 			nextchar = 1;
 		}
 	}
 	enum arg_type arg_type;
 	char optchar = token[nextchar];
-	if (_optArgType(optchar, optstring, &arg_type) < 0) {
+	if (_opt_arg_type(optchar, optstring, &arg_type) < 0) {
 		optopt = optchar;
 		return '?';
 	}
