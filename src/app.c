@@ -188,7 +188,7 @@ void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
 			            repr, format, out_file);
 		}
 
-		while (SDL_GetTicks() > frame_start + frame_duration) {
+		while (SDL_TICKS_PASSED(SDL_GetTicks(), frame_start + frame_duration)) {
 			if (play) {
 				update_grid(gw->grid);
 			}
