@@ -173,7 +173,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
             const char *repr, enum grid_format format, const char *out_file) {
 	unsigned int frame_start = SDL_GetTicks();
-	double frame_duration = 1000. / (double) update_rate;
+	unsigned int frame_duration = 1000 / update_rate;
 
 	bool loop = true;
 	bool mdown = false;
