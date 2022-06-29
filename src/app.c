@@ -172,7 +172,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 
 void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
             const char *repr, enum grid_format format, const char *out_file) {
-	unsigned int frame_start = 0;
+	unsigned int frame_start = SDL_GetTicks();
 	double frame_duration = 1000. / (double) update_rate;
 
 	bool loop = true;
@@ -180,7 +180,6 @@ void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
 	bool play = false;
 	while (loop) {
 		int last_x, last_y;
-		frame_start = SDL_GetTicks();
 		render_grid_window(gw);
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
