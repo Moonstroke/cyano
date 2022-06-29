@@ -188,13 +188,11 @@ void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
 			            repr, format, out_file);
 		}
 
-		if (play) {
-			update_grid(gw->grid);
-		}
-
-		int remaining_time = frame_duration - (SDL_GetTicks() - frame_start);
-		if (!use_vsync && remaining_time > 0) {
-			SDL_Delay(remaining_time);
+		while (SDL_GetTicks() > frame_start + frame_duration) {
+			if (play) {
+				update_grid(gw->grid);
+			}
+			frame_start += frame_duration;
 		}
 	}
 }
