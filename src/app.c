@@ -6,7 +6,6 @@
 #include "grid.h"
 #include "gridwindow.h"
 #include "file_io.h" /* for writeFile */
-#include "timer.h"
 
 
 
@@ -173,16 +172,15 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 
 void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
             const char *repr, enum grid_format format, const char *out_file) {
-	struct timer timer;
-	reset_timer(&timer);
-	timer.delay = 1000. / (double) update_rate;
+	unsigned int frame_start = 0;
+	double frame_duration = 1000. / (double) update_rate;
 
 	bool loop = true;
 	bool mdown = false;
 	bool play = false;
 	while (loop) {
 		int last_x, last_y;
-		start_timer(&timer);
+		frame_start = SDL_GetTicks();
 		render_grid_window(gw);
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
@@ -194,7 +192,7 @@ void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
 			update_grid(gw->grid);
 		}
 
-		unsigned int remaining_time = get_remaining_time(&timer);
+		int remaining_time = frame_duration - (SDL_GetTicks() - frame_start);
 		if (!use_vsync && remaining_time > 0) {
 			SDL_Delay(remaining_time);
 		}
