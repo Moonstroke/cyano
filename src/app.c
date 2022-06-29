@@ -179,8 +179,9 @@ void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
 	bool mdown = false;
 	bool play = false;
 	while (loop) {
-		int last_x, last_y;
 		render_grid_window(gw);
+
+		int last_x, last_y;
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			_handle_event(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
