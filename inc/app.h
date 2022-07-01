@@ -71,15 +71,12 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
  *
  * \param[in] gridwindow The application's gridwindow to run
  * \param[in] update_rate The number of times the grid evolves per second
- * \param[in] use_vsync   Whether the update rate is fixed to the monitor's
- *                        refresh rate
  * \param[in] repr        The representation of the initial state to reset to
  * \param[in] format      The format of the \a repr, RLE or plain text
  * \param[in] out_file    The path to the file where to write the grid state
  */
 void run_app(struct grid_window *gridwindow, unsigned int update_rate,
-             bool use_vsync, const char *repr, enum grid_format format,
-             const char *out_file);
+             const char *repr, enum grid_format format, const char *out_file);
 
 
 /**

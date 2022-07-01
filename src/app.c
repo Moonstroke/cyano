@@ -170,8 +170,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 	}
 }
 
-void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
-            const char *repr, enum grid_format format, const char *out_file) {
+void run_app(struct grid_window *gw, unsigned int update_rate,
+             const char *repr, enum grid_format format, const char *out_file) {
 	unsigned long frame_start = SDL_GetPerformanceCounter();
 	unsigned long frame_duration = SDL_GetPerformanceFrequency() / update_rate;
 

@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	run_app(&gw, update_rate, use_vsync, repr, format, out_file);
+	run_app(&gw, update_rate, repr, format, out_file);
 
 	free(repr);
 	free_grid(&g);
