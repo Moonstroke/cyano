@@ -29,8 +29,6 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t-r UPDATE_RATE, --update-rate=UPDATE_RATE\n"
 	"\t\tSpecify the number of generations to compute per second (integer arg, "
 	"default 25)\n"
-	"\t-v, --vsync\n"
-	"\t\tSpecify to match the update rate with the monitor refresh rate\n"
 	"\t-W, --wrap\n"
 	"\t\tSpecify to make the grid wrap (opposite sides connect)\n"
 	"\t-f FILE, --file=FILE\n"
@@ -47,7 +45,7 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t\tPrint this message and exit\n";
 
 
-static const char *const OPTSTRING = ":b:c:h:nr:R:vw:Wf:i:o:F:";
+static const char *const OPTSTRING = ":b:c:h:nr:R:w:Wf:i:o:F:";
 
 /**
  * The long options array.
@@ -60,7 +58,6 @@ static const struct option LONGOPTS[] = {
 	{"no-border",   no_argument,       NULL, 'n'},
 	{"game-rule",   required_argument, NULL, 'R'},
 	{"update-rate", required_argument, NULL, 'r'},
-	{"vsync",       no_argument      , NULL, 'v'},
 	{"wrap",        no_argument      , NULL, 'W'},
 	{"file",        required_argument, NULL, 'f'},
 	{"input-file",  required_argument, NULL, 'i'},
@@ -140,11 +137,8 @@ static void _parse_format(const char *arg, enum grid_format *format) {
 int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
                   unsigned int *grid_height, bool *wrap, const char **game_rule,
                   unsigned int *cell_pixels, unsigned int *border_width,
-                  unsigned int *update_rate, bool *use_vsync,
-                  const char **in_file, const char **out_file,
-                  enum grid_format *format) {
-	bool opt_r_met = false;
-	bool opt_v_met = false;
+                  unsigned int *update_rate, const char **in_file,
+                  const char **out_file, enum grid_format *format) {
 	bool opt_b_met = false;
 	bool opt_n_met = false;
 	bool opt_w_met = false;
@@ -185,16 +179,11 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				if (_get_uint_value('r', optarg, update_rate) < 0) {
 					return -__LINE__;
 				}
-				opt_r_met = true;
 				break;
 			case 'R':
 				if (_set_rule(optarg, game_rule) < 0) {
 					return -__LINE__;
 				}
-				break;
-			case 'v':
-				*use_vsync = true;
-				opt_v_met = true;
 				break;
 			case 'w':
 				if (_get_uint_value('w', optarg, grid_width) < 0) {
@@ -231,11 +220,6 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				fprintf(stderr, "Unexpected getopt return: '%c'\n", ch);
 				break;
 		}
-	}
-	if (opt_v_met && opt_r_met) {
-		fputs("Error: options --update-rate and --vsync are incompatible\n",
-		      stderr);
-		return -__LINE__;
 	}
 	if (opt_b_met && opt_n_met) {
 		fputs("Error: options --border-width and --no-border are"

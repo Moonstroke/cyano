@@ -357,9 +357,7 @@ cellules</td><td></td><td>`-b`, parce qu’équivalent à `-b0`</td></tr>
 <tr><td>`-c CELL_SIZE`</td><td>`--cell-size`</td><td>Donne la taille d’une
 cellule, en pixels</td><td>`16`</td><td>Aucun</td></tr>
 <tr><td>`-r RATE`</td><td>`--update-rate`</td><td>Le nombre de générations par
-seconde</td><td>`25`</td><td>`-v`</td></tr>
-<tr><td>`-v`</td><td>`--vsync`</td><td>Fait évoluer la grille en simultané avec
-la synchronisation verticale du moniteur</td><td>Faux</td><td>`-r`</td></tr>
+seconde</td><td>`25`</td><td>None</td></tr>
 <tr><td rowspan="3">E/S de fichier</td><td>`-f FILE`</td><td>`--file`</td>
 <td>Donne le chemin du fichier d’où lire et où écrire</td><td>Aucune</td><td>`-i`
 et `-o`</td></tr>
