@@ -67,8 +67,8 @@ int main(int argc, char **argv) {
 	g.rule = game_rule;
 
 	struct grid_window gw;
-	if (init_grid_window(&gw, &g, cell_pixels, border_width, "SDL Game of Life",
-	                    use_vsync) < 0) {
+	if (init_grid_window(&gw, &g, cell_pixels, border_width,
+	                     "SDL Game of Life") < 0) {
 		fprintf(stderr, "Failure in creation of the game window: %s\n",
 		        gw.error_msg);
 		return EXIT_FAILURE;
