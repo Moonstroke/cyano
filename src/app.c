@@ -172,8 +172,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 
 void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
             const char *repr, enum grid_format format, const char *out_file) {
-	unsigned int frame_start = SDL_GetTicks();
-	unsigned int frame_duration = 1000 / update_rate;
+	unsigned long frame_start = SDL_GetPerformanceCounter();
+	unsigned long frame_duration = SDL_GetPerformanceFrequency() / update_rate;
 
 	bool loop = true;
 	bool mdown = false;
@@ -188,7 +188,7 @@ void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
 			            repr, format, out_file);
 		}
 
-		while (SDL_TICKS_PASSED(SDL_GetTicks(), frame_start + frame_duration)) {
+		while (frame_start + frame_duration <= SDL_GetPerformanceCounter()) {
 			if (play) {
 				update_grid(gw->grid);
 			}
