@@ -31,6 +31,9 @@ static char *_read_stdin(void) {
 		return NULL;
 	}
 	if (text[len - 1] == '\n') {
+		if (text[len - 2] == '\r') {
+			text[len - 2] = '\0';
+		}
 		text[len - 1] = '\0';
 	}
 	return text;
@@ -40,7 +43,7 @@ char *read_file(const char *path) {
 	if (strcmp(path, "-") == 0) {
 		return _read_stdin();
 	}
-	FILE *file = fopen(path, "r");
+	FILE *file = fopen(path, "rb");
 	if (file == NULL) {
 		return NULL;
 	}
@@ -65,6 +68,9 @@ char *read_file(const char *path) {
 		return NULL;
 	}
 	if (text[filesize - 1] == '\n') {
+		if (text[filesize - 2] == '\r') {
+			text[filesize - 2] = '\0';
+		}
 		text[filesize - 1] = '\0';
 	} else {
 		text[filesize] = '\0';
