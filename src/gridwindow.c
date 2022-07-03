@@ -672,6 +672,15 @@ void free_grid_window(struct grid_window *gw) {
 }
 
 
+void resize_grid_window(struct grid_window *gw) {
+	int new_width = gw->grid->w * (gw->cell_pixels + gw->border_width)
+	                + gw->border_width;
+	int new_height = gw->grid->h * (gw->cell_pixels + gw->border_width)
+	                + gw->border_width;
+	SDL_SetWindowSize(gw->win, new_width, new_height);
+}
+
+
 static inline void _draw_cell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
                              unsigned int j, unsigned int c,
                              unsigned int border, uint8_t r, uint8_t g,
