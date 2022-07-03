@@ -183,6 +183,25 @@ int update_grid(struct grid *grid);
 
 
 /**
+ * \brief Change the dimensions of the grid.
+ *
+ * The resize takes effect in the lower-right corner of the grid. If the new
+ * size is larger than the current grid's size, rows and columns of blank cells
+ * are added, if the new size is smaller, the columns and rows are trimmed out,
+ * regardless of the cells' states.
+ *
+ * \note If the resize fail, the grid is left in its original dimensions.
+ *
+ * \param[in,out] grid   The grid to resize
+ * \param[in]     width  The new width of the grid
+ * \param[in]     height The new height of the grid
+ *
+ * \return \c 0 if the resize succeeded, a negative value on error
+ */
+int resize_grid(struct grid *grid, unsigned int width, unsigned int height);
+
+
+/**
  * \brief Clear the grid.
  *
  * \e Kills all the cells in the grid, by turning them off.
