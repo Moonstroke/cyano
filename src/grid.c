@@ -172,6 +172,12 @@ int update_grid(struct grid *g) {
 }
 
 
+int resize_grid(struct grid *g, unsigned int width, unsigned int height) {
+	// TODO
+	return 0;
+}
+
+
 void clear_grid(struct grid *g) {
 	memset(g->cells, false, NUM_OCTETS(g->w * g->h));
 }
