@@ -27,6 +27,8 @@ static const char UI_HELP[] = "Interface usage:\n"
 	"   Space   Toggle pause mode\n"
 	"   Enter   When paused, evolve the grid by one generation\n"
 	"    Esc    Quit the program\n"
+	"     +     Increase the grid size by 1 in both width and height\n"
+	"     -     Shrink the grid size by 1 in both width and height\n"
 	"Arrow keys Move the highlight by one cell in the key's direction\n";
 
 
@@ -162,6 +164,22 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 				break;
 			case SDLK_h:
 				_print_help();
+				break;
+			case SDLK_PLUS:
+				if (resize_grid(gw->grid, gw->grid->w + 1,
+				                gw->grid->h + 1) < 0) {
+					fputs("Unable to resize grid\n", stderr);
+					break;
+				}
+				resize_grid_window(gw);
+				break;
+			case SDLK_MINUS:
+				if (resize_grid(gw->grid, gw->grid->w - 1,
+				                       gw->grid->h - 1) == 0) {
+					resize_grid_window(gw);
+				} else {
+					fputs("Unable to resize grid\n", stderr);
+				}
 				break;
 		}
 		break;
