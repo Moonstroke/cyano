@@ -174,7 +174,13 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 				resize_grid_window(gw);
 				break;
 			case SDLK_MINUS:
-				if (resize_grid(gw->grid, gw->grid->w - 1,
+				if (gw->grid->w == 3) {
+					fputs("Cannot shrink the grid below 3 cells wide\n",
+					      stderr);
+				} else if (gw->grid->h == 3) {
+					fputs("Cannot shrink the grid below 3 cells high\n",
+					      stderr);
+				} else if (resize_grid(gw->grid, gw->grid->w - 1,
 				                       gw->grid->h - 1) == 0) {
 					resize_grid_window(gw);
 				} else {
