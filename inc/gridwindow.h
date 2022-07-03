@@ -93,6 +93,14 @@ void render_grid_window(const struct grid_window *grid_win);
 
 
 /**
+ * \brief Resize the grid window to fit the grid it contains.
+ *
+ * \param[in,out] grid_win The grid window
+ */
+void resize_grid_window(struct grid_window *grid_win);
+
+
+/**
  * \brief Transforms the window coordinates to a grid cell location.
  *
  * \param[in]  grid_win    The grid window
