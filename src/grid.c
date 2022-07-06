@@ -174,6 +174,30 @@ int update_grid(struct grid *g) {
 
 int resize_grid(struct grid *g, unsigned int width, unsigned int height) {
 	size_t new_size = NUM_OCTETS(width * height);
+	if (width == g->w) {
+		/* Same width: since the grid rows are stored consecutively, there is
+		   no bit reordering necessary (introduction/removal of bits at the end
+		   of each row), we can just reallocate on the original grid */
+		char *tmp = realloc(g->cells, new_size);
+		if (tmp == NULL) {
+			return -__LINE__;
+		}
+		g->cells = tmp;
+		if (height > g->h) {
+			/* The new grid is bigger; the extra space needs to be cleared to
+			   avoid having the grid polluted by uninitialized binary data */
+			size_t old_size = NUM_OCTETS(width * g->h);
+			unsigned int bits_used_last_byte = (width * g->h) & 7;
+			if (bits_used_last_byte != 0) {
+				/* The last byte in the old grid size is not fully used; clear
+				   the extra bits */
+				char clear_mask = 0xff << (8 - bits_used_last_byte);
+				g->cells[old_size - 1] &= clear_mask;
+			}
+			/* Clear the additional full bytes */
+			memset(g->cells + old_size, 0, new_size - old_size);
+		}
+	}
 	char *new_cells = calloc(new_size, 1);
 	if (new_cells == NULL) {
 		return -__LINE__;
