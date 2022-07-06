@@ -47,7 +47,7 @@ static bool _get_cell_wrap(const struct grid *g, int x, int y) {
 	return GET_BIT(g->cells, g->w * j + i);
 }
 
-bool get_grid_gell(const struct grid *g, int i, int j) {
+bool get_grid_cell(const struct grid *g, int i, int j) {
 	return (g->wrap ? _get_cell_wrap : _get_cell_walls)(g, i, j);
 }
 

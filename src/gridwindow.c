@@ -697,7 +697,7 @@ void render_grid_window(const struct grid_window *gw) {
 	r.h = c;
 	for (j = 0; j < h; ++j) {
 		for (i = 0; i < w; ++i) {
-			uint8_t ch = get_grid_gell(gw->grid, i, j) ? 0 : 255;
+			uint8_t ch = get_grid_cell(gw->grid, i, j) ? 0 : 255;
 			_draw_cell(gw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}

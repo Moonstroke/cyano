@@ -47,7 +47,7 @@ void test_blinker_after_one_gen(void) {
 
 	fputs("Looking for horizontal blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_gell(&grid, i, 1), true);
+		CUTE_assertEquals(get_grid_cell(&grid, i, 1), true);
 	}
 	info("OK");
 }
@@ -68,7 +68,7 @@ void test_blinker_after_two_gens(void) {
 
 	fputs("Looking for vertical blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_gell(&grid, 1, i), true);
+		CUTE_assertEquals(get_grid_cell(&grid, 1, i), true);
 	}
 	info("OK");
 }
