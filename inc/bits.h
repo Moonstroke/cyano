@@ -14,11 +14,13 @@
 #include <stddef.h> /* for size_t */
 #include <stdio.h> /* for FILE */
 
+#ifndef DOXYGEN_IGNORE_THIS
 /* MSVC does not support the standard restrict keyword but provides its own equivalent */
 #ifdef _MSC_VER
 # define RESTRICT __restrict
 #else
 # define RESTRICT restrict
+#endif
 #endif
 
 
