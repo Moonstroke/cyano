@@ -5,6 +5,14 @@
 #include <SDL2/SDL_mouse.h>
 
 
+
+#ifdef USE_VSYNC
+# define RENDERER_FLAGS SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+#else
+# define RENDERER_FLAGS SDL_RENDERER_ACCELERATED
+#endif
+
+
 static const uint16_t icon_data[] = {
 #if ICONSIZE == 16
 	/* 1 image row = two lines */
@@ -623,7 +631,7 @@ static const uint16_t icon_data[] = {
 
 int init_grid_window(struct grid_window *gw, struct grid *grid,
                      unsigned int cell_pixels, unsigned int border_width,
-                     const char *title, bool use_vsync) {
+                     const char *title) {
 	unsigned int win_width = grid->w * (cell_pixels + border_width)
 	                         + border_width;
 	unsigned int win_height = grid->h * (cell_pixels + border_width)
@@ -638,11 +646,7 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
 		return -__LINE__;
 	}
-	Uint32 ren_flags = SDL_RENDERER_ACCELERATED;
-	if (use_vsync) {
-		ren_flags |= SDL_RENDERER_PRESENTVSYNC;
-	}
-	gw->ren = SDL_CreateRenderer(gw->win, -1, ren_flags);
+	gw->ren = SDL_CreateRenderer(gw->win, -1, RENDERER_FLAGS);
 	if (gw->ren == NULL) {
 		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
 		return -__LINE__;

@@ -332,9 +332,7 @@ run (either by its name if recognized, or its rulestring)</td><td>`B3/S23`</td>
 <tr><td>`-c CELL_SIZE`</td><td>`--cell-size`</td><td>Gives the size of a cell,
 in pixels</td><td>`16`</td><td>None</td></tr>
 <tr><td>`-r RATE`</td><td>`--update-rate`</td><td>The number of generations per
-second</td><td>`25`</td><td>`-v`</td></tr>
-<tr><td>`-v`</td><td>`--vsync`</td><td>Updates the grid in simultaneity with the
-monitor's vertical synchronization</td><td>False</td><td>`-r`</td></tr>
+second</td><td>`25`</td><td>None</td></tr>
 <tr><td rowspan="3">File I/O</td><td>`-f FILE`</td><td>`--file`</td><td>Gives
 the name of the file to read from and write to</td><td>None</td><td>`-i` and
 `-o`</td></tr>

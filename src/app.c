@@ -6,7 +6,6 @@
 #include "grid.h"
 #include "gridwindow.h"
 #include "file_io.h" /* for writeFile */
-#include "timer.h"
 
 
 
@@ -171,32 +170,29 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 	}
 }
 
-void run_app(struct grid_window *gw, unsigned int update_rate, bool use_vsync,
-            const char *repr, enum grid_format format, const char *out_file) {
-	struct timer timer;
-	reset_timer(&timer);
-	timer.delay = 1000. / (double) update_rate;
+void run_app(struct grid_window *gw, unsigned int update_rate,
+             const char *repr, enum grid_format format, const char *out_file) {
+	unsigned long frame_start = SDL_GetPerformanceCounter();
+	unsigned long frame_duration = SDL_GetPerformanceFrequency() / update_rate;
 
 	bool loop = true;
 	bool mdown = false;
 	bool play = false;
 	while (loop) {
-		int last_x, last_y;
-		start_timer(&timer);
 		render_grid_window(gw);
+
+		int last_x, last_y;
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			_handle_event(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
 			            repr, format, out_file);
 		}
 
-		if (play) {
-			update_grid(gw->grid);
-		}
-
-		unsigned int remaining_time = get_remaining_time(&timer);
-		if (!use_vsync && remaining_time > 0) {
-			SDL_Delay(remaining_time);
+		while (frame_start + frame_duration <= SDL_GetPerformanceCounter()) {
+			if (play) {
+				update_grid(gw->grid);
+			}
+			frame_start += frame_duration;
 		}
 	}
 }

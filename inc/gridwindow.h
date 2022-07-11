@@ -66,14 +66,12 @@ struct grid_window {
  *                          single cell
  * \param[in]  border_width The width of the border separating the cells
  * \param[in]  window_title The title to give to the window
- * \param[in]  use_vsync    Whether to synchronize the update of the grid with
- *                          the monitor
  *
  * \return \c 0 on success, a negative value on error
  */
 int init_grid_window(struct grid_window *grid_win, struct grid *grid,
                      unsigned int cell_pixels, unsigned int border_width,
-                     const char *window_title, bool use_vsync);
+                     const char *window_title);
 
 
 /**

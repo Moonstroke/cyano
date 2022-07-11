@@ -17,7 +17,6 @@ int main(int argc, char **argv) {
 	unsigned int cell_pixels = DEFAULT_CELLS_PIXELS;
 	unsigned int update_rate = DEFAULT_UPDATE_RATE;
 	unsigned int border_width = DEFAULT_BORDER_WIDTH;
-	bool use_vsync = false;
 	bool wrap = false;
 	const char *game_rule = DEFAULT_GRID_RULE;
 	const char *in_file = NULL;
@@ -26,8 +25,7 @@ int main(int argc, char **argv) {
 
 	int rc = parse_cmdline(argc, argv, &grid_width, &grid_height, &wrap,
 	                       &game_rule, &cell_pixels, &border_width,
-	                       &update_rate, &use_vsync, &in_file, &out_file,
-	                       &format);
+	                       &update_rate, &in_file, &out_file, &format);
 	if (rc < 0) {
 		return EXIT_FAILURE;
 	} else if (rc > 0) {
@@ -67,14 +65,14 @@ int main(int argc, char **argv) {
 	g.rule = game_rule;
 
 	struct grid_window gw;
-	if (init_grid_window(&gw, &g, cell_pixels, border_width, "SDL Game of Life",
-	                    use_vsync) < 0) {
+	if (init_grid_window(&gw, &g, cell_pixels, border_width,
+	                     "SDL Game of Life") < 0) {
 		fprintf(stderr, "Failure in creation of the game window: %s\n",
 		        gw.error_msg);
 		return EXIT_FAILURE;
 	}
 
-	run_app(&gw, update_rate, use_vsync, repr, format, out_file);
+	run_app(&gw, update_rate, repr, format, out_file);
 
 	free(repr);
 	free_grid(&g);
