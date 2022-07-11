@@ -14,6 +14,14 @@
 #include <stddef.h> /* for size_t */
 #include <stdio.h> /* for FILE */
 
+#ifndef DOXYGEN_IGNORE_THIS
+/* MSVC does not support the standard restrict keyword but provides its own equivalent */
+#ifdef _MSC_VER
+# define RESTRICT __restrict
+#else
+# define RESTRICT restrict
+#endif
+#endif
 
 
 /**
@@ -63,7 +71,7 @@
  * \note The implementation assumes that the source and destination arrays do
  *       not overlap.
  */
-void copy_bits(const char *restrict src, size_t src_offset, char *restrict dest,
+void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
                size_t dest_offset, size_t length);
 
 

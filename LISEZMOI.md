@@ -532,16 +532,31 @@ d’utilisation. Elle est également populaire et supportée sur la majorité de
 plateformes, ce qui améliore la portabilité du projet.
 
 
-#### 2.2.2. Compilation
+#### 2.2.2. Environnement
+
+Les plateforms supportées sont GNU/Linux, notamment les distributions Debian,
+et MS Windows.
+
+Le code a été développé initiallement sous Ubuntu 17, puis Debian 9 ; les
+distros basées sur Debian sont supportées, et les plateformes principales
+GNU/Linux devraient l’être également. Sous MS Windows, le code est développé
+avec Visual Studio 17 et compile de manière native, néanmoins une compilation
+GNU devrait être possible avec MinGW ou Cygwin, mais je n’ai pas essayé.
+
+Pour les plateformes *nix, le seul paquet nécessaire pour compiler les sources
+est `libsdl2-dev`. Les paquets recommandés sont `make` pour fournir
+l’utilitaire de compilation et `doxygen` pour le traitement de la documentation.
+
+Concernant Win32, les outils développeurs doivent être installés (ils viennent
+avec Visual Studio) pour fournir `nmake` et le compilateur et éditeur de liens.
+La SDL et Doxygen devront être installés et configurés manuellement.
+
+
+#### 2.2.3. Compilation
 
 Le code est écrit suivant le standard C11, et emploie des fonctionnalités
 exclusives au C, C++ n’est pas supporté et on ne doit pas s’attendre à ce que le
-code compile en C++. Le développement est effectué en utilisant GCC avec tous
-les avertissements activés (`-Wall -Wextra -pedantic`), afin de rendre le code
-le plus conforme possible au standard.
-Je me suis également abstenu d’utiliser des spécificités GNU (quelques fonctions
-POSIX sont bien appelées, mais aucun élément de code tels que les pragmas ou
-`__attribute__` ne sont utilisés).
+code compile en C++.
 
 Le processus de compilation est géré par `make`, avec un Makefile fourni donnant
 les règles usuelles :
@@ -553,19 +568,12 @@ les règles usuelles :
 et des règles basées sur les différents fichiers pour compiler des fichiers
 objet individuels.
 
-
-#### 2.2.3. Environnement
-
-Le code a été développé initiallement sous Ubuntu 17, puis Debian 9. Les distros
-basées sur Debian sont supportées, et les plateformes principales GNU/Linux
-devraient l’être également.
-
-Concernant Windows, la compilation sous MinGW ou Cygwin devrait être faisable,
-mais je n’ai pas essayé. (Une adaptation en Windows natif est dans les cartons).
-
-Le seul paquet nécessaire pour compiler les sources est `libsdl2-dev`. Les
-paquets recommandés sont `make` pour fournir l’utilitaire de compilation et
-`doxygen` pour le traitement de la documentation.
+Le développement sous GNUnux est effectué en utilisant GCC et avec MSVC sous
+Windows, avec tous les avertissements activés (`-Wall -Wextra -pedantic` et
+`/Wall` respectivement), afin de rendre le code le plus conforme possible au
+standard. Je me suis également abstenu d’utiliser des spécificités GNU (quelques
+fonctions POSIX sont bien appelées, mais aucun élément de code tels que les
+pragmas ou `__attribute__` ne sont utilisés).
 
 
 #### 2.2.4. Documentation
@@ -589,10 +597,6 @@ en tête pour le programme, certaines de plus court terme que d’autres.
    C’est plus une directive spirituelle qu’un objectif concret ; il ne tient
    qu’à moi de décider quand apposer officiellement le numéro de version, mais
    j’attends d’être entièrement satisfait de l’état du projet pour cela.
- - Port Windows natif
-   Comme mentionné brièvement ci-dessus, je prévois d’adapter le code pour
-   Windows afin qu’il y compile nativement. J’ai obtenu une copie de Visual
-   Studio, c’est donc une des évolutions les plus imminentes.
  - Implémentation avec OpenGL
    Je suis en local sur une version utilisant OpenGL pour le rendu graphique,
    cela fonctionne, mais tout juste, le code nécessite encore beaucoup

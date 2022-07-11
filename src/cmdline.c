@@ -1,9 +1,32 @@
 #include "app.h"
 
 
-#include <getopt.h> /* for struct option, getopt_long, optarg, optind */
+#ifdef __GNUC__
+# include <getopt.h> /* for struct option, getopt_long, optarg, optind */
+#else
+enum arg_type {
+	no_argument,
+	required_argument
+};
+
+struct option {
+	char *name;
+	enum arg_type arg_type;
+	void *flag;
+	char val;
+};
+
+static char *optarg;
+static int optopt;
+static int opterr;
+static int optind;
+
+/* Forward declaration, definition at bottom of file */
+int getopt_long(int argc, char *const argv[], const char *optstring,
+                const struct option *longopts, int *longindex);
+#endif
 #include <stdio.h> /* for fprintf, stderr, sscanf, fputs */
-#include <string.h> /* for strcasecmp */
+#include <string.h> /* for strcasecmp / _stricmp */
 
 #include "rules.h"
 
@@ -126,9 +149,15 @@ static int _get_uint_value(char opt, const char *arg, unsigned int *dst) {
 }
 
 static void _parse_format(const char *arg, enum grid_format *format) {
-	if (strcasecmp(arg, "RLE") == 0) {
+	int (*cmp_func)(const char*, const char*);
+#ifdef _MSC_VER
+	cmp_func = _stricmp;
+#else
+	cmp_func = strcasecmp;
+#endif
+	if (cmp_func(arg, "RLE") == 0) {
 		*format = GRID_FORMAT_RLE;
-	} else if (strcasecmp(arg, "plaintext") == 0 || strcasecmp(arg, "plain") == 0) {
+	} else if (cmp_func(arg, "plaintext") == 0 || cmp_func(arg, "plain") == 0) {
 		*format = GRID_FORMAT_PLAIN;
 	} else {
 		fprintf(stderr, "Warning: unrecognized grid representationformat: "
@@ -154,6 +183,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 	bool opt_o_met = false;
 	int ch;
 	int idx;
+	optind = 1;
 	opterr = 0;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
@@ -259,3 +289,123 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 	}
 	return 0;
 }
+
+
+#ifndef __GNUC__
+
+#include <string.h> /* for strcmp */
+
+
+
+static int _locate_long_opt(const char *name, const struct option *longopts, int *argindex) {
+	const char *eqsignindex = strchr(name, '=');
+	if (eqsignindex == NULL) {
+		*argindex = -1;
+	} else {/* The option contains an attached argument, make a copy of the option name only */
+		int optlen = (int) (eqsignindex - name);
+		*argindex = optlen + 3; /* + 2 for leading hyphens, + 1 for equals sign */
+		char *nameonly = alloca(optlen);
+		memcpy(nameonly, name, optlen);
+		nameonly[optlen] = 0;
+		name = nameonly;
+	}
+	for (int i = 0; longopts[i].name != NULL && longopts[i].name[0] != '\0'; ++i) {
+		if (strcmp(name, longopts[i].name) == 0) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+static int _handle_long_opt(char *token, char *const *argv,
+                            const struct option *longopts, int *longindex) {
+	int argindex;
+	int longoptindex = _locate_long_opt(&token[2], longopts, &argindex);
+	if (longindex != NULL) {
+		*longindex = longoptindex;
+	}
+	++optind;
+	if (longoptindex < 0) { /* Long option not found */
+		optopt = '?';
+		return '?';
+	}
+	char optchar = longopts[longoptindex].val;
+	if (longopts[longoptindex].arg_type == no_argument) {
+		if (argindex > 0) { /* Unexpected argument */
+			optopt = optchar;
+			return '?';
+		}
+		return optchar;
+	}
+	if (argindex > 0) {
+		optarg = &token[argindex];
+		return optchar;
+	}
+	optarg = argv[optind];
+	++optind;
+	return optchar;
+}
+
+static int _opt_arg_type(char opt, const char *optstring, enum arg_type *arg_type) {
+	for (; *optstring != '\0'; ++optstring) {
+		if (*optstring == opt) {
+			*arg_type = *(optstring + 1) == ':' ? required_argument : no_argument;
+			return 0;
+		}
+	}
+	return -1;
+}
+
+static int nextchar = 0; /* The index to the next char option, useful when several are attached */
+int getopt_long(int argc, char *const argv[], const char *optstring,
+                const struct option *longopts, int *longindex) {
+	char *token;
+	if (argc == 1 || optind >= argc || (token = argv[optind]) == NULL) {
+		return -1; /* End of command-line */
+	}
+	if (nextchar == 0) {
+		if (token[0] == '\0' || token[0] != '-' || token[1] == '\0' || token[1] == '-' && token[2] == '\0') {
+			return -1; /* Met a non-option argument (notably an empty string or a single -) or a -- */
+		}
+		char optchar = token[1];
+		if (optchar == '-') { /* Two leading hyphens: long option */
+			nextchar = 0;
+			return _handle_long_opt(token, argv, longopts, longindex);
+		} else {
+			nextchar = 1;
+		}
+	}
+	enum arg_type arg_type;
+	char optchar = token[nextchar];
+	if (_opt_arg_type(optchar, optstring, &arg_type) < 0) {
+		optopt = optchar;
+		return '?';
+	}
+	if (arg_type == no_argument) {
+		if (token[nextchar + 1] == '\0') { /* End of current command-line token, prepare pointers to next */
+			nextchar = 0;
+			++optind;
+		} else {
+			++nextchar;
+		}
+		return optchar;
+	}
+	if (token[nextchar + 1] != '\0') { /* Option's argument is attached to the option */
+		optarg = &token[nextchar + 1];
+		nextchar = 0;
+		++optind;
+		return optchar;
+	}
+	/* Option's argument is next command-line token */
+	if (++optind > argc) { /* but there is none after the current one */
+		optarg = NULL;
+		optopt = optchar;
+		return optstring[0] == ':' ? ':' : '?';
+	}
+	optarg = argv[optind];
+	nextchar = 0;
+	++optind; /* Increment once more to point to the next option */
+	return optchar;
+}
+
+#endif

@@ -124,7 +124,7 @@ enum grid_format {
  *       beforehand to avoid leaking memory.
  *
  * \param[out] grid   The grid to initialize
- * \param[in]  repr   The pattern, as a string of dots and @s
+ * \param[in]  repr   The pattern, as a string of dots and at-signs
  * \param[in]  format Flag for the format of the grid representation
  * \param[in]  wrap   If \c true, set up the grid as toroidal
  *

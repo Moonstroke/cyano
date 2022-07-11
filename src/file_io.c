@@ -3,8 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* for strcmp, strlen */
-#include <unistd.h> /* for access */
-
+#ifdef _MSC_VER
+# include <io.h> /* for _access */
+#else
+# include <unistd.h> /* for access */
+#endif
 
 
 static char *_read_stdin(void) {
@@ -28,6 +31,9 @@ static char *_read_stdin(void) {
 		return NULL;
 	}
 	if (text[len - 1] == '\n') {
+		if (text[len - 2] == '\r') {
+			text[len - 2] = '\0';
+		}
 		text[len - 1] = '\0';
 	}
 	return text;
@@ -37,7 +43,7 @@ char *read_file(const char *path) {
 	if (strcmp(path, "-") == 0) {
 		return _read_stdin();
 	}
-	FILE *file = fopen(path, "r");
+	FILE *file = fopen(path, "rb");
 	if (file == NULL) {
 		return NULL;
 	}
@@ -62,6 +68,9 @@ char *read_file(const char *path) {
 		return NULL;
 	}
 	if (text[filesize - 1] == '\n') {
+		if (text[filesize - 2] == '\r') {
+			text[filesize - 2] = '\0';
+		}
 		text[filesize - 1] = '\0';
 	} else {
 		text[filesize] = '\0';
@@ -104,5 +113,9 @@ int write_file(const char *path, const char *text) {
 }
 
 bool is_file(const char *path) {
+#ifdef _MSC_VER
+	return _access(path, 0) == 0;
+#else
 	return access(path, F_OK) == 0;
+#endif
 }

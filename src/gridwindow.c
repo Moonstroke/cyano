@@ -655,8 +655,9 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 
 	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom((uint16_t*) icon_data,
 	                                             ICONSIZE, ICONSIZE, 16,
-	                                             ICONSIZE * 2, 0xf000, 0x0f00,
-	                                             0x00f0, 0x000f);
+	                                             ICONSIZE * sizeof *icon_data,
+	                                             0xf000, 0x0f00, 0x00f0,
+	                                             0x000f);
 	if (icon != NULL) {
 		SDL_SetWindowIcon(gw->win, icon);
 		SDL_FreeSurface(icon);

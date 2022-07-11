@@ -140,6 +140,13 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 	if (first_nl == NULL) {
 		return -__LINE__;
 	}
+	/* If a line ends with CRLF, all must, otherwise the file is considered
+	   ill-formed (this makes it easier to implement code accepting both line
+	   endings). We could check for CRLF and decrement width here, but it would
+	   require decrementing each line length in the while loop. Instead, we
+	   just check that all line lengths are equal *including* the CR, and
+	   decrement the width to account for CRs only once at the end. */
+	bool is_crlf = *(first_nl - 1) == '\r';
 	unsigned int width = first_nl - repr;
 	unsigned int height = 1;
 	const char *next_nl;
@@ -153,7 +160,7 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 		}
 		repr = next_nl + 1;
 	}
-	return init_grid(grid, width, height, wrap);
+	return init_grid(grid, is_crlf ? width - 1 : width, height, wrap);
 }
 
 int load_grid(struct grid *grid, const char *repr, enum grid_format format,
@@ -209,6 +216,20 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 				}
 			}
 			continue;
+		} else if (*repr == '\r') {
+			fputs("ici\n", stderr);
+			if (*(repr + 1) == '\n') {
+				if (*(repr + 2) == '!') {
+					repr = strchr(repr + 3, '\n');
+					if (repr == NULL) { /* No more comments, reached end of file */
+						break;
+					}
+				}
+				++repr;
+				continue;
+			} else {
+				return -__LINE__;
+			}
 		} else if (*repr != '.') {
 			return -__LINE__;
 		}
