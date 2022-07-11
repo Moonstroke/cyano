@@ -205,10 +205,7 @@ int resize_grid(struct grid *g, unsigned int width, unsigned int height) {
 	unsigned int min_widths = width < g->w ? width : g->w;
 	unsigned int min_heights = height < g->h ? height : g->h;
 	for (unsigned int row = 0; row < min_heights; ++row) {
-		for (unsigned int col = 0; col < min_widths; ++col) {
-			SET_BIT(new_cells, row * width + col, GET_BIT(g->cells,
-			                                              row * g->w + col));
-		}
+		copy_bits(g->cells, row * g->w, new_cells, row * width, min_widths);
 	}
 	free(g->cells);
 	g->cells = new_cells;
