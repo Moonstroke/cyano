@@ -33,7 +33,8 @@ int getopt_long(int argc, char *const argv[], const char *optstring,
 
 
 /* Split into two strings because only the first line needs formatting */
-static const char USAGE_HEADER[] = "Usage: %s [OPTION]...\n";
+#define USAGE_HEADER "Usage: %s [OPTION]...\n"
+
 static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t-w WIDTH, --grid-width=WIDTH\n"
 	"\t\tSpecify the width of the grid (integer argument, default 80)\n"

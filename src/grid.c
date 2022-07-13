@@ -62,7 +62,7 @@ bool toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 
 
 static inline bool _will_be_born(unsigned int n, const char *r) {
-	char k = '0' + n;
+	char k = (char) ('0' + n);
 	r = strchr(r, 'B') + 1;
 	while (*r != '\0' && (*r != '/' && *r != 'S') && *r != k) {
 		r++;
@@ -71,7 +71,7 @@ static inline bool _will_be_born(unsigned int n, const char *r) {
 }
 
 static inline bool _will_survive(unsigned int n, const char *r) {
-	char k = '0' + n;
+	char k = (char) ('0' + n);
 	r = strchr(r, 'S') + 1;
 	while (*r != '\0' && *r != k) {
 		r++;

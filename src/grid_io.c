@@ -147,7 +147,7 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 	   just check that all line lengths are equal *including* the CR, and
 	   decrement the width to account for CRs only once at the end. */
 	bool is_crlf = *(first_nl - 1) == '\r';
-	unsigned int width = first_nl - repr;
+	unsigned int width = (unsigned int) (first_nl - repr);
 	unsigned int height = 1;
 	const char *next_nl;
 	while ((next_nl = strchr(repr, '\n')) != NULL) {
