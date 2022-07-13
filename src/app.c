@@ -172,8 +172,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 
 void run_app(struct grid_window *gw, unsigned int update_rate,
              const char *repr, enum grid_format format, const char *out_file) {
-	unsigned long frame_start = SDL_GetPerformanceCounter();
-	unsigned long frame_duration = SDL_GetPerformanceFrequency() / update_rate;
+	Uint64 frame_start = SDL_GetPerformanceCounter();
+	Uint64 frame_duration = SDL_GetPerformanceFrequency() / update_rate;
 
 	bool loop = true;
 	bool mdown = false;
