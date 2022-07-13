@@ -51,18 +51,19 @@ char *read_file(const char *path) {
 		fclose(file);
 		return NULL;
 	}
-	long filesize = ftell(file);
-	if (filesize < 0) {
+	long pos = ftell(file);
+	if (pos < 0) {
 		fclose(file);
 		return NULL;
 	}
+	unsigned long filesize = pos;
 	char *text = malloc(filesize + 1);
 	if (text == NULL) {
 		fclose(file);
 		return NULL;
 	}
 	rewind(file);
-	if (fread(text, 1, filesize, file) < (unsigned) filesize || ferror(file)) {
+	if (fread(text, 1, filesize, file) < filesize || ferror(file)) {
 		free(text);
 		fclose(file);
 		return NULL;
