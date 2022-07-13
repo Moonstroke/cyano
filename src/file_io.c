@@ -63,9 +63,10 @@ char *read_file(const char *path) {
 		return NULL;
 	}
 	rewind(file);
-	if (fread(text, 1, filesize, file) < filesize || ferror(file)) {
+	bool file_err = fread(text, 1, filesize, file) < filesize || ferror(file);
+	fclose(file);
+	if (file_err) {
 		free(text);
-		fclose(file);
 		return NULL;
 	}
 	if (text[filesize - 1] == '\n') {
@@ -76,7 +77,6 @@ char *read_file(const char *path) {
 	} else {
 		text[filesize] = '\0';
 	}
-	fclose(file);
 	return text;
 }
 
