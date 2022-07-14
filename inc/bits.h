@@ -40,7 +40,8 @@
  *
  * \return The boolean value of the <tt>i</tt>-th bit in \p arr
  */
-#define GET_BIT(arr, i) (((arr)[(i) >> 3] >> ((i) & 7)) & 1)
+#define GET_BIT(arr, i) (((arr)[(i) >> 3] >> (7 - ((i) & 7))) & 1)
+
 /**
  * Assign the given value to the bit at the specified index in the array.
  *
@@ -50,6 +51,7 @@
  */
 #define SET_BIT(arr, i, val) if (val) ((arr)[(i) >> 3] |= 1 << ((i) & 7)); \
                              else ((arr)[(i) >> 3] &= ~(1 << ((i) & 7)))
+
 /**
  * Invert the value of the bit at specified index in the given bit array.
  *
