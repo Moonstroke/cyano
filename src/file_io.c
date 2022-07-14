@@ -75,13 +75,13 @@ char *read_file(const char *path) {
 			/* Try to free the unused byte(s). Do nothing if realloc fails,
 			   since the old pointer is not changed. But since we actually free
 			   memory it shouldn't actually fail */
-			const char *tmp = realloc(text, filesize - 1);
+			char *tmp = realloc(text, filesize - 1);
 			if (tmp != NULL) {
 				text = tmp;
 			}
 		} else {
 			text[filesize - 1] = '\0';
-			const char *tmp = realloc(text, filesize);
+			char *tmp = realloc(text, filesize);
 			if (tmp != NULL) {
 				text = tmp;
 			}
