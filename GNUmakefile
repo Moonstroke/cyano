@@ -37,7 +37,7 @@ ifeq ($(STATIC),y)
 else
 	LDLIBS := $$(sdl2-config --libs)
 endif
-LDLIBS += -lclog -lCUTE
+LDLIBS += -lCUTE
 
 # Linkage flags
 LDFLAGS :=

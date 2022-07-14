@@ -49,7 +49,7 @@ void test_blinker_after_one_gen(void) {
 	for(i = 0; i < 3; ++i) {
 		CUTE_assertEquals(get_grid_cell(&grid, i, 1), true);
 	}
-	info("OK");
+	fputs("OK\n", stderr);
 }
 
 void test_blinker_after_two_gens(void) {
@@ -70,7 +70,7 @@ void test_blinker_after_two_gens(void) {
 	for(i = 0; i < 3; ++i) {
 		CUTE_assertEquals(get_grid_cell(&grid, 1, i), true);
 	}
-	info("OK");
+	fputs("OK\n", stderr);
 }
 
 void build_case_grid(void) {
