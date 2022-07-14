@@ -5,6 +5,7 @@
 
 extern CUTE_TestCase *case_grid;
 extern void build_case_grid(void);
+extern void tests_bits(void);
 
 int main() {
 	CUTE_RunResults **results;
@@ -16,6 +17,8 @@ int main() {
 	results = CUTE_runTestSuite();
 
 	CUTE_printResults(1, results);
+
+	tests_bits();
 
 	return EXIT_SUCCESS;
 }
