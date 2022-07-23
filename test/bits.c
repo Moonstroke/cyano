@@ -65,7 +65,24 @@ static void _test_GET_BIT(void) {
 }
 
 static void _test_SET_BIT(void) {
-	// TODO
+	static const unsigned char expected[] = {
+		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
+		0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00
+	};
+	unsigned char value = 0;
+	for (unsigned int i = 0; i < 8; ++i) {
+		fprintf(stderr, "SET_BIT(0x%02hhx, %u, %d): expected 0x%02hhx",
+		        value, i, true, expected[i]);
+		SET_BIT(&value, i, true);
+		fprintf(stderr, ", got 0x%02hhx\n", value);
+	}
+	value = 0xff;
+	for (unsigned int i = 0; i < 8; ++i) {
+		fprintf(stderr, "SET_BIT(0x%02hhx, %u, %d): expected 0x%02hhx",
+		        value, i, true, expected[8 + i]);
+		SET_BIT(&value, i, false);
+		fprintf(stderr, ", got 0x%02hhx\n", value);
+	}
 }
 
 static void _test_TOGGLE_BIT(void) {
