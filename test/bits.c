@@ -107,7 +107,45 @@ static void _test_TOGGLE_BIT(void) {
 }
 
 static void _test_copy_bits(void) {
-	// TODO
+	static const unsigned char src[] = {
+		0xca, 0xfe, 0xba, 0xbe, 0xde, 0xad, 0xbe, 0xef
+		/* 1100 1010 1111 1110
+		   1011 1010 1011 1110
+		   1101 1110 1010 1101
+		   1011 1110 1110 1111 */
+	};
+	char dest[sizeof src] = {0};
+	static const size_t indices[] = {
+		0, 0, 0, /* Corner case: empty copy */
+		3, 2, 6,
+		8, 8, 16,
+		24, 26, 9,
+		37, 37, 3, // FIXME fails here
+		40, 41, 5,
+		46, 46, 12,
+		60, 59, 4
+		// TODO src_offset, dest_offset, length
+	};
+	static const char *expected[] = {
+		"0000000000000000000000000000000000000000000000000000000000000000",
+		"0001010100000000000000000000000000000000000000000000000000000000",
+		"0001010111111110101110100000000000000000000000000000000000000000",
+		"0001010111111110101110100010111110100000000000000000000000000000",
+		"0001010111111110101110100010111110100110000000000000000000000000",
+		"0001010111111110101110100010111110100110010101000000000000000000",
+		"0001010111111110101110100010111110100110010101011011111011000000",
+		"0001010111111110101110100010111110100110010101011011111011011110"
+	};
+	for (unsigned int i = 0; i < sizeof expected; ++i) {
+		size_t src_offset = indices[3 * i], dest_offset = indices[3 * i + 1],
+		       length = indices[3 * i + 2];
+		fprintf(stderr, "copy_bits(src, %zu, dest, %zu, %zu):\nexpected %s\n",
+		        src_offset, dest_offset, length, expected[i]);
+		copy_bits((char*)src, src_offset, dest, dest_offset, length);
+		fputs("got      ", stderr);
+		print_bits(dest, 0, sizeof dest * 8, stderr);
+		fputc('\n', stderr);
+	}
 }
 
 void tests_bits(void) {
