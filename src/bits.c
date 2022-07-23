@@ -12,15 +12,16 @@ void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
 	src_offset &= 7;
 	dest_offset &= 7;
 	if (src_offset == dest_offset) {
-		/* Source and dest share the bit alignment inside bytes: an optimization
-		   is possible by writing the partial first byte, blitting all the full
-		   bytes in a single memcpy call, and filling the final partial byte */
-		for (size_t i = src_offset; i < 8; ++i) {
-			SET_BIT(dest, i, GET_BIT(src, i));
-		}
 		if (src_offset > 0) {
-			/* If we did write a leading offset to a byte, we increment the
-			   pointers to skip it */
+			/* Source and dest share the bit alignment inside bytes: an
+			   optimization is possible by writing the partial first byte,
+			   blitting all the full bytes in a single memcpy call, and filling
+			   the final partial byte */
+			for (size_t i = src_offset; i < 8; ++i) {
+				SET_BIT(dest, i, GET_BIT(src, i));
+			}
+			/* Increment the pointers to skip the byte from which we just
+			   copied the leading offset */
 			++src;
 			++dest;
 		}
