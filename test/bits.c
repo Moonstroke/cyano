@@ -120,7 +120,7 @@ static void _test_copy_bits(void) {
 		3, 2, 6,
 		8, 8, 16,
 		24, 26, 9,
-		37, 37, 3, // FIXME fails here
+		37, 37, 3,
 		40, 41, 5,
 		46, 46, 12,
 		60, 59, 4
