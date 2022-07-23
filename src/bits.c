@@ -25,7 +25,7 @@ void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
 			++src;
 			++dest;
 			/* Remove the leading offset size from the remainging copy length */
-			length -= src_offset;
+			length -= 8 - src_offset;
 		}
 		size_t length_bytes = length >> 3;
 		memcpy(dest, src, length_bytes);
