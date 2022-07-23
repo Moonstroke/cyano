@@ -24,9 +24,12 @@ void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
 			   copied the leading offset */
 			++src;
 			++dest;
+			/* Remove the leading offset size from the remainging copy length */
+			length -= src_offset;
 		}
-		size_t length_bytes = (length - src_offset) >> 3;
+		size_t length_bytes = length >> 3;
 		memcpy(dest, src, length_bytes);
+		/* Copy trailing partial byte */
 		for (size_t i = 0; i < (length & 7); ++i) {
 			SET_BIT(dest + length_bytes, i, GET_BIT(src + length_bytes, i));
 		}
