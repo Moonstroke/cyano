@@ -24,7 +24,10 @@ void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
 			   copied the leading offset */
 			++src;
 			++dest;
-			/* Remove the leading offset size from the remainging copy length */
+			if (8 - src_offset >= length) { /* Copy fits in a single byte */
+				return;
+			}
+			/* Remove the leading offset size from the remaining copy length */
 			length -= 8 - src_offset;
 		}
 		size_t length_bytes = length >> 3;
