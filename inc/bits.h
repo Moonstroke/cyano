@@ -58,7 +58,7 @@
  * \param[out] arr The array
  * \param[in]  i   The index
  */
-#define TOGGLE_BIT(arr, i) ((arr)[(i) >> 3] ^= 1 << ((i) & 7))
+#define TOGGLE_BIT(arr, i) ((arr)[(i) >> 3] ^= 1 << (7 - ((i) & 7)))
 
 
 /**
