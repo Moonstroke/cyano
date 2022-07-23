@@ -136,7 +136,7 @@ static void _test_copy_bits(void) {
 		"0001010111111110101110100010111110100110010101011011111011000000",
 		"0001010111111110101110100010111110100110010101011011111011011110"
 	};
-	for (unsigned int i = 0; i < sizeof expected; ++i) {
+	for (unsigned int i = 0; i < sizeof expected / sizeof *expected; ++i) {
 		size_t src_offset = indices[3 * i], dest_offset = indices[3 * i + 1],
 		       length = indices[3 * i + 2];
 		fprintf(stderr, "copy_bits(src, %zu, dest, %zu, %zu):\nexpected %s\n",
