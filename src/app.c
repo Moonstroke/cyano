@@ -41,7 +41,7 @@ int init_app(void) {
 
 static void _handle_mouse_on_cell(struct grid_window *gw, int *last_x,
                                   int *last_y) {
-	if (gw->sel_x > 0 && gw->sel_y > 0) {
+	if (gw->sel_x >= 0 && gw->sel_y >= 0) {
 		toggle_cell(gw->grid, gw->sel_x, gw->sel_y);
 		*last_x = gw->sel_x;
 		*last_y = gw->sel_y;
