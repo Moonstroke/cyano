@@ -5,6 +5,14 @@
 #include <SDL2/SDL_mouse.h>
 
 
+
+#ifdef USE_VSYNC
+# define RENDERER_FLAGS SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
+#else
+# define RENDERER_FLAGS SDL_RENDERER_ACCELERATED
+#endif
+
+
 static const uint16_t icon_data[] = {
 #if ICONSIZE == 16
 	/* 1 image row = two lines */
@@ -623,7 +631,7 @@ static const uint16_t icon_data[] = {
 
 int init_grid_window(struct grid_window *gw, struct grid *grid,
                      unsigned int cell_pixels, unsigned int border_width,
-                     const char *title, bool use_vsync) {
+                     const char *title) {
 	unsigned int win_width = grid->w * (cell_pixels + border_width)
 	                         + border_width;
 	unsigned int win_height = grid->h * (cell_pixels + border_width)
@@ -638,11 +646,7 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
 		return -__LINE__;
 	}
-	Uint32 ren_flags = SDL_RENDERER_ACCELERATED;
-	if (use_vsync) {
-		ren_flags |= SDL_RENDERER_PRESENTVSYNC;
-	}
-	gw->ren = SDL_CreateRenderer(gw->win, -1, ren_flags);
+	gw->ren = SDL_CreateRenderer(gw->win, -1, RENDERER_FLAGS);
 	if (gw->ren == NULL) {
 		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
 		return -__LINE__;
@@ -655,8 +659,9 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 
 	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom((uint16_t*) icon_data,
 	                                             ICONSIZE, ICONSIZE, 16,
-	                                             ICONSIZE * 2, 0xf000, 0x0f00,
-	                                             0x00f0, 0x000f);
+	                                             ICONSIZE * sizeof *icon_data,
+	                                             0xf000, 0x0f00, 0x00f0,
+	                                             0x000f);
 	if (icon != NULL) {
 		SDL_SetWindowIcon(gw->win, icon);
 		SDL_FreeSurface(icon);
@@ -706,7 +711,7 @@ void render_grid_window(const struct grid_window *gw) {
 	r.h = c;
 	for (j = 0; j < h; ++j) {
 		for (i = 0; i < w; ++i) {
-			uint8_t ch = get_grid_gell(gw->grid, i, j) ? 0 : 255;
+			uint8_t ch = get_grid_cell(gw->grid, i, j) ? 0 : 255;
 			_draw_cell(gw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}

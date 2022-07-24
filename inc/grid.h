@@ -124,7 +124,7 @@ enum grid_format {
  *       beforehand to avoid leaking memory.
  *
  * \param[out] grid   The grid to initialize
- * \param[in]  repr   The pattern, as a string of dots and @s
+ * \param[in]  repr   The pattern, as a string of dots and at-signs
  * \param[in]  format Flag for the format of the grid representation
  * \param[in]  wrap   If \c true, set up the grid as toroidal
  *
@@ -153,7 +153,7 @@ void free_grid(struct grid *grid);
  * \return \c true if the cell at (i, j) is \e "alive", or \c false if the cell
  *         is \e "dead" or coordinates are invalid.
  */
-bool get_grid_gell(const struct grid *grid, int i, int j);
+bool get_grid_cell(const struct grid *grid, int i, int j);
 
 
 /**

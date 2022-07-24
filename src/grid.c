@@ -47,7 +47,7 @@ static bool _get_cell_wrap(const struct grid *g, int x, int y) {
 	return GET_BIT(g->cells, g->w * j + i);
 }
 
-bool get_grid_gell(const struct grid *g, int i, int j) {
+bool get_grid_cell(const struct grid *g, int i, int j) {
 	return (g->wrap ? _get_cell_wrap : _get_cell_walls)(g, i, j);
 }
 
@@ -62,7 +62,7 @@ bool toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 
 
 static inline bool _will_be_born(unsigned int n, const char *r) {
-	char k = '0' + n;
+	char k = (char) ('0' + n);
 	r = strchr(r, 'B') + 1;
 	while (*r != '\0' && (*r != '/' && *r != 'S') && *r != k) {
 		r++;
@@ -71,7 +71,7 @@ static inline bool _will_be_born(unsigned int n, const char *r) {
 }
 
 static inline bool _will_survive(unsigned int n, const char *r) {
-	char k = '0' + n;
+	char k = (char) ('0' + n);
 	r = strchr(r, 'S') + 1;
 	while (*r != '\0' && *r != k) {
 		r++;
@@ -93,8 +93,8 @@ static void _update_cell(struct grid *g, size_t row_offset,
 }
 
 static void _update_row(struct grid *g, size_t row_offset,
-                       const char *row_buffer, const char *btm_row,
-                       size_t btm_row_offset) {
+                        const char *row_buffer, const char *btm_row,
+                        size_t btm_row_offset) {
 	unsigned int neighbors = 0;
 	neighbors = GET_BIT(row_buffer, 0)
 	          + GET_BIT(row_buffer, 1)

@@ -332,9 +332,7 @@ run (either by its name if recognized, or its rulestring)</td><td>`B3/S23`</td>
 <tr><td>`-c CELL_SIZE`</td><td>`--cell-size`</td><td>Gives the size of a cell,
 in pixels</td><td>`16`</td><td>None</td></tr>
 <tr><td>`-r RATE`</td><td>`--update-rate`</td><td>The number of generations per
-second</td><td>`25`</td><td>`-v`</td></tr>
-<tr><td>`-v`</td><td>`--vsync`</td><td>Updates the grid in simultaneity with the
-monitor's vertical synchronization</td><td>False</td><td>`-r`</td></tr>
+second</td><td>`25`</td><td>None</td></tr>
 <tr><td rowspan="3">File I/O</td><td>`-f FILE`</td><td>`--file`</td><td>Gives
 the name of the file to read from and write to</td><td>None</td><td>`-i` and
 `-o`</td></tr>
@@ -486,18 +484,33 @@ supported on the majority of platforms, which improves the portability of the
 project.
 
 
-#### 2.2.2. Compilation
+#### 2.2.2. Environment
+
+Supported platforms are GNU/Linux, notably Debian distributions, and Windows.
+
+The code was developed initially under Ubuntu 17, then Debian 9; Debian-based
+distros are supported, and major GNU/Linux platforms should be as well. Under MS
+Windows, the code is developed using Visual Studio 17 and compiles natively,
+however GNU compilation using MinGW or Cygwin should be doable, but I have not
+tried.
+
+For *nixes, the only package necessary for the sources to compile is
+`libsdl2-dev`. Recommended packages are `make` to provide the compilation tool
+and `doxygen` for the documentation processor.
+
+For Win32, the developer tools must be installed (they come with Visual Studio)
+to provide `nmake` and the compiler/linker. The SDL and doxygen (if wanted) must
+be installed and configured manually.
+
+
+#### 2.2.3. Compilation
 
 The code is written following the C11 standard, and uses C-exclusive constructs,
 so C++ is not supported and the code is not expected to compile in it.
-Development is made with GCC, with all compilation warnings enabled
-(`-Wall -Wextra -pedantic`), in an effort to make the code as close to
-standard-compliant as possible. I also refrained from using GNU-specific
-extensions to the language (some POSIX functions are called, but no code
-construct like pragmas or `__attribute__` are used).
 
-The compilation process is handled with `make`, with a Makefile provided with
-the usual rules:
+The compilation process is handled with `make` on GNU platforms, and `nmake`
+under Windows (use of compile and run features of VS are not yet ready), with a
+Makefile provided for each platform with the usual rules:
  - `all` to build the executable in the `out` directory,
  - `clean` to delete object files in the `obj` directory,
  - `doc` to generate the documentation in `doc` directory,
@@ -505,18 +518,12 @@ the usual rules:
  - `distclean` to reset the project in a clean state,
 and file-based rules to compile individual object files.
 
-
-#### 2.2.3. Environment
-
-The code was developed initially under Ubuntu 17, then Debian 9. Debian-based
-distros are supported, and major GNU/Linux platforms should be as well.
-
-For Windows, compilation using MinGW or Cygwin should be doable, but I have not
-tried. (An adaptation to native Win32 is in the box).
-
-The only package necessary for the sources to compile is `libsdl2-dev`.
-Recommended packages are `make` to provide the compilation utility and `doxygen`
-for the documentation processor.
+Development under GNU/Linux is made with GCC and with MSVC under Windows,
+with all compilation warnings enabled (`-Wall -Wextra -pedantic` and `/Wall`
+respectively), in an effort to make the code as close to standard-compliant as
+possible. I also refrained from using GNU-specific extensions to the language
+(some POSIX functions are called, but no code constructs like pragmas or
+`__attribute__` are used).
 
 
 #### 2.2.4. Documentation
@@ -539,10 +546,6 @@ for the program, some of which shorter-term than others.
    This is probably more a spiritual guideline than a concrete goal; it depends
    on me only to decide when to officially put the version tag out, but I want
    to be entirely satisfied with the state of the project for that.
- - Native Windows port
-   As briefly mentioned above, I intend to port the code to Windows and have it
-   compile natively. I got my hands on a copy of Visual Studio, so this is one
-   of the very next features.
  - OpenGL implementation
    I am working locally on a version backed with OpenGL for the rendering, it is
    functional, but barely, and needs a lot of polishing.
