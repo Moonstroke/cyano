@@ -93,8 +93,8 @@ static void _update_cell(struct grid *g, size_t row_offset,
 }
 
 static void _update_row(struct grid *g, size_t row_offset,
-                       const char *row_buffer, const char *btm_row,
-                       size_t btm_row_offset) {
+                        const char *row_buffer, const char *btm_row,
+                        size_t btm_row_offset) {
 	unsigned int neighbors = 0;
 	neighbors = GET_BIT(row_buffer, 0)
 	          + GET_BIT(row_buffer, 1)
