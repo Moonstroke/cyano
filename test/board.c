@@ -49,6 +49,11 @@ void test_blinker_after_one_gen(void) {
 	for(i = 0; i < 3; ++i) {
 		CUTE_assertEquals(get_grid_cell(&grid, i, 1), true);
 	}
+	fputs("Looking for empty rows 0 and 2\n", stderr);
+	for (i = 0; i < 3; ++i) {
+		CUTE_assertEquals(get_grid_cell(&grid, i, 0), false);
+		CUTE_assertEquals(get_grid_cell(&grid, i, 2), false);
+	}
 	fputs("OK\n", stderr);
 }
 
@@ -69,6 +74,11 @@ void test_blinker_after_two_gens(void) {
 	fputs("Looking for vertical blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
 		CUTE_assertEquals(get_grid_cell(&grid, 1, i), true);
+	}
+	fputs("Looking for empty columns 0 and 2\n", stderr);
+	for (i = 0; i < 3; ++i) {
+		CUTE_assertEquals(get_grid_cell(&grid, 0, i), false);
+		CUTE_assertEquals(get_grid_cell(&grid, 2, i), false);
 	}
 	fputs("OK\n", stderr);
 }
