@@ -17,7 +17,11 @@ void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
 			   optimization is possible by writing the partial first byte,
 			   blitting all the full bytes in a single memcpy call, and filling
 			   the final partial byte */
-			for (size_t i = src_offset; i < 8; ++i) {
+			/* Limit the copy if it is, in full, less than up to the end of the
+			   partial first byte, e.g. 3-bit copy with an offset of 3 needs to
+			   copy up to bit 6 */
+			size_t end = src_offset + length < 8 ? src_offset + length : 8;
+			for (size_t i = src_offset; i < end; ++i) {
 				SET_BIT(dest, i, GET_BIT(src, i));
 			}
 			/* Increment the pointers to skip the byte from which we just
