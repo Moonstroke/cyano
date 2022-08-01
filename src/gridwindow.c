@@ -637,7 +637,8 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 	unsigned int win_height = grid->h * (cell_pixels + border_width)
 	                          + border_width;
 
-	Uint32 win_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS
+	Uint32 win_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
+	                                    | SDL_WINDOW_MOUSE_FOCUS
 	                                    | SDL_WINDOW_INPUT_FOCUS;
 	gw->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,
 	                           SDL_WINDOWPOS_CENTERED, win_width, win_height,
