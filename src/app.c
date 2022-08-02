@@ -96,6 +96,9 @@ static int _event_filter(void *userdata, SDL_Event *event) {
 		if (new_width == gw->grid->w && new_height == gw->grid->h) {
 			/* Same size as current--block the event to limit spam */
 			return 0;
+		} else if (new_width < 3 || new_height < 3) {
+			/* Disallow grid smaller than 3 in either dimension */
+			return 0;
 		} else {
 			event->window.data1 = new_width;
 			event->window.data2 = new_height;
