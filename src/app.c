@@ -93,12 +93,12 @@ static int _event_filter(void *userdata, SDL_Event *event) {
 		int event_height = event->window.data2;
 		unsigned int new_width = _to_grid_dimension(gw, event_width);
 		unsigned int new_height = _to_grid_dimension(gw, event_height);
-		if (new_width != gw->grid->w || new_height != gw->grid->h) {
+		if (new_width == gw->grid->w && new_height == gw->grid->h) {
+			/* Same size as current--block the event to limit spam */
+			return 0;
+		} else {
 			event->window.data1 = new_width;
 			event->window.data2 = new_height;
-			return 1;
-		} else {
-			return 0;
 		}
 
 	}
