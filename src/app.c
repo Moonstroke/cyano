@@ -80,6 +80,11 @@ static inline void _print_help(void) {
 	fwrite(UI_HELP, sizeof UI_HELP, 1, stdout);
 }
 
+static unsigned int _to_grid_dimension(const struct grid_window *gw,
+                                       unsigned int dim) {
+	return (dim - gw->border_width) / (gw->cell_pixels + gw->border_width);
+}
+
 static void _handle_event(const SDL_Event *event, struct grid_window *gw,
                          bool *loop, bool *mdown, bool *play,
                          int *last_x, int *last_y, const char *repr,
@@ -188,6 +193,17 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 					fputs("Unable to resize grid\n", stderr);
 				}
 				break;
+		}
+		break;
+	case SDL_WINDOWEVENT:
+		if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
+			int event_width = event->window.data1;
+			int event_height = event->window.data2;
+			unsigned int new_width = _to_grid_dimension(gw, event_width);
+			unsigned int new_height = _to_grid_dimension(gw, event_height);
+			if (new_width != gw->grid->w || new_height != gw->grid->h) {
+				resize_grid(gw->grid, new_width, new_height);
+			}
 		}
 		break;
 	case SDL_QUIT:
