@@ -85,6 +85,26 @@ static unsigned int _to_grid_dimension(const struct grid_window *gw,
 	return (dim - gw->border_width) / (gw->cell_pixels + gw->border_width);
 }
 
+static int _event_filter(void *userdata, SDL_Event *event) {
+	if (event->type == SDL_WINDOWEVENT
+	    && event->window.event == SDL_WINDOWEVENT_RESIZED) {
+		struct grid_window *gw = userdata;
+		int event_width = event->window.data1;
+		int event_height = event->window.data2;
+		unsigned int new_width = _to_grid_dimension(gw, event_width);
+		unsigned int new_height = _to_grid_dimension(gw, event_height);
+		if (new_width != gw->grid->w || new_height != gw->grid->h) {
+			event->window.data1 = new_width;
+			event->window.data2 = new_height;
+			return 1;
+		} else {
+			return 0;
+		}
+
+	}
+	return 1;
+}
+
 static void _handle_event(const SDL_Event *event, struct grid_window *gw,
                          bool *loop, bool *mdown, bool *play,
                          int *last_x, int *last_y, const char *repr,
@@ -197,13 +217,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 		break;
 	case SDL_WINDOWEVENT:
 		if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
-			int event_width = event->window.data1;
-			int event_height = event->window.data2;
-			unsigned int new_width = _to_grid_dimension(gw, event_width);
-			unsigned int new_height = _to_grid_dimension(gw, event_height);
-			if (new_width != gw->grid->w || new_height != gw->grid->h) {
-				resize_grid(gw->grid, new_width, new_height);
-			}
+			resize_grid(gw->grid, event->window.data1, event->window.data2);
 		}
 		break;
 	case SDL_QUIT:
@@ -216,6 +230,8 @@ void run_app(struct grid_window *gw, unsigned int update_rate,
              const char *repr, enum grid_format format, const char *out_file) {
 	Uint64 frame_start = SDL_GetPerformanceCounter();
 	Uint64 frame_duration = SDL_GetPerformanceFrequency() / update_rate;
+
+	SDL_SetEventFilter(_event_filter, gw);
 
 	bool loop = true;
 	bool mdown = false;
