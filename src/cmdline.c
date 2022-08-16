@@ -69,7 +69,7 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t\tPrint this message and exit\n";
 
 
-static const char *const OPTSTRING = ":b:c:h:nr:R:w:Wf:i:o:F:";
+static const char *const OPTSTRING = ":b:c:h:nr:R:w:Wf:i:o:F:S:";
 
 /**
  * The long options array.
@@ -89,6 +89,7 @@ static const struct option LONGOPTS[] = {
 	{"usage",       no_argument      , NULL, 'u'},
 	{"help",        no_argument      , NULL, 'u'},
 	{"format",      required_argument, NULL, 'F'},
+	{"square-size", required_argument, NULL, 'S'},
 	{"", 0, NULL, 0}
 };
 
@@ -176,6 +177,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 	bool opt_f_met = false;
 	bool opt_i_met = false;
 	bool opt_o_met = false;
+	bool opt_S_met = false;
 	int ch;
 	int idx;
 	optind = 1;
@@ -240,6 +242,11 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 			case 'F':
 				_parse_format(optarg, format);
 				break;
+			case 'S':
+				_get_uint_value('S', optarg, grid_width);
+				*grid_height = *grid_width;
+				opt_S_met = true;
+				break;
 			case '?':
 				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);
 				break;
@@ -265,6 +272,11 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 	if (opt_i_met && (opt_w_met || opt_h_met)) {
 		fputs("Error: options --width and --height are incompatible with"
 		      " --input-file", stderr);
+		return -__LINE__;
+	}
+	if (opt_S_met && (opt_w_met || opt_h_met)) {
+		fputs("Error: option --square-size is incompatible with --width and"
+		      " --height", stderr);
 		return -__LINE__;
 	}
 	for (int i = optind; i < argc; ++i) {
