@@ -24,24 +24,25 @@ EXEC := $(OUT_DIR)/$(PROJECT_NAME)
 
 
 # Preprocessor flags
-CPPFLAGS := -I$(INC_DIR) -DICONSIZE=64
+CPPFLAGS := -I$(INC_DIR) -DICONSIZE=64 $(CPPFLAGS)
 # Compilation flags
-CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) -O$(OPTIM_LVL)
 ifeq ($(DEBUG), y)
-	CFLAGS += -g
+	debug_flag += -g
 endif
+CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) -O$(OPTIM_LVL) $(debug_flag) $(CFLAGS)
 
 # The libraries to link against
 ifeq ($(STATIC),y)
-	LDLIBS := $$(sdl2-config --static-libs)
+	sdl2_libs=$$(sdl2-config --static-libs)
 else
-	LDLIBS := $$(sdl2-config --libs)
+	sdl2_libs = $$(sdl2-config --libs)
 endif
-LDLIBS += -lCUTE
+LDLIBS := $(sdl2_libs) -lCUTE $(LDLIBS)
 
 # Linkage flags
-LDFLAGS :=
-
+ifndef ($(LDFLAGS))
+	LDFLAGS :=
+endif
 
 
 ## RULES ##
