@@ -332,9 +332,9 @@ static int _handle_long_opt(char *token, char *const *argv,
 }
 
 static int _opt_arg_type(char opt, const char *optstring, enum arg_type *arg_type) {
-	for (; *optstring != '\0'; ++optstring) {
-		if (*optstring == opt) {
-			*arg_type = *(optstring + 1) == ':' ? required_argument : no_argument;
+	for (; optstring[0] != '\0'; ++optstring) {
+		if (optstring[0] == opt) {
+			*arg_type = optstring[1] == ':' ? required_argument : no_argument;
 			return 0;
 		}
 	}

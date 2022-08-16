@@ -41,7 +41,7 @@ static void _test_NUM_OCTETS(void) {
 		0x10000000,
 		0x20000000
 	};
-	for (unsigned int i = 0; i < (sizeof values / sizeof *values); ++i) {
+	for (unsigned int i = 0; i < (sizeof values / sizeof values[0]); ++i) {
 		fprintf(stderr, "NUM_OCTETS(%u): expected %u, got %u\n", values[i],
 		        expected[i], NUM_OCTETS(values[i]));
 	}
