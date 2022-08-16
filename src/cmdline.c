@@ -69,27 +69,27 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t\tPrint this message and exit\n";
 
 
-static const char *const OPTSTRING = ":b:c:h:nr:R:w:Wf:i:o:F:S:";
+static const char *const OPTSTRING = ":b:c:F:f:h:i:no:R:r:S:Ww:";
 
 /**
  * The long options array.
  */
 static const struct option LONGOPTS[] = {
-	{"grid-width",  required_argument, NULL, 'w'},
-	{"grid-height", required_argument, NULL, 'h'},
 	{"border-size", required_argument, NULL, 'b'},
 	{"cell-size",   required_argument, NULL, 'c'},
+	{"format",      required_argument, NULL, 'F'},
+	{"file",        required_argument, NULL, 'f'},
+	{"grid-height", required_argument, NULL, 'h'},
+	{"input-file",  required_argument, NULL, 'i'},
 	{"no-border",   no_argument,       NULL, 'n'},
+	{"output-file", required_argument, NULL, 'o'},
 	{"game-rule",   required_argument, NULL, 'R'},
 	{"update-rate", required_argument, NULL, 'r'},
-	{"wrap",        no_argument      , NULL, 'W'},
-	{"file",        required_argument, NULL, 'f'},
-	{"input-file",  required_argument, NULL, 'i'},
-	{"output-file", required_argument, NULL, 'o'},
-	{"usage",       no_argument      , NULL, 'u'},
-	{"help",        no_argument      , NULL, 'u'},
-	{"format",      required_argument, NULL, 'F'},
 	{"square-size", required_argument, NULL, 'S'},
+	{"help",        no_argument      , NULL, 'u'},
+	{"usage",       no_argument      , NULL, 'u'},
+	{"wrap",        no_argument      , NULL, 'W'},
+	{"grid-width",  required_argument, NULL, 'w'},
 	{"", 0, NULL, 0}
 };
 
@@ -171,22 +171,19 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
                   unsigned int *update_rate, const char **in_file,
                   const char **out_file, enum grid_format *format) {
 	bool opt_b_met = false;
-	bool opt_n_met = false;
-	bool opt_w_met = false;
-	bool opt_h_met = false;
 	bool opt_f_met = false;
+	bool opt_h_met = false;
 	bool opt_i_met = false;
+	bool opt_n_met = false;
 	bool opt_o_met = false;
 	bool opt_S_met = false;
+	bool opt_w_met = false;
 	int ch;
 	int idx;
 	optind = 1;
 	opterr = 0;
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
-			case 'u':
-				_print_usage(argv[0]);
-				return 1;
 			case 'b':
 				if (_get_uint_value('b', optarg, border_width) < 0) {
 					return -__LINE__;
@@ -198,54 +195,57 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 					return -__LINE__;
 				}
 				break;
+			case 'F':
+				_parse_format(optarg, format);
+				break;
+			case 'f':
+				*in_file = *out_file = optarg;
+				opt_f_met = true;
+				break;
 			case 'h':
 				if (_get_uint_value('h', optarg, grid_height) < 0) {
 					return -__LINE__;
 				}
 				opt_h_met = true;
 				break;
+			case 'i':
+				*in_file = optarg;
+				opt_i_met = true;
+				break;
 			case 'n':
 				*border_width = 0;
 				opt_n_met = true;
 				break;
-			case 'r':
-				if (_get_uint_value('r', optarg, update_rate) < 0) {
-					return -__LINE__;
-				}
+			case 'o':
+				*out_file = optarg;
+				opt_o_met = true;
 				break;
 			case 'R':
 				if (_set_rule(optarg, game_rule) < 0) {
 					return -__LINE__;
 				}
 				break;
-			case 'w':
-				if (_get_uint_value('w', optarg, grid_width) < 0) {
+			case 'r':
+				if (_get_uint_value('r', optarg, update_rate) < 0) {
 					return -__LINE__;
 				}
-				opt_w_met = true;
-				break;
-			case 'W':
-				*wrap = true;
-				break;
-			case 'f':
-				*in_file = *out_file = optarg;
-				opt_f_met = true;
-				break;
-			case 'i':
-				*in_file = optarg;
-				opt_i_met = true;
-				break;
-			case 'o':
-				*out_file = optarg;
-				opt_o_met = true;
-				break;
-			case 'F':
-				_parse_format(optarg, format);
 				break;
 			case 'S':
 				_get_uint_value('S', optarg, grid_width);
 				*grid_height = *grid_width;
 				opt_S_met = true;
+				break;
+			case 'u':
+				_print_usage(argv[0]);
+				return 1;
+			case 'W':
+				*wrap = true;
+				break;
+			case 'w':
+				if (_get_uint_value('w', optarg, grid_width) < 0) {
+					return -__LINE__;
+				}
+				opt_w_met = true;
 				break;
 			case '?':
 				fprintf(stderr, "Warning: unrecognized option -%c\n", optopt);
@@ -261,17 +261,17 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 	}
 	if (opt_b_met && opt_n_met) {
 		fputs("Error: options --border-width and --no-border are"
-		      " incompatible\n", stderr);
+		      " mutually incompatible\n", stderr);
 		return -__LINE__;
 	}
 	if (opt_f_met && (opt_i_met || opt_o_met)) {
-		fputs("Error: options --file is incompatible with --input-file and"
+		fputs("Error: option --file is incompatible with --input-file and"
 		      " --output-file", stderr);
 		return -__LINE__;
 	}
 	if (opt_i_met && (opt_w_met || opt_h_met)) {
-		fputs("Error: options --width and --height are incompatible with"
-		      " --input-file", stderr);
+		fputs("Error: option --input-file is incompatible with --width and"
+		      " --height", stderr);
 		return -__LINE__;
 	}
 	if (opt_S_met && (opt_w_met || opt_h_met)) {
