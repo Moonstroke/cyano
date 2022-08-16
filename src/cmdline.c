@@ -139,11 +139,16 @@ err:
 	}
 }
 
-static int _get_uint_value(char opt, const char *arg, unsigned int *dst) {
+static int _get_uint_value(char opt, const char *arg, unsigned int *dst, unsigned int min) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
 		fprintf(stderr,
 		        "Error: option -%c needs an unsigned integer argument\n", opt);
+		return -__LINE__;
+	}
+	if (tmp < min) {
+		fprintf(stderr, "Error: value for option -%c cannot be less than %u\n",
+		        min);
 		return -__LINE__;
 	}
 	*dst = tmp;
@@ -188,13 +193,13 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
-				if (_get_uint_value('b', optarg, border_width) < 0) {
+				if (_get_uint_value('b', optarg, border_width, 0) < 0) {
 					return -__LINE__;
 				}
 				opt_b_met = true;
 				break;
 			case 'c':
-				if (_get_uint_value('c', optarg, cell_pixels) < 0) {
+				if (_get_uint_value('c', optarg, cell_pixels, 1) < 0) {
 					return -__LINE__;
 				}
 				break;
@@ -206,7 +211,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				opt_f_met = true;
 				break;
 			case 'h':
-				if (_get_uint_value('h', optarg, grid_height) < 0) {
+				if (_get_uint_value('h', optarg, grid_height, 3) < 0) {
 					return -__LINE__;
 				}
 				opt_h_met = true;
@@ -229,12 +234,12 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				}
 				break;
 			case 'r':
-				if (_get_uint_value('r', optarg, update_rate) < 0) {
+				if (_get_uint_value('r', optarg, update_rate, 1) < 0) {
 					return -__LINE__;
 				}
 				break;
 			case 'S':
-				_get_uint_value('S', optarg, grid_width);
+				_get_uint_value('S', optarg, grid_width, 3);
 				*grid_height = *grid_width;
 				opt_S_met = true;
 				break;
@@ -245,7 +250,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				*wrap = true;
 				break;
 			case 'w':
-				if (_get_uint_value('w', optarg, grid_width) < 0) {
+				if (_get_uint_value('w', optarg, grid_width, 3) < 0) {
 					return -__LINE__;
 				}
 				opt_w_met = true;
