@@ -311,7 +311,7 @@ static int _locate_long_opt(const char *name, const struct option *longopts, int
 		/* The option contains an attached argument, make a copy of the option
 		   name only */
 		int optlen = (int) (eqsignindex - name);
-		*argindex = &optlen[3]; /* + 2 for leading hyphens, + 1 for equals
+		*argindex = optlen + 3; /* + 2 for leading hyphens, + 1 for equals
 		                           sign */
 		char *nameonly = alloca(optlen);
 		memcpy(nameonly, name, optlen);
