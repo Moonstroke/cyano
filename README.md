@@ -316,9 +316,12 @@ The program is invoked from the command-line and accepts a set of options.
 <th>Long option</th><th>Description</th><th>Default value</th><th>Conflict with
 another option</th></tr>
 <tr><td rowspan="4">Grid management</td><td>`-w WIDTH`</td><td>`--width`</td>
-<td>Specifies the width of the grid</td><td>`80`</td><td>`-i`</td></tr>
+<td>Specifies the width of the grid</td><td>`80`</td><td>`-i`, `-S`</td></tr>
 <tr><td>`-h HEIGHT`</td><td>`--height`</td><td>Specifies the height of the
-grid</td><td>`60`</td><td>`-i`</td></tr>
+grid</td><td>`60`</td><td>`-i`, `-S`</td></tr>
+<tr><td>`-S SIZE`</td><td>`--square-size`</td><td>Specifies the grid as square
+and gives its size</td><td>None</td>`-w` et `-h`, because equivalent to
+`-w SIZE -h SIZE`</td></tr>
 <tr><td>`-W`</td><td>`--wrap`</td><td>Enables wrapping grid (cf.
 section 1.2.1.)</td><td>False</td><td>None</td></tr>
 <tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Specifies the Life variant to

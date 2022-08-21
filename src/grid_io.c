@@ -18,7 +18,7 @@ static inline int _set_run_length(struct grid *grid, unsigned int *i,
 	if (*i + length > grid->w) {
 		return -__LINE__;
 	}
-	char state = **repr;
+	char state = (*repr)[0];
 	if (state == 'o') {
 		for (int n = 0; n < length; ++n) {
 			SET_BIT(grid->cells, j * grid->w + *i + n, true);
@@ -34,8 +34,8 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 	unsigned int i = 0;
 	unsigned int j = 0;
 	int rc;
-	for (; *repr; ++repr) {
-		switch (*repr) {
+	for (; repr[0]; ++repr) {
+		switch (repr[0]) {
 			case '!': /* End of repr */
 				return 0;
 			case '1':
@@ -74,7 +74,7 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				}
 				break;
  			default:
-				if (isspace(*repr)) {
+				if (isspace(repr[0])) {
 					/* Whitespace is ignored anywhere outside of run length
 					   specifications to allow for line wrapping and pattern
 					   readability */
@@ -94,7 +94,7 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	char rule_buffer[22] = {0};
 	unsigned int w, h;
 
-	while (*repr == '#') { /* Ignore pre-header comment lines */
+	while (repr[0] == '#') { /* Ignore pre-header comment lines */
 		repr = strchr(repr + 1, '\n');
 		if (repr == NULL) {
 			return -__LINE__;
@@ -129,7 +129,7 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 			return -__LINE__;
 		}
 		++repr;
-	} while (*repr == '#');
+	} while (repr[0] == '#');
 
 	return _init_cells_from_rle(grid, repr);
 }
@@ -154,7 +154,7 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 		if (next_nl - repr == width) {
 			/* Ensure that the grid repr is rectangular */
 			++height;
-		} else if (*repr != '!') {
+		} else if (repr[0] != '!') {
 			/* Invalid line length and current line is not a comment */
 			return -__LINE__;
 		}
@@ -175,7 +175,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 		}
 	}
 
-	while (*repr == '!') {
+	while (repr[0] == '!') {
 		repr = strchr(repr + 1, '\n');
 		if (repr == NULL) {
 			return -__LINE__;
@@ -191,8 +191,8 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 	/* Memorized "on" character, to detect when both @ and O are mixed within a
 	   same file. Blank means uninitialized, ! means warning already output */
 	char on_char = ' ';
-	for (size_t i = 0; *repr; ++repr) {
-		if (*repr == '@') {
+	for (size_t i = 0; repr[0]; ++repr) {
+		if (repr[0] == '@') {
 			SET_BIT(grid->cells, i, true);
 			if (on_char == 'O') {
 				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
@@ -200,7 +200,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 			} else if (on_char == ' ') {
 				on_char = '@';
 			}
-		} else if (*repr == 'O') {
+		} else if (repr[0] == 'O') {
 			SET_BIT(grid->cells, i, true);
 			if (on_char == '@') {
 				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
@@ -208,19 +208,19 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 			} else if (on_char == ' ') {
 				on_char = 'O';
 			}
-		} else if (*repr == '\n') {
-			if (*(repr + 1) == '!') {
+		} else if (repr[0] == '\n') {
+			if (repr[1] == '!') {
 				repr = strchr(repr + 2, '\n');
 				if (repr == NULL) { /* No more comments, reached end of file */
 					break;
 				}
 			}
 			continue;
-		} else if (*repr == '\r') {
+		} else if (repr[0] == '\r') {
 			fputs("ici\n", stderr);
-			if (*(repr + 1) == '\n') {
-				if (*(repr + 2) == '!') {
-					repr = strchr(repr + 3, '\n');
+			if (repr[1] == '\n') {
+				if (repr[2] == '!') {
+					repr = strchr(&repr[3], '\n');
 					if (repr == NULL) { /* No more comments, reached end of file */
 						break;
 					}
@@ -230,7 +230,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 			} else {
 				return -__LINE__;
 			}
-		} else if (*repr != '.') {
+		} else if (repr[0] != '.') {
 			return -__LINE__;
 		}
 		++i;

@@ -341,9 +341,12 @@ d’options.
 avec une autre option</th></tr>
 <tr><td rowspan="4">Gestion de la grille</td><td>`-w WIDTH`</td>
 <td>`--width`</td><td>Spécifie la largeur de la grille</td><td>`80`</td>
-<td>`-i`</td></tr>
+<td>`-i`, `-S`</td></tr>
 <tr><td>`-h HEIGHT`</td><td>`--height`</td><td>Spécifie la hauteur de la
-grille</td><td>`60`</td><td>`-i`</td></tr>
+grille</td><td>`60`</td><td>`-i`, `-S`</td></tr>
+<tr><td>`-S SIZE`</td><td>`--square-size`</td><td>Spécifie que la grille est
+carrée et donne sa taille</td><td>Aucun</td>`-w` et `-h`, car équivalent à
+`-w SIZE -h SIZE`</td></tr>
 <tr><td>`-W`</td><td>`--wrap`</td><td>Fait boucler la grille sur elle-même (cf.
 section 1.2.1.)</td><td>Faux</td><td>Aucun</td></tr>
 <tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Spécifie la variante du Jeu à

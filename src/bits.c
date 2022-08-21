@@ -39,7 +39,7 @@ void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
 		memcpy(dest, src, length_bytes);
 		/* Copy trailing partial byte */
 		for (size_t i = 0; i < (length & 7); ++i) {
-			SET_BIT(dest + length_bytes, i, GET_BIT(src + length_bytes, i));
+			SET_BIT(&dest[length_bytes], i, GET_BIT(&src[length_bytes], i));
 		}
 	} else {
 		/* No common alignment to leverage, fallback to naïve linear copy */

@@ -22,6 +22,20 @@
 
 
 /**
+ * \brief Helper macro that converts a grid dimension (in number of cells) to a
+ * window dimension (in pixels).
+ *
+ * \note The resulting size includes borders on both sides.
+ *
+ * \param[in] gw   The grid window whose atributes to use
+ * \param[in] size The size to convert
+ *
+ * \return The size in pixels of the given number of cells in the given window
+ */
+#define GRID_SIZE_TO_WIN_SIZE(gw, size) \
+	((size) * ((gw)->cell_pixels + (gw)->border_width) + (gw)->border_width)
+
+/**
  * \brief default size in pixels, for the cell's representation.
  */
 #define DEFAULT_CELLS_PIXELS 16

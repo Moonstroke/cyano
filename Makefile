@@ -43,36 +43,39 @@ RC_FILE = $(PROJECT_NAME).rc
 RES_FILE = $(PROJECT_NAME).res
 
 
-# Preprocessor flags
-CPPFLAGS = /I$(INC_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64
-# Compilation flags
-CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820
-
-# Linkage flags
-LDFLAGS = /nologo
-LDLIBS = SDL2.lib
-
 # Translate GCC optimization levels into MSVC equivalent
+optim_flags =
 !if "$(OPTIM_LVL)" == "0"
-CFLAGS = $(CFLAGS) /Od
+optim_flags = /Od
 !else if "$(OPTIM_LVL)" == "1"
-CFLAGS = $(CFLAGS) /Ot
+optim_flags = /Ot
 !else if "$(OPTIM_LVL)" == "s"
-CFLAGS = $(CFLAGS) /O1
+optim_flags = /O1
 !else if "$(OPTIM_LVL)" == "2"
-CFLAGS = $(CFLAGS) /Ox
+optim_flags = /Ox
 !else if "$(OPTIM_LVL)" == "3"
-CFLAGS = $(CFLAGS) /O2 /Ob3
+optim_flags = /O2 /Ob3
 !endif
 
 !if "$(DEBUG)" == "y"
-CPPFLAGS = $(CPPFLAGS) /D_DEBUG
-CFLAGS = $(CFLAGS) /Zi /Fd$(PDB_FILE)
-LDFLAGS = $(LDFLAGS) /debug /pdb:$(PDB_FILE)
+cpp_debug_flags = /D_DEBUG
+c_debug_flags = /Zi /Fd$(PDB_FILE)
+ld_debug_flags = /debug /pdb:$(PDB_FILE)
 !else
-CPPFLAGS = $(CPPFLAGS) /DNDEBUG
-LDFLAGS = $(LDFLAGS) /release
+cpp_debug_flags = /DNDEBUG
+c_debug_flags =
+ld_debug_flags = /release
 !endif
+
+
+# Preprocessor flags
+CPPFLAGS = /I$(INC_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flags) $(CPPFLAGS)
+# Compilation flags
+CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820 $(optim_flags) $(c_debug_flags) $(CFLAGS)
+
+# Linkage flags
+LDFLAGS = /nologo (ld_debug_flags) $(LDFLAGS)
+LDLIBS = SDL2.lib $(LDLIBS)
 
 
 

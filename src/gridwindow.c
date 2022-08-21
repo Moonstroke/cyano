@@ -632,10 +632,11 @@ static const uint16_t icon_data[] = {
 int init_grid_window(struct grid_window *gw, struct grid *grid,
                      unsigned int cell_pixels, unsigned int border_width,
                      const char *title) {
-	unsigned int win_width = grid->w * (cell_pixels + border_width)
-	                         + border_width;
-	unsigned int win_height = grid->h * (cell_pixels + border_width)
-	                          + border_width;
+	gw->grid = grid;
+	gw->cell_pixels = cell_pixels;
+	gw->border_width = border_width;
+	unsigned int win_width = GRID_SIZE_TO_WIN_SIZE(gw, grid->w);
+	unsigned int win_height = GRID_SIZE_TO_WIN_SIZE(gw, grid->h);
 
 	Uint32 win_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE
 	                                    | SDL_WINDOW_MOUSE_FOCUS
@@ -652,15 +653,12 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
 		return -__LINE__;
 	}
-	gw->grid = grid;
-	gw->cell_pixels = cell_pixels;
 	gw->sel_x = gw->sel_y = -1;
-	gw->border_width = border_width;
 	gw->error_msg[0] = '\0';
 
 	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom((uint16_t*) icon_data,
 	                                             ICONSIZE, ICONSIZE, 16,
-	                                             ICONSIZE * sizeof *icon_data,
+	                                             ICONSIZE * sizeof icon_data[0],
 	                                             0xf000, 0x0f00, 0x00f0,
 	                                             0x000f);
 	if (icon != NULL) {
