@@ -167,7 +167,7 @@ static void _parse_format(const char *arg, enum grid_format *format) {
 	} else if (cmp_func(arg, "plaintext") == 0 || cmp_func(arg, "plain") == 0) {
 		*format = GRID_FORMAT_PLAIN;
 	} else {
-		fprintf(stderr, "Warning: unrecognized grid representationformat: "
+		fprintf(stderr, "Warning: unrecognized grid representation format: "
 		                "\"%s\"\n", optarg);
 		*format = GRID_FORMAT_UNKNOWN;
 	}
