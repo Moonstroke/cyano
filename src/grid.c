@@ -175,6 +175,10 @@ int update_grid(struct grid *g) {
 int resize_grid(struct grid *g, unsigned int width, unsigned int height) {
 	size_t new_size = NUM_OCTETS(width * height);
 	if (width == g->w) {
+		/* Same size, return early to skip redundant operation */
+		if (height == g->h) {
+			return 0;
+		}
 		/* Same width: since the grid rows are stored consecutively, there is
 		   no bit reordering necessary (introduction/removal of bits at the end
 		   of each row), we can just reallocate on the original grid */
