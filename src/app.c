@@ -82,7 +82,9 @@ static inline void _print_help(void) {
 
 static unsigned int _to_grid_dimension(const struct grid_window *gw,
                                        unsigned int dim) {
-	return (dim - gw->border_width) / (gw->cell_pixels + gw->border_width);
+	/* Perform division rounding to nearest */
+	unsigned int divisor = gw->cell_pixels + gw->border_width;
+	return (dim - gw->border_width + (divisor / 2)) / divisor;
 }
 
 static int _event_filter(void *userdata, SDL_Event *event) {
