@@ -139,7 +139,8 @@ err:
 	}
 }
 
-static int _get_uint_value(char opt, const char *arg, unsigned int *dst, unsigned int min) {
+static int _get_uint_value(char opt, const char *arg, unsigned int *dst,
+                           unsigned int min) {
 	unsigned int tmp;
 	if (sscanf(arg, "%u", &tmp) != 1) {
 		fprintf(stderr,
@@ -148,7 +149,7 @@ static int _get_uint_value(char opt, const char *arg, unsigned int *dst, unsigne
 	}
 	if (tmp < min) {
 		fprintf(stderr, "Error: value for option -%c cannot be less than %u\n",
-		        min);
+		        opt, min);
 		return -__LINE__;
 	}
 	*dst = tmp;
@@ -306,15 +307,19 @@ static int _locate_long_opt(const char *name, const struct option *longopts, int
 	const char *eqsignindex = strchr(name, '=');
 	if (eqsignindex == NULL) {
 		*argindex = -1;
-	} else {/* The option contains an attached argument, make a copy of the option name only */
+	} else {
+		/* The option contains an attached argument, make a copy of the option
+		   name only */
 		int optlen = (int) (eqsignindex - name);
-		*argindex = optlen + 3; /* + 2 for leading hyphens, + 1 for equals sign */
+		*argindex = &optlen[3]; /* + 2 for leading hyphens, + 1 for equals
+		                           sign */
 		char *nameonly = alloca(optlen);
 		memcpy(nameonly, name, optlen);
 		nameonly[optlen] = 0;
 		name = nameonly;
 	}
-	for (int i = 0; longopts[i].name != NULL && longopts[i].name[0] != '\0'; ++i) {
+	for (int i = 0; longopts[i].name != NULL && longopts[i].name[0] != '\0';
+	     ++i) {
 		if (strcmp(name, longopts[i].name) == 0) {
 			return i;
 		}
@@ -351,7 +356,8 @@ static int _handle_long_opt(char *token, char *const *argv,
 	return optchar;
 }
 
-static int _opt_arg_type(char opt, const char *optstring, enum arg_type *arg_type) {
+static int _opt_arg_type(char opt, const char *optstring,
+                         enum arg_type *arg_type) {
 	for (; optstring[0] != '\0'; ++optstring) {
 		if (optstring[0] == opt) {
 			*arg_type = optstring[1] == ':' ? required_argument : no_argument;
@@ -361,7 +367,8 @@ static int _opt_arg_type(char opt, const char *optstring, enum arg_type *arg_typ
 	return -1;
 }
 
-static int nextchar = 0; /* The index to the next char option, useful when several are attached */
+static int nextchar = 0; /* The index to the next char option, useful when
+                            several are attached */
 int getopt_long(int argc, char *const argv[], const char *optstring,
                 const struct option *longopts, int *longindex) {
 	char *token;
@@ -369,8 +376,11 @@ int getopt_long(int argc, char *const argv[], const char *optstring,
 		return -1; /* End of command-line */
 	}
 	if (nextchar == 0) {
-		if (token[0] == '\0' || token[0] != '-' || token[1] == '\0' || token[1] == '-' && token[2] == '\0') {
-			return -1; /* Met a non-option argument (notably an empty string or a single -) or a -- */
+		if (token[0] == '\0' || token[0] != '-' || token[1] == '\0'
+		                     || token[1] == '-' && token[2] == '\0') {
+			/* Met a non-option argument (notably an empty string or a single -)
+			   or a -- */
+			return -1;
 		}
 		char optchar = token[1];
 		if (optchar == '-') { /* Two leading hyphens: long option */
@@ -387,7 +397,8 @@ int getopt_long(int argc, char *const argv[], const char *optstring,
 		return '?';
 	}
 	if (arg_type == no_argument) {
-		if (token[nextchar + 1] == '\0') { /* End of current command-line token, prepare pointers to next */
+		if (token[nextchar + 1] == '\0') {
+			/* End of current command-line token, prepare pointers to next */
 			nextchar = 0;
 			++optind;
 		} else {
@@ -395,7 +406,8 @@ int getopt_long(int argc, char *const argv[], const char *optstring,
 		}
 		return optchar;
 	}
-	if (token[nextchar + 1] != '\0') { /* Option's argument is attached to the option */
+	if (token[nextchar + 1] != '\0') {
+		/* Option's argument is attached to the option */
 		optarg = &token[nextchar + 1];
 		nextchar = 0;
 		++optind;
