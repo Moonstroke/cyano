@@ -93,10 +93,7 @@ static int _event_filter(void *userdata, SDL_Event *event) {
 		int event_height = event->window.data2;
 		unsigned int new_width = _to_grid_dimension(gw, event_width);
 		unsigned int new_height = _to_grid_dimension(gw, event_height);
-		if (new_width == gw->grid->w && new_height == gw->grid->h) {
-			/* Same size as current--block the event to limit spam */
-			return 0;
-		} else if (new_width < 3 || new_height < 3) {
+		if (new_width < 3 || new_height < 3) {
 			/* Disallow grid smaller than 3 in either dimension */
 			return 0;
 		} else {
@@ -221,6 +218,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 	case SDL_WINDOWEVENT:
 		if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
 			resize_grid(gw->grid, event->window.data1, event->window.data2);
+			resize_grid_window(gw);
 		}
 		break;
 	case SDL_QUIT:
