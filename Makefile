@@ -74,7 +74,7 @@ CPPFLAGS = /I$(INC_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flag
 CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820 $(optim_flags) $(c_debug_flags) $(CFLAGS)
 
 # Linkage flags
-LDFLAGS = /nologo (ld_debug_flags) $(LDFLAGS)
+LDFLAGS = /nologo $(ld_debug_flags) $(LDFLAGS)
 LDLIBS = SDL2.lib $(LDLIBS)
 
 
