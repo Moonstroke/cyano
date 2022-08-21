@@ -668,6 +668,10 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 		SDL_FreeSurface(icon);
 	}
 
+	unsigned int win_min_size = 3 * (cell_pixels + border_width)
+	                            + border_width;
+	SDL_SetWindowMinimumSize(gw->win, win_min_size, win_min_size);
+
 	return 0;
 }
 
