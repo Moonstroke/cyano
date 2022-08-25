@@ -638,24 +638,30 @@ static int _enable_resize_increment(struct grid_window *gw) {
 	SDL_VERSION(&wm_info.version);
 	SDL_GetWindowWMInfo(gw->win, &wm_info);
 
-	XSizeHints *size_hints = XAllocSizeHints();
-	if (size_hints == NULL) {
-		return -__LINE__;
+	if (wm_info.subsystem == SDL_SYSWM_X11) {
+		XSizeHints *size_hints = XAllocSizeHints();
+		if (size_hints == NULL) {
+			return -__LINE__;
+		}
+		long unused;
+		if (XGetWMNormalHints(wm_info.info.x11.display,
+		                      wm_info.info.x11.window, size_hints,
+		                      &unused) == BadWindow) {
+			return -__LINE__;
+		}
+		int resize_increment = gw->cell_pixels + gw->border_width;
+		size_hints->width_inc = resize_increment;
+		size_hints->height_inc = resize_increment;
+		size_hints->base_width = 0;
+		size_hints->base_height = 0;
+		size_hints->flags |= PResizeInc | PBaseSize;
+		XSetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
+						size_hints);
+		XFree(size_hints);
+	} else {
+		fprintf(stderr, "Warning: unsupported window manager (%d)\n",
+		        wm_info.subsystem);
 	}
-	long unused;
-	if (XGetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
-	                      size_hints, &unused) == BadWindow) {
-		return -__LINE__;
-	}
-	int resize_increment = gw->cell_pixels + gw->border_width;
-	size_hints->width_inc = resize_increment;
-	size_hints->height_inc = resize_increment;
-	size_hints->base_width = 0;
-	size_hints->base_height = 0;
-	size_hints->flags |= PResizeInc | PBaseSize;
-	XSetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
-	                  size_hints);
-	XFree(size_hints);
 
 	return 0;
 }
