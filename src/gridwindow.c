@@ -3,10 +3,13 @@
 #include <stdint.h> /* for uint8_t */
 #include <string.h> /* for strncpy */
 #include <SDL2/SDL_mouse.h> /* for SDL_GetMouseState */
-#include <SDL2/SDL_syswm.h> /* for SDL_SysWMinfo, SDL_GetWindowWMInfo */
+#include <SDL2/SDL_syswm.h> /* for SDL_SysWMinfo, SDL_GetWindowWMInfo,
+                               SDL_VIDEO_DRIVER_X11 */
 #include <SDL2/SDL_version.h> /* for SDL_VERSION */
-#include <X11/Xlib.h> /* for BadWindow, XFree */
-#include <X11/Xutil.h> /* for X*, PResizeInc, PBaseSize */
+#ifdef SDL_VIDEO_DRIVER_X11
+# include <X11/Xlib.h> /* for BadWindow, XFree */
+# include <X11/Xutil.h> /* for X*, PResizeInc, PBaseSize */
+#endif
 
 
 
@@ -638,6 +641,7 @@ static int _enable_resize_increment(struct grid_window *gw) {
 	SDL_VERSION(&wm_info.version);
 	SDL_GetWindowWMInfo(gw->win, &wm_info);
 
+#ifdef SDL_VIDEO_DRIVER_X11
 	if (wm_info.subsystem == SDL_SYSWM_X11) {
 		XSizeHints *size_hints = XAllocSizeHints();
 		if (size_hints == NULL) {
@@ -658,7 +662,9 @@ static int _enable_resize_increment(struct grid_window *gw) {
 		XSetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
 						size_hints);
 		XFree(size_hints);
-	} else {
+	} else
+#endif
+	{
 		fprintf(stderr, "Warning: unsupported window manager (%d)\n",
 		        wm_info.subsystem);
 	}
