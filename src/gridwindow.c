@@ -3,7 +3,8 @@
 #include <stdint.h> /* for uint8_t */
 #include <string.h> /* for strncpy */
 #include <SDL2/SDL_mouse.h> /* for SDL_GetMouseState */
-#include <SDL2/SDL_syswm.h> /* for SDL_SysWMinfo */
+#include <SDL2/SDL_syswm.h> /* for SDL_SysWMinfo, SDL_GetWindowWMInfo */
+#include <SDL2/SDL_version.h> /* for SDL_VERSION */
 #include <X11/Xlib.h> /* for XFree */
 #include <X11/Xutil.h> /* for X*, PResizeInc, PBaseSize */
 
@@ -632,6 +633,28 @@ static const uint16_t icon_data[] = {
 };
 
 
+static int _enable_resize_increment(struct grid_window *gw) {
+	SDL_SysWMinfo wm_info;
+	SDL_VERSION(&wm_info.version);
+	SDL_GetWindowWMInfo(gw->win, &wm_info);
+
+	XSizeHints *size_hints = XAllocSizeHints();
+	long unused;
+	XGetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
+	                  size_hints, &unused);
+	int resize_increment = gw->cell_pixels + gw->border_width;
+	size_hints->width_inc = resize_increment;
+	size_hints->height_inc = resize_increment;
+	size_hints->base_width = 0;
+	size_hints->base_height = 0;
+	size_hints->flags |= PResizeInc | PBaseSize;
+	XSetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
+	                  size_hints);
+	XFree(size_hints);
+
+	return 0;
+}
+
 int init_grid_window(struct grid_window *gw, struct grid *grid,
                      unsigned int cell_pixels, unsigned int border_width,
                      const char *title) {
@@ -672,26 +695,7 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 	SDL_SetWindowMinimumSize(gw->win, GRID_SIZE_TO_WIN_SIZE(gw, 3),
 	                                  GRID_SIZE_TO_WIN_SIZE(gw, 3));
 
-
-	SDL_SysWMinfo wm_info;
-	SDL_VERSION(&wm_info.version);
-	SDL_GetWindowWMInfo(gw->win, &wm_info);
-
-	XSizeHints *size_hints = XAllocSizeHints();
-	long unused;
-	XGetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
-	                  size_hints, &unused);
-	int resize_increment = cell_pixels + border_width;
-	size_hints->width_inc = resize_increment;
-	size_hints->height_inc = resize_increment;
-	size_hints->base_width = 0;
-	size_hints->base_height = 0;
-	size_hints->flags |= PResizeInc | PBaseSize;
-	XSetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
-	                  size_hints);
-	XFree(size_hints);
-
-	return 0;
+	return _enable_resize_increment(gw);
 }
 
 
