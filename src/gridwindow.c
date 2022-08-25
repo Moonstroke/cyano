@@ -5,7 +5,7 @@
 #include <SDL2/SDL_mouse.h> /* for SDL_GetMouseState */
 #include <SDL2/SDL_syswm.h> /* for SDL_SysWMinfo, SDL_GetWindowWMInfo */
 #include <SDL2/SDL_version.h> /* for SDL_VERSION */
-#include <X11/Xlib.h> /* for XFree */
+#include <X11/Xlib.h> /* for BadWindow, XFree */
 #include <X11/Xutil.h> /* for X*, PResizeInc, PBaseSize */
 
 
@@ -639,9 +639,14 @@ static int _enable_resize_increment(struct grid_window *gw) {
 	SDL_GetWindowWMInfo(gw->win, &wm_info);
 
 	XSizeHints *size_hints = XAllocSizeHints();
+	if (size_hints == NULL) {
+		return -__LINE__;
+	}
 	long unused;
-	XGetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
-	                  size_hints, &unused);
+	if (XGetWMNormalHints(wm_info.info.x11.display, wm_info.info.x11.window,
+	                      size_hints, &unused) == BadWindow) {
+		return -__LINE__;
+	}
 	int resize_increment = gw->cell_pixels + gw->border_width;
 	size_hints->width_inc = resize_increment;
 	size_hints->height_inc = resize_increment;
