@@ -1,8 +1,8 @@
 #include "file_io.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> /* for strcmp, strlen */
+#include <stdio.h> /* for FILE, f*, rewind */
+#include <stdlib.h> /* for NULL, realloc, free */
+#include <string.h> /* for strncpy, strcmp, strlen */
 #ifdef _MSC_VER
 # include <io.h> /* for _access */
 #else
