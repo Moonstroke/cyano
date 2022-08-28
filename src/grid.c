@@ -24,6 +24,12 @@ void free_grid(struct grid *g) {
 }
 
 
+int compile_grid_rule(struct grid *g, const char *rule) {
+	g->rule = rule;
+	return 0;
+}
+
+
 static inline unsigned int mod(int a, int b) {
 	/* Will only enter one of the loops, and usually loop only once so the
 	  whiles are basically ifs */
