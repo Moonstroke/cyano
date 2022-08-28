@@ -4,8 +4,6 @@
 #include <stdlib.h> /* for calloc, NULL, free */
 #include <string.h> /* for strchr, memset */
 
-#include "bits.h"
-
 
 
 int init_grid(struct grid *g, unsigned int w, unsigned int h, bool wrap) {
@@ -15,6 +13,7 @@ int init_grid(struct grid *g, unsigned int w, unsigned int h, bool wrap) {
 	char *cells = calloc(NUM_OCTETS(w * h), 1);
 	g->cells = cells;
 	g->wrap = wrap;
+	memset(g->rule, 0, sizeof g->rule);
 	return cells == NULL ? -1 : 0;
 }
 
@@ -25,7 +24,34 @@ void free_grid(struct grid *g) {
 
 
 int compile_grid_rule(struct grid *g, const char *rule) {
-	g->rule = rule;
+	if (*rule == 'B') {
+		++rule;
+	}
+	while ('0' <= *rule && *rule <= '9') {
+		size_t index = *rule - '0';
+		SET_BIT(g->rule, index, 1);
+		++rule;
+	}
+	if (*rule == '/') {
+		++rule;
+		if (*rule == 'S') {
+			++rule;
+		}
+	} else if (*rule == 'S') {
+		++rule;
+	} else {
+		/* Missing explicit separation between B and S parts, or invalid
+		   character */
+		return -__LINE__;
+	}
+	while ('0' <= *rule && *rule <= '9') {
+		size_t index = 9 + (*rule - '0');
+		SET_BIT(g->rule, index, 1);
+		++rule;
+	}
+	if (*rule != '\0') {
+		return -__LINE__; /* Invalid character (not end of string) */
+	}
 	return 0;
 }
 
@@ -66,36 +92,16 @@ bool toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 	return false;
 }
 
-
-static inline bool _will_be_born(unsigned int n, const char *r) {
-	char k = (char) ('0' + n);
-	r = strchr(r, 'B') + 1;
-	while (*r != '\0' && (*r != '/' && *r != 'S') && *r != k) {
-		r++;
-	}
-	return *r == k;
-}
-
-static inline bool _will_survive(unsigned int n, const char *r) {
-	char k = (char) ('0' + n);
-	r = strchr(r, 'S') + 1;
-	while (*r != '\0' && *r != k) {
-		r++;
-	}
-	return *r == k;
-}
-
 static void _update_cell(struct grid *g, size_t row_offset,
                          const char *row_buffer, size_t cell_offset,
                          unsigned int neighbors) {
-	bool (*will_be_alive)(unsigned int, const char*);
+	bool next_state;
 	if (GET_BIT(row_buffer, g->w + cell_offset)) {
-		will_be_alive = _will_survive;
+		next_state = GET_BIT(g->rule, 9 + neighbors);
 	} else {
-		will_be_alive = _will_be_born;
+		next_state = GET_BIT(g->rule, neighbors);
 	}
-	SET_BIT(g->cells, row_offset + cell_offset,
-	        will_be_alive(neighbors, g->rule));
+	SET_BIT(g->cells, row_offset + cell_offset, next_state);
 }
 
 static void _update_row(struct grid *g, size_t row_offset,

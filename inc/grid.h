@@ -50,6 +50,9 @@
 
 #include <stdbool.h>
 
+#include "bits.h"
+
+
 
 /**
  * \brief The default number of cells in a row of the grid.
@@ -75,9 +78,8 @@ struct grid {
 	unsigned int w; /**< The width of the grid. */
 	unsigned int h; /**< The height of the grid. */
 	char *cells; /**< The data of the grid cells. */
-	/** The rule determining the evolution of the game, as a string in \e Golly
-	    format. */
-	const char *rule;
+	/** Array of values indicating the future state of a cell. */
+	char rule[NUM_OCTETS(18)];
 	/** A flag indicating whether the state on one side of the grid affects the
 	    opposite side. */
 	bool wrap;

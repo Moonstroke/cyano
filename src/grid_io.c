@@ -112,19 +112,11 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	if (rc < 0) {
 		return rc;
 	}
-	if (add_rule) {
-		size_t len = strlen(rule_buffer);
-		char *rule = malloc(len);
-		if (rule == NULL) {
-			free_grid(grid);
-			return -__LINE__;
-		}
-		strcpy(rule, rule_buffer);
-		if (compile_grid_rule(grid, rule) < 0) {
-			fprintf(stderr, "Error while compiling rulestring \"%s\"\n", rule);
-			free_grid(grid);
-			return -__LINE__;
-		}
+	if (add_rule && compile_grid_rule(grid, rule_buffer) < 0) {
+		fprintf(stderr, "Error while compiling rulestring \"%s\"\n",
+		        rule_buffer);
+		free_grid(grid);
+		return -__LINE__;
 	}
 
 	do { /* Skip header and comments afterwards, if any */
