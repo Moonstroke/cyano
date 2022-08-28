@@ -23,7 +23,7 @@ static void setUp(void) {
 	int status;
 	status = init_grid(&grid, WIDTH, HEIGHT, WRAPS);
 	CUTE_assertEquals(status, 0);
-	grid.rule = RULE;
+	compile_grid_rule(&grid, RULE);
 	fprintf(stderr, "Succesfully initialized %s grid %ux%u\n",
 	        WRAPS ? "toroidal" : "rectangular", WIDTH, HEIGHT);
 }

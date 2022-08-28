@@ -62,7 +62,12 @@ int main(int argc, char **argv) {
 		fputs("Failure in creation of the game grid\n", stderr);
 		return EXIT_FAILURE;
 	}
-	g.rule = game_rule;
+	if (compile_grid_rule(&g, game_rule) < 0) {
+		fprintf(stderr, "Error while compiling rulestring \"%s\"\n",
+		        game_rule);
+		free_grid(&g);
+		return EXIT_FAILURE;
+	}
 
 	struct grid_window gw;
 	if (init_grid_window(&gw, &g, cell_pixels, border_width,

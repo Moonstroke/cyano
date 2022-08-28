@@ -120,7 +120,11 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 			return -__LINE__;
 		}
 		strcpy(rule, rule_buffer);
-		grid->rule = rule;
+		if (compile_grid_rule(grid, rule) < 0) {
+			fprintf(stderr, "Error while compiling rulestring \"%s\"\n", rule);
+			free_grid(grid);
+			return -__LINE__;
+		}
 	}
 
 	do { /* Skip header and comments afterwards, if any */
