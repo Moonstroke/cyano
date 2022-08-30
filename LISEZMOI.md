@@ -341,36 +341,38 @@ d’options.
 <table><tr><th>Catégorie</th><th>Option courte (avec argument éventuel)</th>
 <th>Option longue</th><th>Description</th><th>Valeur par défaut</th><th>Conflit
 avec une autre option</th></tr>
-<tr><td rowspan="4">Gestion de la grille</td><td>`-w WIDTH`</td>
+<tr><td rowspan="4">Gestion de la grille</td><td>`-w LARGEUR`</td>
 <td>`--width`</td><td>Spécifie la largeur de la grille</td><td>`80`</td>
 <td>`-i`, `-S`</td></tr>
-<tr><td>`-h HEIGHT`</td><td>`--height`</td><td>Spécifie la hauteur de la
+<tr><td>`-h HAUTEUR`</td><td>`--height`</td><td>Spécifie la hauteur de la
 grille</td><td>`60`</td><td>`-i`, `-S`</td></tr>
-<tr><td>`-S SIZE`</td><td>`--square-size`</td><td>Spécifie que la grille est
+<tr><td>`-S TAILLE`</td><td>`--square-size`</td><td>Spécifie que la grille est
 carrée et donne sa taille</td><td>Aucun</td>`-w` et `-h`, car équivalent à
-`-w SIZE -h SIZE`</td></tr>
+`-w TAILLE -h TAILLE`</td></tr>
 <tr><td>`-W`</td><td>`--wrap`</td><td>Fait boucler la grille sur elle-même (cf.
 section 1.2.1.)</td><td>Faux</td><td>Aucun</td></tr>
-<tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Spécifie la variante du Jeu à
+<tr><td>`-R RÈGLE`</td><td>`--game-rule`</td><td>Spécifie la variante du Jeu à
 lancer (par son nom s’il est connu, sinon par sa
 *rulestring*)</td><td>`B3/S23`</td><td>Aucun</td></tr>
 <tr><td rowspan="5">Affichage de la
-grille</td><td>`-b BORDER`</td><td>`--border`</td><td>La taille de l’espace
+grille</td><td>`-b BORDURE`</td><td>`--border`</td><td>La taille de l’espace
 entre les cellules, en pixels</td><td>`1`</td><td>`-n`</td></tr>
 <tr><td>`-n`</td><td>`--no-border`</td><td>Supprime l’espace entre les
 cellules</td><td></td><td>`-b`, parce qu’équivalent à `-b0`</td></tr>
-<tr><td>`-c CELL_SIZE`</td><td>`--cell-size`</td><td>Donne la taille d’une
+<tr><td>`-c TAILLE_CELLULE`</td><td>`--cell-size`</td><td>Donne la taille d’une
 cellule, en pixels</td><td>`16`</td><td>Aucun</td></tr>
-<tr><td>`-r RATE`</td><td>`--update-rate`</td><td>Le nombre de générations par
-seconde</td><td>`25`</td><td>None</td></tr>
-<tr><td rowspan="3">E/S de fichier</td><td>`-f FILE`</td><td>`--file`</td>
+<tr><td>`-r FRÉQUENCE`</td><td>`--update-rate`</td><td>Le nombre de
+générations par seconde</td><td>`25`</td><td>None</td></tr>
+<tr><td rowspan="3">E/S de fichier</td><td>`-f FICHIER`</td><td>`--file`</td>
 <td>Donne le chemin du fichier d’où lire et où
 écrire</td><td>Aucune</td><td>`-i` et `-o`</td></tr>
-<tr><td>`-i INPUT_FILE`</td><td>`--input-file`</td><td>Donne le chemin vers le
-fichier d’où lire la configuration initiale de la grille</td><td>Aucune</td>
+<tr><td>`-i FICHIER_ENTRÉE`</td><td>`--input-file`</td><td>Donne le chemin
+vers le fichier d’où lire la configuration initiale de la
+grille</td><td>Aucune</td>
 <td>`-f`, `-w` et `-h`</td></tr>
-<tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Donne le chemin vers
-le fichier où écrire l’état de la grille</td><td>Aucune</td><td>`-f`</td></tr>
+<tr><td>`-o FICHIER_SORTIE`</td><td>`--output-file`</td><td>Donne le chemin
+vers le fichier où écrire l’état de la
+grille</td><td>Aucune</td><td>`-f`</td></tr>
 <tr><td>`-F FORMAT`</td><td>`--format`</td><td>Spécifie le format de la
 représentation de la grille dans le fichier d’entrée. Soit *plain*,
 *plaintext* ou *RLE* (casse
@@ -423,11 +425,11 @@ utilisant les touches flèches. Certaines touches ou combinaisons de touches ont
 aussi une action définie :
 
 <table><tr><th>Touche</th><th>Action</th></tr>
-<tr><td>`Esc`</td><td rowspan="3">Quitte le programme</td></tr>
+<tr><td>`Échap`</td><td rowspan="3">Quitte le programme</td></tr>
 <tr><td>`Ctrl` + `Q`</td></tr>
 <tr><td>`Ctrl` + `W`</td></tr>
-<tr><td>`Space`</td><td>Lance ou arrête le mode continu</td></tr>
-<tr><td>`Enter`</td><td>Quand en pause, évolue la grille d’une seule
+<tr><td>`Espace`</td><td>Lance ou arrête le mode continu</td></tr>
+<tr><td>`Entrée`</td><td>Quand en pause, évolue la grille d’une seule
 génération</td></tr>
 <tr><td>`T`</td><td>Inverse la cellule active</td></tr>
 <tr><td>`R`</td><td>Réinitialise la grille à la configuration dans le fichier
