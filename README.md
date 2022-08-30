@@ -397,7 +397,22 @@ no file was specified, do nothing</td></tr>
 file does not exist, create it. If no file was specified, do nothing</td></tr>
 <tr><td>`C`</td><td>Clear the grid (kill all cells)</td></tr>
 <tr><td>`H`</td><td>Display in the console a summary of the mouse and key
-actions</td></tr></table>
+actions</td></tr>
+<tr><td>`+`</td><td rowspan="3">Increase the grid width and height by
+1</td></tr>
+<tr><td>Numeric pad `+`</td></tr>
+<tr><td>`Shift` + `=`<sup><a href="#note1">1</a></sup></td></tr>
+<tr><td>`-`</td><td rowspan="2">Decrease the grid width and height by
+1</td></tr>
+<tr><td>Numeric pad `-`</td></tr></table>
+
+<span id="note1">1</span> This shortcut is added to account for most common
+keyboard layouts (many QWERTY variants including US and UK, French AZERTY,
+etc.) where the plus sign is the secondary character to the equals sign key.
+On other keyboard layouts, the plus and equals signs may not share a key,
+however the plus sign may have its own key that can be used. If then the equals
+sign also has its own key, the shortcut will still work. Although this is
+unintended, these layouts will benefit from the extraneous shortcut "for free".
 
 
 #### 2.1.4. File input/output

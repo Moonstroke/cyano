@@ -432,7 +432,23 @@ si le fichier n’existe pas, le crée. Si aucun fichier spécifié, ne fait
 rien</td></tr>
 <tr><td>`C`</td><td>Efface la grille (tue toutes les cellules)</td></tr>
 <tr><td>`H`</td><td>Affiche dans la console un résumé des actions de clavier et
-souris</td></tr></table>
+souris</td></tr>
+<tr><td>`+`</td><td rowspan="3">Augmente la largeur et la hauteur de la grille
+d’une cellule</td></tr>
+<tr><td>`+` pavé numérique</td></tr>
+<tr><td>`Maj` + `=`<sup><a href="#note1">1</a></sup></td></tr>
+<tr><td>`-`</td><td rowspan="2">Réduit la largeur et la hauteur de la grille
+d’une cellule</td></tr>
+<tr><td>`-` pavé numérique</td></tr></table>
+
+<span id="note1">1</span> Ce raccourci a été ajouté pour prendre en compte les
+dispositions de clavier les plus communes (nombreuses variantes QWERTY dont US
+et UK, notre AZERTY, etc.) où le signe plus est le caractère secondaire de la
+touche signe égal. Sur d’autres dispos de clavier, ces signes peuvent ne pas
+partager la même touche, et le signe plus peut avoir sa propre touche qui peut
+alors être utilisée. Si le signe égal a également sa propre touche, le
+raccourci fonctionnera toujours. Bien que ce soit involontaire, ces dispos
+vont bénéficier d’un raccourci supplémentaire « gratuitement ».
 
 
 #### 2.1.4. Entrée/Sortie de fichiers
