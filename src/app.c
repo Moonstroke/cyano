@@ -191,6 +191,14 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 			case SDLK_h:
 				_print_help();
 				break;
+			case SDLK_EQUALS:
+				// Use Shift+= as an alias to + because that is where the + key
+				// is located on many keyboard layouts (US, UK, FR, etc.)
+				// When it's not, the layout usually has a separate + key
+				// anyway.
+				if (!(event->key.keysym.mod & KMOD_SHIFT)) {
+					break;
+				}
 			case SDLK_PLUS:
 			case SDLK_KP_PLUS:
 				if (resize_grid(gw->grid, gw->grid->w + 1,
