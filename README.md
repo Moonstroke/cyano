@@ -80,8 +80,8 @@ The boundaries are usually implemented as "walls", beyond which no cell can be
 born, and thus cells on the border of the grid have three less neighbors (five
 for cells in a corner) and their evolution will be affected.
 
-A solution to this problem is to use a grid large enough to let the pattern grow
-without hitting the boundaries.
+A solution to this problem is to use a grid large enough to let the pattern
+grow without hitting the boundaries.
 
 A usual implementation to mimic infinite grid, is by wrapping the grid, meaning
 that patterns that cross a boundary reappear on the opposite side. Such a grid
@@ -185,9 +185,9 @@ generations:
 The glider is probably the most important pattern of the Game of Life, notably
 in the construction of Turing machines, as it constitutes a support for
 information transmission (the presence of a glider can be interpreted as a `1`
-bit and its absence a `0` bit, for instance) and it is also used to collide with
-other patterns to elicit interesting reactions. In fact, there is a hunt for
-smallest configurations of glider generating specific patterns.
+bit and its absence a `0` bit, for instance) and it is also used to collide
+with other patterns to elicit interesting reactions. In fact, there is a hunt
+for smallest configurations of glider generating specific patterns.
 
 Of all the existing patterns the glider is also the most recognizable pattern,
 making it the epitome of the Game of Life.
@@ -195,9 +195,10 @@ making it the epitome of the Game of Life.
 
 #### 1.4.2. Consideration on the speed of spaceships
 
-Since the transition only accounts for the immediate neighbor cells, a spaceship
-cannot move by more than one cell in any direction by generation. This limit is
-called `c`, in reference to the speed of light, the physical speed limit.
+Since the transition only accounts for the immediate neighbor cells, a
+spaceship cannot move by more than one cell in any direction by generation.
+This limit is called `c`, in reference to the speed of light, the physical
+speed limit.
 
 The speed of a spaceship is therefore represented as a fraction of `c`: the
 speed of the glider is thus `c/4`.
@@ -297,7 +298,8 @@ recognizes, along with their rulestring:
  - Stains (B3678/S235678)
    Evolves into big stable "ink" stains
  - WalledCities (B45678/S2345)
-   Stabilizes into cities, areas of high activity surrounded by a continuous wall
+   Stabilizes into cities, areas of high activity surrounded by a continuous
+   wall
 
 
 ## 2. The program
@@ -345,7 +347,8 @@ file from which to read the grid's initial configuration</td><td>None</td>
 <tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Gives the path to the
 file to write the grid state to</td><td>None</td><td>`-f`</td></tr>
 <tr><td>`-F FORMAT`</td><td>`--format`</td><td>Specifies the format of the grid
-representation in the input file. Either *plain*, *plaintext* or *RLE* (case-insensitive)</td><td>None</td><td>None</td></tr></table>
+representation in the input file. Either *plain*, *plaintext* or *RLE*
+(case-insensitive)</td><td>None</td><td>None</td></tr></table>
 
 Any file path argument (to `-f`, `-i` or `-o`) can be `-`, which specifies to
 read from the standard input stream or write to the standard output stream. It
@@ -361,8 +364,8 @@ black, live ones. There is a medium-grey border around the cells to distinguish
 them visually. The active cell is marked with a semi-opaque grey mask: when it
 is alive, it will appear as dark grey, when dead, it will appear light grey.
 
-Only the cell size and border width (or presence altogether) can be changed (see
-previous section); the colors are not currently configurable.
+Only the cell size and border width (or presence altogether) can be changed
+(see previous section); the colors are not currently configurable.
 
 There are two evolution modes in the program. It can be run continuously at the
 rate specified on the command-line (see above), or be in a paused state, giving
@@ -377,9 +380,9 @@ Moving the mouse cursor changes the active cell to the one under the mouse tip.
 The left mouse button can be clicked to toggle the state of the active cell (if
 alive, the cell will die, if already dead it will be born). The button can also
 be kept pressed and the mouse dragged, to toggle every cell the cursor hovers.
-If the mouse is dragged too quickly, some cells may be skipped: this is due to a
-known limitation in the implementation of the regulation of the program update
-frequency.
+If the mouse is dragged too quickly, some cells may be skipped: this is due to
+a known limitation in the implementation of the regulation of the program
+update frequency.
 
 The keyboard can also be used to change the active cell, using the arrow keys.
 Some keys, or key combinations, also have a defined action:
@@ -402,9 +405,9 @@ actions</td></tr></table>
 
 #### 2.1.4. File input/output
 
-The program can read and write to text files whose content describe a grid state
-(dimensions, state of cells and sometimes rulestring). These file can come in
-two distinct formats, *plain text* and *RLE* (run-length encoding).
+The program can read and write to text files whose content describe a grid
+state (dimensions, state of cells and sometimes rulestring). These file can
+come in two distinct formats, *plain text* and *RLE* (run-length encoding).
 
 The format of the input file can be specified with the `-F` command-line
 option. If the format is not specified, the program will try to guess the
@@ -424,7 +427,9 @@ generated in plain-text format.
 ##### 2.1.4.1. Plain text format
 
 The plain text format is a textual representation of the grid as a rectangular
-block of text with `.` for dead cells and `@` or `O` for live ones. Although both characters are recognized, they should not be mixed; if the data contain both a warning message will be printed on the standard error. The grid must be
+block of text with `.` for dead cells and `@` or `O` for live ones. Although
+both characters are recognized, they should not be mixed; if the data contains
+both a warning message will be printed on the standard error. The grid must be
 written fully, the number of lines gives the height of the grid and the number
 of characters per line (which must be identical throughout the lines) gives the
 grid width. Lines starting with a `!` are considered comments and are ignored.
@@ -447,8 +452,8 @@ RLE is a compressed format where a range of contiguous cells in the same state
 are represented with a single cell and the number of cells in the range. This
 format accepts a header line specifying the dimensions of the grid and
 optionally the rulestring. The header is mandatory; since the configuration is
-compressed, blank line endings can be omitted, and the grid dimensions cannot be
-determined solely from the grid data.
+compressed, blank line endings can be omitted, and the grid dimensions cannot
+be determined solely from the grid data.
 
 Live cells are denoted by a `o`, dead cells by `b`, a `$` represents the end of
 a row (and the start of the next) and `!` indicates the end of the pattern.
@@ -481,10 +486,10 @@ and obscure sections are commented.
 #### 2.2.1. The SDL
 
 The program uses the [SDL](http://www.libsdl.org "The SDL website") (Simple
-DirectMedia Layer) version 2 for the graphical part. It is a low-level graphical
-library; it provides a powerful yet easy to use API. It is also widespread and
-supported on the majority of platforms, which improves the portability of the
-project.
+DirectMedia Layer) version 2 for the graphical part. It is a low-level
+graphical library; it provides a powerful yet easy to use API. It is also
+widespread and supported on the majority of platforms, which improves the
+portability of the project.
 
 
 #### 2.2.2. Environment
@@ -492,8 +497,8 @@ project.
 Supported platforms are GNU/Linux, notably Debian distributions, and Windows.
 
 The code was developed initially under Ubuntu 17, then Debian 9; Debian-based
-distros are supported, and major GNU/Linux platforms should be as well. Under MS
-Windows, the code is developed using Visual Studio 17 and compiles natively,
+distros are supported, and major GNU/Linux platforms should be as well. Under
+MS Windows, the code is developed using Visual Studio 17 and compiles natively,
 however GNU compilation using MinGW or Cygwin should be doable, but I have not
 tried.
 
@@ -502,14 +507,15 @@ For *nixes, the only package necessary for the sources to compile is
 and `doxygen` for the documentation processor.
 
 For Win32, the developer tools must be installed (they come with Visual Studio)
-to provide `nmake` and the compiler/linker. The SDL and doxygen (if wanted) must
-be installed and configured manually.
+to provide `nmake` and the compiler/linker. The SDL and doxygen (if desired)
+must be installed and configured manually.
 
 
 #### 2.2.3. Compilation
 
-The code is written following the C11 standard, and uses C-exclusive constructs,
-so C++ is not supported and the code is not expected to compile in it.
+The code is written following the C11 standard, and uses C-exclusive
+constructs, so C++ is not supported and the code is not expected to compile in
+it.
 
 The compilation process is handled with `make` on GNU platforms, and `nmake`
 under Windows (use of compile and run features of VS are not yet ready), with a
@@ -535,8 +541,8 @@ The definitions of the structures and functions declarations in the headers are
 fully (hopefully; or at least mostly) documented in
 [Doxygen](http://www.doxygen.org/index.html "Doxygen website") syntax. The
 documentation files are not part of the repository, but can be generated quite
-easily (cf. previous section). The resulting documentation is in HTML and can be
-read with any browser; the entry point is the file `doc/html/index.html`.
+easily (cf. previous section). The resulting documentation is in HTML and can
+be read with any browser; the entry point is the file `doc/html/index.html`.
 
 
 ## 3. Considered evolutions
@@ -550,15 +556,16 @@ for the program, some of which shorter-term than others.
    on me only to decide when to officially put the version tag out, but I want
    to be entirely satisfied with the state of the project for that.
  - OpenGL implementation
-   I am working locally on a version backed with OpenGL for the rendering, it is
+   I am working locally on a version backed with OpenGL for the rendering, it
+   is
    functional, but barely, and needs a lot of polishing.
  - Increased configurability
    The colors of the grid display, the characters used for the plain text file
    format are fixed (even hard-coded). A means to configure these would be
    welcome, but I am not sure of how to introduce it; I do not want the program
    to depend on an external config file, and I am reluctant to introduce yet
-   more command-line options. Macros could be a solution, but that would mean no
-   runtime configuration.
+   more command-line options. Macros could be a solution, but that would mean
+   no runtime configuration.
  - A better plain text file format
    Says it all. As implemented the plain text format is sufficient, but poor;
    support for comments, omitted blank line endings would be a plus. Guessing
@@ -569,10 +576,10 @@ for the program, some of which shorter-term than others.
    from scratch is too big a project to even consider it.
  - Headless run mode
    This would introduce a totally different type of execution (that would
-   justify adding a command-line option). The idea would be to provide input and
-   output files and a number of generations, and write to the output file the
-   configuration in the input file after this many generations. It would be a
-   sort of pattern incubator.
+   justify adding a command-line option). The idea would be to provide input
+   and output files and a number of generations, and write to the output file
+   the configuration in the input file after this many generations. It would
+   be a sort of pattern incubator.
  - Non-totalistic or anisotropic Life-like CA
    While I do not consider non-binary CA (the grid is backed by a bit array,
    changing the number of states would be a huge work I do not want to tackle),
