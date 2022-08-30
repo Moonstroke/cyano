@@ -314,41 +314,113 @@ above.
 
 The program is invoked from the command-line and accepts a set of options.
 
-<table><tr><th>Category</th><th>Short option (with optional argument)</th>
-<th>Long option</th><th>Description</th><th>Default value</th><th>Conflict with
-another option</th></tr>
-<tr><td rowspan="4">Grid management</td><td>`-w WIDTH`</td><td>`--width`</td>
-<td>Specifies the width of the grid</td><td>`80`</td><td>`-i`, `-S`</td></tr>
-<tr><td>`-h HEIGHT`</td><td>`--height`</td><td>Specifies the height of the
-grid</td><td>`60`</td><td>`-i`, `-S`</td></tr>
-<tr><td>`-S SIZE`</td><td>`--square-size`</td><td>Specifies the grid as square
-and gives its size</td><td>None</td>`-w` et `-h`, because equivalent to
-`-w SIZE -h SIZE`</td></tr>
-<tr><td>`-W`</td><td>`--wrap`</td><td>Enables wrapping grid (cf.
-section 1.2.1.)</td><td>False</td><td>None</td></tr>
-<tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Specifies the Life variant to
-run (either by its name if recognized, or its rulestring)</td><td>`B3/S23`</td>
-<td>None</td></tr>
-<tr><td rowspan="5">Grid display</td><td>`-b BORDER`</td><td>`--border`</td>
-<td>The size of the gap between two cells, in pixels</td><td>`1`</td>
-<td>`-n`</td></tr>
-<tr><td>`-n`</td><td>`--no-border`</td><td>Disables the gap between cells</td>
-<td></td><td>`-b`, because equivalent to `-b0`</td></tr>
-<tr><td>`-c CELL_SIZE`</td><td>`--cell-size`</td><td>Gives the size of a cell,
-in pixels</td><td>`16`</td><td>None</td></tr>
-<tr><td>`-r RATE`</td><td>`--update-rate`</td><td>The number of generations per
-second</td><td>`25`</td><td>None</td></tr>
-<tr><td rowspan="3">File I/O</td><td>`-f FILE`</td><td>`--file`</td><td>Gives
-the name of the file to read from and write to</td><td>None</td><td>`-i` and
-`-o`</td></tr>
-<tr><td>`-i INPUT_FILE`</td><td>`--input-file`</td><td>Gives the path to the
-file from which to read the grid's initial configuration</td><td>None</td>
-<td>`-f`, `-w` and `-h`</td></tr>
-<tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Gives the path to the
-file to write the grid state to</td><td>None</td><td>`-f`</td></tr>
-<tr><td>`-F FORMAT`</td><td>`--format`</td><td>Specifies the format of the grid
-representation in the input file. Either *plain*, *plaintext* or *RLE*
-(case-insensitive)</td><td>None</td><td>None</td></tr></table>
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Short option (with optional argument)</th>
+    <th>Long option</th>
+    <th>Description</th>
+    <th>Default value</th>
+    <th>Conflict with another option</th>
+  </tr>
+  <tr>
+    <td rowspan="4">Grid management</td>
+    <td><code>-w WIDTH</code></td>
+    <td><code>--width</code></td>
+    <td>Specifies the width of the grid</td>
+    <td><code>80</code></td>
+    <td><code>-i</code>, <code>-S</code></td>
+  </tr>
+  <tr>
+    <td><code>-h HEIGHT</code></td>
+    <td><code>--height</code></td>
+    <td>Specifies the height of the grid</td>
+    <td><code>60</code></td>
+    <td><code>-i</code>, <code>-S</code></td>
+  </tr>
+  <tr>
+    <td><code>-S SIZE</code></td>
+    <td><code>--square-size</code></td>
+    <td>Specifies the grid as square and gives its size</td>
+    <td>None</td><code>-w</code> et <code>-h</code>, because equivalent to
+<code>-w SIZE -h SIZE</code></td>
+  </tr>
+  <tr>
+    <td><code>-W</code></td>
+    <td><code>--wrap</code></td>
+    <td>Enables wrapping grid (cf. section 1.2.1.)</td>
+    <td>False</td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td><code>-R RULE</code></td>
+    <td><code>--game-rule</code></td>
+    <td>Specifies the Life variant to run (either by its name if
+recognized, or its rulestring)</td>
+    <td><code>B3/S23</code></td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Grid display</td>
+    <td><code>-b BORDER</code></td>
+    <td><code>--border</code></td>
+    <td>The size of the gap between two cells, in pixels</td>
+    <td><code>1</code></td>
+    <td><code>-n</code></td>
+  </tr>
+  <tr>
+    <td><code>-n</code></td>
+    <td><code>--no-border</code></td>
+    <td>Disables the gap between cells</td>
+    <td>False</td>
+    <td><code>-b</code>, because equivalent to <code>-b0</code></td>
+  </tr>
+  <tr>
+    <td><code>-c CELL_SIZE</code></td>
+    <td><code>--cell-size</code></td>
+    <td>Gives the size of a cell, in pixels</td>
+    <td><code>16</code></td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td><code>-r RATE</code></td>
+    <td><code>--update-rate</code></td>
+    <td>The number of generations per second</td>
+    <td><code>25</code></td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td rowspan="3">File I/O</td>
+    <td><code>-f FILE</code></td>
+    <td><code>--file</code></td>
+    <td>Gives the name of the file to read from and write to</td>
+    <td>None</td>
+    <td><code>-i</code> and <code>-o</code></td>
+  </tr>
+  <tr>
+    <td><code>-i INPUT_FILE</code></td>
+    <td><code>--input-file</code></td>
+    <td>Gives the path to the file from which to read the grid's initial
+configuration</td>
+    <td>None</td>
+    <td><code>-f</code>, <code>-w</code> and <code>-h</code></td>
+  </tr>
+  <tr>
+    <td><code>-o OUTPUT_FILE</code></td>
+    <td><code>--output-file</code></td>
+    <td>Gives the path to the file to write the grid state to</td>
+    <td>None</td>
+    <td><code>-f</code></td>
+  </tr>
+  <tr>
+    <td><code>-F FORMAT</code></td>
+    <td><code>--format</code></td>
+    <td>Specifies the format of the grid representation in the input file.
+Either *plain*, *plaintext* or *RLE* (case-insensitive)</td>
+    <td>None</td>
+<td>None</td>
+  </tr>
+</table>
 
 Any file path argument (to `-f`, `-i` or `-o`) can be `-`, which specifies to
 read from the standard input stream or write to the standard output stream. It
@@ -387,20 +459,53 @@ update frequency.
 The keyboard can also be used to change the active cell, using the arrow keys.
 Some keys, or key combinations, also have a defined action:
 
-<table><tr><th>Key</th><th>Action</th></tr>
-<tr><td>`Esc`</td><td rowspan="3">Quit the program</td></tr>
-<tr><td>`Ctrl` + `Q`</td></tr>
-<tr><td>`Ctrl` + `W`</td></tr>
-<tr><td>`Space`</td><td>Toggle run mode</td></tr>
-<tr><td>`Enter`</td><td>When paused, update the grid once</td></tr>
-<tr><td>`T`</td><td>Toggle the active cell</td></tr>
-<tr><td>`R`</td><td>Reset the grid to the configuration in the input file. If
-no file was specified, do nothing</td></tr>
-<tr><td>`W`</td><td>Write the current state to the given output file. If the
-file does not exist, create it. If no file was specified, do nothing</td></tr>
-<tr><td>`C`</td><td>Clear the grid (kill all cells)</td></tr>
-<tr><td>`H`</td><td>Display in the console a summary of the mouse and key
-actions</td></tr></table>
+<table>
+  <tr>
+    <th>Key</th>
+    <th>Action</th>
+  </tr>
+  <tr>
+    <td><code>Esc</code></td>
+    <td rowspan="3">Quit the program</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl</code> + <code>Q</code></td>
+  </tr>
+  <tr>
+    <td><code>Ctrl</code> + <code>W</code></td>
+  </tr>
+  <tr>
+    <td><code>Space</code></td>
+    <td>Toggle run mode</td>
+  </tr>
+  <tr>
+    <td><code>Enter</code></td>
+    <td>When paused, update the grid once</td>
+  </tr>
+  <tr>
+    <td><code>T</code></td>
+    <td>Toggle the active cell</td>
+  </tr>
+  <tr>
+    <td><code>R</code></td>
+    <td>Reset the grid to the configuration in the input file. If no file
+was specified, do nothing</td>
+  </tr>
+  <tr>
+    <td><code>W</code></td>
+    <td>Write the current state to the given output file. If the
+file does not exist, create it. If no file was specified, do nothing</td>
+  </tr>
+  <tr>
+    <td><code>C</code></td>
+    <td>Clear the grid (kill all cells)</td>
+  </tr>
+  <tr>
+    <td><code>H</code></td>
+    <td>Display in the console a summary of the mouse and key
+actions</td>
+  </tr>
+</table>
 
 
 #### 2.1.4. File input/output

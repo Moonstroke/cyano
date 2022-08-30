@@ -338,45 +338,113 @@ Vie tels que présentés ci-dessus.
 CE programme est invoqué depuis la ligne de commande et accepte un ensemble
 d’options.
 
-<table><tr><th>Catégorie</th><th>Option courte (avec argument éventuel)</th>
-<th>Option longue</th><th>Description</th><th>Valeur par défaut</th><th>Conflit
-avec une autre option</th></tr>
-<tr><td rowspan="4">Gestion de la grille</td><td>`-w LARGEUR`</td>
-<td>`--width`</td><td>Spécifie la largeur de la grille</td><td>`80`</td>
-<td>`-i`, `-S`</td></tr>
-<tr><td>`-h HAUTEUR`</td><td>`--height`</td><td>Spécifie la hauteur de la
-grille</td><td>`60`</td><td>`-i`, `-S`</td></tr>
-<tr><td>`-S TAILLE`</td><td>`--square-size`</td><td>Spécifie que la grille est
-carrée et donne sa taille</td><td>Aucun</td>`-w` et `-h`, car équivalent à
-`-w TAILLE -h TAILLE`</td></tr>
-<tr><td>`-W`</td><td>`--wrap`</td><td>Fait boucler la grille sur elle-même (cf.
-section 1.2.1.)</td><td>Faux</td><td>Aucun</td></tr>
-<tr><td>`-R RÈGLE`</td><td>`--game-rule`</td><td>Spécifie la variante du Jeu à
-lancer (par son nom s’il est connu, sinon par sa
-*rulestring*)</td><td>`B3/S23`</td><td>Aucun</td></tr>
-<tr><td rowspan="5">Affichage de la
-grille</td><td>`-b BORDURE`</td><td>`--border`</td><td>La taille de l’espace
-entre les cellules, en pixels</td><td>`1`</td><td>`-n`</td></tr>
-<tr><td>`-n`</td><td>`--no-border`</td><td>Supprime l’espace entre les
-cellules</td><td></td><td>`-b`, parce qu’équivalent à `-b0`</td></tr>
-<tr><td>`-c TAILLE_CELLULE`</td><td>`--cell-size`</td><td>Donne la taille d’une
-cellule, en pixels</td><td>`16`</td><td>Aucun</td></tr>
-<tr><td>`-r FRÉQUENCE`</td><td>`--update-rate`</td><td>Le nombre de
-générations par seconde</td><td>`25`</td><td>None</td></tr>
-<tr><td rowspan="3">E/S de fichier</td><td>`-f FICHIER`</td><td>`--file`</td>
-<td>Donne le chemin du fichier d’où lire et où
-écrire</td><td>Aucune</td><td>`-i` et `-o`</td></tr>
-<tr><td>`-i FICHIER_ENTRÉE`</td><td>`--input-file`</td><td>Donne le chemin
-vers le fichier d’où lire la configuration initiale de la
-grille</td><td>Aucune</td>
-<td>`-f`, `-w` et `-h`</td></tr>
-<tr><td>`-o FICHIER_SORTIE`</td><td>`--output-file`</td><td>Donne le chemin
-vers le fichier où écrire l’état de la
-grille</td><td>Aucune</td><td>`-f`</td></tr>
-<tr><td>`-F FORMAT`</td><td>`--format`</td><td>Spécifie le format de la
-représentation de la grille dans le fichier d’entrée. Soit *plain*,
-*plaintext* ou *RLE* (casse
-indifférenciée)</td><td>Aucune</td><td>Aucun</td></tr></table>
+<table>
+  <tr>
+    <th>Catégorie</th>
+    <th>Option courte (avec argument éventuel)</th>
+    <th>Option longue</th>
+    <th>Description</th>
+    <th>Valeur par défaut</th>
+    <th>Conflit avec une autre option</th>
+  </tr>
+  <tr>
+    <td rowspan="4">Gestion de la grille</td>
+    <td><code>-w LARGEUR</code></td>
+    <td><code>--width</code></td>
+    <td>Spécifie la largeur de la grille</td>
+    <td><code>80</code></td>
+    <td><code>-i</code>, <code>-S</code></td>
+  </tr>
+  <tr>
+    <td><code>-h HAUTEUR</code></td>
+    <td><code>--height</code></td>
+    <td>Spécifie la hauteur de la grille</td>
+    <td><code>60</code></td>
+    <td><code>-i</code>, <code>-S</code></td>
+  </tr>
+  <tr>
+    <td><code>-S TAILLE</code></td>
+    <td><code>--square-size</code></td>
+    <td>Spécifie que la grille est carrée et donne sa taille</td>
+    <td>Aucun</td><code>-w</code> et <code>-h</code>, car équivalent à <code>-w
+TAILLE -h TAILLE</code></td>
+  </tr>
+  <tr>
+    <td><code>-W</code></td>
+    <td><code>--wrap</code></td>
+    <td>Fait boucler la grille sur elle-même (cf. section 1.2.1.)</td>
+    <td>Faux</td>
+    <td>Aucun</td>
+  </tr>
+  <tr>
+    <td><code>-R RÈGLE</code></td>
+    <td><code>--game-rule</code></td>
+    <td>Spécifie la variante du Jeu à lancer (par son nom s’il est connu, sinon
+par sa *rulestring*)</td>
+    <td><code>B3/S23</code></td>
+    <td>Aucun</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Affichage de la grille</td>
+    <td><code>-b BORDURE</code></td>
+    <td><code>--border</code></td>
+    <td>La taille de l’espace entre les cellules, en pixels</td>
+    <td><code>1</code></td>
+    <td><code>-n</code></td>
+  </tr>
+  <tr>
+    <td><code>-n</code></td>
+    <td><code>--no-border</code></td>
+    <td>Supprime l’espace entre les cellules</td>
+    <td>Faux</td>
+    <td><code>-b</code>, parce qu’équivalent à <code>-b0</code></td>
+  </tr>
+  <tr>
+    <td><code>-c TAILLE_CELLULE</code></td>
+    <td><code>--cell-size</code></td>
+    <td>Donne la taille d’une cellule, en pixels</td>
+    <td><code>16</code></td>
+    <td>Aucun</td>
+  </tr>
+  <tr>
+    <td><code>-r FRÉQUENCE</code></td>
+    <td><code>--update-rate</code></td>
+    <td>Le nombre de générations par seconde</td>
+    <td><code>25</code></td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td rowspan="3">E/S de fichier</td>
+    <td><code>-f FICHIER</code></td>
+    <td><code>--file</code></td>
+    <td>Donne le chemin du fichier d’où lire et où écrire</td>
+    <td>Aucune</td>
+    <td><code>-i</code> et <code>-o</code></td>
+  </tr>
+  <tr>
+    <td><code>-i FICHIER_ENTRÉE</code></td>
+    <td><code>--input-file</code></td>
+    <td>Donne le chemin vers le fichier d’où lire la configuration initiale de
+la grille</td>
+    <td>Aucune</td>
+    <td><code>-f</code>, <code>-w</code> et <code>-h</code></td>
+  </tr>
+  <tr>
+    <td><code>-o FICHIER_SORTIE</code></td>
+    <td><code>--output-file</code></td>
+    <td>Donne le chemin vers le fichier où écrire l’état de la grille</td>
+    <td>Aucune</td>
+    <td><code>-f</code></td>
+  </tr>
+  <tr>
+    <td><code>-F FORMAT</code></td>
+    <td><code>--format</code></td>
+    <td>Spécifie le format de la représentation de la grille dans le fichier
+d’entrée. Soit *plain*, *plaintext* ou *RLE* (casse indifférenciée)</td>
+    <td>Aucune</td>
+    <td>Aucun</td>
+  </tr>
+</table>
 
 Tout argument représentant un chemin vers un fichier (pour l’une des options
 `-f`, `-i` ou `-o`) peut être `-`, ce qui spécifie de lire depuis le flux
@@ -424,22 +492,53 @@ Le clavier peut également être utilisé pour changer la cellule active, en
 utilisant les touches flèches. Certaines touches ou combinaisons de touches ont
 aussi une action définie :
 
-<table><tr><th>Touche</th><th>Action</th></tr>
-<tr><td>`Échap`</td><td rowspan="3">Quitte le programme</td></tr>
-<tr><td>`Ctrl` + `Q`</td></tr>
-<tr><td>`Ctrl` + `W`</td></tr>
-<tr><td>`Espace`</td><td>Lance ou arrête le mode continu</td></tr>
-<tr><td>`Entrée`</td><td>Quand en pause, évolue la grille d’une seule
-génération</td></tr>
-<tr><td>`T`</td><td>Inverse la cellule active</td></tr>
-<tr><td>`R`</td><td>Réinitialise la grille à la configuration dans le fichier
-d’entrée. Si aucun fichier n’a été spécifié, ne fait rien</td></tr>
-<tr><td>`W`</td><td>Écrit l’état actuel de la grille dans le fichier de
-sortie ; si le fichier n’existe pas, le crée. Si aucun fichier spécifié, ne
-fait rien</td></tr>
-<tr><td>`C`</td><td>Efface la grille (tue toutes les cellules)</td></tr>
-<tr><td>`H`</td><td>Affiche dans la console un résumé des actions de clavier et
-souris</td></tr></table>
+<table>
+  <tr>
+    <th>Touche</th>
+    <th>Action</th>
+  </tr>
+  <tr>
+    <td><code>Échap</code></td>
+    <td rowspan="3">Quitte le programme</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl</code> + <code>Q</code></td>
+  </tr>
+  <tr>
+    <td><code>Ctrl</code> + <code>W</code></td>
+  </tr>
+  <tr>
+    <td><code>Espace</code></td>
+    <td>Lance ou arrête le mode continu</td>
+  </tr>
+  <tr>
+    <td><code>Entrée</code></td>
+    <td>Quand en pause, évolue la grille d’une seule génération</td>
+  </tr>
+  <tr>
+    <td><code>T</code></td>
+    <td>Inverse la cellule active</td>
+  </tr>
+  <tr>
+    <td><code>R</code></td>
+    <td>Réinitialise la grille à la configuration dans le fichier d’entrée. Si
+aucun fichier n’a été spécifié, ne fait rien</td>
+  </tr>
+  <tr>
+    <td><code>W</code></td>
+    <td>Écrit l’état actuel de la grille dans le fichier de sortie ; si le
+fichier n’existe pas, le crée. Si aucun fichier spécifié, ne fait rien</td>
+  </tr>
+  <tr>
+    <td><code>C</code></td>
+    <td>Efface la grille (tue toutes les cellules)</td>
+  </tr>
+  <tr>
+    <td><code>H</code></td>
+    <td>Affiche dans la console un résumé des actions de clavier et
+souris</td>
+  </tr>
+</table>
 
 
 #### 2.1.4. Entrée/Sortie de fichiers
