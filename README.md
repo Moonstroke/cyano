@@ -418,7 +418,7 @@ configuration</td>
     <td>Specifies the format of the grid representation in the input file.
 Either *plain*, *plaintext* or *RLE* (case-insensitive)</td>
     <td>None</td>
-<td>None</td>
+    <td>None</td>
   </tr>
 </table>
 
