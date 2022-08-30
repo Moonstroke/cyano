@@ -8,18 +8,19 @@ SDLife
 
 ### 1.1. Automates cellulaires
 
-Le Jeu de la Vie est un jeu mathématique conçu par John Conway en 1970. C’est le
-plus connu des *automates cellulaires*, des jeux de simulation sans interaction
-du joueur (concept appelé par Conway des jeux à zéro joueurs) consistant en une
-grille de « cellules » évoluant dans le temps entre différents états selon un
-jeu spécifique de règles et constituant de nombreux motifs multicellulaires
-uniques. Chacun de ces ensembles définit un automate cellulaire particulier.
+Le Jeu de la Vie est un jeu mathématique conçu par John Conway en 1970. C’est
+le plus connu des *automates cellulaires*, des jeux de simulation sans
+interaction du joueur (concept appelé par Conway des jeux à zéro joueurs)
+consistant en une grille de « cellules » évoluant dans le temps entre
+différents états selon un jeu spécifique de règles et constituant de nombreux
+motifs multicellulaires uniques. Chacun de ces ensembles définit un automate
+cellulaire particulier.
 
 Partis de simples curiosités mathématiques, les automates cellulaires ont gagné
 en popularité par leur présentation d’un comportement complexe et organique,
 avec des motifs n’évoluant plus, qui se répètent ou se déplacent sur la grille.
-Macroscopiquement, l’observation de l’évolution en continu d’une grille rappelle
-la croissance (accélérée) de cultures de microorganismes, d’où le nom.
+Macroscopiquement, l’observation de l’évolution en continu d’une grille
+rappelle la croissance (accélérée) de cultures de microorganismes, d’où le nom.
 
 Le fait que des interactions complexes entre les cellules émergent directement
 d’un ensemble de règles simples en apparence a été source d’études et de
@@ -30,10 +31,10 @@ La nature systématique du jeu en fait un excellent exercice de développement �
 ce projet n’est qu’un exemple parmi tant d’implémentation du Jeu de la Vie,
 existant aussi bien en ligne que sur les bécanes de geeks passionnés.
 
-Une propriété frappante de certains automates cellulaires, dont celui de Conway,
-est leur nature Turing-complète, c’est-à-dire qu’ils sont capables d’émuler une
-machine de calcul universelle, donc théoriquement d’effectuer n’importe quel
-calcul mathématique.
+Une propriété frappante de certains automates cellulaires, dont celui de
+Conway, est leur nature Turing-complète, c’est-à-dire qu’ils sont capables
+d’émuler une machine de calcul universelle, donc théoriquement d’effectuer
+n’importe quel calcul mathématique.
 
 
 ### 1.2. Propriétés de la grille
@@ -58,8 +59,8 @@ perpendiculaires.
 
 L’évolution est *totaliste extérieure*, c’est-à-dire que l’état suivant de
 chaque cellule est fonction du total de cellules voisines vivantes et de l’état
-actuel de la cellule. (Un automate cellulaire entièrement *totaliste* incluerait
-l’état actuel de la cellule dans le total des cellules vivantes).
+actuel de la cellule. (Un automate cellulaire entièrement *totaliste*
+incluerait l’état actuel de la cellule dans le total des cellules vivantes).
 
 La grille est *isotrope*, c’est-à-dire que les cellules voisines contribuent
 également à l’évolution, la localisation d’une cellule ne porte pas de
@@ -69,9 +70,9 @@ mortes compte).
 La grille est *homogène*, signifiant que la règle s’applique indistinctement
 partout sur la grille de la même manière.
 
-Les automates cellulaires exhibant ces propriétés sont qualifiés de « similaires
-au Jeu de la Vie », ou *Life-like* en anglais, parfois abrégé en *LLCA*
-(*Life-like cellular automata*).
+Les automates cellulaires exhibant ces propriétés sont qualifiés de
+« similaires au Jeu de la Vie », ou *Life-like* en anglais, parfois abrégé en
+*LLCA* (*Life-like cellular automata*).
 
 
 #### 1.2.1. Taille de la grille
@@ -198,8 +199,8 @@ notamment dans la construction, car ils constitue un support de transmission
 d’information (la présence d’un planeur peut être traitée comme un bit `1` et
 son absence un bit `0`, par exemple), et il est aussi utiliser pour percuter
 d’autres motifs pour déclencher des réactions intéressantes. Il existe en
-réalité une traque des configurations minimales impliquant des planeurs capables
-de générer des motifs particuliers.
+réalité une traque des configurations minimales impliquant des planeurs
+capables de générer des motifs particuliers.
 
 De tous les motifs existants le planeur est également le plus reconnaissable,
 en faisant l’incarnation par excellence du Jeu de la Vie.
@@ -219,12 +220,13 @@ vitesse du planeur est `c/4`.
 Il n’existe pas de vaisseaux de vitesse `c` dans le Jeu, cependant certaines
 variantes semblables, particulièrement les plus explosives, en présentent.
 
-Dans d’autres automates cellulaires, non similaires au Jeu, la règle d’évolution
-peut considérer les cellules plus lointaines que les voisines directes,
-permettant la transmission d’information à plus d’une cellule par génération et
-par là même une plus grande valeur pour `c`. Dans ces versions, il est donc
-possible de trouver des vaisseaux se déplaçant de plus d’une cellule par
-génération (mais leur vitesse ne dépassera jamais la valeur de leur `c`).
+Dans d’autres automates cellulaires, non similaires au Jeu, la règle
+d’évolution peut considérer les cellules plus lointaines que les voisines
+directes, permettant la transmission d’information à plus d’une cellule par
+génération et par là même une plus grande valeur pour `c`. Dans ces versions,
+il est donc possible de trouver des vaisseaux se déplaçant de plus d’une
+cellule par génération (mais leur vitesse ne dépassera jamais la valeur de
+*leur* `c`).
 
 
 ### 1.5. Formule *rulestring*
@@ -241,8 +243,8 @@ un chiffre chacun.
 
 Les chiffres pour les transitions « naissance » et « survie » sont énumérés en
 ordre croissant, précédés de l’initiale de la transition en anglais (B for
-*birth* et S pour *survival*) et les sections sont séparées par une unique barre
-oblique.
+*birth* et S pour *survival*) et les sections sont séparées par une unique
+barre oblique.
 
 Selon cette syntaxe, la règle originale s’écrit `B3/S23` : la cellule naît si
 elle a trois voisines vivantes, survit avec deux ou trois, sinon elle sera
@@ -250,8 +252,8 @@ morte, que ce soit par mort ou parce qu’elle n’était déjà pas vivante
 initialement.
 
 Le format présenté ici (*B* avant *S*) est aussi appelé notation B/S, par
-opposition à la notation S/B, où la section *S* précède *B*, mais cette notation
-bien que similaire est tombée en désuétude.
+opposition à la notation S/B, où la section *S* précède *B*, mais cette
+notation bien que similaire est tombée en désuétude.
 
 Techniquement, pour un minimalisme total, soit les caractères *B* et *S*, soit
 la barre oblique, peuvent être omis (et le programme accepte sans problème des
@@ -290,8 +292,8 @@ programme reconnaît, accompagnés de leur rulestring :
  - Diamoeba (B35678/S5678)
    Développe des amibes rhombiques (en forme de losange)
  - Flakes, Life without Death, or LwoD (B3/S012345678)
-   Crée de belles structures ressemblant à des flocons de neige (à noter que les
-   cellules une fois nées ne meurent pas)
+   Crée de belles structures ressemblant à des flocons de neige (à noter que
+   les cellules une fois nées ne meurent pas)
  - Gnarl (B1/S1)
    Commencer avec une seule cellule ; voir par soi-même.
  - HighLife, or Highlife (B36/S23)
@@ -308,12 +310,12 @@ programme reconnaît, accompagnés de leur rulestring :
  - Move (B368/S245)
    Une règle évoluant lentement, avec de nombreux vaisseaux et puffeurs
  - Pseudo Life, or Pseudo life (B357/S238)
-   Ressemble à la règle originale, mais aucun de ses motifs ne se comporte de la
-   même manière
+   Ressemble à la règle originale, mais aucun de ses motifs ne se comporte de
+   la même manière
  - Replicator (B1357/S1357)
    Chaque motif forme des répliques de lui-même
  - Seeds (B2/S)
-   Chanque cellule meurt systématiquement à la génération suivante. Néanmoins la
+   Chaque cellule meurt systématiquement à la génération suivante. Néanmoins la
    plupart des motifs évoluent de manière explosive
  - Serviettes (B234/S)
    Produit de magnifiques géométries semblant être tirées de tapis persans
@@ -336,47 +338,119 @@ Vie tels que présentés ci-dessus.
 CE programme est invoqué depuis la ligne de commande et accepte un ensemble
 d’options.
 
-<table><tr><th>Catégorie</th><th>Option courte (avec argument éventuel)</th>
-<th>Option longue</th><th>Description</th><th>Valeur par défaut</th><th>Conflit
-avec une autre option</th></tr>
-<tr><td rowspan="4">Gestion de la grille</td><td>`-w WIDTH`</td>
-<td>`--width`</td><td>Spécifie la largeur de la grille</td><td>`80`</td>
-<td>`-i`, `-S`</td></tr>
-<tr><td>`-h HEIGHT`</td><td>`--height`</td><td>Spécifie la hauteur de la
-grille</td><td>`60`</td><td>`-i`, `-S`</td></tr>
-<tr><td>`-S SIZE`</td><td>`--square-size`</td><td>Spécifie que la grille est
-carrée et donne sa taille</td><td>Aucun</td>`-w` et `-h`, car équivalent à
-`-w SIZE -h SIZE`</td></tr>
-<tr><td>`-W`</td><td>`--wrap`</td><td>Fait boucler la grille sur elle-même (cf.
-section 1.2.1.)</td><td>Faux</td><td>Aucun</td></tr>
-<tr><td>`-R RULE`</td><td>`--game-rule`</td><td>Spécifie la variante du Jeu à
-lancer (par son nom s’il est connu, sinon par sa
-*rulestring*)</td><td>`B3/S23`</td><td>Aucun</td></tr>
-<tr><td rowspan="5">Affichage de la
-grille</td><td>`-b BORDER`</td><td>`--border`</td><td>La taille de l’espace
-entre les cellules, en pixels</td><td>`1`</td><td>`-n`</td></tr>
-<tr><td>`-n`</td><td>`--no-border`</td><td>Supprime l’espace entre les
-cellules</td><td></td><td>`-b`, parce qu’équivalent à `-b0`</td></tr>
-<tr><td>`-c CELL_SIZE`</td><td>`--cell-size`</td><td>Donne la taille d’une
-cellule, en pixels</td><td>`16`</td><td>Aucun</td></tr>
-<tr><td>`-r RATE`</td><td>`--update-rate`</td><td>Le nombre de générations par
-seconde</td><td>`25`</td><td>None</td></tr>
-<tr><td rowspan="3">E/S de fichier</td><td>`-f FILE`</td><td>`--file`</td>
-<td>Donne le chemin du fichier d’où lire et où écrire</td><td>Aucune</td><td>`-i`
-et `-o`</td></tr>
-<tr><td>`-i INPUT_FILE`</td><td>`--input-file`</td><td>Donne le chemin vers le
-fichier d’où lire la configuration initiale de la grille</td><td>Aucune</td>
-<td>`-f`, `-w` et `-h`</td></tr>
-<tr><td>`-o OUTPUT_FILE`</td><td>`--output-file`</td><td>Donne le chemin vers le
-fichier où écrire l’état de la grille</td><td>Aucune</td><td>`-f`</td></tr>
-<tr><td>`-F FORMAT`</td><td>`--format`</td><td>Spécifie le format de la
-représentation de la grille dans le fichier d’entrée. Soit *plain*, *plaintext* ou *RLE* (casse indifférenciée)</td><td>Aucune</td><td>Aucun</td></tr></table>
+<table>
+  <tr>
+    <th>Catégorie</th>
+    <th>Option courte (avec argument éventuel)</th>
+    <th>Option longue</th>
+    <th>Description</th>
+    <th>Valeur par défaut</th>
+    <th>Conflit avec une autre option</th>
+  </tr>
+  <tr>
+    <td rowspan="4">Gestion de la grille</td>
+    <td><code>-w LARGEUR</code></td>
+    <td><code>--width</code></td>
+    <td>Spécifie la largeur de la grille</td>
+    <td><code>80</code></td>
+    <td><code>-i</code>, <code>-S</code></td>
+  </tr>
+  <tr>
+    <td><code>-h HAUTEUR</code></td>
+    <td><code>--height</code></td>
+    <td>Spécifie la hauteur de la grille</td>
+    <td><code>60</code></td>
+    <td><code>-i</code>, <code>-S</code></td>
+  </tr>
+  <tr>
+    <td><code>-S TAILLE</code></td>
+    <td><code>--square-size</code></td>
+    <td>Spécifie que la grille est carrée et donne sa taille</td>
+    <td>Aucun</td><code>-w</code> et <code>-h</code>, car équivalent à <code>-w
+TAILLE -h TAILLE</code></td>
+  </tr>
+  <tr>
+    <td><code>-W</code></td>
+    <td><code>--wrap</code></td>
+    <td>Fait boucler la grille sur elle-même (cf. section 1.2.1.)</td>
+    <td>Faux</td>
+    <td>Aucun</td>
+  </tr>
+  <tr>
+    <td><code>-R RÈGLE</code></td>
+    <td><code>--game-rule</code></td>
+    <td>Spécifie la variante du Jeu à lancer (par son nom s’il est connu, sinon
+par sa *rulestring*)</td>
+    <td><code>B3/S23</code></td>
+    <td>Aucun</td>
+  </tr>
+  <tr>
+    <td rowspan="5">Affichage de la grille</td>
+    <td><code>-b BORDURE</code></td>
+    <td><code>--border</code></td>
+    <td>La taille de l’espace entre les cellules, en pixels</td>
+    <td><code>1</code></td>
+    <td><code>-n</code></td>
+  </tr>
+  <tr>
+    <td><code>-n</code></td>
+    <td><code>--no-border</code></td>
+    <td>Supprime l’espace entre les cellules</td>
+    <td>Faux</td>
+    <td><code>-b</code>, parce qu’équivalent à <code>-b0</code></td>
+  </tr>
+  <tr>
+    <td><code>-c TAILLE_CELLULE</code></td>
+    <td><code>--cell-size</code></td>
+    <td>Donne la taille d’une cellule, en pixels</td>
+    <td><code>16</code></td>
+    <td>Aucun</td>
+  </tr>
+  <tr>
+    <td><code>-r FRÉQUENCE</code></td>
+    <td><code>--update-rate</code></td>
+    <td>Le nombre de générations par seconde</td>
+    <td><code>25</code></td>
+    <td>None</td>
+  </tr>
+  <tr>
+    <td rowspan="3">E/S de fichier</td>
+    <td><code>-f FICHIER</code></td>
+    <td><code>--file</code></td>
+    <td>Donne le chemin du fichier d’où lire et où écrire</td>
+    <td>Aucune</td>
+    <td><code>-i</code> et <code>-o</code></td>
+  </tr>
+  <tr>
+    <td><code>-i FICHIER_ENTRÉE</code></td>
+    <td><code>--input-file</code></td>
+    <td>Donne le chemin vers le fichier d’où lire la configuration initiale de
+la grille</td>
+    <td>Aucune</td>
+    <td><code>-f</code>, <code>-w</code> et <code>-h</code></td>
+  </tr>
+  <tr>
+    <td><code>-o FICHIER_SORTIE</code></td>
+    <td><code>--output-file</code></td>
+    <td>Donne le chemin vers le fichier où écrire l’état de la grille</td>
+    <td>Aucune</td>
+    <td><code>-f</code></td>
+  </tr>
+  <tr>
+    <td><code>-F FORMAT</code></td>
+    <td><code>--format</code></td>
+    <td>Spécifie le format de la représentation de la grille dans le fichier
+d’entrée. Soit *plain*, *plaintext* ou *RLE* (casse indifférenciée)</td>
+    <td>Aucune</td>
+    <td>Aucun</td>
+  </tr>
+</table>
 
 Tout argument représentant un chemin vers un fichier (pour l’une des options
 `-f`, `-i` ou `-o`) peut être `-`, ce qui spécifie de lire depuis le flux
 d’entrée standard ou d’écrire sur le flux de sortie standard. Il s’agit du seul
-cas où l’argument de `-f` ne fait pas référence au même fichier pour l’entrée et
-la sortie : `-f-` est un raccourci pour `-i- -o-`.
+cas où l’argument de `-f` ne fait pas référence au même fichier pour l’entrée
+et la sortie : `-f-` est un raccourci pour `-i- -o-`.
 
 
 #### 2.1.2. Interface graphique
@@ -392,9 +466,10 @@ Seules les tailles de cellule et de bordure (ou la seule présence de cette
 dernière) peuvent être modifiées (cf. la section précédente) ; les couleurs ne
 sont actuellement pas configurables.
 
-Le programme dispose de deux modes d’évolution. Il peut être lancé et évoluer en
-continu à la fréquence indiquée au lancement (voir ci-dessus), ou être dans un
-état stoppé, donnant ainsi à l’utilisateur la possibilité de modifier l’état des
+Le programme dispose de deux modes d’évolution. Il peut être lancé et évoluer
+en continu à la fréquence indiquée au lancement (voir ci-dessus), ou être dans
+un état stoppé, donnant ainsi à l’utilisateur la possibilité de modifier
+l’état des
 cellules ou de dessiner des motifs complets avant que ceux-ci n’évoluent. Dans
 ce mode, la grille peut toujours évoluer par étapes.
 
@@ -402,44 +477,87 @@ ce mode, la grille peut toujours évoluer par étapes.
 #### 2.1.3. Interaction avec le clavier et la souris
 
 L’utilisateur peut interagir avec la fenêtre du programme au travers du clavier
-aussi bien que de la souris. Déplacer la souris au-dessus de la grille change la
-cellule active pour celle sous le curseur.
+aussi bien que de la souris. Déplacer la souris au-dessus de la grille change
+la cellule active pour celle sous le curseur.
 
 Le bouton gauche de la souris peut être actionné pour inverser l’état de la
 cellule active (si elle est vivante, elle meurt, si déjà morte, elle naît). le
 bouton peut également être mainteu pressé et la souris déplacée, pour inverser
-chaque cellule que le curseur survole. Cependant, si la souris est déplacée trop
-rapidement, certaines cellules peuvent être manquées : c’est une limitation
-connue de l’implémentation de la régulation de la fréquence de mise à jour du
-programme.
+chaque cellule que le curseur survole. Cependant, si la souris est déplacée
+trop rapidement, certaines cellules peuvent être manquées : c’est une
+limitation connue de l’implémentation de la régulation de la fréquence de mise
+à jour du programme.
 
 Le clavier peut également être utilisé pour changer la cellule active, en
 utilisant les touches flèches. Certaines touches ou combinaisons de touches ont
 aussi une action définie :
 
-<table><tr><th>Touche</th><th>Action</th></tr>
-<tr><td>`Esc`</td><td rowspan="3">Quitte le programme</td></tr>
-<tr><td>`Ctrl` + `Q`</td></tr>
-<tr><td>`Ctrl` + `W`</td></tr>
-<tr><td>`Space`</td><td>Lance ou arrête le mode continu</td></tr>
-<tr><td>`Enter`</td><td>Quand en pause, évolue la grille d’une seule
-génération</td></tr>
-<tr><td>`T`</td><td>Inverse la cellule active</td></tr>
-<tr><td>`R`</td><td>Réinitialise la grille à la configuration dans le fichier
-d’entrée. Si aucun fichier n’a été spécifié, ne fait rien</td></tr>
-<tr><td>`W`</td><td>Écrit l’état actuel de la grille dans le fichier de sortie ;
-si le fichier n’existe pas, le crée. Si aucun fichier spécifié, ne fait
-rien</td></tr>
-<tr><td>`C`</td><td>Efface la grille (tue toutes les cellules)</td></tr>
-<tr><td>`H`</td><td>Affiche dans la console un résumé des actions de clavier et
-souris</td></tr>
-<tr><td>`+`</td><td rowspan="3">Augmente la largeur et la hauteur de la grille
-d’une cellule</td></tr>
-<tr><td>`+` pavé numérique</td></tr>
-<tr><td>`Maj` + `=`<sup><a href="#note1">1</a></sup></td></tr>
-<tr><td>`-`</td><td rowspan="2">Réduit la largeur et la hauteur de la grille
-d’une cellule</td></tr>
-<tr><td>`-` pavé numérique</td></tr></table>
+<table>
+  <tr>
+    <th>Touche</th>
+    <th>Action</th>
+  </tr>
+  <tr>
+    <td><code>Échap</code></td>
+    <td rowspan="3">Quitte le programme</td>
+  </tr>
+  <tr>
+    <td><code>Ctrl</code> + <code>Q</code></td>
+  </tr>
+  <tr>
+    <td><code>Ctrl</code> + <code>W</code></td>
+  </tr>
+  <tr>
+    <td><code>Espace</code></td>
+    <td>Lance ou arrête le mode continu</td>
+  </tr>
+  <tr>
+    <td><code>Entrée</code></td>
+    <td>Quand en pause, évolue la grille d’une seule génération</td>
+  </tr>
+  <tr>
+    <td><code>T</code></td>
+    <td>Inverse la cellule active</td>
+  </tr>
+  <tr>
+    <td><code>R</code></td>
+    <td>Réinitialise la grille à la configuration dans le fichier d’entrée. Si
+aucun fichier n’a été spécifié, ne fait rien</td>
+  </tr>
+  <tr>
+    <td><code>W</code></td>
+    <td>Écrit l’état actuel de la grille dans le fichier de sortie ; si le
+fichier n’existe pas, le crée. Si aucun fichier spécifié, ne fait rien</td>
+  </tr>
+  <tr>
+    <td><code>C</code></td>
+    <td>Efface la grille (tue toutes les cellules)</td>
+  </tr>
+  <tr>
+    <td><code>H</code></td>
+    <td>Affiche dans la console un résumé des actions de clavier et
+souris</td>
+  </tr>
+  <tr>
+    <td>`+`</td>
+    <td rowspan="3">Augmente la largeur et la hauteur de la grille d’une
+cellule</td>
+  </tr>
+  <tr>
+    <td>`+` pavé numérique</td>
+  </tr>
+  <tr>
+    <td>`Maj` + `=`<sup><a href="#note1">1</a></sup></td>
+  </tr>
+  <tr>
+    <td>`-`</td>
+    <td rowspan="2">Réduit la largeur et la hauteur de la grille d’une
+cellule</td>
+  </tr>
+  <tr>
+    <td>`-` pavé numérique</td>
+  </tr>
+</table>
 
 <span id="note1">1</span> Ce raccourci a été ajouté pour prendre en compte les
 dispositions de clavier les plus communes (nombreuses variantes QWERTY dont US
@@ -454,7 +572,8 @@ vont bénéficier d’un raccourci supplémentaire « gratuitement ».
 #### 2.1.4. Entrée/Sortie de fichiers
 
 Le programme peut lire ou écrire vers des fichiers dont le contenu décrit une
-configuration de grille (dimensions, état des cellules et parfois *rulestring*).
+configuration de grille (dimensions, état des cellules et parfois
+*rulestring*).
 Ces fichiers viennet en deux formats distincts, *texte brut* et *RLE* (pour
 *run-length encoding*, encodage par longueur de suite).
 
@@ -463,21 +582,22 @@ commande `-F`. Si l’option n’est pas donnée, le programme tente de deviner 
 format du fichier. Tout d’abord à partir de son nom : si celui-ci se termine
 par `.rle`, le format RLE est supposé. Au contraire, si le nom finit en
 `.cells`, c’est le format texte brut qui est supposé. En tout autre cas, le
-programme tente d’interpréter le contenu du fichier comme RLE, puis en cas de non-correspondance en tant que texte brut, avant de terminer en erreur.
+programme tente d’interpréter le contenu du fichier comme RLE, puis en cas de
+non-correspondance en tant que texte brut, avant de terminer en erreur.
 
 L’option `-F` peut également être utilisée pour forcer le format de fichier
 qui serait deviné depuis le nom ou le contenu du fichier, mais il n’est pas
 conseillé de nommer un fichier de motif de grille avec une extension qui ne
 corresponde pas.
 
-Le fichier d’entrée peut être fourni dans l’un des deux formats, mais le fichier
-de sortie sera toujours écrit en format texte brut.
+Le fichier d’entrée peut être fourni dans l’un des deux formats, mais le
+fichier de sortie sera toujours écrit en format texte brut.
 
 
 ##### 2.1.4.1. Format texte brut
 
-Le format texte brut est une représentation textuelle de la grille en un bloc de
-texte rectangulaire, avec des `.` pour les cellules mortes et des `@` ou `O`
+Le format texte brut est une représentation textuelle de la grille en un bloc
+de texte rectangulaire, avec des `.` pour les cellules mortes et des `@` ou `O`
 pour les vivantes. Bien que ces deux caractères soient reconnus, ils ne
 devraient pas être mélangés ; si les données contiennent les deux un message
 d'avertissement sera affiché sur la sortie d'erreur standard. La grille doit
@@ -503,11 +623,11 @@ Exemple : un planeur orienté vers le bas et la gauche en texte brut
 
 Le *RLE* est un format compressé où une suite contigüe de cellules dans le même
 état est réduite à une seule cellule et la longueur de la suite. Ce format
-attend une ligne d’en-tête donnant les dimensions de la grille et éventuellement
-la *rulestring* de la règle à utiliser. Cet en-tête est obligatoire : la
-configuration étant compressée, les fins de ligne mortes peuvent être omises et
-les dimensions de la grille ne peuvent pas être inférés seulement des données de
-la grille.
+attend une ligne d’en-tête donnant les dimensions de la grille et
+éventuellement la *rulestring* de la règle à utiliser. Cet en-tête est
+obligatoire : la configuration étant compressée, les fins de ligne mortes
+peuvent être omises et les dimensions de la grille ne peuvent pas être inférés
+seulement des données de la grille.
 
 Les cellules vivantes sont notées par un `o`, les mortes par un `b`, un `$`
 indique une fin de ligne (et le début de la suivante) et un `!` représente la
@@ -562,7 +682,8 @@ GNU devrait être possible avec MinGW ou Cygwin, mais je n’ai pas essayé.
 
 Pour les plateformes *nix, le seul paquet nécessaire pour compiler les sources
 est `libsdl2-dev`. Les paquets recommandés sont `make` pour fournir
-l’utilitaire de compilation et `doxygen` pour le traitement de la documentation.
+l’utilitaire de compilation et `doxygen` pour le traitement de la
+documentation.
 
 Concernant Win32, les outils développeurs doivent être installés (ils viennent
 avec Visual Studio) pour fournir `nmake` et le compilateur et éditeur de liens.
@@ -572,11 +693,11 @@ La SDL et Doxygen devront être installés et configurés manuellement.
 #### 2.2.3. Compilation
 
 Le code est écrit suivant le standard C11, et emploie des fonctionnalités
-exclusives au C, C++ n’est pas supporté et on ne doit pas s’attendre à ce que le
-code compile en C++.
+exclusives au C, C++ n’est pas supporté et on ne doit pas s’attendre à ce que
+le code compile en C++.
 
-Le processus de compilation est géré par `make`, avec un Makefile fourni donnant
-les règles usuelles :
+Le processus de compilation est géré par `make`, avec un Makefile fourni
+donnant les règles usuelles :
  - `all` pour construire l’exécutable dans le dossier `out`,
  - `clean` pour supprimer les fichiers objet du dossier `obj`,
  - `doc` pour générer la documentation dans le dossier `doc`,
@@ -588,9 +709,9 @@ objet individuels.
 Le développement sous GNUnux est effectué en utilisant GCC et avec MSVC sous
 Windows, avec tous les avertissements activés (`-Wall -Wextra -pedantic` et
 `/Wall` respectivement), afin de rendre le code le plus conforme possible au
-standard. Je me suis également abstenu d’utiliser des spécificités GNU (quelques
-fonctions POSIX sont bien appelées, mais aucun élément de code tels que les
-pragmas ou `__attribute__` ne sont utilisés).
+standard. Je me suis également abstenu d’utiliser des spécificités GNU
+(quelques fonctions POSIX sont bien appelées, mais aucun élément de code tels
+que les pragmas ou `__attribute__` ne sont utilisés).
 
 
 #### 2.2.4. Documentation
@@ -624,8 +745,9 @@ en tête pour le programme, certaines de plus court terme que d’autres.
    configurer serait le bienvenu, mais je ne suis pas sûr de comment
    l’introduire ; je ne veux pas rendre le programme dépendant d’un fichier
    externe de configuration, et je suis réticent à l’idée d’introduire encore
-   d’autres options de ligne de commande. Les macros de préprocesseur pourraient
-   s’avérer une solutions, mais cela priverait de cofiguration à l’exécution.
+   d’autres options de ligne de commande. Les macros de préprocesseur
+   pourraient s’avérer une solutions, mais cela priverait de cofiguration à
+   l’exécution.
  - Un meilleur format texte brut
    Tout est dit. tel qu’implémenté, le format texte brut est suffisant, mais
    maigre ; un support pour des commentaires, une omission des fin de ligne
@@ -639,10 +761,10 @@ en tête pour le programme, certaines de plus court terme que d’autres.
  - Mode d’exécution sans affichage
    Cela introduirait une type d’exécution totallement différent (qui
    justifierait l’ajout d’une option de ligne de commande attitrée). L’idée
-   serait de fournir fichiers d’entrée et de sortie et un nombre de générations,
-   et d’écrire dans le fichier de sortie l’évolution après autant de générations
-   de la configuration dans le fichier d’entrée. Ce serait une forme d’incubateur
-   pour motifs.
+   serait de fournir fichiers d’entrée et de sortie et un nombre de
+   générations, et d’écrire dans le fichier de sortie l’évolution après autant
+   de générations de la configuration dans le fichier d’entrée. Ce serait une
+   forme d’incubateur pour motifs.
  - LLCA non-totalistes ou anisotropes
    Si je ne considère pas les AC non binaires (la grille est basée sur un
    tableau de bits, changer le nombre d’états serait un trop gros travail pour
@@ -650,7 +772,7 @@ en tête pour le programme, certaines de plus court terme que d’autres.
    étudier. Cela demanderait de modifier le code d’évolution et calcul de la
    génération suivante, qui bénéficierait d’une refonte de toute manière.
  - Internationalisation
-   Principalement en ce qui concerne la langue de notre bon vieux Molière (on ne
-   se refait pas), en tout cas pour commencer, cela affecterait les docs en plus
-   du présent document. Cela impliquerait de maintenir le double de
+   Principalement en ce qui concerne la langue de notre bon vieux Molière (on
+   ne se refait pas), en tout cas pour commencer, cela affecterait les docs en
+   plus du présent document. Cela impliquerait de maintenir le double de
    documentation, ce qui serait à soi tout seul un travail à plein temps.
