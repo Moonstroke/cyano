@@ -79,7 +79,7 @@ struct grid {
 	unsigned int h; /**< The height of the grid. */
 	char *cells; /**< The data of the grid cells. */
 	/** Array of values indicating the future state of a cell. */
-	char rule[NUM_OCTETS(18)];
+	char rule[NUM_OCTETS(512)];
 	/** A flag indicating whether the state on one side of the grid affects the
 	    opposite side. */
 	bool wrap;

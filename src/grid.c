@@ -23,14 +23,173 @@ void free_grid(struct grid *g) {
 }
 
 
+static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
+	int s = current_cell_state << 4;
+	switch (digit) {
+		case '0':
+			SET_BIT(rule, s, true);
+			break;
+		case '1':
+			for (int i = 0; i < 4; ++i) {
+				SET_BIT(rule, s + (1 << i), true);
+			}
+			for (int i = 5; i < 9; ++i) {
+				SET_BIT(rule, s + (1 << i), true);
+			}
+			break;
+		case '2':
+			for (int i = 1; i < 4; ++i) {
+				for (int j = 0; j < i; ++j) {
+					SET_BIT(rule, s + (1 << i) + (1 << j), true);
+				}
+			}
+			for (int i = 5; i < 9; ++i) {
+				for (int j = 0; j < 4; ++j) {
+					SET_BIT(rule, s + (1 << i) + (1 << j), true);
+				}
+				/* Skipped for the first iteration of the i loop */
+				for (int j = 5; j < i; ++j) {
+					SET_BIT(rule, s + (1 << i) + (1 << j), true);
+				}
+			}
+			break;
+		case '3':
+			for (int i = 2; i < 4; ++i) {
+				for (int j = 1; j < i; ++j) {
+					for (int k = 0; k < j; ++k) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					}
+				}
+			}
+			for (int i = 5; i < 9; ++i) {
+				for (int j = 1; j < 4; ++j) {
+					for (int k = 0; k < j; ++k) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					}
+				}
+				for (int j = 5; j < i; ++j) {
+					for (int k = 0; k < 4; ++k) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					}
+					for (int k = 0; k < j; ++k) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					}
+				}
+			}
+			break;
+		case '4':
+			SET_BIT(rule, s + 480, true); /* [10] 480 = [2] 111100000 */
+			for (int i = 5; i < 9; ++i) {
+				for (int j = 2; j < 4; ++j) {
+					for (int k = 1; k < j; ++k) {
+						for (int l = 0; l < k; ++l) {
+							SET_BIT(rule, s +
+							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
+							        true);
+						}
+					}
+				}
+				for (int j = 5; j < i; ++j) {
+					for (int k = 1; k < 4; ++k) {
+						for (int l = 0; l < k; ++l) {
+							SET_BIT(rule, s +
+							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
+							        true);
+						}
+					}
+					for (int k = 5; k < j; ++k) {
+						for (int l = 0; l < 4; ++l) {
+							SET_BIT(rule, s +
+							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
+							        true);
+						}
+						for (int l = 5; l < k; ++l) {
+							SET_BIT(rule, s +
+							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
+							        true);
+						}
+					}
+				}
+			}
+			break;
+		case '5':
+			/* Same as 3 but with bits inverted */
+			for (int i = 2; i < 4; ++i) {
+				for (int j = 1; j < i; ++j) {
+					for (int k = 0; k < j; ++k) {
+						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						        true);
+					}
+				}
+			}
+			for (int i = 5; i < 9; ++i) {
+				for (int j = 1; j < 4; ++j) {
+					for (int k = 0; k < j; ++k) {
+						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						        true);
+					}
+				}
+				for (int j = 5; j < i; ++j) {
+					for (int k = 0; k < 4; ++k) {
+						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						        true);
+					}
+					for (int k = 0; k < j; ++k) {
+						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						        true);
+					}
+				}
+			}
+			break;
+		case '6':
+			/* Same as 2 but with bits inverted */
+			for (int i = 1; i < 4; ++i) {
+				for (int j = 0; j < i; ++j) {
+					SET_BIT(rule, ~s - (1 << i) - (1 << j), true);
+				}
+			}
+			for (int i = 5; i < 9; ++i) {
+				for (int j = 0; j < 4; ++j) {
+					SET_BIT(rule, ~s - (1 << i) - (1 << j), true);
+				}
+				for (int j = 5; j < i; ++j) {
+					SET_BIT(rule, ~s - (1 << i) - (1 << j), true);
+				}
+			}
+			break;
+		case '7':
+			/* Same as 1 but with bits inverted */
+			for (int i = 0; i < 4; ++i) {
+				SET_BIT(rule, ~s - (1 << i), true);
+			}
+			for (int i = 5; i < 9; ++i) {
+				SET_BIT(rule, ~s - (1 << i), true);
+			}
+			break;
+		case '8':
+			SET_BIT(rule, ~s, true);
+			break;
+		case '/':
+		case 'S':
+		case '\0':
+			return 1;
+		default:
+			return -__LINE__; /* Invalid character */
+	}
+	return 0;
+}
+
 int compile_grid_rule(struct grid *g, const char *rule) {
 	if (*rule == 'B') {
 		++rule;
 	}
-	while ('0' <= *rule && *rule <= '9') {
-		size_t index = *rule - '0';
-		SET_BIT(g->rule, index, 1);
+	int rc;
+	do {
+		rc = _handle_rule_digit(*rule, g->rule, false);
 		++rule;
+	} while (rc == 0);
+	if (rc < 0) {
+		return rc;
 	}
 	if (*rule == '/') {
 		++rule;
@@ -44,11 +203,10 @@ int compile_grid_rule(struct grid *g, const char *rule) {
 		   character */
 		return -__LINE__;
 	}
-	while ('0' <= *rule && *rule <= '9') {
-		size_t index = 9 + (*rule - '0');
-		SET_BIT(g->rule, index, 1);
+	do {
+		rc = _handle_rule_digit(*rule, g->rule, true);
 		++rule;
-	}
+	} while (rc == 0);
 	if (*rule != '\0') {
 		return -__LINE__; /* Invalid character (not end of string) */
 	}
@@ -92,55 +250,39 @@ bool toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 	return false;
 }
 
-static void _update_cell(struct grid *g, size_t row_offset,
-                         const char *row_buffer, size_t cell_offset,
-                         unsigned int neighbors) {
-	bool next_state;
-	if (GET_BIT(row_buffer, g->w + cell_offset)) {
-		next_state = GET_BIT(g->rule, 9 + neighbors);
-	} else {
-		next_state = GET_BIT(g->rule, neighbors);
-	}
-	SET_BIT(g->cells, row_offset + cell_offset, next_state);
+static void _update_cell(struct grid *g, size_t cell_index, char *state) {
+	int rule_index = state[0] << 8| state[1];
+	SET_BIT(g->cells, cell_index, g->rule[rule_index]);
 }
 
 static void _update_row(struct grid *g, size_t row_offset,
                         const char *row_buffer, const char *btm_row,
                         size_t btm_row_offset) {
-	unsigned int neighbors = 0;
-	neighbors = GET_BIT(row_buffer, 0)
-	          + GET_BIT(row_buffer, 1)
-	          + GET_BIT(row_buffer, g->w + 1)
-	          + GET_BIT(btm_row, btm_row_offset)
-	          + GET_BIT(btm_row, btm_row_offset + 1);
+	char state[2] = {0};
+	copy_bits(row_buffer, 0, state, 8, 2);
+	copy_bits(row_buffer, g->w, state, 11, 2);
+	copy_bits(btm_row, btm_row_offset, state, 14, 2);
 	if (g->wrap) {
-		neighbors += GET_BIT(row_buffer, g->w - 1)
-		           + GET_BIT(row_buffer, g->w * 2 - 1)
-		           + GET_BIT(btm_row, btm_row_offset + g->w - 1);
+		SET_BIT(state, 7, GET_BIT(row_buffer, g->w - 1));
+		SET_BIT(state, 10, GET_BIT(row_buffer, g->w * 2 - 1));
+		SET_BIT(state, 13, GET_BIT(btm_row, btm_row_offset + g->w - 1));
 	}
-	_update_cell(g, row_offset, row_buffer, 0, neighbors);
+	_update_cell(g, row_offset, state);
 	for (size_t i = 1; i < g->w - 1; ++i) {
-		neighbors = GET_BIT(row_buffer, i - 1)
-		          + GET_BIT(row_buffer, i)
-		          + GET_BIT(row_buffer, i + 1)
-		          + GET_BIT(row_buffer, g->w + i - 1)
-		          + GET_BIT(row_buffer, g->w + i + 1)
-		          + GET_BIT(btm_row, btm_row_offset + i - 1)
-		          + GET_BIT(btm_row, btm_row_offset + i)
-		          + GET_BIT(btm_row, btm_row_offset + i + 1);
-		_update_cell(g, row_offset, row_buffer, i, neighbors);
+		copy_bits(row_buffer, i - 1, state, 7, 3);
+		copy_bits(row_buffer, g->w + i - 1, state, 10, 3);
+		copy_bits(btm_row, btm_row_offset + i - 1, state, 13, 3);
+		_update_cell(g, row_offset + i, state);
 	}
-	neighbors = GET_BIT(row_buffer, g->w - 2)
-	          + GET_BIT(row_buffer, g->w - 1)
-	          + GET_BIT(row_buffer, g->w * 2 - 2)
-	          + GET_BIT(btm_row, btm_row_offset + g->w - 2)
-	          + GET_BIT(btm_row, btm_row_offset + g->w - 1);
+	copy_bits(row_buffer, g->w - 2, state, 8, 2);
+	copy_bits(row_buffer, g->w * 2 - 2, state, 11, 2);
+	copy_bits(btm_row, btm_row_offset + g->w - 2, state, 14, 2);
 	if (g->wrap) {
-		neighbors += GET_BIT(row_buffer, 0)
-		           + GET_BIT(row_buffer, g->w)
-		           + GET_BIT(btm_row, btm_row_offset);
+		SET_BIT(state, 7, GET_BIT(row_buffer, 0));
+		SET_BIT(state, 10, GET_BIT(row_buffer, g->w));
+		SET_BIT(state, 14, GET_BIT(btm_row, btm_row_offset));
 	}
-	_update_cell(g, row_offset, row_buffer, g->w - 1, neighbors);
+	_update_cell(g, row_offset + g->w - 1, state);
 }
 
 int update_grid(struct grid *g) {
