@@ -71,7 +71,7 @@ static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
 					for (int k = 0; k < 4; ++k) {
 						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
 					}
-					for (int k = 0; k < j; ++k) {
+					for (int k = 5; k < j; ++k) {
 						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
 					}
 				}
@@ -134,7 +134,7 @@ static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
 						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
 						        true);
 					}
-					for (int k = 0; k < j; ++k) {
+					for (int k = 5; k < j; ++k) {
 						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
 						        true);
 					}
