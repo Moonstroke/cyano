@@ -23,7 +23,25 @@ void free_grid(struct grid *g) {
 }
 
 
-static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
+static int _handle_rule_digit(char digit, char *rule,
+                              bool current_cell_state) {
+	/* The code below handles a single digit in a rulestring. It sets to 1 all
+	   bits in rule that match the state given by the digit and the current
+	   cell state boolean.
+	   A bit matches if, in the nine bits of its index in rule, the number of
+	   bits set (excluding the center bit, which correspond to the current
+	   state of the examined cell) is equal to the given digit.
+	   The eight bits considered for the population count correspond to the
+	   state of the eight neighbor cells.
+	   The assignment of the bits for each digit is made by iterating over all
+	   possible bit combinations. The iteration code itself will not be
+	   detailed, as it is simple arithmetic loops. An interesting fact to note
+	   is the symmetry of combinations, this allowed to code the blocks
+	   handling digits 5, 6, 7 and 8 by copying the block for 3, 2, 1 or 0,
+	   respectively, only changing the actual index in the SET_BIT call by
+	   reversing the eight bits corresponding to the neighbor cells, and all
+	   combinations will be covered.
+	   */
 	int s = current_cell_state << 4;
 	switch (digit) {
 		case '0':
@@ -57,22 +75,26 @@ static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
 			for (int i = 2; i < 4; ++i) {
 				for (int j = 1; j < i; ++j) {
 					for (int k = 0; k < j; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
+						        true);
 					}
 				}
 			}
 			for (int i = 5; i < 9; ++i) {
 				for (int j = 1; j < 4; ++j) {
 					for (int k = 0; k < j; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
+						        true);
 					}
 				}
 				for (int j = 5; j < i; ++j) {
 					for (int k = 0; k < 4; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
+						        true);
 					}
 					for (int k = 5; k < j; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
+						        true);
 					}
 				}
 			}
