@@ -113,11 +113,12 @@ static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
 			}
 			break;
 		case '5':
-			/* Same as 3 but with bits inverted */
+			/* Same as 3 but with neighbor bits inverted */
 			for (int i = 2; i < 4; ++i) {
 				for (int j = 1; j < i; ++j) {
 					for (int k = 0; k < j; ++k) {
-						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						/* [10] 495 = [2] 111101111 */
+						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
 						        true);
 					}
 				}
@@ -125,49 +126,49 @@ static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
 			for (int i = 5; i < 9; ++i) {
 				for (int j = 1; j < 4; ++j) {
 					for (int k = 0; k < j; ++k) {
-						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
 						        true);
 					}
 				}
 				for (int j = 5; j < i; ++j) {
 					for (int k = 0; k < 4; ++k) {
-						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
 						        true);
 					}
 					for (int k = 5; k < j; ++k) {
-						SET_BIT(rule, ~s - (1 << i) - (1 << j) - (1 << k),
+						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
 						        true);
 					}
 				}
 			}
 			break;
 		case '6':
-			/* Same as 2 but with bits inverted */
+			/* Same as 2 but with neighbor bits inverted */
 			for (int i = 1; i < 4; ++i) {
 				for (int j = 0; j < i; ++j) {
-					SET_BIT(rule, ~s - (1 << i) - (1 << j), true);
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
 				}
 			}
 			for (int i = 5; i < 9; ++i) {
 				for (int j = 0; j < 4; ++j) {
-					SET_BIT(rule, ~s - (1 << i) - (1 << j), true);
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
 				}
 				for (int j = 5; j < i; ++j) {
-					SET_BIT(rule, ~s - (1 << i) - (1 << j), true);
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
 				}
 			}
 			break;
 		case '7':
-			/* Same as 1 but with bits inverted */
+			/* Same as 1 but with neighbor bits inverted */
 			for (int i = 0; i < 4; ++i) {
-				SET_BIT(rule, ~s - (1 << i), true);
+				SET_BIT(rule, 495 + s - (1 << i), true);
 			}
 			for (int i = 5; i < 9; ++i) {
-				SET_BIT(rule, ~s - (1 << i), true);
+				SET_BIT(rule, 495 + s - (1 << i), true);
 			}
 			break;
 		case '8':
-			SET_BIT(rule, ~s, true);
+			SET_BIT(rule, 495 + s, true);
 			break;
 		case '/':
 		case 'S':
