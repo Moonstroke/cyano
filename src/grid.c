@@ -78,7 +78,7 @@ static int _handle_rule_digit(char digit, char *rule, bool current_cell_state) {
 			}
 			break;
 		case '4':
-			SET_BIT(rule, s + 480, true); /* [10] 480 = [2] 111100000 */
+			SET_BIT(rule, s + 15, true); /* [10] 15 = [2] 000001111 */
 			for (int i = 5; i < 9; ++i) {
 				for (int j = 2; j < 4; ++j) {
 					for (int k = 1; k < j; ++k) {
