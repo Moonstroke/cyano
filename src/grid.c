@@ -303,7 +303,7 @@ static void _update_row(struct grid *g, size_t row_offset,
 	if (g->wrap) {
 		SET_BIT(state, 7, GET_BIT(row_buffer, 0));
 		SET_BIT(state, 10, GET_BIT(row_buffer, g->w));
-		SET_BIT(state, 14, GET_BIT(btm_row, btm_row_offset));
+		SET_BIT(state, 13, GET_BIT(btm_row, btm_row_offset));
 	}
 	_update_cell(g, row_offset + g->w - 1, state);
 }
