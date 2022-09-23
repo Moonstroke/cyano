@@ -275,7 +275,7 @@ bool toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 
 static void _update_cell(struct grid *g, size_t cell_index, char *state) {
 	int rule_index = state[0] << 8| state[1];
-	SET_BIT(g->cells, cell_index, g->rule[rule_index]);
+	SET_BIT(g->cells, cell_index, GET_BIT(g->rule, rule_index));
 }
 
 static void _update_row(struct grid *g, size_t row_offset,
