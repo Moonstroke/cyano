@@ -99,7 +99,7 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 		++rulestr;
 	}
 	if (*rulestr == '4') {
-		SET_BIT(rule, s + 15, true); /* [10] 15 = [2] 000001111 */
+		SET_BIT(rule, s + 15, true); /* 15 = 0b000001111 */
 		for (int i = 5; i < 9; ++i) {
 			for (int j = 2; j < 4; ++j) {
 				for (int k = 1; k < j; ++k) {
@@ -135,7 +135,7 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 		for (int i = 2; i < 4; ++i) {
 			for (int j = 1; j < i; ++j) {
 				for (int k = 0; k < j; ++k) {
-					/* [10] 495 = [2] 111101111 */
+					/* 495 = 0b111101111 */
 					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
 							true);
 				}
