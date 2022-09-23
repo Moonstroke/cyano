@@ -297,13 +297,13 @@ static void _update_row(struct grid *g, size_t row_offset,
 		copy_bits(btm_row, btm_row_offset + i - 1, state, 13, 3);
 		_update_cell(g, row_offset + i, state);
 	}
-	copy_bits(row_buffer, g->w - 2, state, 8, 2);
-	copy_bits(row_buffer, g->w * 2 - 2, state, 11, 2);
-	copy_bits(btm_row, btm_row_offset + g->w - 2, state, 14, 2);
+	copy_bits(row_buffer, g->w - 2, state, 7, 2);
+	copy_bits(row_buffer, g->w * 2 - 2, state, 10, 2);
+	copy_bits(btm_row, btm_row_offset + g->w - 2, state, 13, 2);
 	if (g->wrap) {
-		SET_BIT(state, 7, GET_BIT(row_buffer, 0));
-		SET_BIT(state, 10, GET_BIT(row_buffer, g->w));
-		SET_BIT(state, 13, GET_BIT(btm_row, btm_row_offset));
+		SET_BIT(state, 9, GET_BIT(row_buffer, 0));
+		SET_BIT(state, 12, GET_BIT(row_buffer, g->w));
+		SET_BIT(state, 15, GET_BIT(btm_row, btm_row_offset));
 	}
 	_update_cell(g, row_offset + g->w - 1, state);
 }
