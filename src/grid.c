@@ -23,8 +23,8 @@ void free_grid(struct grid *g) {
 }
 
 
-static int _handle_rule_digit(char digit, char *rule,
-                              bool current_cell_state) {
+static const char *_handle_rule_digits(const char *rulestr, char *rule,
+                                       bool current_cell_state) {
 	/* The code below handles a single digit in a rulestring. It sets to 1 all
 	   bits in rule that match the state given by the digit and the current
 	   cell state boolean.
@@ -43,176 +43,167 @@ static int _handle_rule_digit(char digit, char *rule,
 	   combinations will be covered.
 	   */
 	int s = current_cell_state << 4;
-	switch (digit) {
-		case '0':
-			SET_BIT(rule, s, true);
-			break;
-		case '1':
-			for (int i = 0; i < 4; ++i) {
-				SET_BIT(rule, s + (1 << i), true);
-			}
-			for (int i = 5; i < 9; ++i) {
-				SET_BIT(rule, s + (1 << i), true);
-			}
-			break;
-		case '2':
-			for (int i = 1; i < 4; ++i) {
-				for (int j = 0; j < i; ++j) {
-					SET_BIT(rule, s + (1 << i) + (1 << j), true);
-				}
-			}
-			for (int i = 5; i < 9; ++i) {
-				for (int j = 0; j < 4; ++j) {
-					SET_BIT(rule, s + (1 << i) + (1 << j), true);
-				}
-				/* Skipped for the first iteration of the i loop */
-				for (int j = 5; j < i; ++j) {
-					SET_BIT(rule, s + (1 << i) + (1 << j), true);
-				}
-			}
-			break;
-		case '3':
-			for (int i = 2; i < 4; ++i) {
-				for (int j = 1; j < i; ++j) {
-					for (int k = 0; k < j; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
-						        true);
-					}
-				}
-			}
-			for (int i = 5; i < 9; ++i) {
-				for (int j = 1; j < 4; ++j) {
-					for (int k = 0; k < j; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
-						        true);
-					}
-				}
-				for (int j = 5; j < i; ++j) {
-					for (int k = 0; k < 4; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
-						        true);
-					}
-					for (int k = 5; k < j; ++k) {
-						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k),
-						        true);
-					}
-				}
-			}
-			break;
-		case '4':
-			SET_BIT(rule, s + 15, true); /* [10] 15 = [2] 000001111 */
-			for (int i = 5; i < 9; ++i) {
-				for (int j = 2; j < 4; ++j) {
-					for (int k = 1; k < j; ++k) {
-						for (int l = 0; l < k; ++l) {
-							SET_BIT(rule, s +
-							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
-							        true);
-						}
-					}
-				}
-				for (int j = 5; j < i; ++j) {
-					for (int k = 1; k < 4; ++k) {
-						for (int l = 0; l < k; ++l) {
-							SET_BIT(rule, s +
-							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
-							        true);
-						}
-					}
-					for (int k = 5; k < j; ++k) {
-						for (int l = 0; l < 4; ++l) {
-							SET_BIT(rule, s +
-							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
-							        true);
-						}
-						for (int l = 5; l < k; ++l) {
-							SET_BIT(rule, s +
-							        (1 << i) + (1 << j) + (1 << k) + (1 << l),
-							        true);
-						}
-					}
-				}
-			}
-			break;
-		case '5':
-			/* Same as 3 but with neighbor bits inverted */
-			for (int i = 2; i < 4; ++i) {
-				for (int j = 1; j < i; ++j) {
-					for (int k = 0; k < j; ++k) {
-						/* [10] 495 = [2] 111101111 */
-						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-						        true);
-					}
-				}
-			}
-			for (int i = 5; i < 9; ++i) {
-				for (int j = 1; j < 4; ++j) {
-					for (int k = 0; k < j; ++k) {
-						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-						        true);
-					}
-				}
-				for (int j = 5; j < i; ++j) {
-					for (int k = 0; k < 4; ++k) {
-						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-						        true);
-					}
-					for (int k = 5; k < j; ++k) {
-						SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-						        true);
-					}
-				}
-			}
-			break;
-		case '6':
-			/* Same as 2 but with neighbor bits inverted */
-			for (int i = 1; i < 4; ++i) {
-				for (int j = 0; j < i; ++j) {
-					SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
-				}
-			}
-			for (int i = 5; i < 9; ++i) {
-				for (int j = 0; j < 4; ++j) {
-					SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
-				}
-				for (int j = 5; j < i; ++j) {
-					SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
-				}
-			}
-			break;
-		case '7':
-			/* Same as 1 but with neighbor bits inverted */
-			for (int i = 0; i < 4; ++i) {
-				SET_BIT(rule, 495 + s - (1 << i), true);
-			}
-			for (int i = 5; i < 9; ++i) {
-				SET_BIT(rule, 495 + s - (1 << i), true);
-			}
-			break;
-		case '8':
-			SET_BIT(rule, 495 + s, true);
-			break;
-		case '/':
-		case 'S':
-		case '\0':
-			return 1;
-		default:
-			return -__LINE__; /* Invalid character */
+	if (*rulestr == '0') {
+		SET_BIT(rule, s, true);
+		++rulestr;
 	}
-	return 0;
+	if (*rulestr == '1') {
+		for (int i = 0; i < 4; ++i) {
+			SET_BIT(rule, s + (1 << i), true);
+		}
+		for (int i = 5; i < 9; ++i) {
+			SET_BIT(rule, s + (1 << i), true);
+		}
+		++rulestr;
+	}
+	if (*rulestr == '2') {
+		for (int i = 1; i < 4; ++i) {
+			for (int j = 0; j < i; ++j) {
+				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 0; j < 4; ++j) {
+				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+			}
+			/* Skipped for the first iteration of the i loop */
+			for (int j = 5; j < i; ++j) {
+				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '3') {
+		for (int i = 2; i < 4; ++i) {
+			for (int j = 1; j < i; ++j) {
+				for (int k = 0; k < j; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 1; j < 4; ++j) {
+				for (int k = 0; k < j; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+			}
+			for (int j = 5; j < i; ++j) {
+				for (int k = 0; k < 4; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+				for (int k = 5; k < j; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '4') {
+		SET_BIT(rule, s + 15, true); /* [10] 15 = [2] 000001111 */
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 2; j < 4; ++j) {
+				for (int k = 1; k < j; ++k) {
+					for (int l = 0; l < k; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+				}
+			}
+			for (int j = 5; j < i; ++j) {
+				for (int k = 1; k < 4; ++k) {
+					for (int l = 0; l < k; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+				}
+				for (int k = 5; k < j; ++k) {
+					for (int l = 0; l < 4; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+					for (int l = 5; l < k; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+				}
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '5') {
+		/* Same as 3 but with neighbor bits inverted */
+		for (int i = 2; i < 4; ++i) {
+			for (int j = 1; j < i; ++j) {
+				for (int k = 0; k < j; ++k) {
+					/* [10] 495 = [2] 111101111 */
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 1; j < 4; ++j) {
+				for (int k = 0; k < j; ++k) {
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+			}
+			for (int j = 5; j < i; ++j) {
+				for (int k = 0; k < 4; ++k) {
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+				for (int k = 5; k < j; ++k) {
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '6') {
+		/* Same as 2 but with neighbor bits inverted */
+		for (int i = 1; i < 4; ++i) {
+			for (int j = 0; j < i; ++j) {
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 0; j < 4; ++j) {
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+			}
+			for (int j = 5; j < i; ++j) {
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '7') {
+		/* Same as 1 but with neighbor bits inverted */
+		for (int i = 0; i < 4; ++i) {
+			SET_BIT(rule, 495 + s - (1 << i), true);
+		}
+		for (int i = 5; i < 9; ++i) {
+			SET_BIT(rule, 495 + s - (1 << i), true);
+		}
+		++rulestr;
+	}
+	if (*rulestr == '8') {
+		SET_BIT(rule, 495 + s, true);
+		++rulestr;
+	}
+	if (*rulestr != '/' && *rulestr != 'S' && *rulestr != '\0') {
+		return NULL; /* Invalid character */
+	}
+	return rulestr;
 }
 
 int compile_grid_rule(struct grid *g, const char *rule) {
 	if (*rule == 'B') {
 		++rule;
 	}
-	int rc;
-	do {
-		rc = _handle_rule_digit(*rule, g->rule, false);
-		++rule;
-	} while (rc == 0);
-	if (rc < 0) {
-		return rc;
+	if ((rule = _handle_rule_digits(rule, g->rule, false)) == NULL) {
+		return -__LINE__;
 	}
 	if (*rule == '/') {
 		++rule;
@@ -226,11 +217,8 @@ int compile_grid_rule(struct grid *g, const char *rule) {
 		   character */
 		return -__LINE__;
 	}
-	do {
-		rc = _handle_rule_digit(*rule, g->rule, true);
-		++rule;
-	} while (rc == 0);
-	if (*rule != '\0') {
+	rule = _handle_rule_digits(rule, g->rule, true);
+	if (rule == NULL || *rule != '\0') {
 		return -__LINE__; /* Invalid character (not end of string) */
 	}
 	return 0;
