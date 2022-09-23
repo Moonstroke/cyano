@@ -2,6 +2,8 @@
 
 #include <CUTE/cute.h>
 
+#include "rules.h" /* for compile_rulestring */
+
 
 
 /* The dimensions of the grid */
@@ -23,7 +25,7 @@ static void setUp(void) {
 	int status;
 	status = init_grid(&grid, WIDTH, HEIGHT, WRAPS);
 	CUTE_assertEquals(status, 0);
-	compile_grid_rule(&grid, RULE);
+	compile_rulestring(RULE, grid.rule);
 	fprintf(stderr, "Succesfully initialized %s grid %ux%u\n",
 	        WRAPS ? "toroidal" : "rectangular", WIDTH, HEIGHT);
 }

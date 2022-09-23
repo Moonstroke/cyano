@@ -146,18 +146,6 @@ void free_grid(struct grid *grid);
 
 
 /**
- * \brief Compile the rule string into an array of future cell states.
- *
- * \param[in] grid       The grid whose cell array to update
- * \param[in] rulestring The rule string to compile
- *
- * \return \c 0 if the compilation succeeded, a negatie value otherwise (e.g.
- *         the rulestring is invalid)
- */
-int compile_grid_rule(struct grid *grid, const char *rulestring);
-
-
-/**
  * \brief Get the state of a cell from the grid.
  *
  * \param[in] grid The game grid

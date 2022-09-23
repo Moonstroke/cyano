@@ -2,6 +2,8 @@
 
 #include <CUTE/cute.h>
 
+#include "rules.h" /* for compile_rulestring */
+
 
 
 /* The grid to run tests on */
@@ -22,7 +24,7 @@ void test_empty_rule(void) {
 	char expected[sizeof grid.rule] = {0};
 
 	fprintf(stderr, "Testing compilation of rule %s\n", rule);
-	int rc = compile_grid_rule(&grid, rule);
+	int rc = compile_rulestring(rule, grid.rule);
 	CUTE_assertEquals(rc, 0);
 	CUTE_assertEquals(memcmp(grid.rule, expected, sizeof grid.rule), 0);
 }
@@ -34,7 +36,7 @@ void test_zero_rule(void) {
 	SET_BIT(expected, 16, 1);
 
 	fprintf(stderr, "Testing compilation of rule %s\n", rule);
-	int rc = compile_grid_rule(&grid, rule);
+	int rc = compile_rulestring(rule, grid.rule);
 	CUTE_assertEquals(rc, 0);
 	CUTE_assertEquals(memcmp(grid.rule, expected, sizeof grid.rule), 0);
 }
@@ -62,7 +64,7 @@ void test_zero_one_rule(void) {
 	SET_BIT(expected, 272, 1);
 
 	fprintf(stderr, "Testing compilation of rule %s\n", rule);
-	int rc = compile_grid_rule(&grid, rule);
+	int rc = compile_rulestring(rule, grid.rule);
 	CUTE_assertEquals(rc, 0);
 	CUTE_assertEquals(memcmp(grid.rule, expected, sizeof grid.rule), 0);
 }
@@ -158,7 +160,7 @@ void test_default_rule(void) {
 	SET_BIT(expected, 448, 1); SET_BIT(expected, 464, 1);
 
 	fprintf(stderr, "Testing compilation of rule %s\n", rule);
-	int rc = compile_grid_rule(&grid, rule);
+	int rc = compile_rulestring(rule, grid.rule);
 	CUTE_assertEquals(rc, 0);
 	CUTE_assertEquals(memcmp(grid.rule, expected, sizeof grid.rule), 0);
 }
@@ -169,7 +171,7 @@ void test_full_rule(void) {
 	memset(expected, -1, sizeof grid.rule);
 
 	fprintf(stderr, "Testing compilation of rule %s\n", rule);
-	int rc = compile_grid_rule(&grid, rule);
+	int rc = compile_rulestring(rule, grid.rule);
 	CUTE_assertEquals(rc, 0);
 	CUTE_assertEquals(memcmp(grid.rule, expected, sizeof grid.rule), 0);
 }

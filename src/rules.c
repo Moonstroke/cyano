@@ -1,6 +1,7 @@
 #include "rules.h"
 
 
+#include <stdbool.h>
 #include <stddef.h> /* for NULL */
 #include <string.h> /* for strcmp */
 
@@ -92,4 +93,206 @@ const char *get_rule_from_name(const char *name) {
 		else i = middle;
 	}
 	return i ? rules[i] : NULL;
+}
+
+
+static const char *_handle_rule_digits(const char *rulestr, char *rule,
+                                       bool current_cell_state) {
+	/* The code below handles a single digit in a rulestring. It sets to 1 all
+	   bits in rule that match the state given by the digit and the current
+	   cell state boolean.
+	   A bit matches if, in the nine bits of its index in rule, the number of
+	   bits set (excluding the center bit, which correspond to the current
+	   state of the examined cell) is equal to the given digit.
+	   The eight bits considered for the population count correspond to the
+	   state of the eight neighbor cells.
+	   The assignment of the bits for each digit is made by iterating over all
+	   possible bit combinations. The iteration code itself will not be
+	   detailed, as it is simple arithmetic loops. An interesting fact to note
+	   is the symmetry of combinations, this allowed to code the blocks
+	   handling digits 5, 6, 7 and 8 by copying the block for 3, 2, 1 or 0,
+	   respectively, only changing the actual index in the SET_BIT call by
+	   reversing the eight bits corresponding to the neighbor cells, and all
+	   combinations will be covered.
+	   */
+	int s = current_cell_state << 4;
+	if (*rulestr == '0') {
+		SET_BIT(rule, s, true);
+		++rulestr;
+	}
+	if (*rulestr == '1') {
+		for (int i = 0; i < 4; ++i) {
+			SET_BIT(rule, s + (1 << i), true);
+		}
+		for (int i = 5; i < 9; ++i) {
+			SET_BIT(rule, s + (1 << i), true);
+		}
+		++rulestr;
+	}
+	if (*rulestr == '2') {
+		for (int i = 1; i < 4; ++i) {
+			for (int j = 0; j < i; ++j) {
+				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 0; j < 4; ++j) {
+				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+			}
+			/* Skipped for the first iteration of the i loop */
+			for (int j = 5; j < i; ++j) {
+				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '3') {
+		for (int i = 2; i < 4; ++i) {
+			for (int j = 1; j < i; ++j) {
+				for (int k = 0; k < j; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 1; j < 4; ++j) {
+				for (int k = 0; k < j; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+			}
+			for (int j = 5; j < i; ++j) {
+				for (int k = 0; k < 4; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+				for (int k = 5; k < j; ++k) {
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+				}
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '4') {
+		SET_BIT(rule, s + 15, true); /* 15 = 0b000001111 */
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 2; j < 4; ++j) {
+				for (int k = 1; k < j; ++k) {
+					for (int l = 0; l < k; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+				}
+			}
+			for (int j = 5; j < i; ++j) {
+				for (int k = 1; k < 4; ++k) {
+					for (int l = 0; l < k; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+				}
+				for (int k = 5; k < j; ++k) {
+					for (int l = 0; l < 4; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+					for (int l = 5; l < k; ++l) {
+						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
+						                + (1 << l), true);
+					}
+				}
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '5') {
+		/* Same as 3 but with neighbor bits inverted */
+		for (int i = 2; i < 4; ++i) {
+			for (int j = 1; j < i; ++j) {
+				for (int k = 0; k < j; ++k) {
+					/* 495 = 0b111101111 */
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 1; j < 4; ++j) {
+				for (int k = 0; k < j; ++k) {
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+			}
+			for (int j = 5; j < i; ++j) {
+				for (int k = 0; k < 4; ++k) {
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+				for (int k = 5; k < j; ++k) {
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
+							true);
+				}
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '6') {
+		/* Same as 2 but with neighbor bits inverted */
+		for (int i = 1; i < 4; ++i) {
+			for (int j = 0; j < i; ++j) {
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+			}
+		}
+		for (int i = 5; i < 9; ++i) {
+			for (int j = 0; j < 4; ++j) {
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+			}
+			for (int j = 5; j < i; ++j) {
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+			}
+		}
+		++rulestr;
+	}
+	if (*rulestr == '7') {
+		/* Same as 1 but with neighbor bits inverted */
+		for (int i = 0; i < 4; ++i) {
+			SET_BIT(rule, 495 + s - (1 << i), true);
+		}
+		for (int i = 5; i < 9; ++i) {
+			SET_BIT(rule, 495 + s - (1 << i), true);
+		}
+		++rulestr;
+	}
+	if (*rulestr == '8') {
+		SET_BIT(rule, 495 + s, true);
+		++rulestr;
+	}
+	if (*rulestr != '/' && *rulestr != 'S' && *rulestr != '\0') {
+		return NULL; /* Invalid character */
+	}
+	return rulestr;
+}
+
+int compile_rulestring(const char *rulestring, char *rule) {
+	if (*rulestring == 'B') {
+		++rulestring;
+	}
+	if ((rulestring = _handle_rule_digits(rulestring, rule, false)) == NULL) {
+		return -__LINE__;
+	}
+	if (*rulestring == '/') {
+		++rulestring;
+		if (*rulestring == 'S') {
+			++rulestring;
+		}
+	} else if (*rulestring == 'S') {
+		++rulestring;
+	} else {
+		/* Missing explicit separation between B and S parts, or invalid
+		   character */
+		return -__LINE__;
+	}
+	rulestring = _handle_rule_digits(rulestring, rule, true);
+	if (rulestring == NULL || *rulestring != '\0') {
+		return -__LINE__; /* Invalid character (not end of string) */
+	}
+	return 0;
 }

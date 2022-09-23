@@ -3,9 +3,10 @@
 #include <string.h> /* for strlen, strnlen, memcmp */
 
 #include "app.h"
+#include "file_io.h"
 #include "grid.h"
 #include "gridwindow.h"
-#include "file_io.h"
+#include "rules.h" /* for compile_rulestring */
 #include "stringutils.h"
 
 
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
 		fputs("Failure in creation of the game grid\n", stderr);
 		return EXIT_FAILURE;
 	}
-	if (compile_grid_rule(&g, game_rule) < 0) {
+	if (compile_rulestring(game_rule, g.rule) < 0) {
 		fprintf(stderr, "Error while compiling rulestring \"%s\"\n",
 		        game_rule);
 		free_grid(&g);
