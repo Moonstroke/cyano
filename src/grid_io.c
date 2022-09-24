@@ -245,10 +245,13 @@ char *get_grid_repr(const struct grid *grid) {
 	if (repr == NULL) {
 		return NULL;
 	}
+	char cell_repr[] = {
+		[DEAD] = '.',
+		[ALIVE] = '@'
+	};
 	for (unsigned int j = 0; j < grid->h; ++j) {
 		for (unsigned int i = 0; i < grid->w; ++i) {
-			repr[j * (grid->w + 1) + i] = get_grid_cell(grid, i, j) ? '@'
-			                                                        : '.';
+			repr[j * (grid->w + 1) + i] = cell_repr[get_grid_cell(grid, i, j)];
 		}
 		repr[j * (grid->w + 1) + grid->w] = '\n';
 	}

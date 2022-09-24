@@ -698,9 +698,13 @@ void render_grid_window(const struct grid_window *gw) {
 	SDL_RenderClear(gw->ren);
 	r.w = c;
 	r.h = c;
+	uint8_t cell_color[] = {
+		[DEAD] = 255,
+		[ALIVE] = 0
+	};
 	for (j = 0; j < h; ++j) {
 		for (i = 0; i < w; ++i) {
-			uint8_t ch = get_grid_cell(gw->grid, i, j) ? 0 : 255;
+			uint8_t ch = cell_color[get_grid_cell(gw->grid, i, j)];
 			_draw_cell(gw->ren, &r, i, j, c, b, ch, ch, ch, 255);
 		}
 	}
