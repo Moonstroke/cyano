@@ -1,7 +1,5 @@
 #include "bits.h"
 
-#include <stdbool.h>
-
 
 
 static void _test_NUM_OCTETS(void) {
@@ -52,11 +50,11 @@ static void _test_GET_BIT(void) {
 	static const unsigned char bits[] = {
 		0xef, 0x35, 0x3a, 0x13
 	};
-	static const bool expected[] = {
-		true, true, true, false, true, true, true, true,
-		false, false, true, true, false, true, false, true,
-		false, false, true, true, true, false, true, false,
-		false, false, false, true, false, false, true, true
+	static const int expected[] = {
+		1, 1, 1, 0, 1, 1, 1, 1,
+		0, 0, 1, 1, 0, 1, 0, 1,
+		0, 0, 1, 1, 1, 0, 1, 0,
+		0, 0, 0, 1, 0, 0, 1, 1
 	};
 	for(unsigned int i = 0; i < 8 * sizeof bits; ++i) {
 		fprintf(stderr, "GET_BIT(%u): expected %d, got %d\n", i, expected[i],
@@ -72,15 +70,15 @@ static void _test_SET_BIT(void) {
 	unsigned char value = 0;
 	for (unsigned int i = 0; i < 8; ++i) {
 		fprintf(stderr, "SET_BIT(0x%02hhx, %u, %d): expected 0x%02hhx",
-		        value, i, true, expected[i]);
-		SET_BIT(&value, i, true);
+		        value, i, 1, expected[i]);
+		SET_BIT(&value, i, 1);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 	value = 0xff;
 	for (unsigned int i = 0; i < 8; ++i) {
 		fprintf(stderr, "SET_BIT(0x%02hhx, %u, %d): expected 0x%02hhx",
-		        value, i, true, expected[8 + i]);
-		SET_BIT(&value, i, false);
+		        value, i, 0, expected[8 + i]);
+		SET_BIT(&value, i, 0);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 }

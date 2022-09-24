@@ -5,6 +5,9 @@
 #include <stddef.h> /* for NULL */
 #include <string.h> /* for strcmp */
 
+#include "grid.h" /* for enum cell_state */
+
+
 
 #define NB_NAMES 32
 
@@ -97,7 +100,7 @@ const char *get_rule_from_name(const char *name) {
 
 
 static const char *_handle_rule_digits(const char *rulestr, char *rule,
-                                       bool current_cell_state) {
+                                       enum cell_state current_cell_state) {
 	/* The code below handles a single digit in a rulestring. It sets to 1 all
 	   bits in rule that match the state given by the digit and the current
 	   cell state boolean.
@@ -117,31 +120,31 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 	   */
 	int s = current_cell_state << 4;
 	if (*rulestr == '0') {
-		SET_BIT(rule, s, true);
+		SET_BIT(rule, s, 1);
 		++rulestr;
 	}
 	if (*rulestr == '1') {
 		for (int i = 0; i < 4; ++i) {
-			SET_BIT(rule, s + (1 << i), true);
+			SET_BIT(rule, s + (1 << i), 1);
 		}
 		for (int i = 5; i < 9; ++i) {
-			SET_BIT(rule, s + (1 << i), true);
+			SET_BIT(rule, s + (1 << i), 1);
 		}
 		++rulestr;
 	}
 	if (*rulestr == '2') {
 		for (int i = 1; i < 4; ++i) {
 			for (int j = 0; j < i; ++j) {
-				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+				SET_BIT(rule, s + (1 << i) + (1 << j), 1);
 			}
 		}
 		for (int i = 5; i < 9; ++i) {
 			for (int j = 0; j < 4; ++j) {
-				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+				SET_BIT(rule, s + (1 << i) + (1 << j), 1);
 			}
 			/* Skipped for the first iteration of the i loop */
 			for (int j = 5; j < i; ++j) {
-				SET_BIT(rule, s + (1 << i) + (1 << j), true);
+				SET_BIT(rule, s + (1 << i) + (1 << j), 1);
 			}
 		}
 		++rulestr;
@@ -150,35 +153,35 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 		for (int i = 2; i < 4; ++i) {
 			for (int j = 1; j < i; ++j) {
 				for (int k = 0; k < j; ++k) {
-					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), 1);
 				}
 			}
 		}
 		for (int i = 5; i < 9; ++i) {
 			for (int j = 1; j < 4; ++j) {
 				for (int k = 0; k < j; ++k) {
-					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), 1);
 				}
 			}
 			for (int j = 5; j < i; ++j) {
 				for (int k = 0; k < 4; ++k) {
-					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), 1);
 				}
 				for (int k = 5; k < j; ++k) {
-					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), true);
+					SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k), 1);
 				}
 			}
 		}
 		++rulestr;
 	}
 	if (*rulestr == '4') {
-		SET_BIT(rule, s + 15, true); /* 15 = 0b000001111 */
+		SET_BIT(rule, s + 15, 1); /* 15 = 0b000001111 */
 		for (int i = 5; i < 9; ++i) {
 			for (int j = 2; j < 4; ++j) {
 				for (int k = 1; k < j; ++k) {
 					for (int l = 0; l < k; ++l) {
 						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
-						                + (1 << l), true);
+						                + (1 << l), 1);
 					}
 				}
 			}
@@ -186,17 +189,17 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 				for (int k = 1; k < 4; ++k) {
 					for (int l = 0; l < k; ++l) {
 						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
-						                + (1 << l), true);
+						                + (1 << l), 1);
 					}
 				}
 				for (int k = 5; k < j; ++k) {
 					for (int l = 0; l < 4; ++l) {
 						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
-						                + (1 << l), true);
+						                + (1 << l), 1);
 					}
 					for (int l = 5; l < k; ++l) {
 						SET_BIT(rule, s + (1 << i) + (1 << j) + (1 << k)
-						                + (1 << l), true);
+						                + (1 << l), 1);
 					}
 				}
 			}
@@ -209,26 +212,22 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 			for (int j = 1; j < i; ++j) {
 				for (int k = 0; k < j; ++k) {
 					/* 495 = 0b111101111 */
-					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-							true);
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k), 1);
 				}
 			}
 		}
 		for (int i = 5; i < 9; ++i) {
 			for (int j = 1; j < 4; ++j) {
 				for (int k = 0; k < j; ++k) {
-					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-							true);
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k), 1);
 				}
 			}
 			for (int j = 5; j < i; ++j) {
 				for (int k = 0; k < 4; ++k) {
-					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-							true);
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k), 1);
 				}
 				for (int k = 5; k < j; ++k) {
-					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k),
-							true);
+					SET_BIT(rule, 495 + s - (1 << i) - (1 << j) - (1 << k), 1);
 				}
 			}
 		}
@@ -238,15 +237,15 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 		/* Same as 2 but with neighbor bits inverted */
 		for (int i = 1; i < 4; ++i) {
 			for (int j = 0; j < i; ++j) {
-				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), 1);
 			}
 		}
 		for (int i = 5; i < 9; ++i) {
 			for (int j = 0; j < 4; ++j) {
-				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), 1);
 			}
 			for (int j = 5; j < i; ++j) {
-				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), true);
+				SET_BIT(rule, 495 + s - (1 << i) - (1 << j), 1);
 			}
 		}
 		++rulestr;
@@ -254,15 +253,15 @@ static const char *_handle_rule_digits(const char *rulestr, char *rule,
 	if (*rulestr == '7') {
 		/* Same as 1 but with neighbor bits inverted */
 		for (int i = 0; i < 4; ++i) {
-			SET_BIT(rule, 495 + s - (1 << i), true);
+			SET_BIT(rule, 495 + s - (1 << i), 1);
 		}
 		for (int i = 5; i < 9; ++i) {
-			SET_BIT(rule, 495 + s - (1 << i), true);
+			SET_BIT(rule, 495 + s - (1 << i), 1);
 		}
 		++rulestr;
 	}
 	if (*rulestr == '8') {
-		SET_BIT(rule, 495 + s, true);
+		SET_BIT(rule, 495 + s, 1);
 		++rulestr;
 	}
 	if (*rulestr != '/' && *rulestr != 'S' && *rulestr != '\0') {
@@ -275,7 +274,7 @@ int compile_rulestring(const char *rulestring, char *rule) {
 	if (*rulestring == 'B') {
 		++rulestring;
 	}
-	if ((rulestring = _handle_rule_digits(rulestring, rule, false)) == NULL) {
+	if ((rulestring = _handle_rule_digits(rulestring, rule, DEAD)) == NULL) {
 		return -__LINE__;
 	}
 	if (*rulestring == '/') {
@@ -290,7 +289,7 @@ int compile_rulestring(const char *rulestring, char *rule) {
 		   character */
 		return -__LINE__;
 	}
-	rulestring = _handle_rule_digits(rulestring, rule, true);
+	rulestring = _handle_rule_digits(rulestring, rule, ALIVE);
 	if (rulestring == NULL || *rulestring != '\0') {
 		return -__LINE__; /* Invalid character (not end of string) */
 	}

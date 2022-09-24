@@ -22,7 +22,7 @@ static inline int _set_run_length(struct grid *grid, unsigned int *i,
 	char state = (*repr)[0];
 	if (state == 'o') {
 		for (int n = 0; n < length; ++n) {
-			SET_BIT(grid->cells, j * grid->w + *i + n, true);
+			SET_BIT(grid->cells, j * grid->w + *i + n, 1);
 		}
 	} else if (state != 'b') { /* Invalid character */
 		return -__LINE__;
@@ -53,7 +53,7 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				}
 				break;
 			case 'o':
-				SET_BIT(grid->cells, j * grid->w + i, true);
+				SET_BIT(grid->cells, j * grid->w + i, 1);
 			/* Fall-through intended */
 			case 'b':
 				if (++i > grid->w) {
@@ -190,7 +190,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 	char on_char = ' ';
 	for (size_t i = 0; repr[0]; ++repr) {
 		if (repr[0] == '@') {
-			SET_BIT(grid->cells, i, true);
+			SET_BIT(grid->cells, i, 1);
 			if (on_char == 'O') {
 				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
 				on_char = '!';
@@ -198,7 +198,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 				on_char = '@';
 			}
 		} else if (repr[0] == 'O') {
-			SET_BIT(grid->cells, i, true);
+			SET_BIT(grid->cells, i, 1);
 			if (on_char == '@') {
 				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
 				on_char = '!';
@@ -242,10 +242,13 @@ char *get_grid_repr(const struct grid *grid) {
 	if (repr == NULL) {
 		return NULL;
 	}
+	char cell_repr[] = {
+		[DEAD] = '.',
+		[ALIVE] = '@'
+	};
 	for (unsigned int j = 0; j < grid->h; ++j) {
 		for (unsigned int i = 0; i < grid->w; ++i) {
-			repr[j * (grid->w + 1) + i] = get_grid_cell(grid, i, j) ? '@'
-			                                                        : '.';
+			repr[j * (grid->w + 1) + i] = cell_repr[get_grid_cell(grid, i, j)];
 		}
 		repr[j * (grid->w + 1) + grid->w] = '\n';
 	}

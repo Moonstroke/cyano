@@ -15,7 +15,6 @@
 
 
 #include <SDL2/SDL_render.h>
-#include <stdbool.h>
 
 #include "grid.h"
 

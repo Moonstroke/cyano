@@ -87,6 +87,15 @@ struct grid {
 
 
 /**
+ * \brief Rerepsents the state of a single cell. More expressive than \c bool
+ */
+enum cell_state {
+	DEAD, /**< The cell is dead: inactive */
+	ALIVE /**< The cell is alive: active */
+};
+
+
+/**
  * \brief Initialize an uninitialized grid with custom parameters.
  *
  * \param[out] grid  The grid to initialize
@@ -152,10 +161,10 @@ void free_grid(struct grid *grid);
  * \param[in] i     The row to get
  * \param[in] j     The column to get
  *
- * \return \c true if the cell at (i, j) is \e "alive", or \c false if the cell
- *         is \e "dead" or coordinates are invalid.
+ * \return \c ALIVE if the cell at (i, j) is alive, or \c DEAD if the cell is
+ *         dead or coordinates are invalid.
  */
-bool get_grid_cell(const struct grid *grid, int i, int j);
+enum cell_state get_grid_cell(const struct grid *grid, int i, int j);
 
 
 /**
@@ -165,10 +174,9 @@ bool get_grid_cell(const struct grid *grid, int i, int j);
  * \param[in]     x     The row of the cell to toggle
  * \param[in]     y     The column of the cell
  *
- * \return The new state of the cell (\c true means \e alive), or \c false if
- *         the coordinates are invalid
+ * \return The new state of the cell, or \c DEAD if the coordinates are invalid
  */
-bool toggle_cell(struct grid *grid, unsigned int x, unsigned int y);
+enum cell_state toggle_cell(struct grid *grid, unsigned int x, unsigned int y);
 
 
 /**

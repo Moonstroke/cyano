@@ -38,7 +38,7 @@
  * \param[in] arr The array
  * \param[in] i   The index
  *
- * \return The boolean value of the <tt>i</tt>-th bit in \p arr
+ * \return The value of the <tt>i</tt>-th bit in \p arr
  */
 #define GET_BIT(arr, i) (((arr)[(i) >> 3] >> (7 - ((i) & 7))) & 1)
 
