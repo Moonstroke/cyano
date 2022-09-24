@@ -57,7 +57,7 @@ enum cell_state toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 		TOGGLE_BIT(g->cells, g->w * y + x);
 		return GET_BIT(g->cells, g->w * y + x);
 	}
-	return false;
+	return DEAD;
 }
 
 
@@ -173,5 +173,5 @@ int update_grid(struct grid *g) {
 
 
 void clear_grid(struct grid *g) {
-	memset(g->cells, false, NUM_OCTETS(g->w * g->h));
+	memset(g->cells, DEAD, NUM_OCTETS(g->w * g->h));
 }
