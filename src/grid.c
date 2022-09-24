@@ -36,23 +36,23 @@ static inline unsigned int mod(int a, int b) {
 	return a;
 }
 
-static bool _get_cell_walls(const struct grid *g, int x, int y) {
+static enum cell_state _get_cell_walls(const struct grid *g, int x, int y) {
 	unsigned int i = (unsigned) x;
 	unsigned int j = (unsigned) y;
-	return (i < g->w && j < g->h) ? GET_BIT(g->cells, g->w * j + i) : false;
+	return (i < g->w && j < g->h) ? GET_BIT(g->cells, g->w * j + i) : DEAD;
 }
 
-static bool _get_cell_wrap(const struct grid *g, int x, int y) {
+static enum cell_state _get_cell_wrap(const struct grid *g, int x, int y) {
 	unsigned int i = mod(x, g->w), j = mod(y, g->h);
 	return GET_BIT(g->cells, g->w * j + i);
 }
 
-bool get_grid_cell(const struct grid *g, int i, int j) {
+enum cell_state get_grid_cell(const struct grid *g, int i, int j) {
 	return (g->wrap ? _get_cell_wrap : _get_cell_walls)(g, i, j);
 }
 
 
-bool toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
+enum cell_state toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 	if (x < g->w && y < g->h) {
 		TOGGLE_BIT(g->cells, g->w * y + x);
 		return GET_BIT(g->cells, g->w * y + x);

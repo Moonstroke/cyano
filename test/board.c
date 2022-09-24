@@ -47,12 +47,12 @@ void test_blinker_after_one_gen(void) {
 
 	fputs("Looking for horizontal blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, i, 1), true);
+		CUTE_assertEquals(get_grid_cell(&grid, i, 1), ALIVE);
 	}
 	fputs("Looking for empty rows 0 and 2\n", stderr);
 	for (i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, i, 0), false);
-		CUTE_assertEquals(get_grid_cell(&grid, i, 2), false);
+		CUTE_assertEquals(get_grid_cell(&grid, i, 0), DEAD);
+		CUTE_assertEquals(get_grid_cell(&grid, i, 2), DEAD);
 	}
 	fputs("OK\n", stderr);
 }
@@ -73,12 +73,12 @@ void test_blinker_after_two_gens(void) {
 
 	fputs("Looking for vertical blinker from (0, 1) to (2, 1)\n", stderr);
 	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, 1, i), true);
+		CUTE_assertEquals(get_grid_cell(&grid, 1, i), ALIVE);
 	}
 	fputs("Looking for empty columns 0 and 2\n", stderr);
 	for (i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, 0, i), false);
-		CUTE_assertEquals(get_grid_cell(&grid, 2, i), false);
+		CUTE_assertEquals(get_grid_cell(&grid, 0, i), DEAD);
+		CUTE_assertEquals(get_grid_cell(&grid, 2, i), DEAD);
 	}
 	fputs("OK\n", stderr);
 }
