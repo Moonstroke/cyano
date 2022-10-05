@@ -14,6 +14,7 @@
 #define GRIDWINDOW_H
 
 
+#include <SDL2/SDL_events.h> /* for SDL_SysWMmsg */
 #include <SDL2/SDL_render.h>
 #include <stdbool.h>
 
@@ -140,6 +141,15 @@ void get_cell_loc(const struct grid_window *grid_win, int x, int y, int *i,
  *       the corresponding cell location.
  */
 void get_hovered_cell_loc(const struct grid_window *grid_win, int *i, int *j);
+
+
+/**
+ * \brief Process a platform-specific window manager event notification.
+ *
+ * \param[in] grid_win The grid window for which to process the event
+ * \param[in] msg      The system-dependent event notification
+ */
+void handle_system_event(struct grid_window *grid_win, SDL_SysWMmsg *msg);
 
 
 #endif /* GRIDWINDOW_H */
