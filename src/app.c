@@ -36,7 +36,7 @@ int init_app(void) {
 		fprintf(stderr, "Could not load the SDL: %s\n", SDL_GetError());
 		return -__LINE__;
 	}
-
+	SDL_EventState(SDL_SYSWMEVENT, SDL_ENABLE);
 	return 0;
 }
 
@@ -232,6 +232,9 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 			resize_grid_window(gw);
 #endif
 		}
+		break;
+	case SDL_SYSWMEVENT:
+		handle_system_event(gw, event->syswm.msg);
 		break;
 	case SDL_QUIT:
 		*loop = false;
