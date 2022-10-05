@@ -144,6 +144,24 @@ void get_hovered_cell_loc(const struct grid_window *grid_win, int *i, int *j);
 
 
 /**
+ * \brief Convert the given value in pixels to the closest integral number of
+ *        cells in the window's grid.
+ *
+ * \param[in] gw  The grid window for which to convert a size
+ * \param[in] dim The value in pixels to convert
+ *
+ * \return A positive integer representing the nearest (inferior or superior)
+ *         number of cells
+ */
+inline unsigned int size_to_grid_dimension(const struct grid_window *gw,
+                                           unsigned int dim) {
+	/* Perform division rounding to nearest */
+	unsigned int divisor = gw->cell_pixels + gw->border_width;
+	return (dim - gw->border_width + (divisor / 2)) / divisor;
+}
+
+
+/**
  * \brief Process a platform-specific window manager event notification.
  *
  * \param[in] grid_win The grid window for which to process the event

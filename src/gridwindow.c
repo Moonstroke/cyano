@@ -793,5 +793,8 @@ void get_hovered_cell_loc(const struct grid_window *gw, int *i, int *j) {
 	get_cell_loc(gw, x, y, i, j);
 }
 
+extern unsigned int size_to_grid_dimension(const struct grid_window*,
+                                           unsigned int dim);
+
 void handle_system_event(struct grid_window *gw, SDL_SysWMmsg *msg) {
 }

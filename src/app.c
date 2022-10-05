@@ -80,21 +80,14 @@ static inline void _print_help(void) {
 	fwrite(UI_HELP, sizeof UI_HELP, 1, stdout);
 }
 
-static unsigned int _to_grid_dimension(const struct grid_window *gw,
-                                       unsigned int dim) {
-	/* Perform division rounding to nearest */
-	unsigned int divisor = gw->cell_pixels + gw->border_width;
-	return (dim - gw->border_width + (divisor / 2)) / divisor;
-}
-
 static int _event_filter(void *userdata, SDL_Event *event) {
 	if (event->type == SDL_WINDOWEVENT
 	    && event->window.event == SDL_WINDOWEVENT_RESIZED) {
 		struct grid_window *gw = userdata;
 		int event_width = event->window.data1;
 		int event_height = event->window.data2;
-		unsigned int new_width = _to_grid_dimension(gw, event_width);
-		unsigned int new_height = _to_grid_dimension(gw, event_height);
+		unsigned int new_width = size_to_grid_dimension(gw, event_width);
+		unsigned int new_height = size_to_grid_dimension(gw, event_height);
 		if (new_width < 3 || new_height < 3) {
 			/* Disallow grid smaller than 3 in either dimension */
 			return 0;
