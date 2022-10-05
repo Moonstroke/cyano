@@ -792,3 +792,6 @@ void get_hovered_cell_loc(const struct grid_window *gw, int *i, int *j) {
 	SDL_GetMouseState(&x, &y);
 	get_cell_loc(gw, x, y, i, j);
 }
+
+void handle_system_event(struct grid_window *gw, SDL_SysWMmsg *msg) {
+}
