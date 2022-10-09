@@ -172,7 +172,8 @@ int update_grid(struct grid *g) {
 }
 
 
-int resize_grid(struct grid *g, unsigned int width, unsigned int height) {
+int resize_grid(struct grid *g, unsigned int width, unsigned int height, enum grid_edge edge) {
+	(void) edge; // /wd4100
 	size_t new_size = NUM_OCTETS(width * height);
 	if (width == g->w) {
 		/* Same size, return early to skip redundant operation */

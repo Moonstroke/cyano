@@ -817,7 +817,7 @@ int handle_system_event(struct grid_window *gw, SDL_SysWMmsg *msg) {
 			/* Disallow grid smaller than 3 in either dimension */
 			return -__LINE__;
 		} else {
-			resize_grid(gw->grid, new_width, new_height);
+			resize_grid(gw->grid, new_width, new_height, EDGE_BOTTOMRIGHT);
 			rect->right = rect->left + new_width * (gw->border_width + gw->cell_pixels) + gw->border_width - 1;
 			rect->bottom = rect->top + new_height * (gw->border_width + gw->cell_pixels) + gw->border_width + 5;
 			render_grid_window(gw);

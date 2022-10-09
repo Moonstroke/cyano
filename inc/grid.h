@@ -209,10 +209,11 @@ enum grid_edge {
  * \param[in,out] grid   The grid to resize
  * \param[in]     width  The new width of the grid
  * \param[in]     height The new height of the grid
+ * \param[in]     edge   The edge being resized
  *
  * \return \c 0 if the resize succeeded, a negative value on error
  */
-int resize_grid(struct grid *grid, unsigned int width, unsigned int height);
+int resize_grid(struct grid *grid, unsigned int width, unsigned int height, enum grid_edge edge);
 
 
 /**
