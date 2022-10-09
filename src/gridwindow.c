@@ -667,6 +667,12 @@ static int _enable_resize_increment(struct grid_window *gw) {
 		XFree(size_hints);
 	} else
 #endif
+#ifdef SDL_VIDEO_DRIVER_WINDOWS
+	if (wm_info.subsystem == SDL_SYSWM_WINDOWS) {
+		/* Resize increment performed during event handling. Nothing to do,
+		   just ignore warning below */
+	} else
+#endif
 	{
 		fprintf(stderr, "Warning: unsupported window manager (%d)\n",
 		        wm_info.subsystem);
