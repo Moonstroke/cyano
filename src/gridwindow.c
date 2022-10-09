@@ -1,6 +1,7 @@
 #include "gridwindow.h"
 
 #include <stdint.h> /* for uint8_t */
+#include <stdio.h> /* for fprintf, stderr */
 #include <string.h> /* for strncpy */
 #include <SDL2/SDL_mouse.h> /* for SDL_GetMouseState */
 #include <SDL2/SDL_syswm.h> /* for SDL_SysWMinfo, SDL_GetWindowWMInfo,
