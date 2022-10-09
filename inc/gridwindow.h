@@ -164,8 +164,8 @@ inline unsigned int size_to_grid_dimension(const struct grid_window *gw,
 /**
  * \brief Process a platform-specific window manager event notification.
  *
- * \param[in] grid_win The grid window for which to process the event
- * \param[in] msg      The system-dependent event notification
+ * \param[in,out]     grid_win The grid window for which to process the event
+ * \param[in,out] msg      The system-dependent event notification
  *
  * \return \c 0 on success, a negative value if the event is invalid or
  *         otherwise cannot be processed
