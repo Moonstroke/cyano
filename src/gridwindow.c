@@ -805,7 +805,7 @@ void get_hovered_cell_loc(const struct grid_window *gw, int *i, int *j) {
 extern unsigned int size_to_grid_dimension(const struct grid_window*,
                                            unsigned int dim);
 
-void handle_system_event(struct grid_window *gw, SDL_SysWMmsg *msg) {
+int handle_system_event(struct grid_window *gw, SDL_SysWMmsg *msg) {
 #ifdef SDL_VIDEO_DRIVER_WINDOWS
 	if (msg->msg.win.msg == WM_SIZING) {
 		LPRECT rect = (LPRECT)msg->msg.win.lParam;
@@ -815,11 +815,12 @@ void handle_system_event(struct grid_window *gw, SDL_SysWMmsg *msg) {
 		unsigned int new_height = size_to_grid_dimension(gw, event_height);
 		if (new_width < 3 || new_height < 3) {
 			/* Disallow grid smaller than 3 in either dimension */
-			return;
+			return -__LINE__;
 		} else {
 			resize_grid(gw->grid, new_width, new_height);
 			resize_grid_window(gw);
 		}
 	}
 #endif
+	return 0;
 }

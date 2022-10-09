@@ -166,8 +166,11 @@ inline unsigned int size_to_grid_dimension(const struct grid_window *gw,
  *
  * \param[in] grid_win The grid window for which to process the event
  * \param[in] msg      The system-dependent event notification
+ *
+ * \return \c 0 on success, a negative value if the event is invalid or
+ *         otherwise cannot be processed
  */
-void handle_system_event(struct grid_window *grid_win, SDL_SysWMmsg *msg);
+int handle_system_event(struct grid_window *grid_win, SDL_SysWMmsg *msg);
 
 
 #endif /* GRIDWINDOW_H */

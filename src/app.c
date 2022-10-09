@@ -95,7 +95,7 @@ static int _event_filter(void *userdata, SDL_Event *event) {
 			event->window.data2 = new_height;
 		}
 	} else if (event->type == SDL_SYSWMEVENT) {
-		handle_system_event(gw, event->syswm.msg);
+		return handle_system_event(gw, event->syswm.msg) == 0;
 	}
 	return 1;
 }
