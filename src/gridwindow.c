@@ -5,11 +5,13 @@
 #include <string.h> /* for strncpy */
 #include <SDL2/SDL_mouse.h> /* for SDL_GetMouseState */
 #include <SDL2/SDL_syswm.h> /* for SDL_SysWMinfo, SDL_GetWindowWMInfo,
-                               SDL_VIDEO_DRIVER_X11 */
+                               SDL_VIDEO_DRIVER_X11, SDL_VIDEO_DRIVER_WINDOWS */
 #include <SDL2/SDL_version.h> /* for SDL_VERSION */
 #ifdef SDL_VIDEO_DRIVER_X11
 # include <X11/Xlib.h> /* for BadWindow, XFree */
 # include <X11/Xutil.h> /* for X*, PResizeInc, PBaseSize */
+#elif defined(SDL_VIDEO_DRIVER_WINDOWS)
+# include <windef.h> /* for WM_SIZING, LPRECT */
 #endif
 
 
@@ -798,4 +800,20 @@ extern unsigned int size_to_grid_dimension(const struct grid_window*,
                                            unsigned int dim);
 
 void handle_system_event(struct grid_window *gw, SDL_SysWMmsg *msg) {
+#ifdef SDL_VIDEO_DRIVER_WINDOWS
+	if (msg->msg.win.msg == WM_SIZING) {
+		LPRECT rect = (LPRECT)msg->msg.win.lParam;
+		int event_width = rect->right - rect->left;
+		int event_height = rect->bottom - rect->top;
+		unsigned int new_width = size_to_grid_dimension(gw, event_width);
+		unsigned int new_height = size_to_grid_dimension(gw, event_height);
+		if (new_width < 3 || new_height < 3) {
+			/* Disallow grid smaller than 3 in either dimension */
+			return;
+		} else {
+			resize_grid(gw->grid, new_width, new_height);
+			resize_grid_window(gw);
+		}
+	}
+#endif
 }
