@@ -13,7 +13,8 @@
         "WIN32",
         "_DEBUG",
         "UNICODE",
-        "_UNICODE"
+        "_UNICODE",
+        "ICONSIZE=16"
       ],
       "intelliSenseMode": "windows-msvc-x64"
     },
@@ -30,7 +31,8 @@
         "WIN32",
         "NDEBUG",
         "UNICODE",
-        "_UNICODE"
+        "_UNICODE",
+        "ICONSIZE=64"
       ],
       "intelliSenseMode": "windows-msvc-x64"
     }
