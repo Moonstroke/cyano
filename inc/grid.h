@@ -183,6 +183,20 @@ int update_grid(struct grid *grid);
 
 
 /**
+ * \brief Designates an edge (or a vertex) of a grid.
+ */
+enum grid_edge {
+	EDGE_TOP = 1,
+	EDGE_BOTTOM = 2,
+	EDGE_RIGHT = 4,
+	EDGE_LEFT = 8,
+	EDGE_TOPRIGHT = EDGE_TOP | EDGE_RIGHT,
+	EDGE_TOPLEFT = EDGE_TOP | EDGE_LEFT,
+	EDGE_BOTTOMRIGHT = EDGE_BOTTOM | EDGE_RIGHT,
+	EDGE_BOTTOMLEFT = EDGE_BOTTOM | EDGE_LEFT
+};
+
+/**
  * \brief Change the dimensions of the grid.
  *
  * The resize takes effect in the lower-right corner of the grid. If the new
