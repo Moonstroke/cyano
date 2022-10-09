@@ -79,11 +79,10 @@ static inline int _output_grid(const struct grid *grid, const char *out_file) {
 static inline void _print_help(void) {
 	fwrite(UI_HELP, sizeof UI_HELP, 1, stdout);
 }
-
 static int _event_filter(void *userdata, SDL_Event *event) {
+	struct grid_window *gw = userdata;
 	if (event->type == SDL_WINDOWEVENT
-	    && event->window.event == SDL_WINDOWEVENT_RESIZED) {
-		struct grid_window *gw = userdata;
+		&& event->window.event == SDL_WINDOWEVENT_RESIZED) {
 		int event_width = event->window.data1;
 		int event_height = event->window.data2;
 		unsigned int new_width = size_to_grid_dimension(gw, event_width);
@@ -95,7 +94,8 @@ static int _event_filter(void *userdata, SDL_Event *event) {
 			event->window.data1 = new_width;
 			event->window.data2 = new_height;
 		}
-
+	} else if (event->type == SDL_SYSWMEVENT) {
+		handle_system_event(gw, event->syswm.msg);
 	}
 	return 1;
 }
@@ -225,9 +225,6 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 			resize_grid_window(gw);
 #endif
 		}
-		break;
-	case SDL_SYSWMEVENT:
-		handle_system_event(gw, event->syswm.msg);
 		break;
 	case SDL_QUIT:
 		*loop = false;
