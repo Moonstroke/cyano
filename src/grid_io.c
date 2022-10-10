@@ -239,7 +239,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 }
 
 
-char *get_grid_repr(const struct grid *grid) {
+char *get_grid_repr(const struct grid *grid, enum grid_format format) {
 	/* Additional height characters for newlines and null terminator */
 	char *repr = malloc((grid->w + 1) * grid->h);
 	if (repr == NULL) {

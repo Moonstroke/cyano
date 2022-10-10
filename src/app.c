@@ -65,7 +65,7 @@ static inline void _reset_grid(struct grid *grid, const char *repr,
 }
 
 static inline int _output_grid(const struct grid *grid, const char *out_file) {
-	char *repr = get_grid_repr(grid);
+	char *repr = get_grid_repr(grid, GRID_FORMAT_PLAIN);
 	if (repr == NULL) {
 		return -__LINE__;
 	}
