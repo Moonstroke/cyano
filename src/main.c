@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	run_app(&gw, update_rate, repr, format, out_file);
+	run_app(&gw, update_rate, repr, format, out_file, GRID_FORMAT_PLAIN);
 
 	free(repr);
 	free_grid(&g);
