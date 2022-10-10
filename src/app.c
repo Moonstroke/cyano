@@ -219,15 +219,6 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 				break;
 		}
 		break;
-	case SDL_WINDOWEVENT:
-		if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
-			resize_grid(gw->grid, event->window.data1, event->window.data2,
-			            EDGE_BOTTOMRIGHT);
-#ifdef _MSC_VER
-			resize_grid_window(gw);
-#endif
-		}
-		break;
 	case SDL_QUIT:
 		*loop = false;
 		break;
