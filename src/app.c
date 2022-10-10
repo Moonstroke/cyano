@@ -195,7 +195,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 			case SDLK_PLUS:
 			case SDLK_KP_PLUS:
 				if (resize_grid(gw->grid, gw->grid->w + 1,
-				                gw->grid->h + 1) < 0) {
+				                gw->grid->h + 1, EDGE_BOTTOMRIGHT) < 0) {
 					fputs("Unable to resize grid\n", stderr);
 					break;
 				}
@@ -210,7 +210,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 					fputs("Cannot shrink the grid below 3 cells high\n",
 					      stderr);
 				} else if (resize_grid(gw->grid, gw->grid->w - 1,
-				                       gw->grid->h - 1) == 0) {
+				                       gw->grid->h - 1,
+				                       EDGE_BOTTOMRIGHT) == 0) {
 					resize_grid_window(gw);
 				} else {
 					fputs("Unable to resize grid\n", stderr);
@@ -220,7 +221,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 		break;
 	case SDL_WINDOWEVENT:
 		if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
-			resize_grid(gw->grid, event->window.data1, event->window.data2);
+			resize_grid(gw->grid, event->window.data1, event->window.data2,
+			            EDGE_BOTTOMRIGHT);
 #ifdef _MSC_VER
 			resize_grid_window(gw);
 #endif
