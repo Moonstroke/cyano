@@ -1,7 +1,7 @@
 Cyano
 ======
 
-> Une implémentation du Jeu de la Vie en C utilisant la SDL v2
+> Une implémentation en C du Jeu de la Vie
 
 
 ## 1. Présentation du Jeu de la Vie

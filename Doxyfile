@@ -6,7 +6,7 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = Cyano
 PROJECT_NUMBER         =
-PROJECT_BRIEF          = "Conway's Game of Life in C using the SDL"
+PROJECT_BRIEF          = "Conway's Game of Life in C"
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = doc
 CREATE_SUBDIRS         = NO

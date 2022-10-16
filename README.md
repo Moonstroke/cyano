@@ -1,7 +1,7 @@
 Cyano
 ======
 
-> A Game of Life implementation in C using the SDL v2
+> A C implementation of the Game of Life
 
 
 ## 1. Presentation of the Game of Life
