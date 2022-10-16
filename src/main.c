@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 
 	struct grid_window gw;
 	if (init_grid_window(&gw, &g, cell_pixels, border_width,
-	                     "SDL Game of Life") < 0) {
+	                     "Cyano - Game of Life") < 0) {
 		fprintf(stderr, "Failure in creation of the game window: %s\n",
 		        gw.error_msg);
 		return EXIT_FAILURE;
