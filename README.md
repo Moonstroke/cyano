@@ -1,4 +1,4 @@
-SDLife
+Cyano
 ======
 
 > A Game of Life implementation in C using the SDL v2

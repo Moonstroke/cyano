@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = SDLife
+PROJECT_NAME           = Cyano
 PROJECT_NUMBER         =
 PROJECT_BRIEF          = "Conway's Game of Life in C using the SDL"
 PROJECT_LOGO           =

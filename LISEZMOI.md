@@ -1,4 +1,4 @@
-SDLife
+Cyano
 ======
 
 > Une implémentation du Jeu de la Vie en C utilisant la SDL v2
