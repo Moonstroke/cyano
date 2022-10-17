@@ -1,6 +1,6 @@
 /**
  * \file "gridwindow.h"
- * \author joH1
+ * \author Joachim "Moonstroke" MARIE
  *
  * \version 0.1
  *
