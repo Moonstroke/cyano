@@ -342,8 +342,8 @@ The program is invoked from the command-line and accepts a set of options.
     <td><code>-S SIZE</code></td>
     <td><code>--square-size</code></td>
     <td>Specifies the grid as square and gives its size</td>
-    <td>None</td><code>-w</code> et <code>-h</code>, because equivalent to
-<code>-w SIZE -h SIZE</code></td>
+    <td><code>-w</code> et <code>-h</code>, because equivalent to <code>-w SIZE
+-h SIZE</code></td>
   </tr>
   <tr>
     <td><code>-W</code></td>

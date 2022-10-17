@@ -366,7 +366,7 @@ d’options.
     <td><code>-S TAILLE</code></td>
     <td><code>--square-size</code></td>
     <td>Spécifie que la grille est carrée et donne sa taille</td>
-    <td>Aucun</td><code>-w</code> et <code>-h</code>, car équivalent à <code>-w
+    <td><code>-w</code> et <code>-h</code>, car équivalent à <code>-w
 TAILLE -h TAILLE</code></td>
   </tr>
   <tr>
