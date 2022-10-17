@@ -309,10 +309,11 @@ above.
 
 The project's name is inspired by
 [cyanobacteria](https://en.wikipedia.org/wiki/Cyanobacteria), a branch of
-bacteria known to be the oldest lifeform to assemble in complex, structured
-colonies. This particularity recalls the Game, where elaborate patterns form by
-the interaction of singular cells. This name also fits a personal convention of
-giving to projects written in C a name starting with this letter.
+bacteria known to be the oldest lifeform (-3.7 billion years) to assemble in
+complex, structured colonies. This particularity recalls the Game, where
+elaborate patterns form by the interaction of singular cells. This name also
+fits a personal convention of giving to projects written in C a name starting
+with this letter.
 
 
 ### 2.1. Execution
