@@ -239,12 +239,11 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 }
 
 
-char *get_grid_repr(const struct grid *grid, enum grid_format format) {
-	/* Additional height characters for newlines and null terminator */
-	char *repr = malloc((grid->w + 1) * grid->h);
-	if (repr == NULL) {
-		return NULL;
-	}
+static inline void _get_grid_rle(const struct grid *grid, char *repr) {
+	repr[0] = '\0'; // TODO
+}
+
+static inline void _get_grid_plain(const struct grid *grid, char *repr) {
 	char cell_repr[] = {
 		[DEAD] = '.',
 		[ALIVE] = '@'
@@ -256,5 +255,18 @@ char *get_grid_repr(const struct grid *grid, enum grid_format format) {
 		repr[j * (grid->w + 1) + grid->w] = '\n';
 	}
 	repr[(grid->w + 1) * grid->h - 1] = '\0';
+}
+
+char *get_grid_repr(const struct grid *grid, enum grid_format format) {
+	/* Additional height characters for newlines and null terminator */
+	char *repr = malloc((grid->w + 1) * grid->h);
+	if (repr == NULL) {
+		return NULL;
+	}
+	if (format == GRID_FORMAT_RLE) {
+		_get_grid_rle(grid, repr);
+	} else {
+		_get_grid_plain(grid, repr);
+	}
 	return repr;
 }
