@@ -255,7 +255,11 @@ static inline void _get_grid_rle(const struct grid *grid, char *repr) {
 			       && get_grid_cell(grid, i + run_length, j) == run_state) {
 				++run_length;
 			}
-			// TODO ignore blank ends of line
+			/* Skip blank row endings (i.e. blank runs that reach the end of
+			   a row) */
+			if (run_state == DEAD && i + run_length == grid->w) {
+				break;
+			}
 			if (run_length > 1) {
 				int nb_written = sprintf(&repr[repr_index], "%u", run_length);
 				// TODO check for < 0
