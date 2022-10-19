@@ -240,7 +240,33 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 
 
 static inline void _get_grid_rle(const struct grid *grid, char *repr) {
-	repr[0] = '\0'; // TODO
+	char cell_repr[] = {
+		[DEAD] = 'b',
+		[ALIVE] = 'o'
+	};
+	size_t repr_index = 0;
+	for (unsigned int j = 0; j < grid->h; ++j) {
+		for (unsigned int i = 0, run_length = 1; i < grid->w;
+		     i += run_length, run_length = 1) {
+			enum cell_state run_state = get_grid_cell(grid, i, j);
+			/* Get length of run: stop at either a different cell or the end
+			   of the row */
+			while (i + run_length < grid->w
+			       && get_grid_cell(grid, i + run_length, j) == run_state) {
+				++run_length;
+			}
+			// TODO ignore blank ends of line
+			if (run_length > 1) {
+				int nb_written = sprintf(&repr[repr_index], "%u", run_length);
+				// TODO check for < 0
+				repr_index += nb_written;
+			}
+			repr[repr_index++] = cell_repr[run_state];
+		}
+		repr[repr_index++] = '$';
+	}
+	/* Overwrite last row terminator */
+	repr[repr_index - 1] = '!';
 }
 
 static inline void _get_grid_plain(const struct grid *grid, char *repr) {
