@@ -85,7 +85,7 @@ void test_blinker_after_two_gens(void) {
 }
 
 void test_glider_rle_repr(void) {
-	const char expected[] = "bo$2bo$3o!";
+	const char expected[] = "x = 3, y = 3, rule = B3/S23\nbo$2bo$3o!";
 	fputs("-- Test for the RLE representation of a blinker\n", stderr);
 	fputs("Create glider\n", stderr);
 	toggle_cell(&grid, 1, 0);

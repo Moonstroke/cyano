@@ -288,14 +288,26 @@ static inline void _get_grid_plain(const struct grid *grid, char *repr) {
 }
 
 char *get_grid_repr(const struct grid *grid, enum grid_format format) {
-	/* Additional height characters for newlines and null terminator */
-	char *repr = malloc((grid->w + 1) * grid->h);
-	if (repr == NULL) {
-		return NULL;
-	}
+	char *repr;
 	if (format == GRID_FORMAT_RLE) {
-		_get_grid_rle(grid, repr);
+		char header[64] = {0};
+		int header_size = sprintf(header, "x = %u, y = %u, rule = %s\n",
+		                          grid->w, grid->h, grid->rule);
+		if (header_size < 0) {
+			return NULL;
+		}
+		repr = malloc(header_size + (grid->w + 1) * grid->h);
+		if (repr == NULL) {
+			return NULL;
+		}
+		strncpy(repr, header, header_size);
+		_get_grid_rle(grid, &repr[header_size]);
 	} else {
+	/* Additional height characters for newlines and null terminator */
+		repr = malloc((grid->w + 1) * grid->h);
+		if (repr == NULL) {
+			return NULL;
+		}
 		_get_grid_plain(grid, repr);
 	}
 	return repr;
