@@ -239,12 +239,33 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 }
 
 
-static inline void _get_grid_rle(const struct grid *grid, char *repr) {
+static inline char *_get_rle_header(const struct grid *grid,
+                                    size_t *repr_start) {
+	char header[64] = {0};
+	int header_size = sprintf(header, "x = %u, y = %u, rule = %s\n",
+	                          grid->w, grid->h, grid->rule);
+	if (header_size < 0) {
+		return NULL;
+	}
+	char *repr = malloc(header_size + (grid->w + 1) * grid->h + 1);
+	if (repr == NULL) {
+		return NULL;
+	}
+	strncpy(repr, header, header_size);
+	*repr_start = header_size;
+	return repr;
+}
+
+static inline char *_get_grid_rle(const struct grid *grid) {
 	char cell_repr[] = {
 		[DEAD] = 'b',
 		[ALIVE] = 'o'
 	};
 	size_t repr_index = 0;
+	char *repr = _get_rle_header(grid, &repr_index);
+	if (repr == NULL) {
+		return NULL;
+	}
 	for (unsigned int j = 0; j < grid->h; ++j) {
 		for (unsigned int i = 0, run_length = 1; i < grid->w;
 		     i += run_length, run_length = 1) {
@@ -271,6 +292,8 @@ static inline void _get_grid_rle(const struct grid *grid, char *repr) {
 	}
 	/* Overwrite last row terminator */
 	repr[repr_index - 1] = '!';
+	// TODO realloc repr to trim unused allocated space
+	return repr;
 }
 
 static inline void _get_grid_plain(const struct grid *grid, char *repr) {
@@ -290,18 +313,7 @@ static inline void _get_grid_plain(const struct grid *grid, char *repr) {
 char *get_grid_repr(const struct grid *grid, enum grid_format format) {
 	char *repr;
 	if (format == GRID_FORMAT_RLE) {
-		char header[64] = {0};
-		int header_size = sprintf(header, "x = %u, y = %u, rule = %s\n",
-		                          grid->w, grid->h, grid->rule);
-		if (header_size < 0) {
-			return NULL;
-		}
-		repr = malloc(header_size + (grid->w + 1) * grid->h);
-		if (repr == NULL) {
-			return NULL;
-		}
-		strncpy(repr, header, header_size);
-		_get_grid_rle(grid, &repr[header_size]);
+		repr = _get_grid_rle(grid);
 	} else {
 	/* Additional height characters for newlines and null terminator */
 		repr = malloc((grid->w + 1) * grid->h);
