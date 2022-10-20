@@ -283,7 +283,10 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 			}
 			if (run_length > 1) {
 				int nb_written = sprintf(&repr[repr_index], "%u", run_length);
-				// TODO check for < 0
+				if (nb_written <= 0) {
+					free(repr);
+					return NULL;
+				}
 				repr_index += nb_written;
 			}
 			repr[repr_index++] = cell_repr[run_state];
