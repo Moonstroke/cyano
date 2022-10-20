@@ -207,10 +207,14 @@ void clear_grid(struct grid *grid);
  * \note The returned string is allocated dynamically; callers must take care of
  * freeing it after use.
  *
+ * \note If the given format is \a GRID_FORMAT_UNKNOWN, the returned
+ *       representation defaults to plain-text.
+ *
  * \param[in] grid   The grid
  * \param[in] format The format of the representation to generate
  *
- * \return A string representation of the current state of the grid
+ * \return A string representation of the current state of the grid, or \c NULL
+ *         on error
  */
 char *get_grid_repr(const struct grid *grid, enum grid_format format);
 
