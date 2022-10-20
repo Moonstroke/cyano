@@ -240,14 +240,15 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 
 
 static inline char *_get_rle_header(const struct grid *grid,
-                                    size_t *repr_start) {
+                                    size_t *repr_start, size_t *allocated) {
 	char header[64] = {0};
 	int header_size = sprintf(header, "x = %u, y = %u, rule = %s\n",
 	                          grid->w, grid->h, grid->rule);
 	if (header_size < 0) {
 		return NULL;
 	}
-	char *repr = malloc(header_size + (grid->w + 1) * grid->h + 1);
+	*allocated = header_size + (grid->w + 1) * grid->h + 1;
+	char *repr = malloc(*allocated);
 	if (repr == NULL) {
 		return NULL;
 	}
@@ -261,8 +262,8 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 		[DEAD] = 'b',
 		[ALIVE] = 'o'
 	};
-	size_t repr_index = 0;
-	char *repr = _get_rle_header(grid, &repr_index);
+	size_t repr_index = 0, allocated;
+	char *repr = _get_rle_header(grid, &repr_index, &allocated);
 	if (repr == NULL) {
 		return NULL;
 	}
@@ -296,7 +297,9 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 	/* Overwrite last row terminator */
 	repr[repr_index - 1] = '!';
 	repr[repr_index] = '\0';
-	// TODO realloc repr to trim unused allocated space
+	if (repr_index + 1 < allocated) {
+		repr = realloc(repr, repr_index + 1);
+	}
 	return repr;
 }
 
