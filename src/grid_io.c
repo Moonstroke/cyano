@@ -292,6 +292,7 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 	}
 	/* Overwrite last row terminator */
 	repr[repr_index - 1] = '!';
+	repr[repr_index] = '\0';
 	// TODO realloc repr to trim unused allocated space
 	return repr;
 }
