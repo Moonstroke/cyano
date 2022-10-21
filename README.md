@@ -324,7 +324,7 @@ The program is invoked from the command-line and accepts a set of options.
     <th>Conflict with another option</th>
   </tr>
   <tr>
-    <td rowspan="4">Grid management</td>
+    <td rowspan="5">Grid management</td>
     <td><code>-w WIDTH</code></td>
     <td><code>--width</code></td>
     <td>Specifies the width of the grid</td>
@@ -342,6 +342,7 @@ The program is invoked from the command-line and accepts a set of options.
     <td><code>-S SIZE</code></td>
     <td><code>--square-size</code></td>
     <td>Specifies the grid as square and gives its size</td>
+    <td>None</td>
     <td><code>-w</code> et <code>-h</code>, because equivalent to <code>-w SIZE
 -h SIZE</code></td>
   </tr>
@@ -361,7 +362,7 @@ recognized, or its rulestring)</td>
     <td>None</td>
   </tr>
   <tr>
-    <td rowspan="5">Grid display</td>
+    <td rowspan="4">Grid display</td>
     <td><code>-b BORDER</code></td>
     <td><code>--border</code></td>
     <td>The size of the gap between two cells, in pixels</td>
@@ -390,7 +391,7 @@ recognized, or its rulestring)</td>
     <td>None</td>
   </tr>
   <tr>
-    <td rowspan="3">File I/O</td>
+    <td rowspan="4">File I/O</td>
     <td><code>-f FILE</code></td>
     <td><code>--file</code></td>
     <td>Gives the name of the file to read from and write to</td>
@@ -656,41 +657,40 @@ This project was revived after a substantial hiatus, and becomes increasingly
 viable (although utterly redundant). Here is a set of evolutions I have in mind
 for the program, some of which shorter-term than others.
 
- - Achieving a stable version 1.0
+ - Achieving a stable version 1.0  
    This is probably more a spiritual guideline than a concrete goal; it depends
    on me only to decide when to officially put the version tag out, but I want
    to be entirely satisfied with the state of the project for that.
- - OpenGL implementation
+ - OpenGL implementation  
    I am working locally on a version backed with OpenGL for the rendering, it
-   is
-   functional, but barely, and needs a lot of polishing.
- - Increased configurability
+   is functional, but barely, and needs a lot of polishing.
+ - Increased configurability  
    The colors of the grid display, the characters used for the plain text file
    format are fixed (even hard-coded). A means to configure these would be
    welcome, but I am not sure of how to introduce it; I do not want the program
    to depend on an external config file, and I am reluctant to introduce yet
    more command-line options. Macros could be a solution, but that would mean
    no runtime configuration.
- - A better plain text file format
+ - A better plain text file format  
    Says it all. As implemented the plain text format is sufficient, but poor;
    support for comments, omitted blank line endings would be a plus.
- - GUI
+ - GUI  
    To decorate the interface, and augment it with controls, and menus.
    Unfortunaltely I do not know any SDL GUI toolkit, and developing one myself
    from scratch is too big a project to even consider it.
- - Headless run mode
+ - Headless run mode  
    This would introduce a totally different type of execution (that would
    justify adding a command-line option). The idea would be to provide input
    and output files and a number of generations, and write to the output file
    the configuration in the input file after this many generations. It would
    be a sort of pattern incubator.
- - Non-totalistic or anisotropic Life-like CA
+ - Non-totalistic or anisotropic Life-like CA  
    While I do not consider non-binary CA (the grid is backed by a bit array,
    changing the number of states would be a huge work I do not want to tackle),
    this type of CA is one that would be interesting to take on. It would
    involve updating the evolution and next-state-calculation code, that could
    use some reworking anyway.
- - Internationalization
+ - Internationalization  
    Mostly for French, at least initially, and would affect the README and docs.
    This would involve twice the amount of documentation to maintain, which is
    already a full-time job by itself.

@@ -348,7 +348,7 @@ d’options.
     <th>Conflit avec une autre option</th>
   </tr>
   <tr>
-    <td rowspan="4">Gestion de la grille</td>
+    <td rowspan="5">Gestion de la grille</td>
     <td><code>-w LARGEUR</code></td>
     <td><code>--width</code></td>
     <td>Spécifie la largeur de la grille</td>
@@ -366,6 +366,7 @@ d’options.
     <td><code>-S TAILLE</code></td>
     <td><code>--square-size</code></td>
     <td>Spécifie que la grille est carrée et donne sa taille</td>
+    <td>Aucune</td>
     <td><code>-w</code> et <code>-h</code>, car équivalent à <code>-w
 TAILLE -h TAILLE</code></td>
   </tr>
@@ -385,7 +386,7 @@ par sa *rulestring*)</td>
     <td>Aucun</td>
   </tr>
   <tr>
-    <td rowspan="5">Affichage de la grille</td>
+    <td rowspan="4">Affichage de la grille</td>
     <td><code>-b BORDURE</code></td>
     <td><code>--border</code></td>
     <td>La taille de l’espace entre les cellules, en pixels</td>
@@ -414,7 +415,7 @@ par sa *rulestring*)</td>
     <td>None</td>
   </tr>
   <tr>
-    <td rowspan="3">E/S de fichier</td>
+    <td rowspan="4">E/S de fichier</td>
     <td><code>-f FICHIER</code></td>
     <td><code>--file</code></td>
     <td>Donne le chemin du fichier d’où lire et où écrire</td>
@@ -703,15 +704,15 @@ Ce projet a été relancé après un hiatus notable, et devient de plus en plus
 viable (bien que tout à fait superflu). Voici une liste d’évolutions que j’ai
 en tête pour le programme, certaines de plus court terme que d’autres.
 
- - Atteindre une version 1.0 stable
+ - Atteindre une version 1.0 stable  
    C’est plus une directive spirituelle qu’un objectif concret ; il ne tient
    qu’à moi de décider quand apposer officiellement le numéro de version, mais
    j’attends d’être entièrement satisfait de l’état du projet pour cela.
- - Implémentation avec OpenGL
+ - Implémentation avec OpenGL  
    Je suis en local sur une version utilisant OpenGL pour le rendu graphique,
    cela fonctionne, mais tout juste, le code nécessite encore beaucoup
    d’affinage.
- - Amélioration de la configurabilité
+ - Amélioration de la configurabilité  
    Les couleurs de l’affichage de la grille, les caractères utilisés pour le
    format texte brut des fichiers sont fixes (et codés en dur). Un moyen de les
    configurer serait le bienvenu, mais je ne suis pas sûr de comment
@@ -720,29 +721,29 @@ en tête pour le programme, certaines de plus court terme que d’autres.
    d’autres options de ligne de commande. Les macros de préprocesseur
    pourraient s’avérer une solutions, mais cela priverait de cofiguration à
    l’exécution.
- - Un meilleur format texte brut
+ - Un meilleur format texte brut  
    Tout est dit. Tel qu’implémenté, le format texte brut est suffisant, mais
    maigre ; un support pour des commentaires, une omission des fin de ligne
    mortes seraient des ajouts judicieux.
- - Interface utilisateur
+ - Interface utilisateur  
    Dans le but de décorer l’interface, et de l’augmenter de contrôles et menus.
    Malheureusement je ne connais pas de framework GUI pour la SDL, et en
    développer un moi-même à partir de rien est un bien trop grand projet pour
    même y penser.
- - Mode d’exécution sans affichage
+ - Mode d’exécution sans affichage  
    Cela introduirait une type d’exécution totallement différent (qui
    justifierait l’ajout d’une option de ligne de commande attitrée). L’idée
    serait de fournir fichiers d’entrée et de sortie et un nombre de
    générations, et d’écrire dans le fichier de sortie l’évolution après autant
    de générations de la configuration dans le fichier d’entrée. Ce serait une
    forme d’incubateur pour motifs.
- - LLCA non-totalistes ou anisotropes
+ - LLCA non-totalistes ou anisotropes  
    Si je ne considère pas les AC non binaires (la grille est basée sur un
    tableau de bits, changer le nombre d’états serait un trop gros travail pour
    que j’aie l’envie de m’y atteler), ces types d’AC seraient intéressants à
    étudier. Cela demanderait de modifier le code d’évolution et calcul de la
    génération suivante, qui bénéficierait d’une refonte de toute manière.
- - Internationalisation
+ - Internationalisation  
    Principalement en ce qui concerne la langue de notre bon vieux Molière (on
    ne se refait pas), en tout cas pour commencer, cela affecterait les docs en
    plus du présent document. Cela impliquerait de maintenir le double de
