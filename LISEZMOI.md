@@ -547,7 +547,7 @@ Le programme peut lire ou écrire vers des fichiers dont le contenu décrit une
 configuration de grille (dimensions, état des cellules et parfois
 *rulestring*).
 Ces fichiers viennet en deux formats distincts, *texte brut* et *RLE* (pour
-*run-length encoding*, encodage par longueur de suite).
+*run-length encoding*, codage par longueur de plage).
 
 le format du fichier d’entrée peut être spécifié par l’option de ligne de
 commande `-F`. Si l’option n’est pas donnée, le programme tente de deviner le
@@ -572,7 +572,7 @@ Le format texte brut est une représentation textuelle de la grille en un bloc
 de texte rectangulaire, avec des `.` pour les cellules mortes et des `@` ou `O`
 pour les vivantes. Bien que ces deux caractères soient reconnus, ils ne
 devraient pas être mélangés ; si les données contiennent les deux un message
-d'avertissement sera affiché sur la sortie d'erreur standard. La grille doit
+d’avertissement sera affiché sur la sortie d’erreur standard. La grille doit
 être écrite intégralement, le nombre de lignes donne la hauteur de la grille et
 le nombre de caractères par ligne (qui doit être constant tout au long du
 fichier) en donne la largeur. Toute ligne commençant par un `!` est considérée
@@ -721,10 +721,9 @@ en tête pour le programme, certaines de plus court terme que d’autres.
    pourraient s’avérer une solutions, mais cela priverait de cofiguration à
    l’exécution.
  - Un meilleur format texte brut
-   Tout est dit. tel qu’implémenté, le format texte brut est suffisant, mais
+   Tout est dit. Tel qu’implémenté, le format texte brut est suffisant, mais
    maigre ; un support pour des commentaires, une omission des fin de ligne
-   mortes seraient des ajouts judicieux. Deviner les caractères désignant les
-   états de cellule au moment de la lecture pourrait également être une idée.
+   mortes seraient des ajouts judicieux.
  - Interface utilisateur
    Dans le but de décorer l’interface, et de l’augmenter de contrôles et menus.
    Malheureusement je ne connais pas de framework GUI pour la SDL, et en

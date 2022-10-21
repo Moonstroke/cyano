@@ -673,8 +673,7 @@ for the program, some of which shorter-term than others.
    no runtime configuration.
  - A better plain text file format
    Says it all. As implemented the plain text format is sufficient, but poor;
-   support for comments, omitted blank line endings would be a plus. Guessing
-   the statuses characters on reading could be an idea too.
+   support for comments, omitted blank line endings would be a plus.
  - GUI
    To decorate the interface, and augment it with controls, and menus.
    Unfortunaltely I do not know any SDL GUI toolkit, and developing one myself
