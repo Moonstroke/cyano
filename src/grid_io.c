@@ -239,12 +239,71 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 }
 
 
-char *get_grid_repr(const struct grid *grid) {
-	/* Additional height characters for newlines and null terminator */
-	char *repr = malloc((grid->w + 1) * grid->h);
+static inline char *_get_rle_header(const struct grid *grid,
+                                    size_t *repr_start, size_t *allocated) {
+	char header[64] = {0};
+	int header_size = sprintf(header, "x = %u, y = %u, rule = %s\n",
+	                          grid->w, grid->h, grid->rule);
+	if (header_size < 0) {
+		return NULL;
+	}
+	*allocated = header_size + (grid->w + 1) * grid->h + 1;
+	char *repr = malloc(*allocated);
 	if (repr == NULL) {
 		return NULL;
 	}
+	strncpy(repr, header, header_size);
+	*repr_start = header_size;
+	return repr;
+}
+
+static inline char *_get_grid_rle(const struct grid *grid) {
+	char cell_repr[] = {
+		[DEAD] = 'b',
+		[ALIVE] = 'o'
+	};
+	size_t repr_index = 0, allocated;
+	char *repr = _get_rle_header(grid, &repr_index, &allocated);
+	if (repr == NULL) {
+		return NULL;
+	}
+	for (unsigned int j = 0; j < grid->h; ++j) {
+		for (unsigned int i = 0, run_length = 1; i < grid->w;
+		     i += run_length, run_length = 1) {
+			enum cell_state run_state = get_grid_cell(grid, i, j);
+			/* Get length of run: stop at either a different cell or the end
+			   of the row */
+			while (i + run_length < grid->w
+			       && get_grid_cell(grid, i + run_length, j) == run_state) {
+				++run_length;
+			}
+			/* Skip blank row endings (i.e. blank runs that reach the end of
+			   a row) */
+			if (run_state == DEAD && i + run_length == grid->w) {
+				break;
+			}
+			if (run_length > 1) {
+				int nb_written = sprintf(&repr[repr_index], "%u", run_length);
+				if (nb_written <= 0) {
+					free(repr);
+					return NULL;
+				}
+				repr_index += nb_written;
+			}
+			repr[repr_index++] = cell_repr[run_state];
+		}
+		repr[repr_index++] = '$';
+	}
+	/* Overwrite last row terminator */
+	repr[repr_index - 1] = '!';
+	repr[repr_index] = '\0';
+	if (repr_index + 1 < allocated) {
+		repr = realloc(repr, repr_index + 1);
+	}
+	return repr;
+}
+
+static inline void _get_grid_plain(const struct grid *grid, char *repr) {
 	char cell_repr[] = {
 		[DEAD] = '.',
 		[ALIVE] = '@'
@@ -256,5 +315,19 @@ char *get_grid_repr(const struct grid *grid) {
 		repr[j * (grid->w + 1) + grid->w] = '\n';
 	}
 	repr[(grid->w + 1) * grid->h - 1] = '\0';
+}
+
+char *get_grid_repr(const struct grid *grid, enum grid_format format) {
+	char *repr;
+	if (format == GRID_FORMAT_RLE) {
+		repr = _get_grid_rle(grid);
+	} else {
+	/* Additional height characters for newlines and null terminator */
+		repr = malloc((grid->w + 1) * grid->h);
+		if (repr == NULL) {
+			return NULL;
+		}
+		_get_grid_plain(grid, repr);
+	}
 	return repr;
 }

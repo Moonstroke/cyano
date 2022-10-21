@@ -10,6 +10,16 @@
 
 
 
+static inline enum grid_format _guess_format_from_ext(const char *fpath) {
+	if (endswith(fpath, ".rle")) {
+		return GRID_FORMAT_RLE;
+	}
+	if (endswith(fpath, ".cells")) {
+		return GRID_FORMAT_PLAIN;
+	}
+	return GRID_FORMAT_UNKNOWN;
+}
+
 int main(int argc, char **argv) {
 
 	unsigned int grid_width = DEFAULT_GRID_WIDTH;
@@ -47,11 +57,7 @@ int main(int argc, char **argv) {
 		}
 		/* Override format on recognized file extension */
 		if (format == GRID_FORMAT_UNKNOWN) {
-			if (endswith(in_file, ".rle")) {
-				format = GRID_FORMAT_RLE;
-			} else if (endswith(in_file, ".cells")) {
-				format = GRID_FORMAT_PLAIN;
-			}
+			format = _guess_format_from_ext(in_file);
 		}
 		rc = load_grid(&g, repr, format, wrap);
 		if (rc < 0) {
@@ -72,7 +78,13 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	run_app(&gw, update_rate, repr, format, out_file);
+	enum grid_format out_fmt;
+	if (out_file != NULL) {
+		out_fmt = _guess_format_from_ext(out_file);
+	} else {
+		out_fmt = GRID_FORMAT_UNKNOWN;
+	}
+	run_app(&gw, update_rate, repr, format, out_file, out_fmt);
 
 	free(repr);
 	free_grid(&g);

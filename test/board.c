@@ -1,6 +1,7 @@
 #include "grid.h"
 
 #include <CUTE/cute.h>
+#include <stdlib.h> /* for free */
 
 
 
@@ -83,10 +84,28 @@ void test_blinker_after_two_gens(void) {
 	fputs("OK\n", stderr);
 }
 
+void test_glider_rle_repr(void) {
+	const char expected[] = "x = 3, y = 3, rule = B3/S23\nbo$2bo$3o!";
+	fputs("-- Test for the RLE representation of a blinker\n", stderr);
+	fputs("Create glider\n", stderr);
+	toggle_cell(&grid, 1, 0);
+	toggle_cell(&grid, 2, 1);
+	toggle_cell(&grid, 0, 2);
+	toggle_cell(&grid, 1, 2);
+	toggle_cell(&grid, 2, 2);
+	fprintf(stderr, "RLE repr expected: \"%s\"\n", expected);
+	char *repr = get_grid_repr(&grid, GRID_FORMAT_RLE);
+	fprintf(stderr, "RLE repr got:      \"%s\"\n", repr);
+	int cmp = strcmp(repr, expected);
+	free(repr);
+	CUTE_assertEquals(cmp, 0);
+}
+
 void build_case_grid(void) {
-	case_grid = CUTE_newTestCase("Tests for the grid structure", 2);
+	case_grid = CUTE_newTestCase("Tests for the grid structure", 3);
 	CUTE_setCaseBefore(case_grid, setUp);
 	CUTE_setCaseAfter(case_grid, tearDown);
 	CUTE_addCaseTest(case_grid, CUTE_makeTest(test_blinker_after_one_gen));
 	CUTE_addCaseTest(case_grid, CUTE_makeTest(test_blinker_after_two_gens));
+	CUTE_addCaseTest(case_grid, CUTE_makeTest(test_glider_rle_repr));
 }

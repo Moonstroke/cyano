@@ -64,8 +64,9 @@ static inline void _reset_grid(struct grid *grid, const char *repr,
 	}
 }
 
-static inline int _output_grid(const struct grid *grid, const char *out_file) {
-	char *repr = get_grid_repr(grid);
+static inline int _output_grid(const struct grid *grid, const char *out_file,
+                               enum grid_format out_file_format) {
+	char *repr = get_grid_repr(grid, out_file_format);
 	if (repr == NULL) {
 		return -__LINE__;
 	}
@@ -81,7 +82,8 @@ static inline void _print_help(void) {
 static void _handle_event(const SDL_Event *event, struct grid_window *gw,
                          bool *loop, bool *mdown, bool *play,
                          int *last_x, int *last_y, const char *repr,
-                         enum grid_format format, const char *out_file) {
+                         enum grid_format repr_format, const char *out_file,
+                         enum grid_format out_file_format) {
 	switch (event->type) {
 	case SDL_MOUSEBUTTONDOWN:
 		if (event->button.button == SDL_BUTTON_LEFT) {
@@ -139,7 +141,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 				toggle_cell(gw->grid, gw->sel_x, gw->sel_y);
 				break;
 			case SDLK_r:
-				_reset_grid(gw->grid, repr, format, play, loop);
+				_reset_grid(gw->grid, repr, repr_format, play, loop);
 				break;
 			/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
 			   writes the grid state */
@@ -147,7 +149,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 				if (event->key.keysym.mod & KMOD_CTRL) {
 					*loop = false;
 				} else {
-					_output_grid(gw->grid, out_file);
+					_output_grid(gw->grid, out_file, out_file_format);
 				}
 			case SDLK_q:
 				if (!(event->key.keysym.mod & KMOD_CTRL)) {
@@ -171,7 +173,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 }
 
 void run_app(struct grid_window *gw, unsigned int update_rate,
-             const char *repr, enum grid_format format, const char *out_file) {
+             const char *repr, enum grid_format repr_format,
+             const char *out_file, enum grid_format out_file_format) {
 	Uint64 frame_start = SDL_GetPerformanceCounter();
 	Uint64 frame_duration = SDL_GetPerformanceFrequency() / update_rate;
 
@@ -185,7 +188,7 @@ void run_app(struct grid_window *gw, unsigned int update_rate,
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			_handle_event(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
-			            repr, format, out_file);
+			            repr, repr_format, out_file, out_file_format);
 		}
 
 		while (frame_start + frame_duration <= SDL_GetPerformanceCounter()) {

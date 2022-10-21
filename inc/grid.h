@@ -201,19 +201,22 @@ void clear_grid(struct grid *grid);
 
 
 /**
- * \brief Return a textual representation of the current state of the grid.
- *
- * The returned string consists of lines of at-signs and dots to respectively
- * represent live and dead cells, the lines separated with newline characters.
+ * \brief Return a representation of the current state of the grid in the
+ *        specified format.
  *
  * \note The returned string is allocated dynamically; callers must take care of
  * freeing it after use.
  *
- * \param[in] grid The grid
+ * \note If the given format is \a GRID_FORMAT_UNKNOWN, the returned
+ *       representation defaults to plain-text.
  *
- * \return A string representation of the current state of the grid
+ * \param[in] grid   The grid
+ * \param[in] format The format of the representation to generate
+ *
+ * \return A string representation of the current state of the grid, or \c NULL
+ *         on error
  */
-char *get_grid_repr(const struct grid *grid);
+char *get_grid_repr(const struct grid *grid, enum grid_format format);
 
 
 #endif /* grid_H */

@@ -526,8 +526,10 @@ The option `-F` can also be used to override the format that would be guessed
 from the file name or contents, although it is not advised to name grid pattern
 files with a non-matching extension.
 
-The input file can be in either format, but the output file will always be
-generated in plain-text format.
+Both formats are supported for writing to the output file. There is no
+command-line option to specify the output file format; it is determined from
+the file extension: if it is `.rle`, the RLE format is used, in all other
+cases, including if it is `.cells`, the plain-text format is used.
 
 
 ##### 2.1.4.1. Plain text format
