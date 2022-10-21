@@ -562,8 +562,11 @@ qui serait deviné depuis le nom ou le contenu du fichier, mais il n’est pas
 conseillé de nommer un fichier de motif de grille avec une extension qui ne
 corresponde pas.
 
-Le fichier d’entrée peut être fourni dans l’un des deux formats, mais le
-fichier de sortie sera toujours écrit en format texte brut.
+Les deux formats sont supportés pour écrire le fichier de sortie. Il n’y a pas
+d’option de ligne de commande pour en spécifier le format, celui-ci est
+déterminé à partir de l’extension du nom de fichier : s’il s’agit de `.rle`, le
+format RLE est utilisé ; dans tous les autres cas, y compris si l’extension est
+`.cells`, le format texte brut est utilisé.
 
 
 ##### 2.1.4.1. Format texte brut
