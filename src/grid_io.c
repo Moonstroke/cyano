@@ -217,7 +217,6 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 			}
 			continue;
 		} else if (repr[0] == '\r') {
-			fputs("ici\n", stderr);
 			if (repr[1] == '\n') {
 				if (repr[2] == '!') {
 					repr = strchr(&repr[3], '\n');
