@@ -25,7 +25,7 @@ static int optind;
 int getopt_long(int argc, char *const argv[], const char *optstring,
                 const struct option *longopts, int *longindex);
 #endif
-#include <stdio.h> /* for fprintf, stderr, sscanf, fputs */
+#include <stdio.h> /* for printf, puts, fprintf, stderr, sscanf, fputs */
 #include <string.h> /* for strcasecmp / _stricmp */
 
 #include "rules.h"
@@ -69,7 +69,7 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\"plain\", \"plaintext\" or \"RLE\" case not significant(string argument, "
 	"default none)\n"
 	"\t--help, --usage\n"
-	"\t\tPrint this message and exit\n";
+	"\t\tPrint this message and exit";
 
 
 static const char *const OPTSTRING = ":b:c:F:f:h:i:no:R:r:S:Ww:";
@@ -97,10 +97,9 @@ static const struct option LONGOPTS[] = {
 };
 
 
-static int _print_usage(const char *argv0) {
-	fprintf(stderr, USAGE_HEADER, argv0);
-	fwrite(USAGE, sizeof USAGE, 1, stderr);
-	return -__LINE__;
+static void _print_usage(const char *argv0) {
+	printf(USAGE_HEADER, argv0);
+	puts(USAGE);
 }
 
 static int _set_rule(const char *arg, const char **dst) {
