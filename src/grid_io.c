@@ -114,7 +114,7 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	}
 	if (add_rule) {
 		size_t len = strlen(rule_buffer);
-		char *rule = malloc(len);
+		char *rule = malloc(len + 1);
 		if (rule == NULL) {
 			free_grid(grid);
 			return -__LINE__;
