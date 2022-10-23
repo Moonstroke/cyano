@@ -690,7 +690,6 @@ void render_grid_window(const struct grid_window *gw) {
 	             c = gw->cell_pixels,
 	             b = gw->border_width;
 
-	unsigned int i, j;
 	SDL_Rect r;
 
 	SDL_SetRenderDrawColor(gw->ren, 127, 127, 127, 255);
@@ -701,8 +700,8 @@ void render_grid_window(const struct grid_window *gw) {
 		[DEAD] = 255,
 		[ALIVE] = 0
 	};
-	for (j = 0; j < h; ++j) {
-		for (i = 0; i < w; ++i) {
+	for (unsigned int j = 0; j < h; ++j) {
+		for (unsigned int i = 0; i < w; ++i) {
 			uint8_t ch = cell_color[get_grid_cell(gw->grid, i, j)];
 
 			_draw_cell(gw->ren, &r, i, j, c, b, (SDL_Color) {ch, ch, ch, 255});
