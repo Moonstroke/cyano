@@ -34,7 +34,7 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 	unsigned int i = 0;
 	unsigned int j = 0;
 	int rc;
-	for (; repr[0]; ++repr) {
+	for (; repr[0] != '\0'; ++repr) {
 		switch (repr[0]) {
 			case '!': /* End of repr */
 				return 0;
@@ -192,7 +192,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 	/* Memorized "on" character, to detect when both @ and O are mixed within a
 	   same file. Blank means uninitialized, ! means warning already output */
 	char on_char = ' ';
-	for (size_t i = 0; repr[0]; ++repr) {
+	for (size_t i = 0; repr[0] != '\0'; ++repr) {
 		if (repr[0] == '@') {
 			SET_BIT(grid->cells, i, 1);
 			if (on_char == 'O') {

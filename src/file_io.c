@@ -26,7 +26,7 @@ static char *_read_stdin(void) {
 		strncpy(text + len, buffer, read);
 		len += read;
 	}
-	if (ferror(stdin)) {
+	if (ferror(stdin) != 0) {
 		free(text);
 		return NULL;
 	}
@@ -63,7 +63,8 @@ char *read_file(const char *path) {
 		return NULL;
 	}
 	rewind(file);
-	bool file_err = fread(text, 1, filesize, file) < filesize || ferror(file);
+	bool file_err = fread(text, 1, filesize, file) < filesize
+	                || ferror(file) != 0;
 	fclose(file);
 	if (file_err) {
 		free(text);

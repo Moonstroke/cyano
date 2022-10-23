@@ -144,13 +144,13 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 			/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
 			   writes the grid state */
 			case SDLK_w:
-				if (event->key.keysym.mod & KMOD_CTRL) {
+				if ((event->key.keysym.mod & KMOD_CTRL) != 0) {
 					*loop = false;
 				} else {
 					_output_grid(gw->grid, out_file, out_file_format);
 				}
 			case SDLK_q:
-				if (!(event->key.keysym.mod & KMOD_CTRL)) {
+				if ((event->key.keysym.mod & KMOD_CTRL) == 0) {
 					break;
 				}
 			case SDLK_ESCAPE:
@@ -185,7 +185,7 @@ void run_app(struct grid_window *gw, unsigned int update_rate,
 		int last_x;
 		int last_y;
 		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
+		while (SDL_PollEvent(&event) != 0) {
 			_handle_event(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
 			            repr, repr_format, out_file, out_file_format);
 		}
