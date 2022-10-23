@@ -36,7 +36,7 @@ void copy_bits(const char *src, size_t src_offset, char *dest,
 			length -= 8 - src_offset;
 		}
 		size_t length_bytes = length >> 3;
-		memcpy(dest, src, length_bytes);
+		memmove(dest, src, length_bytes);
 		/* Copy trailing partial byte */
 		for (size_t i = 0; i < (length & 7); ++i) {
 			SET_BIT(&dest[length_bytes], i, GET_BIT(&src[length_bytes], i));
