@@ -101,10 +101,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 	case SDL_MOUSEMOTION:
 		get_cell_loc(gw, event->motion.x, event->motion.y, &gw->sel_x,
 		             &gw->sel_y);
-		if (*mdown) {
-			if ((gw->sel_x != *last_x) || (gw->sel_y != *last_y)) {
-				_handle_mouse_on_cell(gw, last_x, last_y);
-			}
+		if (*mdown && (gw->sel_x != *last_x || gw->sel_y != *last_y)) {
+			_handle_mouse_on_cell(gw, last_x, last_y);
 		}
 		break;
 	case SDL_KEYDOWN:
