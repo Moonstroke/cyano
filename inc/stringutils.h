@@ -24,7 +24,7 @@
  *
  * \return \c true iff the first string ends with the second
  */
-bool endswith(const char *restrict s1, const char *restrict s2);
+bool endswith(const char *s1, const char *s2);
 
 
 #endif /* STRINGUTILS_H */

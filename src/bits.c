@@ -4,7 +4,7 @@
 
 
 
-void copy_bits(const char *RESTRICT src, size_t src_offset, char *RESTRICT dest,
+void copy_bits(const char *src, size_t src_offset, char *dest,
                size_t dest_offset, size_t length) {
 	/* Skip the full bytes until the first byte that is partially used */
 	src += src_offset >> 3;

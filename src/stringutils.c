@@ -7,7 +7,7 @@
 
 
 
-bool endswith(const char *restrict s1, const char *restrict s2) {
+bool endswith(const char *s1, const char *s2) {
 	size_t l1 = strlen(s1);
 	size_t l2 = strnlen(s2, l1 + 1);
 	return l1 >= l2 && memcmp(&s1[l1 - l2], s2, l2) == 0;
