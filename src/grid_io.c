@@ -192,7 +192,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 	/* Memorized "on" character, to detect when both @ and O are mixed within a
 	   same file. Blank means uninitialized, ! means warning already output */
 	char on_char = ' ';
-	for (size_t i = 0; repr[0] != '\0'; ++repr) {
+	for (size_t i = 0; repr[0] != '\0'; ++repr, ++i) {
 		if (repr[0] == '@') {
 			SET_BIT(grid->cells, i, 1);
 			if (on_char == 'O') {
@@ -233,7 +233,6 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 		} else if (repr[0] != '.') {
 			return -__LINE__;
 		}
-		++i;
 	}
 	return 0;
 }
