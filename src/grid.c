@@ -49,7 +49,7 @@ static enum cell_state _get_cell_wrap(const struct grid *g, int x, int y) {
 }
 
 enum cell_state get_grid_cell(const struct grid *g, int i, int j) {
-	return (g->wrap ? _get_cell_wrap : _get_cell_walls)(g, i, j);
+	return (g->wrap ? &_get_cell_wrap : &_get_cell_walls)(g, i, j);
 }
 
 
