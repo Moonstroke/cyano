@@ -302,7 +302,8 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 
 
 
-static int _locate_long_opt(const char *name, const struct option *longopts, int *argindex) {
+static int _locate_long_opt(const char *name, const struct option *longopts,
+                            int *argindex) {
 	const char *eqsignindex = strchr(name, '=');
 	if (eqsignindex == NULL) {
 		*argindex = -1;

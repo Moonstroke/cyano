@@ -28,8 +28,8 @@ int init_app(void);
 /**
  * Extract the options and values passed to the program in the given variables.
  *
- * Considering that the program is being run in a sh-like environment in the current
- * directory as \c sdlife, an example of invocation can be:
+ * Considering that the program is being run in a sh-like environment in the
+ * current directory as \c sdlife, an example of invocation can be:
  * \code{.sh}
  * $ ./sdlife -w73 -h42 -n -c8 -v
  * \endcode
@@ -68,7 +68,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
  *
  * \param[in] gridwindow      The application's gridwindow to run
  * \param[in] update_rate     The number of times the grid evolves per second
- * \param[in] repr            The representation of the initial state to reset to
+ * \param[in] repr            A representation of the initial state to reset to
  * \param[in] format          The format of the \a repr, RLE or plain text
  * \param[in] out_file        The path to the file where to write the grid state
  * \param[in] out_file_format The format of the output file

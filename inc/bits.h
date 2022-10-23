@@ -41,7 +41,8 @@
  * \param[in]  i   The index
  * \param[in]  val The value to assign
  */
-#define SET_BIT(arr, i, val) if (val) ((arr)[(i) >> 3] |= 1 << (7 - ((i) & 7))); \
+#define SET_BIT(arr, i, val) if (val) \
+                                  ((arr)[(i) >> 3] |= 1 << (7 - ((i) & 7))); \
                              else ((arr)[(i) >> 3] &= ~(1 << (7 - ((i) & 7))))
 
 /**
