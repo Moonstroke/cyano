@@ -184,7 +184,8 @@ void run_app(struct grid_window *gw, unsigned int update_rate,
 	while (loop) {
 		render_grid_window(gw);
 
-		int last_x, last_y;
+		int last_x;
+		int last_y;
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
 			_handle_event(&event, gw, &loop, &mdown, &play, &last_x, &last_y,

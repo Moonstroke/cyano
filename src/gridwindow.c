@@ -685,10 +685,10 @@ static inline void _draw_cell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
 }
 
 void render_grid_window(const struct grid_window *gw) {
-	unsigned int w = gw->grid->w,
-	             h = gw->grid->h,
-	             c = gw->cell_pixels,
-	             b = gw->border_width;
+	unsigned int w = gw->grid->w;
+	unsigned int h = gw->grid->h;
+	unsigned int c = gw->cell_pixels;
+	unsigned int b = gw->border_width;
 
 	SDL_Rect r;
 
@@ -736,7 +736,8 @@ void get_cell_loc(const struct grid_window *gw, int x, int y, int *i, int *j) {
 }
 
 void get_hovered_cell_loc(const struct grid_window *gw, int *i, int *j) {
-	int x, y;
+	int x;
+	int y;
 	SDL_GetMouseState(&x, &y);
 	get_cell_loc(gw, x, y, i, j);
 }

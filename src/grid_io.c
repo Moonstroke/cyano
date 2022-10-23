@@ -92,7 +92,8 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
                                       bool wrap) {
 	char rule_buffer[22] = {0};
-	unsigned int w, h;
+	unsigned int w;
+	unsigned int h;
 
 	while (repr[0] == '#') { /* Ignore pre-header comment lines */
 		repr = strchr(repr + 1, '\n');
@@ -261,7 +262,8 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 		[DEAD] = 'b',
 		[ALIVE] = 'o'
 	};
-	size_t repr_index = 0, allocated;
+	size_t repr_index = 0;
+	size_t allocated;
 	char *repr = _get_rle_header(grid, &repr_index, &allocated);
 	if (repr == NULL) {
 		return NULL;

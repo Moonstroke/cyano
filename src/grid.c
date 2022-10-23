@@ -43,7 +43,8 @@ static enum cell_state _get_cell_walls(const struct grid *g, int x, int y) {
 }
 
 static enum cell_state _get_cell_wrap(const struct grid *g, int x, int y) {
-	unsigned int i = mod(x, g->w), j = mod(y, g->h);
+	unsigned int i = mod(x, g->w);
+	unsigned int j = mod(y, g->h);
 	return GET_BIT(g->cells, g->w * j + i);
 }
 
