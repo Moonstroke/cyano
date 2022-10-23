@@ -76,7 +76,7 @@ static inline int _output_grid(const struct grid *grid, const char *out_file,
 }
 
 static inline void _print_help(void) {
-	fwrite(UI_HELP, sizeof UI_HELP, 1, stdout);
+	fwrite(UI_HELP, 1, sizeof UI_HELP, stdout);
 }
 
 static void _handle_event(const SDL_Event *event, struct grid_window *gw,
