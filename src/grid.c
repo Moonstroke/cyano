@@ -143,8 +143,9 @@ int update_grid(struct grid *g) {
 	   number of passes) by allowing a higher memory consumption (by allocating
 	   a bigger buffer). */
 	char *cells_buffer = calloc(NUM_OCTETS(3 * g->w), 1);
-	if (cells_buffer == NULL)
+	if (cells_buffer == NULL) {
 		return -__LINE__;
+	}
 	/* First row */
 	if (g->wrap) {
 		copy_bits(g->cells, (g->h - 1) * g->w, cells_buffer, 0, g->w);
