@@ -26,6 +26,9 @@ static char *_read_stdin(void) {
 		strncpy(text + len, buffer, read);
 		len += read;
 	}
+	if (text == NULL) { /* If stdin is empty */
+		return NULL;
+	}
 	if (ferror(stdin) != 0) {
 		free(text);
 		return NULL;
