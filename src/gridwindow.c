@@ -13,7 +13,7 @@
 #endif
 
 
-static const uint16_t icon_data[] = {
+static uint16_t icon_data[] = {
 #if ICONSIZE == 16
 	/* 1 image row = two lines */
 	0xfff0, 0xfff0, 0xfff0, 0xfff0, 0xfff0, 0xfff0, 0xfff0, 0xfff0,
@@ -655,8 +655,8 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 	gw->sel_x = gw->sel_y = -1;
 	gw->error_msg[0] = '\0';
 
-	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom((uint16_t*) icon_data,
-	                                             ICONSIZE, ICONSIZE, 16,
+	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom(icon_data, ICONSIZE, ICONSIZE,
+	                                             16,
 	                                             ICONSIZE * sizeof icon_data[0],
 	                                             0xf000, 0x0f00, 0x00f0,
 	                                             0x000f);
