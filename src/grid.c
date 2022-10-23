@@ -66,7 +66,7 @@ static inline bool _will_be_born(unsigned int n, const char *r) {
 	char k = (char) ('0' + n);
 	r = strchr(r, 'B') + 1;
 	while (*r != '\0' && (*r != '/' && *r != 'S') && *r != k) {
-		r++;
+		++r;
 	}
 	return *r == k;
 }
@@ -75,7 +75,7 @@ static inline bool _will_survive(unsigned int n, const char *r) {
 	char k = (char) ('0' + n);
 	r = strchr(r, 'S') + 1;
 	while (*r != '\0' && *r != k) {
-		r++;
+		++r;
 	}
 	return *r == k;
 }
