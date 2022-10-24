@@ -652,6 +652,7 @@ le code compile en C++.
 
 Le processus de compilation est géré par `make`, avec un Makefile fourni
 donnant les règles usuelles :
+
 - `all` pour construire l’exécutable dans le dossier `out`,
 - `clean` pour supprimer les fichiers objet du dossier `obj`,
 - `doc` pour générer la documentation dans le dossier `doc`,

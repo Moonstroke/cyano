@@ -607,6 +607,7 @@ it.
 The compilation process is handled with `make` on GNU platforms, and `nmake`
 under Windows (use of compile and run features of VS are not yet ready), with a
 Makefile provided for each platform with the usual rules:
+
 - `all` to build the executable in the `out` directory,
 - `clean` to delete object files in the `obj` directory,
 - `doc` to generate the documentation in `doc` directory,
