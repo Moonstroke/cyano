@@ -79,6 +79,71 @@ static inline void _print_help(void) {
 	fwrite(UI_HELP, 1, sizeof UI_HELP, stdout);
 }
 
+static void _handle_key_event(const SDL_KeyboardEvent *event,
+                              struct grid_window *gw, bool *loop,
+                              bool *play, const char *repr,
+                              enum grid_format repr_format,
+                              const char *out_file,
+                              enum grid_format out_file_format) {
+	switch (event->keysym.sym) {
+		case SDLK_SPACE:
+			*play = !*play;
+			break;
+		case SDLK_RETURN:
+			if (!*play) {
+				update_grid(gw->grid);
+			}
+			break;
+		case SDLK_UP:
+			if (--gw->sel_y < 0) {
+				gw->sel_y = gw->grid->wrap ? gw->grid->h - 1 : 0;
+			}
+			break;
+		case SDLK_DOWN:
+			if (++gw->sel_y >= (signed) gw->grid->h) {
+				gw->sel_y = gw->grid->wrap ? 0 : gw->grid->h - 1;
+			}
+			break;
+		case SDLK_LEFT:
+			if (--gw->sel_x < 0) {
+				gw->sel_x = gw->grid->wrap ? gw->grid->w - 1 : 0;
+			}
+			break;
+		case SDLK_RIGHT:
+			if (++gw->sel_x >= (signed) gw->grid->w) {
+				gw->sel_x = gw->grid->wrap ? 0 : gw->grid->w - 1;
+			}
+			break;
+		case SDLK_t:
+			toggle_cell(gw->grid, gw->sel_x, gw->sel_y);
+			break;
+		case SDLK_r:
+			_reset_grid(gw->grid, repr, repr_format, play, loop);
+			break;
+		/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
+		   writes the grid state */
+		case SDLK_w:
+			if ((event->keysym.mod & KMOD_CTRL) != 0) {
+				*loop = false;
+			} else {
+				_output_grid(gw->grid, out_file, out_file_format);
+			}
+			break;
+		case SDLK_q:
+			if ((event->keysym.mod & KMOD_CTRL) == 0) {
+				break;
+			}
+		case SDLK_ESCAPE:
+			*loop = false;
+			break;
+		case SDLK_c:
+			clear_grid(gw->grid);
+			break;
+		case SDLK_h:
+			_print_help();
+			break;
+	}
+}
 static void _handle_event(const SDL_Event *event, struct grid_window *gw,
                          bool *loop, bool *mdown, bool *play,
                          int *last_x, int *last_y, const char *repr,
@@ -106,64 +171,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 		}
 		break;
 	case SDL_KEYDOWN:
-		switch (event->key.keysym.sym) {
-			case SDLK_SPACE:
-				*play = !*play;
-				break;
-			case SDLK_RETURN:
-				if (!*play) {
-					update_grid(gw->grid);
-				}
-				break;
-			case SDLK_UP:
-				if (--gw->sel_y < 0) {
-					gw->sel_y = gw->grid->wrap ? gw->grid->h - 1 : 0;
-				}
-				break;
-			case SDLK_DOWN:
-				if (++gw->sel_y >= (signed) gw->grid->h) {
-					gw->sel_y = gw->grid->wrap ? 0 : gw->grid->h - 1;
-				}
-				break;
-			case SDLK_LEFT:
-				if (--gw->sel_x < 0) {
-					gw->sel_x = gw->grid->wrap ? gw->grid->w - 1 : 0;
-				}
-				break;
-			case SDLK_RIGHT:
-				if (++gw->sel_x >= (signed) gw->grid->w) {
-					gw->sel_x = gw->grid->wrap ? 0 : gw->grid->w - 1;
-				}
-				break;
-			case SDLK_t:
-				toggle_cell(gw->grid, gw->sel_x, gw->sel_y);
-				break;
-			case SDLK_r:
-				_reset_grid(gw->grid, repr, repr_format, play, loop);
-				break;
-			/* The window can be closed with ESC, CTRL+q or CTRL+w; a single w
-			   writes the grid state */
-			case SDLK_w:
-				if ((event->key.keysym.mod & KMOD_CTRL) != 0) {
-					*loop = false;
-				} else {
-					_output_grid(gw->grid, out_file, out_file_format);
-				}
-				break;
-			case SDLK_q:
-				if ((event->key.keysym.mod & KMOD_CTRL) == 0) {
-					break;
-				}
-			case SDLK_ESCAPE:
-				*loop = false;
-				break;
-			case SDLK_c:
-				clear_grid(gw->grid);
-				break;
-			case SDLK_h:
-				_print_help();
-				break;
-		}
+		_handle_key_event(&event->key, gw, loop, play, repr, repr_format,
+		                  out_file, out_file_format);
 		break;
 	case SDL_QUIT:
 		*loop = false;
