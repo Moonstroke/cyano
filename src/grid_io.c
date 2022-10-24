@@ -164,31 +164,7 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 	return init_grid(grid, is_crlf ? width - 1 : width, height, wrap);
 }
 
-int load_grid(struct grid *grid, const char *repr, enum grid_format format,
-              bool wrap) {
-	int rc;
-	if (format == GRID_FORMAT_RLE || format == GRID_FORMAT_UNKNOWN) {
-		rc = _init_grid_from_rle(grid, repr, wrap);
-		if (rc <= 0) { /* > 0 means not RLE */
-			return rc;
-		} else if (format == GRID_FORMAT_RLE) {
-			return -__LINE__;
-		}
-	}
-
-	while (repr[0] == '!') {
-		repr = strchr(repr + 1, '\n');
-		if (repr == NULL) {
-			return -__LINE__;
-		}
-		++repr;
-	}
-
-	rc = _init_grid_from_plain(grid, repr, wrap);
-	if (rc < 0) {
-		return rc;
-	}
-
+static int _init_cells_from_plain(struct grid *grid, const char *repr) {
 	/* Memorized "on" character, to detect when both @ and O are mixed within a
 	   same file. Blank means uninitialized, ! means warning already output */
 	char on_char = ' ';
@@ -235,6 +211,34 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 		}
 	}
 	return 0;
+}
+
+int load_grid(struct grid *grid, const char *repr, enum grid_format format,
+              bool wrap) {
+	int rc;
+	if (format == GRID_FORMAT_RLE || format == GRID_FORMAT_UNKNOWN) {
+		rc = _init_grid_from_rle(grid, repr, wrap);
+		if (rc <= 0) { /* > 0 means not RLE */
+			return rc;
+		} else if (format == GRID_FORMAT_RLE) {
+			return -__LINE__;
+		}
+	}
+
+	while (repr[0] == '!') {
+		repr = strchr(repr + 1, '\n');
+		if (repr == NULL) {
+			return -__LINE__;
+		}
+		++repr;
+	}
+
+	rc = _init_grid_from_plain(grid, repr, wrap);
+	if (rc < 0) {
+		return rc;
+	}
+
+	return _init_cells_from_plain(grid, repr);
 }
 
 
