@@ -100,10 +100,10 @@ planeur faisant le tour de la grille jusqu’à détruire le canon qui l’avait
 Puisqu’il n’y a que deux états possibles pour une cellule, celle-ci ne peut
 passer que par quatre transitions :
 
- - de vivante, elle reste vivante (survie)
- - de vivante, elle devient morte (mort)
- - de morte, elle devient vivante (naissance)
- - de morte, elle reste morte.
+- de vivante, elle reste vivante (survie)
+- de vivante, elle devient morte (mort)
+- de morte, elle devient vivante (naissance)
+- de morte, elle reste morte.
 
 Chaque génération, la transition est choisie selon le nombre de voisines
 vivantes. Si une cellule a trop de voisin vivants, elle meurt de surpopulation,
@@ -260,59 +260,59 @@ souvent en référence à leur particularité.
 Voici une liste des noms d’automates cellulaires similaires au Jeu que ce
 programme reconnaît, accompagnés de leur rulestring :
 
- - 2x2 (B36/S125)
-   Cette variante a la faculté d’évoluer en blocs de deux cellules par deux
- - 34 Life, or Life 3-4 (B34/S34)
-   Nommé pour ses nombres de transition, à chaque fois trois et quatre
- - Amoeba (B357/S1358)
-   De grandes zones se forment qui ressemblent à des amibes et qui peuvent
-   assimiler de plus petites figures
- - Assimilation (B345/S4567)
-   Une règle similaire à Diamoeba mais plus stable
- - Coagulations (B378/S235678)
-   Une règle explosive qui crée des taches au cours de son expansion
- - Coral (B3/S45678)
-   Crée des structures coraliennes grandissant lentement
- - Corrosion of Conformity (B3/S124)
-   Une variante de Mazectric se délitant au fil du temps
- - Day & Night (B3678/S34678)
-   Dans cette variante, les motifs de cellules mortes se comportent commes les
-   mêmes motifs constitués de cellules vivantes (comme par inversion des
-   couleurs)
- - Diamoeba (B35678/S5678)
-   Développe des amibes rhombiques (en forme de losange)
- - Flakes, Life without Death, or LwoD (B3/S012345678)
-   Crée de belles structures ressemblant à des flocons de neige (à noter que
-   les cellules une fois nées ne meurent pas)
- - Gnarl (B1/S1)
-   Commencer avec une seule cellule ; voir par soi-même.
- - HighLife, or Highlife (B36/S23)
-   Une règle globaleme,nt similaire à l’originale, mais intéressante par la
-   présence du *réplicateur*, un motif qui évolue en deux versions de lui-même
- - InverseLife, aka. Inverse life (B0123478/S34678)
-   Une version « en négatif » de la règle originelle
- - Long Life, or Long life (B345/S5)
-   Motifs avec une grande longévité
- - Maze (B3/S12345)
-   Les structures s’y étendent lentement et forment des motifs labyrinthiques
- - Mazectric (B3/S1234)
-   Une variante de Maze présentant des couloirs plus longs et droits
- - Move (B368/S245)
-   Une règle évoluant lentement, avec de nombreux vaisseaux et puffeurs
- - Pseudo Life, or Pseudo life (B357/S238)
-   Ressemble à la règle originale, mais aucun de ses motifs ne se comporte de
-   la même manière
- - Replicator (B1357/S1357)
-   Chaque motif forme des répliques de lui-même
- - Seeds (B2/S)
-   Chaque cellule meurt systématiquement à la génération suivante. Néanmoins la
-   plupart des motifs évoluent de manière explosive
- - Serviettes (B234/S)
-   Produit de magnifiques géométries semblant être tirées de tapis persans
- - Stains (B3678/S235678)
-   Évolue en de grandes et stables « taches d’encre »
- - WalledCities (B45678/S2345)
-   Se stabilise en cités, zones de grande activité entourées d’un mur continu
+- 2x2 (B36/S125)
+  Cette variante a la faculté d’évoluer en blocs de deux cellules par deux
+- 34 Life, or Life 3-4 (B34/S34)
+  Nommé pour ses nombres de transition, à chaque fois trois et quatre
+- Amoeba (B357/S1358)
+  De grandes zones se forment qui ressemblent à des amibes et qui peuvent
+  assimiler de plus petites figures
+- Assimilation (B345/S4567)
+  Une règle similaire à Diamoeba mais plus stable
+- Coagulations (B378/S235678)
+  Une règle explosive qui crée des taches au cours de son expansion
+- Coral (B3/S45678)
+  Crée des structures coraliennes grandissant lentement
+- Corrosion of Conformity (B3/S124)
+  Une variante de Mazectric se délitant au fil du temps
+- Day & Night (B3678/S34678)
+  Dans cette variante, les motifs de cellules mortes se comportent commes les
+  mêmes motifs constitués de cellules vivantes (comme par inversion des
+  couleurs)
+- Diamoeba (B35678/S5678)
+  Développe des amibes rhombiques (en forme de losange)
+- Flakes, Life without Death, or LwoD (B3/S012345678)
+  Crée de belles structures ressemblant à des flocons de neige (à noter que
+  les cellules une fois nées ne meurent pas)
+- Gnarl (B1/S1)
+  Commencer avec une seule cellule ; voir par soi-même.
+- HighLife, or Highlife (B36/S23)
+  Une règle globaleme,nt similaire à l’originale, mais intéressante par la
+  présence du *réplicateur*, un motif qui évolue en deux versions de lui-même
+- InverseLife, aka. Inverse life (B0123478/S34678)
+  Une version « en négatif » de la règle originelle
+- Long Life, or Long life (B345/S5)
+  Motifs avec une grande longévité
+- Maze (B3/S12345)
+  Les structures s’y étendent lentement et forment des motifs labyrinthiques
+- Mazectric (B3/S1234)
+  Une variante de Maze présentant des couloirs plus longs et droits
+- Move (B368/S245)
+  Une règle évoluant lentement, avec de nombreux vaisseaux et puffeurs
+- Pseudo Life, or Pseudo life (B357/S238)
+  Ressemble à la règle originale, mais aucun de ses motifs ne se comporte de
+  la même manière
+- Replicator (B1357/S1357)
+  Chaque motif forme des répliques de lui-même
+- Seeds (B2/S)
+  Chaque cellule meurt systématiquement à la génération suivante. Néanmoins la
+  plupart des motifs évoluent de manière explosive
+- Serviettes (B234/S)
+  Produit de magnifiques géométries semblant être tirées de tapis persans
+- Stains (B3678/S235678)
+  Évolue en de grandes et stables « taches d’encre »
+- WalledCities (B45678/S2345)
+  Se stabilise en cités, zones de grande activité entourées d’un mur continu
 
 ## 2. Le programme
 
@@ -652,11 +652,11 @@ le code compile en C++.
 
 Le processus de compilation est géré par `make`, avec un Makefile fourni
 donnant les règles usuelles :
- - `all` pour construire l’exécutable dans le dossier `out`,
- - `clean` pour supprimer les fichiers objet du dossier `obj`,
- - `doc` pour générer la documentation dans le dossier `doc`,
- - `cleandoc` pour supprimer ce dernier,
- - `distclean` pour réinitialiser l’état du projet,
+- `all` pour construire l’exécutable dans le dossier `out`,
+- `clean` pour supprimer les fichiers objet du dossier `obj`,
+- `doc` pour générer la documentation dans le dossier `doc`,
+- `cleandoc` pour supprimer ce dernier,
+- `distclean` pour réinitialiser l’état du projet,
 et des règles basées sur les différents fichiers pour compiler des fichiers
 objet individuels.
 
@@ -683,47 +683,47 @@ Ce projet a été relancé après un hiatus notable, et devient de plus en plus
 viable (bien que tout à fait superflu). Voici une liste d’évolutions que j’ai
 en tête pour le programme, certaines de plus court terme que d’autres.
 
- - Atteindre une version 1.0 stable  
-   C’est plus une directive spirituelle qu’un objectif concret ; il ne tient
-   qu’à moi de décider quand apposer officiellement le numéro de version, mais
-   j’attends d’être entièrement satisfait de l’état du projet pour cela.
- - Implémentation avec OpenGL  
-   Je suis en local sur une version utilisant OpenGL pour le rendu graphique,
-   cela fonctionne, mais tout juste, le code nécessite encore beaucoup
-   d’affinage.
- - Amélioration de la configurabilité  
-   Les couleurs de l’affichage de la grille, les caractères utilisés pour le
-   format texte brut des fichiers sont fixes (et codés en dur). Un moyen de les
-   configurer serait le bienvenu, mais je ne suis pas sûr de comment
-   l’introduire ; je ne veux pas rendre le programme dépendant d’un fichier
-   externe de configuration, et je suis réticent à l’idée d’introduire encore
-   d’autres options de ligne de commande. Les macros de préprocesseur
-   pourraient s’avérer une solutions, mais cela priverait de cofiguration à
-   l’exécution.
- - Un meilleur format texte brut  
-   Tout est dit. Tel qu’implémenté, le format texte brut est suffisant, mais
-   maigre ; un support pour des commentaires, une omission des fin de ligne
-   mortes seraient des ajouts judicieux.
- - Interface utilisateur  
-   Dans le but de décorer l’interface, et de l’augmenter de contrôles et menus.
-   Malheureusement je ne connais pas de framework GUI pour la SDL, et en
-   développer un moi-même à partir de rien est un bien trop grand projet pour
-   même y penser.
- - Mode d’exécution sans affichage  
-   Cela introduirait une type d’exécution totallement différent (qui
-   justifierait l’ajout d’une option de ligne de commande attitrée). L’idée
-   serait de fournir fichiers d’entrée et de sortie et un nombre de
-   générations, et d’écrire dans le fichier de sortie l’évolution après autant
-   de générations de la configuration dans le fichier d’entrée. Ce serait une
-   forme d’incubateur pour motifs.
- - LLCA non-totalistes ou anisotropes  
-   Si je ne considère pas les AC non binaires (la grille est basée sur un
-   tableau de bits, changer le nombre d’états serait un trop gros travail pour
-   que j’aie l’envie de m’y atteler), ces types d’AC seraient intéressants à
-   étudier. Cela demanderait de modifier le code d’évolution et calcul de la
-   génération suivante, qui bénéficierait d’une refonte de toute manière.
- - Internationalisation  
-   Principalement en ce qui concerne la langue de notre bon vieux Molière (on
-   ne se refait pas), en tout cas pour commencer, cela affecterait les docs en
-   plus du présent document. Cela impliquerait de maintenir le double de
-   documentation, ce qui serait à soi tout seul un travail à plein temps.
+- Atteindre une version 1.0 stable  
+  C’est plus une directive spirituelle qu’un objectif concret ; il ne tient
+  qu’à moi de décider quand apposer officiellement le numéro de version, mais
+  j’attends d’être entièrement satisfait de l’état du projet pour cela.
+- Implémentation avec OpenGL
+  Je suis en local sur une version utilisant OpenGL pour le rendu graphique,
+  cela fonctionne, mais tout juste, le code nécessite encore beaucoup
+  d’affinage.
+- Amélioration de la configurabilité  
+  Les couleurs de l’affichage de la grille, les caractères utilisés pour le
+  format texte brut des fichiers sont fixes (et codés en dur). Un moyen de les
+  configurer serait le bienvenu, mais je ne suis pas sûr de comment
+  l’introduire ; je ne veux pas rendre le programme dépendant d’un fichier
+  externe de configuration, et je suis réticent à l’idée d’introduire encore
+  d’autres options de ligne de commande. Les macros de préprocesseur
+  pourraient s’avérer une solutions, mais cela priverait de cofiguration à
+  l’exécution.
+- Un meilleur format texte brut  
+  Tout est dit. Tel qu’implémenté, le format texte brut est suffisant, mais
+  maigre ; un support pour des commentaires, une omission des fin de ligne
+  mortes seraient des ajouts judicieux.
+- Interface utilisateur  
+  Dans le but de décorer l’interface, et de l’augmenter de contrôles et menus.
+  Malheureusement je ne connais pas de framework GUI pour la SDL, et en
+  développer un moi-même à partir de rien est un bien trop grand projet pour
+  même y penser.
+- Mode d’exécution sans affichage  
+  Cela introduirait une type d’exécution totallement différent (qui
+  justifierait l’ajout d’une option de ligne de commande attitrée). L’idée
+  serait de fournir fichiers d’entrée et de sortie et un nombre de
+  générations, et d’écrire dans le fichier de sortie l’évolution après autant
+  de générations de la configuration dans le fichier d’entrée. Ce serait une
+  forme d’incubateur pour motifs.
+- LLCA non-totalistes ou anisotropes  
+  Si je ne considère pas les AC non binaires (la grille est basée sur un
+  tableau de bits, changer le nombre d’états serait un trop gros travail pour
+  que j’aie l’envie de m’y atteler), ces types d’AC seraient intéressants à
+  étudier. Cela demanderait de modifier le code d’évolution et calcul de la
+  génération suivante, qui bénéficierait d’une refonte de toute manière.
+- Internationalisation  
+  Principalement en ce qui concerne la langue de notre bon vieux Molière (on
+  ne se refait pas), en tout cas pour commencer, cela affecterait les docs en
+  plus du présent document. Cela impliquerait de maintenir le double de
+  documentation, ce qui serait à soi tout seul un travail à plein temps.

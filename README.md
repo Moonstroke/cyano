@@ -91,10 +91,10 @@ a glider circling all the way back and destroy the gun that emitted it).
 Since there are only two states for a cell, it can only go through four
 transitions:
 
- - from alive, it stays alive (survival)
- - from alive, it turns dead (death)
- - from dead, it turns alive (birth)
- - from dead, it stays dead.
+- from alive, it stays alive (survival)
+- from alive, it turns dead (death)
+- from dead, it turns alive (birth)
+- from dead, it stays dead.
 
 Every generation, the transition is chosen according to the number of live
 neighbors. If a live cell has too much live neighbors, it dies of
@@ -239,57 +239,57 @@ to their specificities.
 Here is a list of the names of Life-like cellular automata this program
 recognizes, along with their rulestring:
 
- - 2x2 (B36/S125)
-   This variant has the ability to evolve in square blocks of two-by-two cells
- - 34 Life, or Life 3-4 (B34/S34)
-   Named after its transition numbers, both three and four
- - Amoeba (B357/S1358)
-   Large areas form that resembles amoebas and that can assimilate smaller ones
- - Assimilation (B345/S4567)
-   A rule similar, albeit stabler, to Diamoeba
- - Coagulations (B378/S235678)
-   An exploding rule that creates stains during its expansion
- - Coral (B3/S45678)
-   Creates slow-growing structures resembling coral
- - Corrosion of Conformity (B3/S124)
-   A deacaying variant of Mazectric
- - Day & Night (B3678/S34678)
-   In this variant, patterns of dead cells over live cells behave similarly to
-   patterns of live cell over dead ones (as if its colors were inverted)
- - Diamoeba (B35678/S5678)
-   Creates diamond-shaped amoebas
- - Flakes, Life without Death, or LwoD (B3/S012345678)
-   Creates beautiful snowflake-like structures (note that cells, once born,
-   never die)
- - Gnarl (B1/S1)
-   Start with a single cell, and see for yourself.
- - HighLife, or Highlife (B36/S23)
-   A rule mostly similar to the original, but interesting for the presence of
-   the *replicator*, a pattern that evolves into two versions of itself
- - InverseLife, aka. Inverse life (B0123478/S34678)
-   A "negative" version of the original rule
- - Long Life, or Long life (B345/S5)
-   Patterns with high longevity
- - Maze (B3/S12345)
-   Structures expand slowly and form labyrinthic patterns
- - Mazectric (B3/S1234)
-   A variant of Maze with longer and straighter corridors
- - Move (B368/S245)
-   A slowly evolving rule, with many spaceships and puffers
- - Pseudo Life, or Pseudo life (B357/S238)
-   Looks like the original rule, but no pattern from it behave the same way
- - Replicator (B1357/S1357)
-   Every pattern replicates itself
- - Seeds (B2/S)
-   Every living cell unconditionally dies one the next generation. Nevertheless
-   most patterns evolve explosively
- - Serviettes (B234/S)
-   Produces magnificent Persian rug-like geometries
- - Stains (B3678/S235678)
-   Evolves into big stable "ink" stains
- - WalledCities (B45678/S2345)
-   Stabilizes into cities, areas of high activity surrounded by a continuous
-   wall
+- 2x2 (B36/S125)
+  This variant has the ability to evolve in square blocks of two-by-two cells
+- 34 Life, or Life 3-4 (B34/S34)
+  Named after its transition numbers, both three and four
+- Amoeba (B357/S1358)
+  Large areas form that resembles amoebas and that can assimilate smaller ones
+- Assimilation (B345/S4567)
+  A rule similar, albeit stabler, to Diamoeba
+- Coagulations (B378/S235678)
+  An exploding rule that creates stains during its expansion
+- Coral (B3/S45678)
+  Creates slow-growing structures resembling coral
+- Corrosion of Conformity (B3/S124)
+  A deacaying variant of Mazectric
+- Day & Night (B3678/S34678)
+  In this variant, patterns of dead cells over live cells behave similarly to
+  patterns of live cell over dead ones (as if its colors were inverted)
+- Diamoeba (B35678/S5678)
+  Creates diamond-shaped amoebas
+- Flakes, Life without Death, or LwoD (B3/S012345678)
+  Creates beautiful snowflake-like structures (note that cells, once born,
+  never die)
+- Gnarl (B1/S1)
+  Start with a single cell, and see for yourself.
+- HighLife, or Highlife (B36/S23)
+  A rule mostly similar to the original, but interesting for the presence of
+  the *replicator*, a pattern that evolves into two versions of itself
+- InverseLife, aka. Inverse life (B0123478/S34678)
+  A "negative" version of the original rule
+- Long Life, or Long life (B345/S5)
+  Patterns with high longevity
+- Maze (B3/S12345)
+  Structures expand slowly and form labyrinthic patterns
+- Mazectric (B3/S1234)
+  A variant of Maze with longer and straighter corridors
+- Move (B368/S245)
+  A slowly evolving rule, with many spaceships and puffers
+- Pseudo Life, or Pseudo life (B357/S238)
+  Looks like the original rule, but no pattern from it behave the same way
+- Replicator (B1357/S1357)
+  Every pattern replicates itself
+- Seeds (B2/S)
+  Every living cell unconditionally dies one the next generation. Nevertheless
+  most patterns evolve explosively
+- Serviettes (B234/S)
+  Produces magnificent Persian rug-like geometries
+- Stains (B3678/S235678)
+  Evolves into big stable "ink" stains
+- WalledCities (B45678/S2345)
+  Stabilizes into cities, areas of high activity surrounded by a continuous
+  wall
 
 ## 2. The program
 
@@ -607,11 +607,11 @@ it.
 The compilation process is handled with `make` on GNU platforms, and `nmake`
 under Windows (use of compile and run features of VS are not yet ready), with a
 Makefile provided for each platform with the usual rules:
- - `all` to build the executable in the `out` directory,
- - `clean` to delete object files in the `obj` directory,
- - `doc` to generate the documentation in `doc` directory,
- - `cleandoc` to remove the latter directory,
- - `distclean` to reset the project in a clean state,
+- `all` to build the executable in the `out` directory,
+- `clean` to delete object files in the `obj` directory,
+- `doc` to generate the documentation in `doc` directory,
+- `cleandoc` to remove the latter directory,
+- `distclean` to reset the project in a clean state,
 and file-based rules to compile individual object files.
 
 Development under GNU/Linux is made with GCC and with MSVC under Windows,
@@ -636,40 +636,40 @@ This project was revived after a substantial hiatus, and becomes increasingly
 viable (although utterly redundant). Here is a set of evolutions I have in mind
 for the program, some of which shorter-term than others.
 
- - Achieving a stable version 1.0  
-   This is probably more a spiritual guideline than a concrete goal; it depends
-   on me only to decide when to officially put the version tag out, but I want
-   to be entirely satisfied with the state of the project for that.
- - OpenGL implementation  
-   I am working locally on a version backed with OpenGL for the rendering, it
-   is functional, but barely, and needs a lot of polishing.
- - Increased configurability  
-   The colors of the grid display, the characters used for the plain text file
-   format are fixed (even hard-coded). A means to configure these would be
-   welcome, but I am not sure of how to introduce it; I do not want the program
-   to depend on an external config file, and I am reluctant to introduce yet
-   more command-line options. Macros could be a solution, but that would mean
-   no runtime configuration.
- - A better plain text file format  
-   Says it all. As implemented the plain text format is sufficient, but poor;
-   support for comments, omitted blank line endings would be a plus.
- - GUI  
-   To decorate the interface, and augment it with controls, and menus.
-   Unfortunaltely I do not know any SDL GUI toolkit, and developing one myself
-   from scratch is too big a project to even consider it.
- - Headless run mode  
-   This would introduce a totally different type of execution (that would
-   justify adding a command-line option). The idea would be to provide input
-   and output files and a number of generations, and write to the output file
-   the configuration in the input file after this many generations. It would
-   be a sort of pattern incubator.
- - Non-totalistic or anisotropic Life-like CA  
-   While I do not consider non-binary CA (the grid is backed by a bit array,
-   changing the number of states would be a huge work I do not want to tackle),
-   this type of CA is one that would be interesting to take on. It would
-   involve updating the evolution and next-state-calculation code, that could
-   use some reworking anyway.
- - Internationalization  
-   Mostly for French, at least initially, and would affect the README and docs.
-   This would involve twice the amount of documentation to maintain, which is
-   already a full-time job by itself.
+- Achieving a stable version 1.0  
+  This is probably more a spiritual guideline than a concrete goal; it depends
+  on me only to decide when to officially put the version tag out, but I want
+  to be entirely satisfied with the state of the project for that.
+- OpenGL implementation  
+  I am working locally on a version backed with OpenGL for the rendering, it
+  is functional, but barely, and needs a lot of polishing.
+- Increased configurability  
+  The colors of the grid display, the characters used for the plain text file
+  format are fixed (even hard-coded). A means to configure these would be
+  welcome, but I am not sure of how to introduce it; I do not want the program
+  to depend on an external config file, and I am reluctant to introduce yet
+  more command-line options. Macros could be a solution, but that would mean
+  no runtime configuration.
+- A better plain text file format  
+  Says it all. As implemented the plain text format is sufficient, but poor;
+  support for comments, omitted blank line endings would be a plus.
+- GUI  
+  To decorate the interface, and augment it with controls, and menus.
+  Unfortunaltely I do not know any SDL GUI toolkit, and developing one myself
+  from scratch is too big a project to even consider it.
+- Headless run mode  
+  This would introduce a totally different type of execution (that would
+  justify adding a command-line option). The idea would be to provide input
+  and output files and a number of generations, and write to the output file
+  the configuration in the input file after this many generations. It would
+  be a sort of pattern incubator.
+- Non-totalistic or anisotropic Life-like CA  
+  While I do not consider non-binary CA (the grid is backed by a bit array,
+  changing the number of states would be a huge work I do not want to tackle),
+  this type of CA is one that would be interesting to take on. It would
+  involve updating the evolution and next-state-calculation code, that could
+  use some reworking anyway.
+- Internationalization  
+  Mostly for French, at least initially, and would affect the README and docs.
+  This would involve twice the amount of documentation to maintain, which is
+  already a full-time job by itself.
