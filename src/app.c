@@ -149,6 +149,7 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 				} else {
 					_output_grid(gw->grid, out_file, out_file_format);
 				}
+				break;
 			case SDLK_q:
 				if ((event->key.keysym.mod & KMOD_CTRL) == 0) {
 					break;
