@@ -2,7 +2,6 @@
 
 > A Game of Life implementation in C using the SDL v2
 
-
 ## 1. Presentation of the Game of Life
 
 ### 1.1. Cellular automata
@@ -32,7 +31,6 @@ implementations existing either online or on hacker kids' laptops.
 A striking property of some cellular automata, including Conway's, is their
 Turing-completeness, which means that they can emulate a universal computation
 machine, and in theory perform any mathematical computation.
-
 
 ### 1.2. Grid properties
 
@@ -68,7 +66,6 @@ same way.
 Cellular automata that exhibit these properties are called *Life-like cellular
 automata*, or *LLCA*.
 
-
 #### 1.2.1. Size of the grid
 
 The theoretical grid has an infinite size, so that the patterns can evolve
@@ -89,7 +86,6 @@ geometrical figure shaped like a donut, or a bike tube). This is not ideal
 though, as patterns can travel back and interact with their origin (for example
 a glider circling all the way back and destroy the gun that emitted it).
 
-
 ### 1.3. Cell state transitions
 
 Since there are only two states for a cell, it can only go through four
@@ -108,7 +104,6 @@ acceptable number of neighbors can it survive, or be born.
 The original rule dictates that a cell is born if it has exactly three live
 neighbors, and that it survives if it has two or three live neighbors.
 
-
 ### 1.4. Cell patterns
 
 The original rule allows for various types of patterns to exist. There are
@@ -116,7 +111,6 @@ immobile patterns (*still lifes*), that repeat over time (*oscillators*), that
 displace across the grid (*spaceships*), that emit smaller patterns (*guns*),
 that move and leave a trail of debris behind them (*puffers*), that move and
 generate smaller spaceships in their wake (*rakes*), etc.
-
 
 #### 1.4.1. Basic patterns in the original Game of Life
 
@@ -191,7 +185,6 @@ for smallest configurations of glider generating specific patterns.
 Of all the existing patterns the glider is also the most recognizable pattern,
 making it the epitome of the Game of Life.
 
-
 #### 1.4.2. Consideration on the speed of spaceships
 
 Since the transition only accounts for the immediate neighbor cells, a
@@ -211,7 +204,6 @@ of information to more than one cell par generation, allowing for a greater
 value for `c`. In these versions, it is therefore possible to find spaceships
 that move more than one cell per generation (but their speed will never be
 greater than their value of `c`).
-
 
 ### 1.5. Rulestring formula
 
@@ -237,7 +229,6 @@ disuse.
 Technically, for absolute terseness either the B and S or the slash can be
 dropped (and the program happily accepts formulas omitting either), but keeping
 them increases readability and is a matter of personal taste.
-
 
 ### 1.6. Variants of Life
 
@@ -300,12 +291,10 @@ recognizes, along with their rulestring:
    Stabilizes into cities, areas of high activity surrounded by a continuous
    wall
 
-
 ## 2. The program
 
 This program is a simulator for the Life-like cellular automata identified
 above.
-
 
 ### 2.1. Execution
 
@@ -427,7 +416,6 @@ read from the standard input stream or write to the standard output stream. It
 is the only case where the argument to `-f` does not refer to the same file for
 input and output: `-f-` is a shortcut to `-i- -o-`.
 
-
 #### 2.1.2. Graphical interface
 
 The graphical interface of the program is minimalistic; only the grid is
@@ -443,7 +431,6 @@ There are two evolution modes in the program. It can be run continuously at the
 rate specified on the command-line (see above), or be in a paused state, giving
 the user time to modify the cells or draw full patterns before they evolve. In
 this state, the grid can still be updated by steps.
-
 
 #### 2.1.3. Mouse and keyboard interaction
 
@@ -507,7 +494,6 @@ actions</td>
   </tr>
 </table>
 
-
 #### 2.1.4. File input/output
 
 The program can read and write to text files whose content describe a grid
@@ -530,7 +516,6 @@ command-line option to specify the output file format; it is determined from
 the file extension: if it is `.rle`, the RLE format is used, in all other
 cases, including if it is `.cells`, the plain-text format is used.
 
-
 ##### 2.1.4.1. Plain text format
 
 The plain text format is a textual representation of the grid as a rectangular
@@ -551,7 +536,6 @@ Example: a down-left-oriented glider in plain text
     ! this is a comment
     @..
     @@@
-
 
 ##### 2.1.4.2. RLE format
 
@@ -578,7 +562,6 @@ Example : the southwestward glider in RLE format
     3o!
     This text after the terminating ! is not parsed
 
-
 ### 2.2. Developement
 
 The code is written in C, the ubiquitous "low-level" language. It began as a
@@ -589,7 +572,6 @@ I strived to keep the headers well-documented, in case anyone is interested in
 taking a look; the code formatting is homogenous, readable (for me, at least)
 and obscure sections are commented.
 
-
 #### 2.2.1. The SDL
 
 The program uses the [SDL](http://www.libsdl.org "The SDL website") (Simple
@@ -597,7 +579,6 @@ DirectMedia Layer) version 2 for the graphical part. It is a low-level
 graphical library; it provides a powerful yet easy to use API. It is also
 widespread and supported on the majority of platforms, which improves the
 portability of the project.
-
 
 #### 2.2.2. Environment
 
@@ -616,7 +597,6 @@ and `doxygen` for the documentation processor.
 For Win32, the developer tools must be installed (they come with Visual Studio)
 to provide `nmake` and the compiler/linker. The SDL and doxygen (if desired)
 must be installed and configured manually.
-
 
 #### 2.2.3. Compilation
 
@@ -641,7 +621,6 @@ possible. I also refrained from using GNU-specific extensions to the language
 (some POSIX functions are called, but no code constructs like pragmas or
 `__attribute__` are used).
 
-
 #### 2.2.4. Documentation
 
 The definitions of the structures and functions declarations in the headers are
@@ -650,7 +629,6 @@ fully (hopefully; or at least mostly) documented in
 documentation files are not part of the repository, but can be generated quite
 easily (cf. previous section). The resulting documentation is in HTML and can
 be read with any browser; the entry point is the file `doc/html/index.html`.
-
 
 ## 3. Considered evolutions
 

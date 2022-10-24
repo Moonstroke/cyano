@@ -2,7 +2,6 @@
 
 > Une implémentation du Jeu de la Vie en C utilisant la SDL v2
 
-
 ## 1. Présentation du Jeu de la Vie
 
 ### 1.1. Automates cellulaires
@@ -34,7 +33,6 @@ Une propriété frappante de certains automates cellulaires, dont celui de
 Conway, est leur nature Turing-complète, c’est-à-dire qu’ils sont capables
 d’émuler une machine de calcul universelle, donc théoriquement d’effectuer
 n’importe quel calcul mathématique.
-
 
 ### 1.2. Propriétés de la grille
 
@@ -73,7 +71,6 @@ Les automates cellulaires exhibant ces propriétés sont qualifiés de
 « similaires au Jeu de la Vie », ou *Life-like* en anglais, parfois abrégé en
 *LLCA* (*Life-like cellular automata*).
 
-
 #### 1.2.1. Taille de la grille
 
 La grille théorique a une taille infinie, pour que les motifs puissent évoluer
@@ -98,7 +95,6 @@ jusqu’à leur point de départ et interagir avec leur origine (par exemple un
 planeur faisant le tour de la grille jusqu’à détruire le canon qui l’avait
 émis).
 
-
 ### 1.3. Transitions d’états de cellule
 
 Puisqu’il n’y a que deux états possibles pour une cellule, celle-ci ne peut
@@ -117,7 +113,6 @@ acceptable de voisines vivantes peut-elle survivre, ou naître.
 La règle originelle impose qu’une cellule naisse si elle a exactement trois
 voisines vivantes, et qu’elle survive si elle en a deux ou trois.
 
-
 ### 1.4. Motifs de cellules
 
 La règle originale permet l’existence de motifs de natures variées. Il y a des
@@ -127,7 +122,6 @@ de plus petits motifs (*canons*), qui se déplacent en laissant une traînée de
 débris derrière eux (*trains à vapeur*, ou *puffeurs* par anglicisme), qui se
 déplacent et génèrent de plus petits vaisseaux dans leur sillage (*râteaux*),
 etc.
-
 
 #### 1.4.1. Motifs simples du Jeu de la Vie original
 
@@ -204,7 +198,6 @@ capables de générer des motifs particuliers.
 De tous les motifs existants le planeur est également le plus reconnaissable,
 en faisant l’incarnation par excellence du Jeu de la Vie.
 
-
 #### 1.4.2. Considération sur la vitesse des vaisseaux
 
 Puisque la transition ne prend en compte que les voisines directes, un vaisseau
@@ -226,7 +219,6 @@ génération et par là même une plus grande valeur pour `c`. Dans ces versions
 il est donc possible de trouver des vaisseaux se déplaçant de plus d’une
 cellule par génération (mais leur vitesse ne dépassera jamais la valeur de
 *leur* `c`).
-
 
 ### 1.5. Formule *rulestring*
 
@@ -258,7 +250,6 @@ Techniquement, pour un minimalisme total, soit les caractères *B* et *S*, soit
 la barre oblique, peuvent être omis (et le programme accepte sans problème des
 formules ainsi allégées), mais les conserver facilite la lisibilité et est une
 matière de goût.
-
 
 ### 1.6. Variantes du Jeu
 
@@ -323,12 +314,10 @@ programme reconnaît, accompagnés de leur rulestring :
  - WalledCities (B45678/S2345)
    Se stabilise en cités, zones de grande activité entourées d’un mur continu
 
-
 ## 2. Le programme
 
 Ce programme est un simulateur d’automates cellulaires similaires au Jeu de la
 Vie tels que présentés ci-dessus.
-
 
 ### 2.1. Exécution
 
@@ -452,7 +441,6 @@ d’entrée standard ou d’écrire sur le flux de sortie standard. Il s’agit 
 cas où l’argument de `-f` ne fait pas référence au même fichier pour l’entrée
 et la sortie : `-f-` est un raccourci pour `-i- -o-`.
 
-
 #### 2.1.2. Interface graphique
 
 L’interface graphique du programme est minimaliste ; seule la grille est
@@ -472,7 +460,6 @@ un état stoppé, donnant ainsi à l’utilisateur la possibilité de modifier
 l’état des
 cellules ou de dessiner des motifs complets avant que ceux-ci n’évoluent. Dans
 ce mode, la grille peut toujours évoluer par étapes.
-
 
 #### 2.1.3. Interaction avec le clavier et la souris
 
@@ -540,7 +527,6 @@ souris</td>
   </tr>
 </table>
 
-
 #### 2.1.4. Entrée/Sortie de fichiers
 
 Le programme peut lire ou écrire vers des fichiers dont le contenu décrit une
@@ -568,7 +554,6 @@ déterminé à partir de l’extension du nom de fichier : s’il s’agit de `
 format RLE est utilisé ; dans tous les autres cas, y compris si l’extension est
 `.cells`, le format texte brut est utilisé.
 
-
 ##### 2.1.4.1. Format texte brut
 
 Le format texte brut est une représentation textuelle de la grille en un bloc
@@ -585,14 +570,12 @@ concernés par les restrictions de longueur de ligne. Cependant le point
 d’interrogation doit être le premier caractère de la ligne ; le commentaire
 continue jusqu’au saut de ligne suivant.
 
-
 Exemple : un planeur orienté vers le bas et la gauche en texte brut
 
     .@.
     ! ceci est un commentaire
     @..
     @@@
-
 
 ##### 2.1.4.2. Format *RLE*
 
@@ -622,7 +605,6 @@ Exemple : le planeur orienté sud-ouest en format *RLE*
     3o!
     Ce texte après le ! final n’est pas parcouru
 
-
 ### 2.2. Développement
 
 Le code est écrit en C, le fameux langage « bas niveau ». Tout est parti d’un
@@ -634,7 +616,6 @@ quelqu’un serait intéressé par y jeter un coup d’œil ; le formatage du 
 homogène, lisible (en tout cas en ce qui me concerne) et les parties absconses
 du texte sont commentées.
 
-
 #### 2.2.1. La SDL
 
 Le programme utilise la [SDL](http://www.libsdl.org "Le site web de la SDL")
@@ -642,7 +623,6 @@ Le programme utilise la [SDL](http://www.libsdl.org "Le site web de la SDL")
 bibliothèque bas niveau qui fournit une API puissante mais cependant facile
 d’utilisation. Elle est également populaire et supportée sur la majorité des
 plateformes, ce qui améliore la portabilité du projet.
-
 
 #### 2.2.2. Environnement
 
@@ -663,7 +643,6 @@ documentation.
 Concernant Win32, les outils développeurs doivent être installés (ils viennent
 avec Visual Studio) pour fournir `nmake` et le compilateur et éditeur de liens.
 La SDL et Doxygen devront être installés et configurés manuellement.
-
 
 #### 2.2.3. Compilation
 
@@ -688,7 +667,6 @@ standard. Je me suis également abstenu d’utiliser des spécificités GNU
 (quelques fonctions POSIX sont bien appelées, mais aucun élément de code tels
 que les pragmas ou `__attribute__` ne sont utilisés).
 
-
 #### 2.2.4. Documentation
 
 Les définitions de structures et déclarations de fonctions dans les en-têtes
@@ -698,7 +676,6 @@ Les fichiers de la documentation ne font pas partie du dépôt, cependant ils
 peuvent être générés plutôt facilement (cf. section précédente). La
 documentation résultante est au format HTML et peut être parcourue avec tout
 navigateur ; le point d’entrée est le fichier `doc/html/index.html`.
-
 
 ## 3. Évolutions envisagées
 
