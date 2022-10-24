@@ -268,8 +268,9 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 		return NULL;
 	}
 	for (unsigned int j = 0; j < grid->h; ++j) {
-		for (unsigned int i = 0, run_length = 1; i < grid->w;
-		     i += run_length, run_length = 1) {
+		unsigned int run_length;
+		for (unsigned int i = 0; i < grid->w; i += run_length) {
+			run_length = 1;
 			enum cell_state run_state = get_grid_cell(grid, i, j);
 			/* Get length of run: stop at either a different cell or the end
 			   of the row */
