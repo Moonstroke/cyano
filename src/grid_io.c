@@ -168,9 +168,9 @@ static int _init_cells_from_plain(struct grid *grid, const char *repr) {
 	/* Memorized "on" character, to detect when both @ and O are mixed within a
 	   same file. Blank means uninitialized, ! means warning already output */
 	char on_char = ' ';
-	for (size_t i = 0; repr[0] != '\0'; ++repr, ++i) {
+	for (size_t bit_index = 0; repr[0] != '\0'; ++repr) {
 		if (repr[0] == '@') {
-			SET_BIT(grid->cells, i, 1);
+			SET_BIT(grid->cells, bit_index, 1);
 			if (on_char == 'O') {
 				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
 				on_char = '!';
@@ -178,7 +178,7 @@ static int _init_cells_from_plain(struct grid *grid, const char *repr) {
 				on_char = '@';
 			}
 		} else if (repr[0] == 'O') {
-			SET_BIT(grid->cells, i, 1);
+			SET_BIT(grid->cells, bit_index, 1);
 			if (on_char == '@') {
 				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
 				on_char = '!';
@@ -209,6 +209,7 @@ static int _init_cells_from_plain(struct grid *grid, const char *repr) {
 		} else if (repr[0] != '.') {
 			return -__LINE__;
 		}
+		++bit_index;
 	}
 	return 0;
 }
