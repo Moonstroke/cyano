@@ -107,35 +107,33 @@ static int _set_rule(const char *arg, const char **dst) {
 	if (rule != NULL) {
 		*dst = rule;
 		return 0;
-	} else {
-		if (arg[0] != 'B') {
-			goto err;
-		}
-		size_t i = 1;
-		/* Check that all chars until the slash are digits in ascending order */
-		for (; '0' <= arg[i] && arg[i] <= '8'; ++i) {
-			if (arg[i] >= arg[i + 1] && arg[i + 1] != '/'
-			                         && arg[i + 1] != 'S') {
-				goto err;
-			}
-		}
-		if (arg[i] == '/') {
-			++i;
-		}
-		if (arg[i++] != 'S') {
-			goto err;
-		}
-		for (; '0' <= arg[i] && arg[i] <= '8'; ++i) {
-			if(arg[i + 1] == '\0' && arg[i] >= arg[i + 1]) {
-				goto err;
-			}
-		}
-		*dst = arg;
-		return 0;
-err:
-		fprintf(stderr, "Error: invalid rule: \"%s\"\n", arg);
-		return -__LINE__;
 	}
+	if (arg[0] != 'B') {
+		goto err;
+	}
+	size_t i = 1;
+	/* Check that all chars until the slash are digits in ascending order */
+	for (; '0' <= arg[i] && arg[i] <= '8'; ++i) {
+		if (arg[i] >= arg[i + 1] && arg[i + 1] != '/' && arg[i + 1] != 'S') {
+			goto err;
+		}
+	}
+	if (arg[i] == '/') {
+		++i;
+	}
+	if (arg[i++] != 'S') {
+		goto err;
+	}
+	for (; '0' <= arg[i] && arg[i] <= '8'; ++i) {
+		if(arg[i + 1] == '\0' && arg[i] >= arg[i + 1]) {
+			goto err;
+		}
+	}
+	*dst = arg;
+	return 0;
+err:
+	fprintf(stderr, "Error: invalid rule: \"%s\"\n", arg);
+	return -__LINE__;
 }
 
 static int _get_uint_value(char opt, const char *arg, unsigned int *dst,
