@@ -164,27 +164,27 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 	return init_grid(grid, is_crlf ? width - 1 : width, height, wrap);
 }
 
+static void _check_alive_char(char *saved_alive_char, char alive_char,
+                              char other_alive_char) {
+	if (*saved_alive_char == other_alive_char) {
+		fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
+		*saved_alive_char = '!';
+	} else if (*saved_alive_char == ' ') {
+		*saved_alive_char = alive_char;
+	}
+}
+
 static int _init_cells_from_plain(struct grid *grid, const char *repr) {
 	/* Memorized "on" character, to detect when both @ and O are mixed within a
 	   same file. Blank means uninitialized, ! means warning already output */
-	char on_char = ' ';
+	char saved_alive_char = ' ';
 	for (size_t bit_index = 0; repr[0] != '\0'; ++repr) {
 		if (repr[0] == '@') {
 			SET_BIT(grid->cells, bit_index, 1);
-			if (on_char == 'O') {
-				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
-				on_char = '!';
-			} else if (on_char == ' ') {
-				on_char = '@';
-			}
+			_check_alive_char(&saved_alive_char, '@', 'O');
 		} else if (repr[0] == 'O') {
 			SET_BIT(grid->cells, bit_index, 1);
-			if (on_char == '@') {
-				fputs("Warning: mixed @ and O as \"on\" characters\n", stderr);
-				on_char = '!';
-			} else if (on_char == ' ') {
-				on_char = 'O';
-			}
+			_check_alive_char(&saved_alive_char, 'O', '@');
 		} else if (repr[0] == '\n') {
 			if (repr[1] == '!') {
 				repr = strchr(repr + 2, '\n');
