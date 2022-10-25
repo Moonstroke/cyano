@@ -9,7 +9,7 @@ TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME).exe
 
 # Tests files
 TEST_SRC = $(TEST_DIR)\board.c \
-           $(TEST_DIR)\sdlife.c
+           $(TEST_DIR)\cyano.c
 # nmake doesn't handle file name prefixes in inference rule syntax, only directories; so
 # the project structure is changed here wrt. GNU/nux: test object files go to a designed
 # subdir in the objects directory
