@@ -185,27 +185,15 @@ static int _init_cells_from_plain(struct grid *grid, const char *repr) {
 		} else if (repr[0] == 'O') {
 			SET_BIT(grid->cells, bit_index, 1);
 			_check_alive_char(&saved_alive_char, 'O', '@');
-		} else if (repr[0] == '\n') {
+		} else if (repr[0] == '\n'
+		           || (repr[0] == '\r' && (++repr)[0] == '\n')) {
 			if (repr[1] == '!') {
-				repr = strchr(repr + 2, '\n');
+				repr = strchr(&repr[2], '\n');
 				if (repr == NULL) { /* No more comments, reached end of file */
 					break;
 				}
 			}
 			continue;
-		} else if (repr[0] == '\r') {
-			if (repr[1] == '\n') {
-				if (repr[2] == '!') {
-					repr = strchr(&repr[3], '\n');
-					if (repr == NULL) { /* No more comments, reached end of file */
-						break;
-					}
-				}
-				++repr;
-				continue;
-			} else {
-				return -__LINE__;
-			}
 		} else if (repr[0] != '.') {
 			return -__LINE__;
 		}
