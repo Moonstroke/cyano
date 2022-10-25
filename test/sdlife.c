@@ -7,7 +7,7 @@ extern CUTE_TestCase *case_grid;
 extern void build_case_grid(void);
 extern void tests_bits(void);
 
-int main() {
+int main(void) {
 	CUTE_RunResults **results;
 
 	build_case_grid();
