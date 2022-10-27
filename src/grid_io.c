@@ -138,7 +138,10 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
                                         bool wrap) {
 	const char *first_nl = strchr(repr, '\n');
-	if (first_nl == NULL) {
+	/* If there is no next line (EOF hit, usually) or if there is a line break
+	   on first pos, LF or CRLF (unexpected blank line), repr is malformed */
+	if (first_nl == NULL
+	    || first_nl == repr || first_nl == repr + 1 && repr[0] == '\r') {
 		return -__LINE__;
 	}
 	/* If a line ends with CRLF, all must, otherwise the file is considered
