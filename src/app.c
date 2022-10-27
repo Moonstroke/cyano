@@ -6,7 +6,7 @@
 
 #include "grid.h"
 #include "gridwindow.h"
-#include "file_io.h" /* for writeFile */
+#include "file_io.h" /* for write_file */
 
 
 
