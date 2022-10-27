@@ -1,5 +1,6 @@
 #include "app.h"
 
+#include <limits.h> /* for INT_MIN */
 #include <SDL2/SDL.h>
 #include <stdio.h> /* for fprintf, stderr, fputs */
 
@@ -192,8 +193,8 @@ void run_app(struct grid_window *gw, unsigned int update_rate,
 	while (loop) {
 		render_grid_window(gw);
 
-		int last_x;
-		int last_y;
+		int last_x = INT_MIN;
+		int last_y = INT_MIN;
 		SDL_Event event;
 		while (SDL_PollEvent(&event) != 0) {
 			_handle_event(&event, gw, &loop, &mdown, &play, &last_x, &last_y,
