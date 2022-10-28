@@ -7,6 +7,7 @@
 #include "grid.h"
 #include "gridwindow.h"
 #include "file_io.h" /* for write_file */
+#include "utils.h" /* for CHECK_NULL */
 
 
 
@@ -68,9 +69,7 @@ static inline void _reset_grid(struct grid *grid, const char *repr,
 static inline int _output_grid(const struct grid *grid, const char *out_file,
                                enum grid_format out_file_format) {
 	char *repr = get_grid_repr(grid, out_file_format);
-	if (repr == NULL) {
-		return -__LINE__;
-	}
+	CHECK_NULL(repr);
 	int rc = write_file(out_file, repr);
 	free(repr);
 	return rc;

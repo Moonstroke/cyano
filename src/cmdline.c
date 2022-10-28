@@ -29,6 +29,7 @@ int getopt_long(int argc, char *const argv[], const char *optstring,
 #include <string.h> /* for strcasecmp / _stricmp */
 
 #include "rules.h"
+#include "utils.h" /* for CHECK_RC */
 
 
 
@@ -191,15 +192,11 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 	while ((ch = getopt_long(argc, argv, OPTSTRING, LONGOPTS, &idx)) != -1) {
 		switch (ch) {
 			case 'b':
-				if (_get_uint_value('b', optarg, border_width, 0) < 0) {
-					return -__LINE__;
-				}
+				CHECK_RC(_get_uint_value('b', optarg, border_width, 0));
 				opt_b_met = true;
 				break;
 			case 'c':
-				if (_get_uint_value('c', optarg, cell_pixels, 1) < 0) {
-					return -__LINE__;
-				}
+				CHECK_RC(_get_uint_value('c', optarg, cell_pixels, 1));
 				break;
 			case 'F':
 				_parse_format(optarg, format);
@@ -209,9 +206,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				opt_f_met = true;
 				break;
 			case 'h':
-				if (_get_uint_value('h', optarg, grid_height, 3) < 0) {
-					return -__LINE__;
-				}
+				CHECK_RC(_get_uint_value('h', optarg, grid_height, 3));
 				opt_h_met = true;
 				break;
 			case 'i':
@@ -227,14 +222,10 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				opt_o_met = true;
 				break;
 			case 'R':
-				if (_set_rule(optarg, game_rule) < 0) {
-					return -__LINE__;
-				}
+				CHECK_RC(_set_rule(optarg, game_rule));
 				break;
 			case 'r':
-				if (_get_uint_value('r', optarg, update_rate, 1) < 0) {
-					return -__LINE__;
-				}
+				CHECK_RC(_get_uint_value('r', optarg, update_rate, 1));
 				break;
 			case 'S':
 				_get_uint_value('S', optarg, grid_width, 3);
@@ -248,9 +239,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 				*wrap = true;
 				break;
 			case 'w':
-				if (_get_uint_value('w', optarg, grid_width, 3) < 0) {
-					return -__LINE__;
-				}
+				CHECK_RC(_get_uint_value('w', optarg, grid_width, 3));
 				opt_w_met = true;
 				break;
 			case '?':

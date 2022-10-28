@@ -7,6 +7,7 @@
 #include <string.h> /* for strlen, strcpy */
 
 #include "bits.h" /* for SET_BIT */
+#include "utils.h" /* for CHECK_NULL */
 
 
 
@@ -68,10 +69,7 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				i = 0;
 				break;
 			case '#':
-				repr = strchr(repr + 1, '\n');
-				if (repr == NULL) {
-					return -__LINE__;
-				}
+				CHECK_NULL(repr = strchr(repr + 1, '\n'));
 				break;
  			default:
 				if (isspace(repr[0])) {
@@ -96,10 +94,7 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	unsigned int h;
 
 	while (repr[0] == '#') { /* Ignore pre-header comment lines */
-		repr = strchr(repr + 1, '\n');
-		if (repr == NULL) {
-			return -__LINE__;
-		}
+		CHECK_NULL(repr = strchr(repr + 1, '\n'));
 		++repr;
 	}
 	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
@@ -125,10 +120,7 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	}
 
 	do { /* Skip header and comments afterwards, if any */
-		repr = strchr(repr + 1, '\n');
-		if (repr == NULL) {
-			return -__LINE__;
-		}
+		CHECK_NULL(repr = strchr(repr + 1, '\n'));
 		++repr;
 	} while (repr[0] == '#');
 
@@ -218,10 +210,7 @@ int load_grid(struct grid *grid, const char *repr, enum grid_format format,
 	}
 
 	while (repr[0] == '!') {
-		repr = strchr(repr + 1, '\n');
-		if (repr == NULL) {
-			return -__LINE__;
-		}
+		CHECK_NULL(repr = strchr(repr + 1, '\n'));
 		++repr;
 	}
 

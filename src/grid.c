@@ -5,6 +5,7 @@
 #include <string.h> /* for strchr, memset */
 
 #include "bits.h"
+#include "utils.h" /* for CHECK_NULL */
 
 
 
@@ -143,9 +144,7 @@ int update_grid(struct grid *g) {
 	   number of passes) by allowing a higher memory consumption (by allocating
 	   a bigger buffer). */
 	char *cells_buffer = calloc(NUM_OCTETS(3 * g->w), 1);
-	if (cells_buffer == NULL) {
-		return -__LINE__;
-	}
+	CHECK_NULL(cells_buffer);
 	/* First row */
 	if (g->wrap) {
 		copy_bits(g->cells, (g->h - 1) * g->w, cells_buffer, 0, g->w);

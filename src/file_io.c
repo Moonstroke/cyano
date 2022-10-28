@@ -9,6 +9,9 @@
 # include <unistd.h> /* for access */
 #endif
 
+#include "utils.h" /* for CHECK_NULL */
+
+
 
 static char *_read_stdin(void) {
 	/* Since stdin is a stream and not a regular file, fseek won't work on it.
@@ -113,9 +116,7 @@ int write_file(const char *path, const char *text) {
 		return _write_stdout(text);
 	}
 	FILE *file = fopen(path, "w");
-	if (file == NULL) {
-		return -__LINE__;
-	}
+	CHECK_NULL(file);
 	size_t len = strlen(text);
 	if (fwrite(text, 1, len, file) < len) {
 		fclose(file);
