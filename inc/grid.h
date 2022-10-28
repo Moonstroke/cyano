@@ -39,8 +39,7 @@ struct grid {
 	unsigned int w; /**< The width of the grid. */
 	unsigned int h; /**< The height of the grid. */
 	char *cells; /**< The data of the grid cells. */
-	/** The rule determining the evolution of the game, as a string in \e Golly
-	    format. */
+	/** The rulestring determining the evolution of the game. */
 	const char *rule;
 	/** A flag indicating whether the state on one side of the grid affects the
 	    opposite side. */
@@ -49,7 +48,7 @@ struct grid {
 
 
 /**
- * \brief Rerepsents the state of a single cell. More expressive than \c bool
+ * \brief Represents the state of a single cell. More expressive than \c bool
  */
 enum cell_state {
 	DEAD, /**< The cell is dead: inactive */
