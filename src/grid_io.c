@@ -137,11 +137,11 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 
 static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
                                         bool wrap) {
-	const char *first_nl = strchr(repr, '\n');
+	const char *first_lf = strchr(repr, '\n');
 	/* If there is no next line (EOF hit, usually) or if there is a line break
 	   on first pos, LF or CRLF (unexpected blank line), repr is malformed */
-	if (first_nl == NULL
-	    || first_nl == repr || (first_nl == repr + 1 && repr[0] == '\r')) {
+	if (first_lf == NULL
+	    || first_lf == repr || (first_lf == repr + 1 && repr[0] == '\r')) {
 		return -__LINE__;
 	}
 	/* If a line ends with CRLF, all must, otherwise the file is considered
@@ -150,19 +150,19 @@ static inline int _init_grid_from_plain(struct grid *grid, const char *repr,
 	   require decrementing each line length in the while loop. Instead, we
 	   just check that all line lengths are equal *including* the CR, and
 	   decrement the width to account for CRs only once at the end. */
-	bool is_crlf = *(first_nl - 1) == '\r';
-	unsigned int width = (unsigned int) (first_nl - repr);
+	bool is_crlf = *(first_lf - 1) == '\r';
+	unsigned int width = (unsigned int) (first_lf - repr);
 	unsigned int height = 1;
-	const char *next_nl;
-	while ((next_nl = strchr(repr, '\n')) != NULL) {
-		if (next_nl - repr == width) {
+	const char *next_lf;
+	while ((next_lf = strchr(repr, '\n')) != NULL) {
+		if (next_lf - repr == width) {
 			/* Ensure that the grid repr is rectangular */
 			++height;
 		} else if (repr[0] != '!') {
 			/* Invalid line length and current line is not a comment */
 			return -__LINE__;
 		}
-		repr = next_nl + 1;
+		repr = next_lf + 1;
 	}
 	return init_grid(grid, is_crlf ? width - 1 : width, height, wrap);
 }
