@@ -97,6 +97,8 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 		CHECK_NULL(repr = strchr(repr + 1, '\n'));
 		++repr;
 	}
+	/* grid->rule cannot be passed directly to sscanf, because it will be
+	   cleared in init_grid */
 	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
 	if (rc < 2) {
 		/* No proper RLE header line, probably not RLE at all */
@@ -109,14 +111,7 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 		return rc;
 	}
 	if (add_rule) {
-		size_t len = strlen(rule_buffer);
-		char *rule = malloc(len + 1);
-		if (rule == NULL) {
-			free_grid(grid);
-			return -__LINE__;
-		}
-		strcpy(rule, rule_buffer);
-		grid->rule = rule;
+		memcpy(grid->rule, rule_buffer, sizeof grid->rule);
 	}
 
 	do { /* Skip header and comments afterwards, if any */

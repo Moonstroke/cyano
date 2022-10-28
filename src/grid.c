@@ -16,6 +16,7 @@ int init_grid(struct grid *g, unsigned int w, unsigned int h, bool wrap) {
 	char *cells = calloc(NUM_OCTETS(w * h), 1);
 	g->cells = cells;
 	g->wrap = wrap;
+	memset(g->rule, 0, sizeof g->rule);
 	return cells == NULL ? -1 : 0;
 }
 

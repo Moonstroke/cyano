@@ -40,7 +40,7 @@ struct grid {
 	unsigned int h; /**< The height of the grid. */
 	char *cells; /**< The data of the grid cells. */
 	/** The rulestring determining the evolution of the game. */
-	const char *rule;
+	char rule[22];
 	/** A flag indicating whether the state on one side of the grid affects the
 	    opposite side. */
 	bool wrap;

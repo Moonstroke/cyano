@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 		fputs("Failure in creation of the game grid\n", stderr);
 		return EXIT_FAILURE;
 	}
-	g.rule = game_rule;
+	memcpy(g.rule, game_rule, sizeof g.rule);
 
 	struct grid_window gw;
 	if (init_grid_window(&gw, &g, cell_pixels, border_width,
