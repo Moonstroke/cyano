@@ -6,7 +6,8 @@
 
 
 /* The dimensions of the grid */
-static const unsigned int WIDTH = 3, HEIGHT = 3;
+static const unsigned int WIDTH = 3;
+static const unsigned int HEIGHT = 3;
 /* Does the grid wrap or not? */
 static const bool WRAPS = false;
 /* The rules of the game to run */

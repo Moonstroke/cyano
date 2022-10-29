@@ -3,7 +3,7 @@
 
 
 static void _test_num_octets(void) {
-	static const unsigned int values[] = {
+	static const size_t values[] = {
 		-1,
 		0,
 		1,
@@ -21,7 +21,7 @@ static void _test_num_octets(void) {
 		0x7fffffff,
 		0xffffffff
 	};
-	static const unsigned int expected[] = {
+	static const size_t expected[] = {
 		0,
 		0,
 		1,
@@ -40,14 +40,14 @@ static void _test_num_octets(void) {
 		0x20000000
 	};
 	for (unsigned int i = 0; i < (sizeof values / sizeof values[0]); ++i) {
-		fprintf(stderr, "num_octets(%u): expected %u, got %u\n", values[i],
+		fprintf(stderr, "num_octets(%zu): expected %zu, got %zu\n", values[i],
 		        expected[i], num_octets(values[i]));
 	}
 }
 
 static void _test_get_bit(void) {
-	// binary: 1110 1111 0011 0101 0011 1010 0001 0011
-	static const unsigned char bits[] = {
+	/* binary: 1110 1111 0011 0101 0011 1010 0001 0011 */
+	static const char bits[] = {
 		0xef, 0x35, 0x3a, 0x13
 	};
 	static const int expected[] = {
@@ -63,35 +63,35 @@ static void _test_get_bit(void) {
 }
 
 static void _test_set_bit(void) {
-	static const unsigned char expected[] = {
+	static const char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
 		0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00
 	};
-	unsigned char value = 0;
+	char value = 0;
 	for (unsigned int i = 0; i < 8; ++i) {
-		fprintf(stderr, "set_bit(0x%02hhx, %u, %d): expected 0x%02hhx",
-		        value, i, 1, expected[i]);
+		fprintf(stderr, "set_bit(0x%02hhx, %u, %d): expected 0x%02hhx", value,
+		        i, 1, expected[i]);
 		set_bit(&value, i, 1);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 	value = 0xff;
 	for (unsigned int i = 0; i < 8; ++i) {
-		fprintf(stderr, "set_bit(0x%02hhx, %u, %d): expected 0x%02hhx",
-		        value, i, 0, expected[8 + i]);
+		fprintf(stderr, "set_bit(0x%02hhx, %u, %d): expected 0x%02hhx", value,
+		        i, 0, expected[8 + i]);
 		set_bit(&value, i, 0);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 }
 
 static void _test_toggle_bit(void) {
-	static const unsigned char expected[] = {
+	static const char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
 		0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00
 	};
-	unsigned char value = 0;
+	char value = 0;
 	for (unsigned int i = 0; i < 8; ++i) {
-		fprintf(stderr, "toggle_bit(0x%02hhx, %u): expected 0x%02hhx",
-		        value, i, expected[i]);
+		fprintf(stderr, "toggle_bit(0x%02hhx, %u): expected 0x%02hhx", value,
+		        i, expected[i]);
 		toggle_bit(&value, i);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
@@ -105,7 +105,7 @@ static void _test_toggle_bit(void) {
 }
 
 static void _test_copy_bits(void) {
-	static const unsigned char src[] = {
+	static const char src[] = {
 		0xca, 0xfe, 0xba, 0xbe, 0xde, 0xad, 0xbe, 0xef
 		/* 1100 1010 1111 1110
 		   1011 1010 1011 1110
@@ -114,6 +114,7 @@ static void _test_copy_bits(void) {
 	};
 	char dest[sizeof src] = {0};
 	static const size_t indices[] = {
+		/* src_offset, dest_offset, length */
 		0, 0, 0, /* Corner case: empty copy */
 		3, 2, 6,
 		8, 8, 16,
@@ -122,7 +123,6 @@ static void _test_copy_bits(void) {
 		40, 41, 5,
 		46, 46, 12,
 		60, 59, 4
-		// TODO src_offset, dest_offset, length
 	};
 	static const char *expected[] = {
 		"0000000000000000000000000000000000000000000000000000000000000000",
@@ -135,11 +135,12 @@ static void _test_copy_bits(void) {
 		"0001010111111110101110100010111110100110010101011011111011011110"
 	};
 	for (unsigned int i = 0; i < sizeof expected / sizeof *expected; ++i) {
-		size_t src_offset = indices[3 * i], dest_offset = indices[3 * i + 1],
-		       length = indices[3 * i + 2];
+		size_t src_offset = indices[3 * i];
+		size_t dest_offset = indices[3 * i + 1];
+		size_t length = indices[3 * i + 2];
 		fprintf(stderr, "copy_bits(src, %zu, dest, %zu, %zu):\nexpected %s\n",
 		        src_offset, dest_offset, length, expected[i]);
-		copy_bits((char*)src, src_offset, dest, dest_offset, length);
+		copy_bits(src, src_offset, dest, dest_offset, length);
 		fputs("got      ", stderr);
 		print_bits(dest, 0, sizeof dest * 8, stderr);
 		fputc('\n', stderr);

@@ -8,7 +8,7 @@ extern void build_case_grid(void);
 extern void tests_bits(void);
 
 int main(void) {
-	CUTE_RunResults **results;
+	const CUTE_RunResults **results;
 
 	build_case_grid();
 
