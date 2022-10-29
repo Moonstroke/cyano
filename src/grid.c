@@ -86,10 +86,10 @@ static void _update_cell(struct grid *g, size_t row_offset,
                          const char *row_buffer, size_t cell_offset,
                          unsigned int neighbors) {
 	bool (*will_be_alive)(unsigned int, const char*);
-	if (get_bit(row_buffer, g->w + cell_offset)) {
-		will_be_alive = _will_survive;
-	} else {
+	if (get_bit(row_buffer, g->w + cell_offset) == 0) {
 		will_be_alive = _will_be_born;
+	} else {
+		will_be_alive = _will_survive;
 	}
 	set_bit(g->cells, row_offset + cell_offset,
 	        will_be_alive(neighbors, g->rule));
