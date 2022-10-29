@@ -126,7 +126,7 @@ static int _set_rule(const char *arg, const char **dst) {
 		goto err;
 	}
 	for (; '0' <= arg[i] && arg[i] <= '8'; ++i) {
-		if(arg[i + 1] == '\0' && arg[i] >= arg[i + 1]) {
+		if(arg[i + 1] != '\0' && arg[i] >= arg[i + 1]) {
 			goto err;
 		}
 	}
