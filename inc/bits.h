@@ -23,7 +23,9 @@
  *
  * \return The minimal number of chars (octets) necessary to hold \p size bits
  */
-#define NUM_OCTETS(size) (((size) >> 3) + (((size) & 7) != 0))
+inline size_t num_octets(size_t size) {
+     return size >> (3 + ((size & 7) != 0));
+}
 
 /** Access the bit at specified index in the given bit array.
  *
@@ -32,7 +34,9 @@
  *
  * \return The value of the <tt>i</tt>-th bit in \p arr
  */
-#define GET_BIT(arr, i) (((arr)[(i) >> 3] >> (7 - ((i) & 7))) & 1)
+inline int get_bit(const char *arr, size_t i) {
+     return (arr[i >> 3] >> (7 - (i & 7)) & 1);
+}
 
 /**
  * Assign the given value to the bit at the specified index in the array.
@@ -41,9 +45,13 @@
  * \param[in]  i   The index
  * \param[in]  val The value to assign
  */
-#define SET_BIT(arr, i, val) if (val) \
-                                  ((arr)[(i) >> 3] |= 1 << (7 - ((i) & 7))); \
-                             else ((arr)[(i) >> 3] &= ~(1 << (7 - ((i) & 7))))
+inline void set_bit(char *arr, size_t i, int val) {
+     if (val) {
+          arr[i >> 3] |= 1 << (7 - (i & 7));
+     } else {
+          arr[i >> 3] &= ~(1 << (7 - (i & 7)));
+     }
+}
 
 /**
  * Invert the value of the bit at specified index in the given bit array.
@@ -51,7 +59,9 @@
  * \param[out] arr The array
  * \param[in]  i   The index
  */
-#define TOGGLE_BIT(arr, i) ((arr)[(i) >> 3] ^= 1 << (7 - ((i) & 7)))
+inline void toggle_bit(char *arr, size_t i) {
+     arr[i >> 3] ^= 1 << (7 - (i & 7));
+}
 
 
 /**

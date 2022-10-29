@@ -2,7 +2,7 @@
 
 
 
-static void _test_NUM_OCTETS(void) {
+static void _test_num_octets(void) {
 	static const unsigned int values[] = {
 		-1,
 		0,
@@ -40,12 +40,12 @@ static void _test_NUM_OCTETS(void) {
 		0x20000000
 	};
 	for (unsigned int i = 0; i < (sizeof values / sizeof values[0]); ++i) {
-		fprintf(stderr, "NUM_OCTETS(%u): expected %u, got %u\n", values[i],
-		        expected[i], NUM_OCTETS(values[i]));
+		fprintf(stderr, "num_octets(%u): expected %u, got %u\n", values[i],
+		        expected[i], num_octets(values[i]));
 	}
 }
 
-static void _test_GET_BIT(void) {
+static void _test_get_bit(void) {
 	// binary: 1110 1111 0011 0101 0011 1010 0001 0011
 	static const unsigned char bits[] = {
 		0xef, 0x35, 0x3a, 0x13
@@ -57,49 +57,49 @@ static void _test_GET_BIT(void) {
 		0, 0, 0, 1, 0, 0, 1, 1
 	};
 	for(unsigned int i = 0; i < 8 * sizeof bits; ++i) {
-		fprintf(stderr, "GET_BIT(%u): expected %d, got %d\n", i, expected[i],
-		        GET_BIT(bits, i));
+		fprintf(stderr, "get_bit(%u): expected %d, got %d\n", i, expected[i],
+		        get_bit(bits, i));
 	}
 }
 
-static void _test_SET_BIT(void) {
+static void _test_set_bit(void) {
 	static const unsigned char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
 		0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00
 	};
 	unsigned char value = 0;
 	for (unsigned int i = 0; i < 8; ++i) {
-		fprintf(stderr, "SET_BIT(0x%02hhx, %u, %d): expected 0x%02hhx",
+		fprintf(stderr, "set_bit(0x%02hhx, %u, %d): expected 0x%02hhx",
 		        value, i, 1, expected[i]);
-		SET_BIT(&value, i, 1);
+		set_bit(&value, i, 1);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 	value = 0xff;
 	for (unsigned int i = 0; i < 8; ++i) {
-		fprintf(stderr, "SET_BIT(0x%02hhx, %u, %d): expected 0x%02hhx",
+		fprintf(stderr, "set_bit(0x%02hhx, %u, %d): expected 0x%02hhx",
 		        value, i, 0, expected[8 + i]);
-		SET_BIT(&value, i, 0);
+		set_bit(&value, i, 0);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 }
 
-static void _test_TOGGLE_BIT(void) {
+static void _test_toggle_bit(void) {
 	static const unsigned char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
 		0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00
 	};
 	unsigned char value = 0;
 	for (unsigned int i = 0; i < 8; ++i) {
-		fprintf(stderr, "TOGGLE_BIT(0x%02hhx, %u): expected 0x%02hhx",
+		fprintf(stderr, "toggle_bit(0x%02hhx, %u): expected 0x%02hhx",
 		        value, i, expected[i]);
-		TOGGLE_BIT(&value, i);
+		toggle_bit(&value, i);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 	value = 0xff;
 	for (unsigned int i = 0; i < 8; ++i) {
-		fprintf(stderr, "TOGGLE_BIT(0x%02hhx, %u): expected 0x%02hhx",
+		fprintf(stderr, "toggle_bit(0x%02hhx, %u): expected 0x%02hhx",
 		        value, i, expected[8 + i]);
-		TOGGLE_BIT(&value, i);
+		toggle_bit(&value, i);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
 }
@@ -147,20 +147,20 @@ static void _test_copy_bits(void) {
 }
 
 void tests_bits(void) {
-	fputs("Testing NUM_OCTETS(size)\n", stderr);
-	_test_NUM_OCTETS();
+	fputs("Testing num_octets(size)\n", stderr);
+	_test_num_octets();
 	fputc('\n', stderr);
 
-	fputs("Testing GET_BIT(arr, i)\n", stderr);
-	_test_GET_BIT();
+	fputs("Testing get_bit(arr, i)\n", stderr);
+	_test_get_bit();
 	fputc('\n', stderr);
 
-	fputs("Testing SET_BIT(arr, i, val)\n", stderr);
-	_test_SET_BIT();
+	fputs("Testing set_bit(arr, i, val)\n", stderr);
+	_test_set_bit();
 	fputc('\n', stderr);
 
-	fputs("Testing TOGGLE_BIT(arr, i)\n", stderr);
-	_test_TOGGLE_BIT();
+	fputs("Testing toggle_bit(arr, i)\n", stderr);
+	_test_toggle_bit();
 	fputc('\n', stderr);
 
 	fputs("Testing copy_bits(src, src_offset, dest, dest_offset, length)\n",

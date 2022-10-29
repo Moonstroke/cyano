@@ -22,7 +22,7 @@ static inline int _set_run_length(struct grid *grid, unsigned int *i,
 	char state = (*repr)[0];
 	if (state == 'o') {
 		for (int n = 0; n < length; ++n) {
-			SET_BIT(grid->cells, j * grid->w + *i + n, 1);
+			set_bit(grid->cells, j * grid->w + *i + n, 1);
 		}
 	} else if (state != 'b') { /* Invalid character */
 		return -__LINE__;
@@ -53,7 +53,7 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				}
 				break;
 			case 'o':
-				SET_BIT(grid->cells, j * grid->w + i, 1);
+				set_bit(grid->cells, j * grid->w + i, 1);
 			/* Fall-through intended */
 			case 'b':
 				if (++i > grid->w) {
@@ -170,10 +170,10 @@ static int _init_cells_from_plain(struct grid *grid, const char *repr) {
 	char saved_alive_char = ' ';
 	for (size_t bit_index = 0; repr[0] != '\0'; ++repr) {
 		if (repr[0] == '@') {
-			SET_BIT(grid->cells, bit_index, 1);
+			set_bit(grid->cells, bit_index, 1);
 			_check_alive_char(&saved_alive_char, '@', 'O');
 		} else if (repr[0] == 'O') {
-			SET_BIT(grid->cells, bit_index, 1);
+			set_bit(grid->cells, bit_index, 1);
 			_check_alive_char(&saved_alive_char, 'O', '@');
 		} else if (repr[0] == '\n'
 		           || (repr[0] == '\r' && (++repr)[0] == '\n')) {

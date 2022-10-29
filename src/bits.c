@@ -4,6 +4,16 @@
 
 
 
+extern size_t num_octets(size_t);
+
+
+extern int get_bit(const char*, size_t);
+
+extern void set_bit(char*, size_t, int);
+
+extern void toggle_bit(char*, size_t);
+
+
 void copy_bits(const char *src, size_t src_offset, char *dest,
                size_t dest_offset, size_t length) {
 	/* Skip the full bytes until the first byte that is partially used */
@@ -22,7 +32,7 @@ void copy_bits(const char *src, size_t src_offset, char *dest,
 			   copy up to bit 6 */
 			size_t end = src_offset + length < 8 ? src_offset + length : 8;
 			for (size_t i = src_offset; i < end; ++i) {
-				SET_BIT(dest, i, GET_BIT(src, i));
+				set_bit(dest, i, get_bit(src, i));
 			}
 			if (src_offset + length <= 8) { /* Copy fits in a single byte (cf.
 			                                   above) */
@@ -39,12 +49,12 @@ void copy_bits(const char *src, size_t src_offset, char *dest,
 		memmove(dest, src, length_bytes);
 		/* Copy trailing partial byte */
 		for (size_t i = 0; i < (length & 7); ++i) {
-			SET_BIT(&dest[length_bytes], i, GET_BIT(&src[length_bytes], i));
+			set_bit(&dest[length_bytes], i, get_bit(&src[length_bytes], i));
 		}
 	} else {
 		/* No common alignment to leverage, fallback to naïve linear copy */
 		for (size_t i = 0; i < length; ++i) {
-			SET_BIT(dest, dest_offset + i, GET_BIT(src, src_offset + i));
+			set_bit(dest, dest_offset + i, get_bit(src, src_offset + i));
 		}
 	}
 }
@@ -52,7 +62,7 @@ void copy_bits(const char *src, size_t src_offset, char *dest,
 
 void print_bits(const char *bits, size_t offset, size_t size, FILE *file) {
 	for (size_t i = 0; i < size; ++i) {
-		fputc('0' + GET_BIT(bits, offset + i), file);
+		fputc('0' + get_bit(bits, offset + i), file);
 	}
 	fputc('\n', file);
 }

@@ -13,7 +13,7 @@ int init_grid(struct grid *g, unsigned int w, unsigned int h, bool wrap) {
 	g->w = w;
 	g->h = h;
 
-	char *cells = calloc(NUM_OCTETS(w * h), 1);
+	char *cells = calloc(num_octets(w * h), 1);
 	g->cells = cells;
 	g->wrap = wrap;
 	memset(g->rule, 0, sizeof g->rule);
@@ -41,13 +41,13 @@ static inline unsigned int mod(int a, int b) {
 static enum cell_state _get_cell_walls(const struct grid *g, int x, int y) {
 	unsigned int i = (unsigned) x;
 	unsigned int j = (unsigned) y;
-	return (i < g->w && j < g->h) ? GET_BIT(g->cells, g->w * j + i) : DEAD;
+	return (i < g->w && j < g->h) ? get_bit(g->cells, g->w * j + i) : DEAD;
 }
 
 static enum cell_state _get_cell_wrap(const struct grid *g, int x, int y) {
 	unsigned int i = mod(x, g->w);
 	unsigned int j = mod(y, g->h);
-	return GET_BIT(g->cells, g->w * j + i);
+	return get_bit(g->cells, g->w * j + i);
 }
 
 enum cell_state get_grid_cell(const struct grid *g, int i, int j) {
@@ -57,8 +57,8 @@ enum cell_state get_grid_cell(const struct grid *g, int i, int j) {
 
 enum cell_state toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
 	if (x < g->w && y < g->h) {
-		TOGGLE_BIT(g->cells, g->w * y + x);
-		return GET_BIT(g->cells, g->w * y + x);
+		toggle_bit(g->cells, g->w * y + x);
+		return get_bit(g->cells, g->w * y + x);
 	}
 	return DEAD;
 }
@@ -86,12 +86,12 @@ static void _update_cell(struct grid *g, size_t row_offset,
                          const char *row_buffer, size_t cell_offset,
                          unsigned int neighbors) {
 	bool (*will_be_alive)(unsigned int, const char*);
-	if (GET_BIT(row_buffer, g->w + cell_offset)) {
+	if (get_bit(row_buffer, g->w + cell_offset)) {
 		will_be_alive = _will_survive;
 	} else {
 		will_be_alive = _will_be_born;
 	}
-	SET_BIT(g->cells, row_offset + cell_offset,
+	set_bit(g->cells, row_offset + cell_offset,
 	        will_be_alive(neighbors, g->rule));
 }
 
@@ -99,37 +99,37 @@ static void _update_row(struct grid *g, size_t row_offset,
                         const char *row_buffer, const char *btm_row,
                         size_t btm_row_offset) {
 	unsigned int neighbors = 0;
-	neighbors = GET_BIT(row_buffer, 0)
-	          + GET_BIT(row_buffer, 1)
-	          + GET_BIT(row_buffer, g->w + 1)
-	          + GET_BIT(btm_row, btm_row_offset)
-	          + GET_BIT(btm_row, btm_row_offset + 1);
+	neighbors = get_bit(row_buffer, 0)
+	          + get_bit(row_buffer, 1)
+	          + get_bit(row_buffer, g->w + 1)
+	          + get_bit(btm_row, btm_row_offset)
+	          + get_bit(btm_row, btm_row_offset + 1);
 	if (g->wrap) {
-		neighbors += GET_BIT(row_buffer, g->w - 1)
-		           + GET_BIT(row_buffer, g->w * 2 - 1)
-		           + GET_BIT(btm_row, btm_row_offset + g->w - 1);
+		neighbors += get_bit(row_buffer, g->w - 1)
+		           + get_bit(row_buffer, g->w * 2 - 1)
+		           + get_bit(btm_row, btm_row_offset + g->w - 1);
 	}
 	_update_cell(g, row_offset, row_buffer, 0, neighbors);
 	for (size_t i = 1; i < g->w - 1; ++i) {
-		neighbors = GET_BIT(row_buffer, i - 1)
-		          + GET_BIT(row_buffer, i)
-		          + GET_BIT(row_buffer, i + 1)
-		          + GET_BIT(row_buffer, g->w + i - 1)
-		          + GET_BIT(row_buffer, g->w + i + 1)
-		          + GET_BIT(btm_row, btm_row_offset + i - 1)
-		          + GET_BIT(btm_row, btm_row_offset + i)
-		          + GET_BIT(btm_row, btm_row_offset + i + 1);
+		neighbors = get_bit(row_buffer, i - 1)
+		          + get_bit(row_buffer, i)
+		          + get_bit(row_buffer, i + 1)
+		          + get_bit(row_buffer, g->w + i - 1)
+		          + get_bit(row_buffer, g->w + i + 1)
+		          + get_bit(btm_row, btm_row_offset + i - 1)
+		          + get_bit(btm_row, btm_row_offset + i)
+		          + get_bit(btm_row, btm_row_offset + i + 1);
 		_update_cell(g, row_offset, row_buffer, i, neighbors);
 	}
-	neighbors = GET_BIT(row_buffer, g->w - 2)
-	          + GET_BIT(row_buffer, g->w - 1)
-	          + GET_BIT(row_buffer, g->w * 2 - 2)
-	          + GET_BIT(btm_row, btm_row_offset + g->w - 2)
-	          + GET_BIT(btm_row, btm_row_offset + g->w - 1);
+	neighbors = get_bit(row_buffer, g->w - 2)
+	          + get_bit(row_buffer, g->w - 1)
+	          + get_bit(row_buffer, g->w * 2 - 2)
+	          + get_bit(btm_row, btm_row_offset + g->w - 2)
+	          + get_bit(btm_row, btm_row_offset + g->w - 1);
 	if (g->wrap) {
-		neighbors += GET_BIT(row_buffer, 0)
-		           + GET_BIT(row_buffer, g->w)
-		           + GET_BIT(btm_row, btm_row_offset);
+		neighbors += get_bit(row_buffer, 0)
+		           + get_bit(row_buffer, g->w)
+		           + get_bit(btm_row, btm_row_offset);
 	}
 	_update_cell(g, row_offset, row_buffer, g->w - 1, neighbors);
 }
@@ -144,7 +144,7 @@ int update_grid(struct grid *g) {
 	   columns are high so going with the rows mitigates time complexity (the
 	   number of passes) by allowing a higher memory consumption (by allocating
 	   a bigger buffer). */
-	char *cells_buffer = calloc(NUM_OCTETS(3 * g->w), 1);
+	char *cells_buffer = calloc(num_octets(3 * g->w), 1);
 	CHECK_NULL(cells_buffer);
 	/* First row */
 	if (g->wrap) {
@@ -175,5 +175,5 @@ int update_grid(struct grid *g) {
 
 
 void clear_grid(struct grid *g) {
-	memset(g->cells, DEAD, NUM_OCTETS(g->w * g->h));
+	memset(g->cells, DEAD, num_octets(g->w * g->h));
 }
