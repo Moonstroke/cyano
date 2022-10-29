@@ -24,7 +24,11 @@
  * \return The minimal number of chars (octets) necessary to hold \p size bits
  */
 inline size_t num_octets(size_t size) {
-     return size >> (3 + ((size & 7) != 0));
+     size_t size_octets = size >> 3;
+     if ((size & 7) != 0) {
+          ++size_octets;
+     }
+     return size_octets;
 }
 
 /** Access the bit at specified index in the given bit array.
@@ -46,10 +50,10 @@ inline int get_bit(const char *arr, size_t i) {
  * \param[in]  val The value to assign
  */
 inline void set_bit(char *arr, size_t i, int val) {
-     if (val) {
-          arr[i >> 3] |= 1 << (7 - (i & 7));
-     } else {
+     if (val == 0) {
           arr[i >> 3] &= ~(1 << (7 - (i & 7)));
+     } else {
+          arr[i >> 3] |= 1 << (7 - (i & 7));
      }
 }
 
