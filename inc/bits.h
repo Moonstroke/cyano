@@ -17,7 +17,7 @@
 
 
 /**
- *  Give the number of chars needed to store the given number of bits.
+ *  Give the number of 8-bit bytes needed to store the given amount of bits.
  *
  * \param[in] size The number of bits
  *
