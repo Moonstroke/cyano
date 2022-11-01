@@ -33,38 +33,38 @@ inline size_t num_octets(size_t size) {
 
 /** Access the bit at specified index in the given bit array.
  *
- * \param[in] arr The array
- * \param[in] i   The index
+ * \param[in] bits  The bit array
+ * \param[in] index The index of the bit to retrieve
  *
- * \return The value of the <tt>i</tt>-th bit in \p arr
+ * \return The value of the <tt>index</tt>-th bit in \p bits
  */
-inline int get_bit(const char *arr, size_t i) {
-     return (arr[i >> 3] >> (7 - (i & 7)) & 1);
+inline int get_bit(const char *bits, size_t index) {
+     return (bits[index >> 3] >> (7 - (index & 7)) & 1);
 }
 
 /**
  * Assign the given value to the bit at the specified index in the array.
  *
- * \param[out] arr The array to modify
- * \param[in]  i   The index
- * \param[in]  val The value to assign
+ * \param[out] bits  The bit array
+ * \param[in]  index The index of the bit to modify
+ * \param[in]  value The value to assign
  */
-inline void set_bit(char *arr, size_t i, int val) {
-     if (val == 0) {
-          arr[i >> 3] &= ~(1 << (7 - (i & 7)));
+inline void set_bit(char *bits, size_t index, int value) {
+     if (value == 0) {
+          bits[index >> 3] &= ~(1 << (7 - (index & 7)));
      } else {
-          arr[i >> 3] |= 1 << (7 - (i & 7));
+          bits[index >> 3] |= 1 << (7 - (index & 7));
      }
 }
 
 /**
  * Invert the value of the bit at specified index in the given bit array.
  *
- * \param[out] arr The array
- * \param[in]  i   The index
+ * \param[out] bits  The bit array
+ * \param[in]  index The index of the bit to invert
  */
-inline void toggle_bit(char *arr, size_t i) {
-     arr[i >> 3] ^= 1 << (7 - (i & 7));
+inline void toggle_bit(char *bits, size_t index) {
+     bits[index >> 3] ^= 1 << (7 - (index & 7));
 }
 
 
