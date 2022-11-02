@@ -39,10 +39,10 @@ static inline unsigned int mod(int a, int b) {
 	return a;
 }
 
-static enum cell_state _get_cell_walls(const struct grid *grid, int x, int y) {
-	unsigned int row = (unsigned) x;
-	unsigned int col = (unsigned) y;
-	if (row < grid->w && col < grid->h) {
+static enum cell_state _get_cell_walls(const struct grid *grid, int row,
+                                       int col) {
+	if (0 < row && (unsigned) row < grid->w
+	    && 0 < col && (unsigned) col < grid->h) {
 		return get_bit(grid->cells, grid->w * col + row);
 	}
 	return DEAD;
@@ -67,11 +67,11 @@ enum cell_state _toggle_cell_wrap(struct grid *grid, int x, int y) {
 }
 
 enum cell_state _toggle_cell_walls(struct grid *grid, int row, int col) {
-	unsigned int x = row;
-	unsigned int y = col;
-	if (x < grid->w && y < grid->h) {
-		toggle_bit(grid->cells, grid->w * y + x);
-		return get_bit(grid->cells, grid->w * y + x);
+	if (0 < row && (unsigned) row < grid->w
+	    && 0 < col && (unsigned) col < grid->h) {
+		unsigned int cell_bit_index = grid->w * col + row;
+		toggle_bit(grid->cells, cell_bit_index);
+		return get_bit(grid->cells, cell_bit_index);
 	}
 	return DEAD;
 }
@@ -83,23 +83,23 @@ enum cell_state toggle_cell(struct grid *grid, int row, int col) {
 
 static inline bool _will_be_born(unsigned int num_neighbors,
                                  const char *rulestring) {
-	char k = (char) ('0' + num_neighbors);
+	char num_neighbors_char = (char) ('0' + num_neighbors);
 	rulestring = strchr(rulestring, 'B') + 1;
 	while (*rulestring != '\0' && *rulestring != '/' && *rulestring != 'S'
-	                           && *rulestring != k) {
+	                           && *rulestring != num_neighbors_char) {
 		++rulestring;
 	}
-	return *rulestring == k;
+	return *rulestring == num_neighbors_char;
 }
 
 static inline bool _will_survive(unsigned int num_neighbors,
                                  const char *rulestring) {
-	char k = (char) ('0' + num_neighbors);
+	char num_neighbors_char = (char) ('0' + num_neighbors);
 	rulestring = strchr(rulestring, 'S') + 1;
-	while (*rulestring != '\0' && *rulestring != k) {
+	while (*rulestring != '\0' && *rulestring != num_neighbors_char) {
 		++rulestring;
 	}
-	return *rulestring == k;
+	return *rulestring == num_neighbors_char;
 }
 
 static void _update_cell(struct grid *grid, size_t row_offset,
