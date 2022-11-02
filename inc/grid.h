@@ -119,25 +119,25 @@ void free_grid(struct grid *grid);
  * \brief Get the state of a cell from the grid.
  *
  * \param[in] grid The game grid
- * \param[in] i     The row to get
- * \param[in] j     The column to get
+ * \param[in] row   The row to get
+ * \param[in] col   The column to get
  *
- * \return \c ALIVE if the cell at (i, j) is alive, or \c DEAD if the cell is
- *         dead or coordinates are invalid.
+ * \return \c ALIVE if the cell at (row, col) is alive, or \c DEAD if the cell
+ *         is dead or coordinates are invalid.
  */
-enum cell_state get_grid_cell(const struct grid *grid, int i, int j);
+enum cell_state get_grid_cell(const struct grid *grid, int row, int col);
 
 
 /**
  * \brief Invert the state of a cell.
  *
  * \param[in,out] grid The grid
- * \param[in]     i    The row of the cell to toggle
- * \param[in]     j    The column of the cell
+ * \param[in]     row  The row of the cell to toggle
+ * \param[in]     col  The column of the cell
  *
  * \return The new state of the cell, or \c DEAD if the coordinates are invalid
  */
-enum cell_state toggle_cell(struct grid *grid, int i, int j);
+enum cell_state toggle_cell(struct grid *grid, int row, int col);
 
 
 /**
