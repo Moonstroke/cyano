@@ -85,10 +85,10 @@ const char *get_rule_from_name(const char *name) {
 	unsigned int end = NB_NAMES;
 	while (end - start > 1) {
 		unsigned int middle = (start + end) / 2;
-		int d = strcmp(name, names[middle]);
-		if (d < 0) {
+		int relative_pos = strcmp(name, names[middle]);
+		if (relative_pos < 0) {
 			end = middle;
-		} else if (d > 0) {
+		} else if (relative_pos > 0) {
 			start = middle;
 		} else {
 			return rules[middle];
