@@ -16,13 +16,13 @@ static inline int _set_run_length(struct grid *grid, unsigned int *row,
 	char *end = NULL;
 	long length = strtol(*repr, &end, 10);
 	*repr = end;
-	if (*row + length > grid->w) {
+	if (*row + length > grid->width) {
 		return -__LINE__;
 	}
 	char state = (*repr)[0];
 	if (state == 'o') {
 		for (int n = 0; n < length; ++n) {
-			set_bit(grid->cells, col * grid->w + *row + n, 1);
+			set_bit(grid->cells, col * grid->width + *row + n, 1);
 		}
 	} else if (state != 'b') { /* Invalid character */
 		return -__LINE__;
@@ -53,17 +53,17 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 				}
 				break;
 			case 'o':
-				set_bit(grid->cells, col * grid->w + row, 1);
+				set_bit(grid->cells, col * grid->width + row, 1);
 			/* Fall-through intended */
 			case 'b':
-				if (++row > grid->w) {
+				if (++row > grid->width) {
 					return -__LINE__;
 				}
 				break;
 			case '$':
 				/* No grid width checking because end of row can be omitted if
 				   all cells are blank */
-				if (++col >= grid->h) {
+				if (++col >= grid->height) {
 					return -__LINE__;
 				}
 				row = 0;
@@ -223,11 +223,11 @@ static inline char *_get_rle_header(const struct grid *grid,
                                     size_t *repr_start, size_t *allocated) {
 	char header[64] = {0};
 	int header_size = sprintf(header, "x = %u, y = %u, rule = %s\n",
-	                          grid->w, grid->h, grid->rule);
+	                          grid->width, grid->height, grid->rule);
 	if (header_size < 0) {
 		return NULL;
 	}
-	*allocated = header_size + (grid->w + 1) * grid->h + 1;
+	*allocated = header_size + (grid->width + 1) * grid->height + 1;
 	char *repr = malloc(*allocated);
 	if (repr == NULL) {
 		return NULL;
@@ -248,20 +248,20 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 	if (repr == NULL) {
 		return NULL;
 	}
-	for (unsigned int j = 0; j < grid->h; ++j) {
+	for (unsigned int j = 0; j < grid->height; ++j) {
 		unsigned int run_length;
-		for (unsigned int i = 0; i < grid->w; i += run_length) {
+		for (unsigned int i = 0; i < grid->width; i += run_length) {
 			run_length = 1;
 			enum cell_state run_state = get_grid_cell(grid, i, j);
 			/* Get length of run: stop at either a different cell or the end
 			   of the row */
-			while (i + run_length < grid->w
+			while (i + run_length < grid->width
 			       && get_grid_cell(grid, i + run_length, j) == run_state) {
 				++run_length;
 			}
 			/* Skip blank row endings (i.e. blank runs that reach the end of
 			   a row) */
-			if (run_state == DEAD && i + run_length == grid->w) {
+			if (run_state == DEAD && i + run_length == grid->width) {
 				break;
 			}
 			if (run_length > 1) {
@@ -290,13 +290,13 @@ static inline void _get_grid_plain(const struct grid *grid, char *repr) {
 		[DEAD] = '.',
 		[ALIVE] = '@'
 	};
-	for (unsigned int j = 0; j < grid->h; ++j) {
-		for (unsigned int i = 0; i < grid->w; ++i) {
-			repr[j * (grid->w + 1) + i] = cell_repr[get_grid_cell(grid, i, j)];
+	for (unsigned int j = 0; j < grid->height; ++j) {
+		for (unsigned int i = 0; i < grid->width; ++i) {
+			repr[j * (grid->width + 1) + i] = cell_repr[get_grid_cell(grid, i, j)];
 		}
-		repr[j * (grid->w + 1) + grid->w] = '\n';
+		repr[j * (grid->width + 1) + grid->width] = '\n';
 	}
-	repr[(grid->w + 1) * grid->h - 1] = '\0';
+	repr[(grid->width + 1) * grid->height - 1] = '\0';
 }
 
 char *get_grid_repr(const struct grid *grid, enum grid_format format) {
@@ -305,7 +305,7 @@ char *get_grid_repr(const struct grid *grid, enum grid_format format) {
 		repr = _get_grid_rle(grid);
 	} else {
 	/* Additional height characters for newlines and null terminator */
-		repr = malloc((grid->w + 1) * grid->h);
+		repr = malloc((grid->width + 1) * grid->height);
 		if (repr == NULL) {
 			return NULL;
 		}

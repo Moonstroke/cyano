@@ -64,8 +64,8 @@ struct grid_window {
 	unsigned int cell_pixels;
 	/** The size of the gap separating the cells. */
 	unsigned int border_width;
-	int sel_x; /**< The \c x coordinate of the currently selected cell. */
-	int sel_y; /**< The \c y coordinate of the currently selected cell. */
+	int sel_col; /**< The \c column number of the currently selected cell. */
+	int sel_row; /**< The \c row number of the currently selected cell. */
 	char error_msg[64]; /**< The error message if an operation fails */
 };
 

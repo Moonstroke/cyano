@@ -43,10 +43,10 @@ int init_app(void) {
 
 static void _handle_mouse_on_cell(struct grid_window *gw, int *last_x,
                                   int *last_y) {
-	if (gw->sel_x >= 0 && gw->sel_y >= 0) {
-		toggle_cell(gw->grid, gw->sel_x, gw->sel_y);
-		*last_x = gw->sel_x;
-		*last_y = gw->sel_y;
+	if (gw->sel_col >= 0 && gw->sel_row >= 0) {
+		toggle_cell(gw->grid, gw->sel_col, gw->sel_row);
+		*last_x = gw->sel_col;
+		*last_y = gw->sel_row;
 	}
 }
 
@@ -95,27 +95,27 @@ static void _handle_key_event(const SDL_KeyboardEvent *event,
 			}
 			break;
 		case SDLK_UP:
-			if (--gw->sel_y < 0) {
-				gw->sel_y = gw->grid->wrap ? gw->grid->h - 1 : 0;
+			if (--gw->sel_row < 0) {
+				gw->sel_row = gw->grid->wrap ? gw->grid->height - 1 : 0;
 			}
 			break;
 		case SDLK_DOWN:
-			if (++gw->sel_y >= (signed) gw->grid->h) {
-				gw->sel_y = gw->grid->wrap ? 0 : gw->grid->h - 1;
+			if (++gw->sel_row >= (signed) gw->grid->height) {
+				gw->sel_row = gw->grid->wrap ? 0 : gw->grid->height - 1;
 			}
 			break;
 		case SDLK_LEFT:
-			if (--gw->sel_x < 0) {
-				gw->sel_x = gw->grid->wrap ? gw->grid->w - 1 : 0;
+			if (--gw->sel_col < 0) {
+				gw->sel_col = gw->grid->wrap ? gw->grid->width - 1 : 0;
 			}
 			break;
 		case SDLK_RIGHT:
-			if (++gw->sel_x >= (signed) gw->grid->w) {
-				gw->sel_x = gw->grid->wrap ? 0 : gw->grid->w - 1;
+			if (++gw->sel_col >= (signed) gw->grid->width) {
+				gw->sel_col = gw->grid->wrap ? 0 : gw->grid->width - 1;
 			}
 			break;
 		case SDLK_t:
-			toggle_cell(gw->grid, gw->sel_x, gw->sel_y);
+			toggle_cell(gw->grid, gw->sel_col, gw->sel_row);
 			break;
 		case SDLK_r:
 			_reset_grid(gw->grid, repr, repr_format, play, loop);
@@ -153,8 +153,8 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 	case SDL_MOUSEBUTTONDOWN:
 		if (event->button.button == SDL_BUTTON_LEFT) {
 			*mdown = true;
-			get_cell_loc(gw, event->button.x, event->button.y, &gw->sel_x,
-			           &gw->sel_y);
+			get_cell_loc(gw, event->button.x, event->button.y, &gw->sel_col,
+			           &gw->sel_row);
 			_handle_mouse_on_cell(gw, last_x, last_y);
 		}
 		break;
@@ -164,9 +164,9 @@ static void _handle_event(const SDL_Event *event, struct grid_window *gw,
 		}
 		break;
 	case SDL_MOUSEMOTION:
-		get_cell_loc(gw, event->motion.x, event->motion.y, &gw->sel_x,
-		             &gw->sel_y);
-		if (*mdown && (gw->sel_x != *last_x || gw->sel_y != *last_y)) {
+		get_cell_loc(gw, event->motion.x, event->motion.y, &gw->sel_col,
+		             &gw->sel_row);
+		if (*mdown && (gw->sel_col != *last_x || gw->sel_row != *last_y)) {
 			_handle_mouse_on_cell(gw, last_x, last_y);
 		}
 		break;

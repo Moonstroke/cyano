@@ -36,8 +36,8 @@
  * \brief The type representing the grid of the game.
  */
 struct grid {
-	unsigned int w; /**< The width of the grid. */
-	unsigned int h; /**< The height of the grid. */
+	unsigned int width; /**< The width of the grid. */
+	unsigned int height; /**< The height of the grid. */
 	char *cells; /**< The data of the grid cells. */
 	/** The rulestring determining the evolution of the game. */
 	char rule[22];

@@ -635,8 +635,8 @@ int init_grid_window(struct grid_window *grid_win, struct grid *grid,
 	grid_win->grid = grid;
 	grid_win->cell_pixels = cell_pixels;
 	grid_win->border_width = border_width;
-	unsigned int win_width = GRID_SIZE_TO_WIN_SIZE(grid_win, grid->w);
-	unsigned int win_height = GRID_SIZE_TO_WIN_SIZE(grid_win, grid->h);
+	unsigned int win_width = GRID_SIZE_TO_WIN_SIZE(grid_win, grid->width);
+	unsigned int win_height = GRID_SIZE_TO_WIN_SIZE(grid_win, grid->height);
 
 	Uint32 win_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS
 	                                    | SDL_WINDOW_INPUT_FOCUS;
@@ -654,7 +654,7 @@ int init_grid_window(struct grid_window *grid_win, struct grid *grid,
 		        sizeof grid_win->error_msg);
 		return -__LINE__;
 	}
-	grid_win->sel_x = grid_win->sel_y = -1;
+	grid_win->sel_col = grid_win->sel_row = -1;
 	grid_win->error_msg[0] = '\0';
 
 	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom(icon_data, ICONSIZE, ICONSIZE,
@@ -688,8 +688,8 @@ static inline void _draw_cell(SDL_Renderer *ren, SDL_Rect *rect,
 }
 
 void render_grid_window(const struct grid_window *grid_win) {
-	unsigned int grid_width = grid_win->grid->w;
-	unsigned int grid_height = grid_win->grid->h;
+	unsigned int grid_width = grid_win->grid->width;
+	unsigned int grid_height = grid_win->grid->height;
 	unsigned int cell_width = grid_win->cell_pixels;
 	unsigned int border_width = grid_win->border_width;
 
@@ -712,8 +712,8 @@ void render_grid_window(const struct grid_window *grid_win) {
 		}
 	}
 	SDL_SetRenderDrawBlendMode(grid_win->ren, SDL_BLENDMODE_BLEND);
-	if (grid_win->sel_x >= 0 && grid_win->sel_y >= 0) {
-		_draw_cell(grid_win->ren, &rect, grid_win->sel_x, grid_win->sel_y,
+	if (grid_win->sel_col >= 0 && grid_win->sel_row >= 0) {
+		_draw_cell(grid_win->ren, &rect, grid_win->sel_col, grid_win->sel_row,
 		           cell_width, border_width, (SDL_Color) {127, 127, 127, 127});
 	}
 	SDL_RenderPresent(grid_win->ren);
