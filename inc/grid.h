@@ -132,12 +132,12 @@ enum cell_state get_grid_cell(const struct grid *grid, int i, int j);
  * \brief Invert the state of a cell.
  *
  * \param[in,out] grid The grid
- * \param[in]     x     The row of the cell to toggle
- * \param[in]     y     The column of the cell
+ * \param[in]     i    The row of the cell to toggle
+ * \param[in]     j    The column of the cell
  *
  * \return The new state of the cell, or \c DEAD if the coordinates are invalid
  */
-enum cell_state toggle_cell(struct grid *grid, unsigned int x, unsigned int y);
+enum cell_state toggle_cell(struct grid *grid, int i, int j);
 
 
 /**

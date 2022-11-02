@@ -55,12 +55,25 @@ enum cell_state get_grid_cell(const struct grid *g, int i, int j) {
 }
 
 
-enum cell_state toggle_cell(struct grid *g, unsigned int x, unsigned int y) {
+enum cell_state _toggle_cell_wrap(struct grid *g, int x, int y) {
+	unsigned int i = mod(x, g->w);
+	unsigned int j = mod(y, g->h);
+	toggle_bit(g->cells, g->w * j + i);
+	return get_bit(g->cells, g->w * y + x);
+}
+
+enum cell_state _toggle_cell_walls(struct grid *g, int i, int j) {
+	unsigned int x = i;
+	unsigned int y = j;
 	if (x < g->w && y < g->h) {
 		toggle_bit(g->cells, g->w * y + x);
 		return get_bit(g->cells, g->w * y + x);
 	}
 	return DEAD;
+}
+
+enum cell_state toggle_cell(struct grid *g, int i, int j) {
+	return (g->wrap ? &_toggle_cell_wrap : &_toggle_cell_walls)(g, i, j);
 }
 
 
