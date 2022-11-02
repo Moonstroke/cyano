@@ -107,16 +107,17 @@ void render_grid_window(const struct grid_window *grid_win);
  * \brief Transforms the window coordinates to a grid cell location.
  *
  * \param[in]  grid_win    The grid window
- * \param[in]  x           The X window coordinate
- * \param[in]  y           The Y window coordinate
- * \param[out] i           The column number of the cell under (x,y)
- * \param[out] j           The row number of the cell under (x,y)
+ * \param[in]  window_x    The X window coordinate
+ * \param[in]  window_y    The Y window coordinate
+ * \param[out] cell_col    The column number of the cell under
+ *                         (window_x,window_y)
+ * \param[out] cell_row    The row number of the cell under (window_x,window_y)
  *
  * \note If either of the coordinates points over a border, \c -1 is returned in
  *       the corresponding cell location.
  */
-void get_cell_loc(const struct grid_window *grid_win, int x, int y, int *i,
-                  int *j);
+void get_cell_loc(const struct grid_window *grid_win, int window_x,
+                  int window_y, int *cell_col, int *cell_row);
 
 
 /**
@@ -124,13 +125,14 @@ void get_cell_loc(const struct grid_window *grid_win, int x, int y, int *i,
  *        under the mouse cursor.
  *
  * \param[in]  grid_win    The grid window
- * \param[out] i           The column number of the hovered cell
- * \param[out] j           The row number of the hovered cell
+ * \param[out] cell_col    The column number of the hovered cell
+ * \param[out] cell_row    The row number of the hovered cell
  *
  * \note If either of the coordinates points over a border, \c -1 is returned in
  *       the corresponding cell location.
  */
-void get_hovered_cell_loc(const struct grid_window *grid_win, int *i, int *j);
+void get_hovered_cell_loc(const struct grid_window *grid_win, int *cell_col,
+                          int *cell_row);
 
 
 #endif /* GRIDWINDOW_H */

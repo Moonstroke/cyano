@@ -629,31 +629,33 @@ static uint16_t icon_data[] = {
 };
 
 
-int init_grid_window(struct grid_window *gw, struct grid *grid,
+int init_grid_window(struct grid_window *grid_win, struct grid *grid,
                      unsigned int cell_pixels, unsigned int border_width,
                      const char *title) {
-	gw->grid = grid;
-	gw->cell_pixels = cell_pixels;
-	gw->border_width = border_width;
-	unsigned int win_width = GRID_SIZE_TO_WIN_SIZE(gw, grid->w);
-	unsigned int win_height = GRID_SIZE_TO_WIN_SIZE(gw, grid->h);
+	grid_win->grid = grid;
+	grid_win->cell_pixels = cell_pixels;
+	grid_win->border_width = border_width;
+	unsigned int win_width = GRID_SIZE_TO_WIN_SIZE(grid_win, grid->w);
+	unsigned int win_height = GRID_SIZE_TO_WIN_SIZE(grid_win, grid->h);
 
 	Uint32 win_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_MOUSE_FOCUS
 	                                    | SDL_WINDOW_INPUT_FOCUS;
-	gw->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,
+	grid_win->win = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,
 	                           SDL_WINDOWPOS_CENTERED, win_width, win_height,
 	                           win_flags);
-	if (gw->win == NULL) {
-		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
+	if (grid_win->win == NULL) {
+		strncpy(grid_win->error_msg, SDL_GetError(),
+		        sizeof grid_win->error_msg);
 		return -__LINE__;
 	}
-	gw->ren = SDL_CreateRenderer(gw->win, -1, RENDERER_FLAGS);
-	if (gw->ren == NULL) {
-		strncpy(gw->error_msg, SDL_GetError(), sizeof gw->error_msg);
+	grid_win->ren = SDL_CreateRenderer(grid_win->win, -1, RENDERER_FLAGS);
+	if (grid_win->ren == NULL) {
+		strncpy(grid_win->error_msg, SDL_GetError(),
+		        sizeof grid_win->error_msg);
 		return -__LINE__;
 	}
-	gw->sel_x = gw->sel_y = -1;
-	gw->error_msg[0] = '\0';
+	grid_win->sel_x = grid_win->sel_y = -1;
+	grid_win->error_msg[0] = '\0';
 
 	SDL_Surface *icon = SDL_CreateRGBSurfaceFrom(icon_data, ICONSIZE, ICONSIZE,
 	                                             16,
@@ -661,7 +663,7 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 	                                             0xf000, 0x0f00, 0x00f0,
 	                                             0x000f);
 	if (icon != NULL) {
-		SDL_SetWindowIcon(gw->win, icon);
+		SDL_SetWindowIcon(grid_win->win, icon);
 		SDL_FreeSurface(icon);
 	}
 
@@ -669,75 +671,79 @@ int init_grid_window(struct grid_window *gw, struct grid *grid,
 }
 
 
-void free_grid_window(struct grid_window *gw) {
-	SDL_DestroyRenderer(gw->ren);
-	SDL_DestroyWindow(gw->win);
+void free_grid_window(struct grid_window *grid_win) {
+	SDL_DestroyRenderer(grid_win->ren);
+	SDL_DestroyWindow(grid_win->win);
 }
 
 
-static inline void _draw_cell(SDL_Renderer *ren, SDL_Rect *rect, unsigned int i,
-                             unsigned int j, unsigned int c,
-                             unsigned int border, SDL_Color color) {
+static inline void _draw_cell(SDL_Renderer *ren, SDL_Rect *rect,
+                             unsigned int col, unsigned int row,
+                             unsigned int cell_width,
+                             unsigned int border_width, SDL_Color color) {
 	SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
-	rect->x = (c + border) * i + border;
-	rect->y = (c + border) * j + border;
+	rect->x = (cell_width + border_width) * col + border_width;
+	rect->y = (cell_width + border_width) * row + border_width;
 	SDL_RenderFillRect(ren, rect);
 }
 
-void render_grid_window(const struct grid_window *gw) {
-	unsigned int w = gw->grid->w;
-	unsigned int h = gw->grid->h;
-	unsigned int c = gw->cell_pixels;
-	unsigned int b = gw->border_width;
+void render_grid_window(const struct grid_window *grid_win) {
+	unsigned int grid_width = grid_win->grid->w;
+	unsigned int grid_height = grid_win->grid->h;
+	unsigned int cell_width = grid_win->cell_pixels;
+	unsigned int border_width = grid_win->border_width;
 
-	SDL_Rect r;
+	SDL_Rect rect;
 
-	SDL_SetRenderDrawColor(gw->ren, 127, 127, 127, 255);
-	SDL_RenderClear(gw->ren);
-	r.w = c;
-	r.h = c;
+	SDL_SetRenderDrawColor(grid_win->ren, 127, 127, 127, 255);
+	SDL_RenderClear(grid_win->ren);
+	rect.w = cell_width;
+	rect.h = cell_width;
 	uint8_t cell_color[] = {
 		[DEAD] = 255,
 		[ALIVE] = 0
 	};
-	for (unsigned int j = 0; j < h; ++j) {
-		for (unsigned int i = 0; i < w; ++i) {
-			uint8_t ch = cell_color[get_grid_cell(gw->grid, i, j)];
+	for (unsigned int j = 0; j < grid_height; ++j) {
+		for (unsigned int i = 0; i < grid_width; ++i) {
+			uint8_t ch = cell_color[get_grid_cell(grid_win->grid, i, j)];
 
-			_draw_cell(gw->ren, &r, i, j, c, b, (SDL_Color) {ch, ch, ch, 255});
+			_draw_cell(grid_win->ren, &rect, i, j, cell_width, border_width,
+			           (SDL_Color) {ch, ch, ch, 255});
 		}
 	}
-	SDL_SetRenderDrawBlendMode(gw->ren, SDL_BLENDMODE_BLEND);
-	if (gw->sel_x >= 0 && gw->sel_y >= 0) {
-		_draw_cell(gw->ren, &r, gw->sel_x, gw->sel_y, c, b,
-		           (SDL_Color) {127, 127, 127, 127});
+	SDL_SetRenderDrawBlendMode(grid_win->ren, SDL_BLENDMODE_BLEND);
+	if (grid_win->sel_x >= 0 && grid_win->sel_y >= 0) {
+		_draw_cell(grid_win->ren, &rect, grid_win->sel_x, grid_win->sel_y,
+		           cell_width, border_width, (SDL_Color) {127, 127, 127, 127});
 	}
-	SDL_RenderPresent(gw->ren);
+	SDL_RenderPresent(grid_win->ren);
 }
 
 
-void get_cell_loc(const struct grid_window *gw, int x, int y, int *i, int *j) {
+void get_cell_loc(const struct grid_window *grid_win, int window_x,
+                  int window_y, int *cell_col, int *cell_row) {
 	/* Remove offset for up and left border */
-	x -= gw->border_width;
-	y -= gw->border_width;
-	unsigned int step = gw->cell_pixels + gw->border_width;
-	if (x % step < gw->border_width) {
+	window_x -= grid_win->border_width;
+	window_y -= grid_win->border_width;
+	unsigned int step = grid_win->cell_pixels + grid_win->border_width;
+	if (window_x % step < grid_win->border_width) {
 		/* Hovering a vertical border */
-		*i = -1;
+		*cell_col = -1;
 	} else {
-		*i = x / step;
+		*cell_col = window_x / step;
 	}
-	if (y % step < gw->border_width) {
+	if (window_y % step < grid_win->border_width) {
 		/* Hovering a horizontal border */
-		*j = -1;
+		*cell_row = -1;
 	} else {
-		*j = y / step;
+		*cell_row = window_y / step;
 	}
 }
 
-void get_hovered_cell_loc(const struct grid_window *gw, int *i, int *j) {
-	int x;
-	int y;
-	SDL_GetMouseState(&x, &y);
-	get_cell_loc(gw, x, y, i, j);
+void get_hovered_cell_loc(const struct grid_window *grid_win, int *cell_col,
+                          int *cell_row) {
+	int mouse_x;
+	int mouse_y;
+	SDL_GetMouseState(&mouse_x, &mouse_y);
+	get_cell_loc(grid_win, mouse_x, mouse_y, cell_col, cell_row);
 }
