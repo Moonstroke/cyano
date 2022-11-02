@@ -11,29 +11,29 @@
 
 
 
-static inline int _set_run_length(struct grid *grid, unsigned int *i,
-                                  unsigned int j, const char **repr) {
+static inline int _set_run_length(struct grid *grid, unsigned int *row,
+                                  unsigned int col, const char **repr) {
 	char *end = NULL;
 	long length = strtol(*repr, &end, 10);
 	*repr = end;
-	if (*i + length > grid->w) {
+	if (*row + length > grid->w) {
 		return -__LINE__;
 	}
 	char state = (*repr)[0];
 	if (state == 'o') {
 		for (int n = 0; n < length; ++n) {
-			set_bit(grid->cells, j * grid->w + *i + n, 1);
+			set_bit(grid->cells, col * grid->w + *row + n, 1);
 		}
 	} else if (state != 'b') { /* Invalid character */
 		return -__LINE__;
 	}
-	*i += length;
+	*row += length;
 	return 0;
 }
 
 static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
-	unsigned int i = 0;
-	unsigned int j = 0;
+	unsigned int row = 0;
+	unsigned int col = 0;
 	int rc;
 	for (; repr[0] != '\0'; ++repr) {
 		switch (repr[0]) {
@@ -48,25 +48,25 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 			case '7':
 			case '8':
 			case '9':
-				if ((rc = _set_run_length(grid, &i, j, &repr)) < 0) {
+				if ((rc = _set_run_length(grid, &row, col, &repr)) < 0) {
 					return rc;
 				}
 				break;
 			case 'o':
-				set_bit(grid->cells, j * grid->w + i, 1);
+				set_bit(grid->cells, col * grid->w + row, 1);
 			/* Fall-through intended */
 			case 'b':
-				if (++i > grid->w) {
+				if (++row > grid->w) {
 					return -__LINE__;
 				}
 				break;
 			case '$':
 				/* No grid width checking because end of row can be omitted if
 				   all cells are blank */
-				if (++j >= grid->h) {
+				if (++col >= grid->h) {
 					return -__LINE__;
 				}
-				i = 0;
+				row = 0;
 				break;
 			case '#':
 				CHECK_NULL(repr = strchr(repr + 1, '\n'));
@@ -90,8 +90,8 @@ static inline int _init_cells_from_rle(struct grid *grid, const char *repr) {
 static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
                                       bool wrap) {
 	char rule_buffer[22] = {0};
-	unsigned int w;
-	unsigned int h;
+	unsigned int width;
+	unsigned int height;
 
 	while (repr[0] == '#') { /* Ignore pre-header comment lines */
 		CHECK_NULL(repr = strchr(repr + 1, '\n'));
@@ -99,14 +99,15 @@ static inline int _init_grid_from_rle(struct grid *grid, const char *repr,
 	}
 	/* grid->rule cannot be passed directly to sscanf, because it will be
 	   cleared in init_grid */
-	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &w, &h, rule_buffer);
+	int rc = sscanf(repr, "x = %u, y = %u, rule = %22s", &width, &height,
+	                rule_buffer);
 	if (rc < 2) {
 		/* No proper RLE header line, probably not RLE at all */
 		return -__LINE__;
 	}
 	/* x and y specifications are mandatory, rule is optional */
 	bool add_rule = rc == 3;
-	rc = init_grid(grid, w, h, wrap);
+	rc = init_grid(grid, width, height, wrap);
 	if (rc < 0) {
 		return rc;
 	}
