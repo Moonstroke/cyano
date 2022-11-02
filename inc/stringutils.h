@@ -16,15 +16,14 @@
 
 
 /**
- * \brief Checks whether the end of the first string corresponds to the second
- *        one.
+ * \brief Checks whether the end of the string corresponds to the suffix.
  *
- * \param[in] s1 The first string
- * \param[in] s2 The second string (the suffix)
+ * \param[in] string The string to test
+ * \param[in] suffix The string to find at the end
  *
- * \return \c true iff the first string ends with the second
+ * \return \c true iff the end of the string ends matches the suffix
  */
-bool endswith(const char *s1, const char *s2);
+bool endswith(const char *string, const char *suffix);
 
 
 #endif /* STRINGUTILS_H */

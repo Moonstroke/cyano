@@ -7,8 +7,8 @@
 
 
 
-bool endswith(const char *s1, const char *s2) {
-	size_t l1 = strlen(s1);
-	size_t l2 = strnlen(s2, l1 + 1);
-	return l1 >= l2 && memcmp(&s1[l1 - l2], s2, l2) == 0;
+bool endswith(const char *string, const char *suffix) {
+	size_t l1 = strlen(string);
+	size_t l2 = strnlen(suffix, l1 + 1);
+	return l1 >= l2 && memcmp(&string[l1 - l2], suffix, l2) == 0;
 }
