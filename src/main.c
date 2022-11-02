@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	struct grid g;
+	struct grid grid;
 	char *repr = NULL;
 	if (in_file != NULL) {
 		repr = read_file(in_file);
@@ -59,22 +59,22 @@ int main(int argc, char **argv) {
 		if (format == GRID_FORMAT_UNKNOWN) {
 			format = _guess_format_from_ext(in_file);
 		}
-		rc = load_grid(&g, repr, format, wrap);
+		rc = load_grid(&grid, repr, format, wrap);
 		if (rc < 0) {
 			fputs("Failure in creation of the game grid\n", stderr);
 			return EXIT_FAILURE;
 		}
-	} else if (init_grid(&g, grid_width, grid_height, wrap) < 0) {
+	} else if (init_grid(&grid, grid_width, grid_height, wrap) < 0) {
 		fputs("Failure in creation of the game grid\n", stderr);
 		return EXIT_FAILURE;
 	}
-	memcpy(g.rule, game_rule, sizeof g.rule);
+	memcpy(grid.rule, game_rule, sizeof grid.rule);
 
-	struct grid_window gw;
-	if (init_grid_window(&gw, &g, cell_pixels, border_width,
+	struct grid_window grid_win;
+	if (init_grid_window(&grid_win, &grid, cell_pixels, border_width,
 	                     "SDL Game of Life") < 0) {
 		fprintf(stderr, "Failure in creation of the game window: %s\n",
-		        gw.error_msg);
+		        grid_win.error_msg);
 		return EXIT_FAILURE;
 	}
 
@@ -84,11 +84,11 @@ int main(int argc, char **argv) {
 	} else {
 		out_fmt = GRID_FORMAT_UNKNOWN;
 	}
-	run_app(&gw, update_rate, repr, format, out_file, out_fmt);
+	run_app(&grid_win, update_rate, repr, format, out_file, out_fmt);
 
 	free(repr);
-	free_grid(&g);
-	free_grid_window(&gw);
+	free_grid(&grid);
+	free_grid_window(&grid_win);
 	terminate_app();
 
 	return EXIT_SUCCESS;
