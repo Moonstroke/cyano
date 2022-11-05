@@ -171,18 +171,13 @@ int update_grid(struct grid *g) {
 	return 0;
 }
 
-
-int resize_grid(struct grid *g, unsigned int width, unsigned int height, enum grid_edge edge) {
-	(void) edge; // /wd4100
-	size_t new_size = NUM_OCTETS(width * height);
-	if (width == g->w) {
-		/* Same size, return early to skip redundant operation */
-		if (height == g->h) {
-			return 0;
-		}
-		/* Same width: since the grid rows are stored consecutively, there is
-		   no bit reordering necessary (introduction/removal of bits at the end
-		   of each row), we can just reallocate on the original grid */
+static inline int _resize_grid_height(struct grid *g, unsigned int height,
+									  size_t new_size, enum grid_edge edge) {
+	if ((edge & EDGE_BOTTOM) == 0) {
+		/* Same width, anchored to the top: since the grid rows are stored
+		   consecutively from top to bottom, there is no bit reordering necessary
+		   (introduction/removal of bits at the end of each row), we can just
+		   reallocate on the original grid */
 		char *tmp = realloc(g->cells, new_size);
 		if (tmp == NULL) {
 			return -__LINE__;
@@ -191,8 +186,8 @@ int resize_grid(struct grid *g, unsigned int width, unsigned int height, enum gr
 		if (height > g->h) {
 			/* The new grid is bigger; the extra space needs to be cleared to
 			   avoid having the grid polluted by uninitialized binary data */
-			size_t old_size = NUM_OCTETS(width * g->h);
-			unsigned int bits_used_last_byte = (width * g->h) & 7;
+			size_t old_size = NUM_OCTETS(g->w * g->h);
+			unsigned int bits_used_last_byte = (g->w * g->h) & 7;
 			if (bits_used_last_byte != 0) {
 				/* The last byte in the old grid size is not fully used; clear
 				   the extra bits */
@@ -202,6 +197,41 @@ int resize_grid(struct grid *g, unsigned int width, unsigned int height, enum gr
 			/* Clear the additional full bytes */
 			memset(g->cells + old_size, 0, new_size - old_size);
 		}
+	} else {
+		/* The grid is anchored to the bottom: we must allocate a new grid and copy
+		   the bits over. Once again, the rows are stored consecutively, so the copy
+		   can be performed in a single call to copy_bits. */
+		char *new_cells = calloc(new_size, 1);
+		if (new_cells == NULL) {
+			return -__LINE__;
+		}
+		unsigned int src_offset;
+		unsigned int dest_offset;
+		unsigned int copy_length;
+		if (height > g->h) {
+			src_offset = 0;
+			dest_offset = g->w * (height - g->h);
+			copy_length = g->w * g->h;
+		} else {
+			src_offset = g->w * (height - g->h);
+			dest_offset = 0;
+			copy_length = g->w * height;
+		}
+		copy_bits(g->cells, src_offset, new_cells, dest_offset, copy_length);
+		free(g->cells);
+		g->cells = new_cells;
+	}
+	return 0;
+}
+
+int resize_grid(struct grid *g, unsigned int width, unsigned int height, enum grid_edge edge) {
+	size_t new_size = NUM_OCTETS(width * height);
+	if (width == g->w) {
+		/* Same size, return early to skip redundant operation */
+		if (height == g->h) {
+			return 0;
+		}
+		return _resize_grid_height(g, height, new_size, edge);
 	}
 	char *new_cells = calloc(new_size, 1);
 	if (new_cells == NULL) {
