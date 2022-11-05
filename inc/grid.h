@@ -213,7 +213,8 @@ enum grid_edge {
  *
  * \return \c 0 if the resize succeeded, a negative value on error
  */
-int resize_grid(struct grid *grid, unsigned int width, unsigned int height, enum grid_edge edge);
+int resize_grid(struct grid *grid, unsigned int width, unsigned int height,
+                enum grid_edge edge);
 
 
 /**
