@@ -248,20 +248,20 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 	if (repr == NULL) {
 		return NULL;
 	}
-	for (unsigned int j = 0; j < grid->height; ++j) {
+	for (unsigned int row = 0; row < grid->height; ++row) {
 		unsigned int run_length;
-		for (unsigned int i = 0; i < grid->width; i += run_length) {
+		for (unsigned int col = 0; col < grid->width; col += run_length) {
 			run_length = 1;
-			enum cell_state run_state = get_grid_cell(grid, j, i);
+			enum cell_state run_state = get_grid_cell(grid, row, col);
 			/* Get length of run: stop at either a different cell or the end
 			   of the row */
-			while (i + run_length < grid->width
-			       && get_grid_cell(grid, j, i + run_length) == run_state) {
+			while (col + run_length < grid->width
+			       && get_grid_cell(grid, row, col + run_length) == run_state) {
 				++run_length;
 			}
 			/* Skip blank row endings (i.e. blank runs that reach the end of
 			   a row) */
-			if (run_state == DEAD && i + run_length == grid->width) {
+			if (run_state == DEAD && col + run_length == grid->width) {
 				break;
 			}
 			if (run_length > 1) {
@@ -290,11 +290,11 @@ static inline void _get_grid_plain(const struct grid *grid, char *repr) {
 		[DEAD] = '.',
 		[ALIVE] = '@'
 	};
-	for (unsigned int j = 0; j < grid->height; ++j) {
-		for (unsigned int i = 0; i < grid->width; ++i) {
-			repr[j * (grid->width + 1) + i] = cell_repr[get_grid_cell(grid, i, j)];
+	for (unsigned int row = 0; row < grid->height; ++row) {
+		for (unsigned int col = 0; col < grid->width; ++col) {
+			repr[row * (grid->width + 1) + col] = cell_repr[get_grid_cell(grid, row, col)];
 		}
-		repr[j * (grid->width + 1) + grid->width] = '\n';
+		repr[row * (grid->width + 1) + grid->width] = '\n';
 	}
 	repr[(grid->width + 1) * grid->height - 1] = '\0';
 }

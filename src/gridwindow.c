@@ -678,7 +678,7 @@ void free_grid_window(struct grid_window *grid_win) {
 
 
 static inline void _draw_cell(SDL_Renderer *ren, SDL_Rect *rect,
-                             unsigned int col, unsigned int row,
+                             unsigned int row, unsigned int col,
                              unsigned int cell_width,
                              unsigned int border_width, SDL_Color color) {
 	SDL_SetRenderDrawColor(ren, color.r, color.g, color.b, color.a);
@@ -703,17 +703,16 @@ void render_grid_window(const struct grid_window *grid_win) {
 		[DEAD] = 255,
 		[ALIVE] = 0
 	};
-	for (unsigned int j = 0; j < grid_height; ++j) {
-		for (unsigned int i = 0; i < grid_width; ++i) {
-			uint8_t ch = cell_color[get_grid_cell(grid_win->grid, i, j)];
-
-			_draw_cell(grid_win->ren, &rect, i, j, cell_width, border_width,
-			           (SDL_Color) {ch, ch, ch, 255});
+	for (unsigned int row = 0; row < grid_height; ++row) {
+		for (unsigned int col = 0; col < grid_width; ++col) {
+			uint8_t ch = cell_color[get_grid_cell(grid_win->grid, row, col)];
+			_draw_cell(grid_win->ren, &rect, row, col, cell_width,
+					   border_width, (SDL_Color) {ch, ch, ch, 255});
 		}
 	}
 	SDL_SetRenderDrawBlendMode(grid_win->ren, SDL_BLENDMODE_BLEND);
 	if (grid_win->sel_col >= 0 && grid_win->sel_row >= 0) {
-		_draw_cell(grid_win->ren, &rect, grid_win->sel_col, grid_win->sel_row,
+		_draw_cell(grid_win->ren, &rect, grid_win->sel_row, grid_win->sel_col,
 		           cell_width, border_width, (SDL_Color) {127, 127, 127, 127});
 	}
 	SDL_RenderPresent(grid_win->ren);
