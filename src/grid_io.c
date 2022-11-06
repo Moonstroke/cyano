@@ -252,11 +252,11 @@ static inline char *_get_grid_rle(const struct grid *grid) {
 		unsigned int run_length;
 		for (unsigned int i = 0; i < grid->width; i += run_length) {
 			run_length = 1;
-			enum cell_state run_state = get_grid_cell(grid, i, j);
+			enum cell_state run_state = get_grid_cell(grid, j, i);
 			/* Get length of run: stop at either a different cell or the end
 			   of the row */
 			while (i + run_length < grid->width
-			       && get_grid_cell(grid, i + run_length, j) == run_state) {
+			       && get_grid_cell(grid, j, i + run_length) == run_state) {
 				++run_length;
 			}
 			/* Skip blank row endings (i.e. blank runs that reach the end of

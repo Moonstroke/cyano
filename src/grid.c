@@ -43,15 +43,16 @@ static enum cell_state _get_cell_walls(const struct grid *grid, int row,
                                        int col) {
 	if (0 < row && (unsigned) row < grid->width
 	    && 0 < col && (unsigned) col < grid->height) {
-		return get_bit(grid->cells, grid->width * col + row);
+		return get_bit(grid->cells, grid->width * row + col);
 	}
 	return DEAD;
 }
 
-static enum cell_state _get_cell_wrap(const struct grid *grid, int x, int y) {
-	unsigned int row = mod(x, grid->width);
-	unsigned int col = mod(y, grid->height);
-	return get_bit(grid->cells, grid->width * col + row);
+static enum cell_state _get_cell_wrap(const struct grid *grid, int row,
+                                      int col) {
+	unsigned int row_wrapped = mod(row, grid->height);
+	unsigned int col_wrapped = mod(col, grid->width);
+	return get_bit(grid->cells, grid->width * row_wrapped + col_wrapped);
 }
 
 enum cell_state get_grid_cell(const struct grid *grid, int row, int col) {
@@ -59,17 +60,17 @@ enum cell_state get_grid_cell(const struct grid *grid, int row, int col) {
 }
 
 
-enum cell_state _toggle_cell_wrap(struct grid *grid, int x, int y) {
-	unsigned int row = mod(x, grid->width);
-	unsigned int col = mod(y, grid->height);
-	toggle_bit(grid->cells, grid->width * col + row);
-	return get_bit(grid->cells, grid->width * y + x);
+enum cell_state _toggle_cell_wrap(struct grid *grid, int row, int col) {
+	unsigned int row_wrapped = mod(row, grid->height);
+	unsigned int col_wrapped = mod(col, grid->width);
+	toggle_bit(grid->cells, grid->width * row_wrapped + col_wrapped);
+	return get_bit(grid->cells, grid->width * row + col);
 }
 
 enum cell_state _toggle_cell_walls(struct grid *grid, int row, int col) {
-	if (0 < row && (unsigned) row < grid->width
-	    && 0 < col && (unsigned) col < grid->height) {
-		unsigned int cell_bit_index = grid->width * col + row;
+	if (0 < row && (unsigned) row < grid->height
+	    && 0 < col && (unsigned) col < grid->width) {
+		unsigned int cell_bit_index = grid->width * row + col;
 		toggle_bit(grid->cells, cell_bit_index);
 		return get_bit(grid->cells, cell_bit_index);
 	}
@@ -77,7 +78,8 @@ enum cell_state _toggle_cell_walls(struct grid *grid, int row, int col) {
 }
 
 enum cell_state toggle_cell(struct grid *grid, int row, int col) {
-	return (grid->wrap ? &_toggle_cell_wrap : &_toggle_cell_walls)(grid, row, col);
+	return (grid->wrap ? &_toggle_cell_wrap : &_toggle_cell_walls)(grid, row,
+	                                                               col);
 }
 
 
@@ -130,16 +132,16 @@ static void _update_row(struct grid *grid, size_t row_offset,
 		           + get_bit(btm_row, btm_row_offset + grid->width - 1);
 	}
 	_update_cell(grid, row_offset, row_buffer, 0, neighbors);
-	for (size_t i = 1; i < grid->width - 1; ++i) {
-		neighbors = get_bit(row_buffer, i - 1)
-		          + get_bit(row_buffer, i)
-		          + get_bit(row_buffer, i + 1)
-		          + get_bit(row_buffer, grid->width + i - 1)
-		          + get_bit(row_buffer, grid->width + i + 1)
-		          + get_bit(btm_row, btm_row_offset + i - 1)
-		          + get_bit(btm_row, btm_row_offset + i)
-		          + get_bit(btm_row, btm_row_offset + i + 1);
-		_update_cell(grid, row_offset, row_buffer, i, neighbors);
+	for (size_t col = 1; col < grid->width - 1; ++col) {
+		neighbors = get_bit(row_buffer, col - 1)
+		          + get_bit(row_buffer, col)
+		          + get_bit(row_buffer, col + 1)
+		          + get_bit(row_buffer, grid->width + col - 1)
+		          + get_bit(row_buffer, grid->width + col + 1)
+		          + get_bit(btm_row, btm_row_offset + col - 1)
+		          + get_bit(btm_row, btm_row_offset + col)
+		          + get_bit(btm_row, btm_row_offset + col + 1);
+		_update_cell(grid, row_offset, row_buffer, col, neighbors);
 	}
 	neighbors = get_bit(row_buffer, grid->width - 2)
 	          + get_bit(row_buffer, grid->width - 1)
