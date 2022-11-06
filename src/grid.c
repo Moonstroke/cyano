@@ -41,8 +41,8 @@ static inline unsigned int mod(int a, int b) {
 
 static enum cell_state _get_cell_walls(const struct grid *grid, int row,
                                        int col) {
-	if (0 < row && (unsigned) row < grid->width
-	    && 0 < col && (unsigned) col < grid->height) {
+	if (0 <= row && (unsigned) row < grid->width
+	    && 0 <= col && (unsigned) col < grid->height) {
 		return get_bit(grid->cells, grid->width * row + col);
 	}
 	return DEAD;
@@ -68,8 +68,8 @@ enum cell_state _toggle_cell_wrap(struct grid *grid, int row, int col) {
 }
 
 enum cell_state _toggle_cell_walls(struct grid *grid, int row, int col) {
-	if (0 < row && (unsigned) row < grid->height
-	    && 0 < col && (unsigned) col < grid->width) {
+	if (0 <= row && (unsigned) row < grid->height
+	    && 0 <= col && (unsigned) col < grid->width) {
 		unsigned int cell_bit_index = grid->width * row + col;
 		toggle_bit(grid->cells, cell_bit_index);
 		return get_bit(grid->cells, cell_bit_index);
