@@ -1,7 +1,9 @@
 #include "grid.h"
 
 #include <CUTE/cute.h>
+#include <stdio.h> /* for fprintf, stderr, fputs */
 #include <stdlib.h> /* for free */
+#include <string.h> /* for memcpy */
 
 
 
