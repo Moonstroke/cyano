@@ -38,36 +38,36 @@ static void tearDown(void) {
 
 
 void test_blinker_after_one_gen(void) {
-	unsigned int i;
+	unsigned int col;
 	fputs("-- Test for the status of a blinker after one generation\n",
 	      stderr);
 	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
-	for(i = 0; i < 3; ++i) {
-		toggle_cell(&grid, 1, i);
+	for(col = 0; col < 3; ++col) {
+		toggle_cell(&grid, 1, col);
 	}
 
 	fputs("Next generation\n", stderr);
 	update_grid(&grid);
 
 	fputs("Looking for horizontal blinker from (0, 1) to (2, 1)\n", stderr);
-	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, i, 1), ALIVE);
+	for(col = 0; col < 3; ++col) {
+		CUTE_assertEquals(get_grid_cell(&grid, 1, col), ALIVE);
 	}
 	fputs("Looking for empty rows 0 and 2\n", stderr);
-	for (i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, i, 0), DEAD);
-		CUTE_assertEquals(get_grid_cell(&grid, i, 2), DEAD);
+	for (col = 0; col < 3; ++col) {
+		CUTE_assertEquals(get_grid_cell(&grid, 0, col), DEAD);
+		CUTE_assertEquals(get_grid_cell(&grid, 2, col), DEAD);
 	}
 	fputs("OK\n", stderr);
 }
 
 void test_blinker_after_two_gens(void) {
-	unsigned int i;
+	unsigned int col;
 	fputs("-- Test for the status of a blinker after two generations\n",
 	      stderr);
 	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
-	for(i = 0; i < 3; ++i) {
-		toggle_cell(&grid, 1, i);
+	for(col = 0; col < 3; ++col) {
+		toggle_cell(&grid, 1, col);
 	}
 
 	fputs("Next generation\n", stderr);
@@ -76,13 +76,13 @@ void test_blinker_after_two_gens(void) {
 	update_grid(&grid);
 
 	fputs("Looking for vertical blinker from (0, 1) to (2, 1)\n", stderr);
-	for(i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, 1, i), ALIVE);
+	for(col = 0; col < 3; ++col) {
+		CUTE_assertEquals(get_grid_cell(&grid, 1, col), ALIVE);
 	}
 	fputs("Looking for empty columns 0 and 2\n", stderr);
-	for (i = 0; i < 3; ++i) {
-		CUTE_assertEquals(get_grid_cell(&grid, 0, i), DEAD);
-		CUTE_assertEquals(get_grid_cell(&grid, 2, i), DEAD);
+	for (col = 0; col < 3; ++col) {
+		CUTE_assertEquals(get_grid_cell(&grid, 0, col), DEAD);
+		CUTE_assertEquals(get_grid_cell(&grid, 2, col), DEAD);
 	}
 	fputs("OK\n", stderr);
 }
