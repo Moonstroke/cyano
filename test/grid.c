@@ -91,10 +91,10 @@ void test_glider_rle_repr(void) {
 	const char expected[] = "x = 3, y = 3, rule = B3/S23\nbo$2bo$3o!";
 	fputs("-- Test for the RLE representation of a blinker\n", stderr);
 	fputs("Create glider\n", stderr);
-	toggle_cell(&grid, 1, 0);
-	toggle_cell(&grid, 2, 1);
-	toggle_cell(&grid, 0, 2);
+	toggle_cell(&grid, 0, 1);
 	toggle_cell(&grid, 1, 2);
+	toggle_cell(&grid, 2, 0);
+	toggle_cell(&grid, 2, 1);
 	toggle_cell(&grid, 2, 2);
 	fprintf(stderr, "RLE repr expected: \"%s\"\n", expected);
 	char *repr = get_grid_repr(&grid, GRID_FORMAT_RLE);

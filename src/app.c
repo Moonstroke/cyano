@@ -44,7 +44,7 @@ int init_app(void) {
 static void _handle_mouse_on_cell(struct grid_window *gw, int *last_x,
                                   int *last_y) {
 	if (gw->sel_col >= 0 && gw->sel_row >= 0) {
-		toggle_cell(gw->grid, gw->sel_col, gw->sel_row);
+		toggle_cell(gw->grid, gw->sel_row, gw->sel_col);
 		*last_x = gw->sel_col;
 		*last_y = gw->sel_row;
 	}
@@ -115,7 +115,7 @@ static void _handle_key_event(const SDL_KeyboardEvent *event,
 			}
 			break;
 		case SDLK_t:
-			toggle_cell(gw->grid, gw->sel_col, gw->sel_row);
+			toggle_cell(gw->grid, gw->sel_row, gw->sel_col);
 			break;
 		case SDLK_r:
 			_reset_grid(gw->grid, repr, repr_format, play, loop);
