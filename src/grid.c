@@ -5,6 +5,7 @@
 #include <string.h> /* for strchr, memset */
 
 #include "bits.h"
+#include "mathutils.h" /* for pos_mod */
 #include "utils.h" /* for CHECK_NULL */
 
 
@@ -26,18 +27,6 @@ void free_grid(struct grid *grid) {
 	free(grid->cells);
 }
 
-
-static inline unsigned int pos_mod(int a, int b) {
-	/* Will only enter one of the loops, and usually loop only once so the
-	  whiles are basically ifs */
-	while (a < 0) {
-		a += b;
-	}
-	while (a > b) {
-		a -= b;
-	}
-	return a;
-}
 
 static enum cell_state _get_cell_walls(const struct grid *grid, int row,
                                        int col) {
