@@ -27,7 +27,7 @@ void free_grid(struct grid *grid) {
 }
 
 
-static inline unsigned int mod(int a, int b) {
+static inline unsigned int pos_mod(int a, int b) {
 	/* Will only enter one of the loops, and usually loop only once so the
 	  whiles are basically ifs */
 	while (a < 0) {
@@ -50,8 +50,8 @@ static enum cell_state _get_cell_walls(const struct grid *grid, int row,
 
 static enum cell_state _get_cell_wrap(const struct grid *grid, int row,
                                       int col) {
-	unsigned int row_wrapped = mod(row, grid->height);
-	unsigned int col_wrapped = mod(col, grid->width);
+	unsigned int row_wrapped = pos_mod(row, grid->height);
+	unsigned int col_wrapped = pos_mod(col, grid->width);
 	return get_bit(grid->cells, grid->width * row_wrapped + col_wrapped);
 }
 
@@ -61,8 +61,8 @@ enum cell_state get_grid_cell(const struct grid *grid, int row, int col) {
 
 
 enum cell_state _toggle_cell_wrap(struct grid *grid, int row, int col) {
-	unsigned int row_wrapped = mod(row, grid->height);
-	unsigned int col_wrapped = mod(col, grid->width);
+	unsigned int row_wrapped = pos_mod(row, grid->height);
+	unsigned int col_wrapped = pos_mod(col, grid->width);
 	toggle_bit(grid->cells, grid->width * row_wrapped + col_wrapped);
 	return get_bit(grid->cells, grid->width * row + col);
 }
