@@ -34,4 +34,18 @@ inline unsigned int pos_mod(int a, int b) {
 }
 
 
+/**
+ * Returns the lesser of the two values.
+ *
+ * Defined as a macro to work with all integer types in a single declaration,
+ * however all the usual macro caveats apply.
+ *
+ * @param a The first value
+ * @param b The second value
+ *
+ * @return \a a if it it less than \a b, otherwise \a b
+ */
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+
+
 #endif /* MATHUTILS_H */

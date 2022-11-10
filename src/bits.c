@@ -2,6 +2,8 @@
 
 #include <string.h> /* for memcpy */
 
+#include "mathutils.h" /* for MIN */
+
 
 
 extern size_t num_octets(size_t);
@@ -30,7 +32,7 @@ void copy_bits(const char *src, size_t src_offset, char *dest,
 			/* Limit the copy if it is, in full, less than up to the end of the
 			   partial first byte, e.g. 3-bit copy with an offset of 3 needs to
 			   copy up to bit 6 */
-			size_t end = src_offset + length < 8 ? src_offset + length : 8;
+			size_t end = MIN(src_offset + length, 8);
 			for (size_t i = src_offset; i < end; ++i) {
 				set_bit(dest, i, get_bit(src, i));
 			}
