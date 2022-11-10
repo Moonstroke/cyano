@@ -43,8 +43,8 @@ int init_app(void);
  * \param[out] grid_width   The number of columns in the app's grid
  * \param[out] grid_height  The number of rows in the app's grid
  * \param[out] wrap         Whether the grid's borders connect
- * \param[out] game_rule   The name or \e Golly representation of the  that
- *                          govern the evolution of the grid
+ * \param[out] game_rule    The name of the rule or rulestring that govern the
+ *                          evolution of the grid
  *
  * \param[out] cell_pixels  The dimension in pixels of a single cell in the
  *                          window
@@ -69,7 +69,7 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
  * \param[in] gridwindow      The application's gridwindow to run
  * \param[in] update_rate     The number of times the grid evolves per second
  * \param[in] repr            A representation of the initial state to reset to
- * \param[in] format          The format of the \a repr, RLE or plain text
+ * \param[in] format          The format of the \p repr, RLE or plain text
  * \param[in] out_file        The path to the file where to write the grid state
  * \param[in] out_file_format The format of the output file
  */

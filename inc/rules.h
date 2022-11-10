@@ -4,8 +4,8 @@
  *
  * \version 0.1
  *
- * \brief This file defines a single function that converts a \e Life rule name
- *        to the corresponding Golly format rule string.
+ * \brief This file defines a single function that converts a rule name to the
+ *        corresponding rulestring.
  */
 #ifndef RULES_H
 #define RULES_H
@@ -13,11 +13,11 @@
 
 
 /**
- * Retrieve the Golly format rule string from its corresponding name.
+ * Retrieve a rulestring from its corresponding rule name.
  *
- * \param[in] name The name of the \e Life rule
+ * \param[in] name The name of the rule
  *
- * \return The Golly format string description, or \c NULL if not found.
+ * \return The rulestring of given name, or \c NULL if not found.
  */
 const char *get_rule_from_name(const char *name);
 

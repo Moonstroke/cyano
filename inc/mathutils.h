@@ -12,13 +12,13 @@
 
 
 /**
- * Returns the arithmetic (positive) modulo of \a a and \a b.
+ * Return the arithmetic (positive) modulo of \p a and \p b.
  *
  * \param[in] a The dividend
  * \param[in] b The divisor
  *
- * \return The remainder of the division of \a a by \a b, between \c 0
- *         inclusive and \a b (exclusive)
+ * \return The remainder of the division of \p a by \p b, between \c 0
+ *         inclusive and \p b (exclusive)
  */
 inline unsigned int pos_mod(int a, int b) {
 	/* Only one of the loops will be entered. For most use cases in the
@@ -35,7 +35,7 @@ inline unsigned int pos_mod(int a, int b) {
 
 
 /**
- * Returns the lesser of the two values.
+ * Return the lesser of the two values.
  *
  * Defined as a macro to work with all integer types in a single declaration,
  * however all the usual macro caveats apply.
@@ -43,7 +43,7 @@ inline unsigned int pos_mod(int a, int b) {
  * @param a The first value
  * @param b The second value
  *
- * @return \a a if it it less than \a b, otherwise \a b
+ * @return \p a if it it less than \p b, otherwise \p b
  */
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 

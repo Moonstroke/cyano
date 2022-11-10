@@ -170,7 +170,7 @@ void clear_grid(struct grid *grid);
  * \note The returned string is allocated dynamically; callers must take care of
  * freeing it after use.
  *
- * \note If the given format is \a GRID_FORMAT_UNKNOWN, the returned
+ * \note If the given format is \c GRID_FORMAT_UNKNOWN, the returned
  *       representation defaults to plain-text.
  *
  * \param[in] grid   The grid
