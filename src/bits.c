@@ -19,10 +19,10 @@ extern void toggle_bit(char*, size_t);
 void copy_bits(const char *src, size_t src_offset, char *dest,
                size_t dest_offset, size_t length) {
 	/* Skip the full bytes until the first byte that is partially used */
-	src += src_offset >> 3;
-	dest += dest_offset >> 3;
-	src_offset &= 7;
-	dest_offset &= 7;
+	src += src_offset / 8;
+	dest += dest_offset / 8;
+	src_offset %= 8;
+	dest_offset %= 8;
 	if (src_offset == dest_offset) {
 		if (src_offset > 0) {
 			/* Source and dest share the bit alignment inside bytes: an
@@ -47,10 +47,10 @@ void copy_bits(const char *src, size_t src_offset, char *dest,
 			/* Remove the leading offset size from the remaining copy length */
 			length -= 8 - src_offset;
 		}
-		size_t length_bytes = length >> 3;
+		size_t length_bytes = length / 8;
 		memmove(dest, src, length_bytes);
 		/* Copy trailing partial byte */
-		for (size_t i = 0; i < (length & 7); ++i) {
+		for (size_t i = 0; i < length % 8; ++i) {
 			set_bit(&dest[length_bytes], i, get_bit(&src[length_bytes], i));
 		}
 	} else {
