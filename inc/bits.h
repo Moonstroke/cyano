@@ -24,11 +24,11 @@
  * \return The minimal number of chars (octets) necessary to hold \p size bits
  */
 inline size_t num_octets(size_t size) {
-     size_t size_octets = size >> 3;
-     if ((size & 7) != 0) {
-          ++size_octets;
-     }
-     return size_octets;
+	size_t size_octets = size >> 3;
+	if ((size & 7) != 0) {
+		++size_octets;
+	}
+	return size_octets;
 }
 
 /** Access the bit at specified index in the given bit array.
@@ -39,7 +39,7 @@ inline size_t num_octets(size_t size) {
  * \return The value of the <tt>index</tt>-th bit in \p bits
  */
 inline int get_bit(const char *bits, size_t index) {
-     return (bits[index >> 3] >> (7 - (index & 7)) & 1);
+	return (bits[index >> 3] >> (7 - (index & 7)) & 1);
 }
 
 /**
@@ -50,11 +50,11 @@ inline int get_bit(const char *bits, size_t index) {
  * \param[in]  value The value to assign
  */
 inline void set_bit(char *bits, size_t index, int value) {
-     if (value == 0) {
-          bits[index >> 3] &= ~(1 << (7 - (index & 7)));
-     } else {
-          bits[index >> 3] |= 1 << (7 - (index & 7));
-     }
+	if (value == 0) {
+		bits[index >> 3] &= ~(1 << (7 - (index & 7)));
+	} else {
+		bits[index >> 3] |= 1 << (7 - (index & 7));
+	}
 }
 
 /**
@@ -64,7 +64,7 @@ inline void set_bit(char *bits, size_t index, int value) {
  * \param[in]  index The index of the bit to invert
  */
 inline void toggle_bit(char *bits, size_t index) {
-     bits[index >> 3] ^= 1 << (7 - (index & 7));
+	bits[index >> 3] ^= 1 << (7 - (index & 7));
 }
 
 
