@@ -14,11 +14,10 @@
 /**
  * Return the arithmetic (positive) modulo of \p a and \p b.
  *
- * \param[in] a The dividend
- * \param[in] b The divisor
+ * \param[in] a,b The two values
  *
  * \return The remainder of the division of \p a by \p b, between \c 0
- *         inclusive and \p b (exclusive)
+ *         (inclusive) and \p b (exclusive)
  */
 inline unsigned int pos_mod(int a, int b) {
 	/* Only one of the loops will be entered. For most use cases in the
@@ -40,10 +39,9 @@ inline unsigned int pos_mod(int a, int b) {
  * Defined as a macro to work with all integer types in a single declaration,
  * however all the usual macro caveats apply.
  *
- * @param a The first value
- * @param b The second value
+ * @param a,b The two values to compare
  *
- * @return \p a if it it less than \p b, otherwise \p b
+ * @return \p a if it is less than \p b, otherwise \p b
  */
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
