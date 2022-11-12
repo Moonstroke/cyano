@@ -26,6 +26,9 @@ EXEC := $(OUT_DIR)/$(PROJECT_NAME)
 # Compilation database (used by Sonarlint)
 COMPDB := compile_commands.json
 
+# Intermediate compilation command files (one per source file)
+CCMD := $(patsubst %.o,%.ccmd,$(OBJ))
+
 
 # Preprocessor flags
 CPPFLAGS := -I$(INC_DIR) -DICONSIZE=64 $(CPPFLAGS)
@@ -78,6 +81,11 @@ $(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
 # Build the compilation database
 $(COMPDB):
 	# TODO
+
+# Intermediate compilation commands files
+$(OBJ_DIR)/%.ccmd: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	clang -MJ $@ -c $< -o $(OBJ_DIR)/$*.o $(CPPFLAGS) $(CFLAGS)
 
 
 # Remove object files
