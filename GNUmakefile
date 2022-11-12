@@ -23,6 +23,10 @@ OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 EXEC := $(OUT_DIR)/$(PROJECT_NAME)
 
 
+# Compilation database (used by Sonarlint)
+COMPDB := compile_commands.json
+
+
 # Preprocessor flags
 CPPFLAGS := -I$(INC_DIR) -DICONSIZE=64 $(CPPFLAGS)
 # Compilation flags
@@ -69,6 +73,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 $(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(CPPFLAGS) $(CFLAGS)
+
+
+# Build the compilation database
+$(COMPDB):
+	# TODO
 
 
 # Remove object files
