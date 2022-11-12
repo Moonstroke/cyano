@@ -56,7 +56,7 @@ endif
 
 
 # All rule names that do not refer to files
-.PHONY: all clean distclean doc cleandoc
+.PHONY: all compdb clean distclean doc cleandoc
 
 
 # The default rule (the one called when make is invoked without arguments)
@@ -82,7 +82,7 @@ $(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
 # Explanation of the sed invocation:
 # All .ccmd files are passed to sed and processed in a continuous text stream
 # and the output is redirected to the compilation database file.
-# sed runs two commands (separated by a semicolon):
+# sed runs two commands (separated by the semicolon):
 # 1s/^/[\n/
 # On the first line, replace the beginning of the line (^ anchor) with an
 # opening bracket and a new line. In practice: this injects a [ before the
@@ -94,6 +94,9 @@ $(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
 # last line.
 $(COMPDB): $(CCMD)
 	sed '1s/^/[\n/; $$s/,$$/\n]/' $^ > $@
+
+# Alias to the compilation database file name
+compdb: $(COMPDB)
 
 # Intermediate compilation commands files
 $(OBJ_DIR)/%.ccmd: $(SRC_DIR)/%.c
