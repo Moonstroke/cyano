@@ -79,8 +79,21 @@ $(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
 
 
 # Build the compilation database
-$(COMPDB):
-	# TODO
+# Explanation of the sed invocation:
+# All .ccmd files are passed to sed and processed in a continuous text stream
+# and the output is redirected to the compilation database file.
+# sed runs two commands (separated by a semicolon):
+# 1s/^/[\n/
+# On the first line, replace the beginning of the line (^ anchor) with an
+# opening bracket and a new line. In practice: this injects a [ before the
+# first line.
+# $s/,$/\n]/
+# On the last line (designated by the $ at the start), replace the comma at the
+# end of the line with a new line and a closing bracket. Concretely, this
+# removes the trailing comma (for JSON compliance) and injects a ] after the
+# last line.
+$(COMPDB): $(CCMD)
+	sed '1s/^/[\n/; $$s/,$$/\n]/' $^ > $@
 
 # Intermediate compilation commands files
 $(OBJ_DIR)/%.ccmd: $(SRC_DIR)/%.c
