@@ -660,8 +660,9 @@ GNU devrait être possible avec MinGW ou Cygwin, mais je n’ai pas essayé.
 
 Pour les plateformes *nix, le seul paquet nécessaire pour compiler les sources
 est `libsdl2-dev`. Les paquets recommandés sont `make` pour fournir
-l’utilitaire de compilation et `doxygen` pour le traitement de la
-documentation.
+l’utilitaire de compilation, `doxygen` pour le traitement de la
+documentation et Clang pour pouvoir créer la base de données de compilation (cf.
+section ci-après).
 
 Concernant Win32, les outils développeurs doivent être installés (ils viennent
 avec Visual Studio) pour fournir `nmake` et le compilateur et éditeur de liens.
@@ -681,6 +682,8 @@ donnant les règles usuelles :
 - `doc` pour générer la documentation dans le dossier `doc`,
 - `cleandoc` pour supprimer ce dernier,
 - `distclean` pour réinitialiser l’état du projet,
+- `compdb`, un alias pour créer la base de données de compilation (voir plus
+  bas),
 et des règles basées sur les différents fichiers pour compiler des fichiers
 objet individuels.
 
@@ -690,6 +693,13 @@ Windows, avec tous les avertissements activés (`-Wall -Wextra -pedantic` et
 standard. Je me suis également abstenu d’utiliser des spécificités GNU
 (quelques fonctions POSIX sont bien appelées, mais aucun élément de code tels
 que les pragmas ou `__attribute__` ne sont utilisés).
+
+Le *linter* de code Sonarlint est utilisé pour fournir une analyse statique plus
+poussée. Il utilise la base de données de compilation de Clang pour fonctionner.
+Il s’agit d’un simple fichier JSON répertoriant les arguments de ligne de
+commande passés au compilateur. Cette fonctionnalité n’est pas limitée à Clang
+(ou Sonarlint), mais peut être utilisée par tout outil basé sour Clang, ou
+implémentant cette interface.
 
 #### 2.2.4. Documentation
 

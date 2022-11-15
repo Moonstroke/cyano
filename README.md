@@ -614,8 +614,9 @@ however GNU compilation using MinGW or Cygwin should be doable, but I have not
 tried.
 
 For *nixes, the only package necessary for the sources to compile is
-`libsdl2-dev`. Recommended packages are `make` to provide the compilation tool
-and `doxygen` for the documentation processor.
+`libsdl2-dev`. Recommended packages are `make` to provide the compilation tool,
+`doxygen` for the documentation processor and Clang to build the compilation
+database (see next section).
 
 For Win32, the developer tools must be installed (they come with Visual Studio)
 to provide `nmake` and the compiler/linker. The SDL and doxygen (if desired)
@@ -636,6 +637,7 @@ Makefile provided for each platform with the usual rules:
 - `doc` to generate the documentation in `doc` directory,
 - `cleandoc` to remove the latter directory,
 - `distclean` to reset the project in a clean state,
+- `compdb`, an alias rule to build the compilation database (see below),
 and file-based rules to compile individual object files.
 
 Development under GNU/Linux is made with GCC and with MSVC under Windows,
@@ -644,6 +646,12 @@ respectively), in an effort to make the code as close to standard-compliant as
 possible. I also refrained from using GNU-specific extensions to the language
 (some POSIX functions are called, but no code constructs like pragmas or
 `__attribute__` are used).
+
+The code linter Sonarlint is used to parse the code for extra static analysis.
+It uses the Clang compilation database to manage on-the-fly compilation. This
+database is simply a JSON file listing all command-line arguments to a compiler
+call. This feature is not limited to Clang (or Sonarlint), but can be used by
+all Clang-based tools and other tools implementing this interface.
 
 #### 2.2.4. Documentation
 
