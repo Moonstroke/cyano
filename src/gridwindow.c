@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 #include "gridwindow.h"
 
 #include <stdint.h> /* for uint32_t */

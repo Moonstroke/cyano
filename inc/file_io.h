@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 /**
  * \file "file_io.h"
  * \author Joachim "Moonstroke" MARIE

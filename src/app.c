@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 #include "app.h"
 
 #include <SDL2/SDL.h>
