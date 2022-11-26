@@ -9,7 +9,7 @@ TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME).exe
 
 # Tests files
 TEST_SRC = $(TEST_DIR)\board.c \
-           $(TEST_DIR)\sdlife.c
+           $(TEST_DIR)\cyano.c
 # nmake doesn't handle file name prefixes in inference rule syntax, only directories; so
 # the project structure is changed here wrt. GNU/nux: test object files go to a designed
 # subdir in the objects directory
@@ -69,7 +69,7 @@ ld_debug_flags = /release
 
 
 # Preprocessor flags
-CPPFLAGS = /I$(INC_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flags) $(CPPFLAGS)
+CPPFLAGS = /I$(INC_DIR) /I$(DATA_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flags) $(CPPFLAGS)
 # Compilation flags
 CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820 $(optim_flags) $(c_debug_flags) $(CFLAGS)
 
