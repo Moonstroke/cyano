@@ -340,9 +340,29 @@ personnelle de donner à des projets écrits en C des noms commençant par cette
 lettre.
 
 
-### 2.1. Exécution
+### 2.1. Licence
 
-#### 2.1.1. Options de ligne de commande
+Ce programme est distribué selon les termes de deux licences distinctes, une
+pour la partie code et l’autre pour les fichiers graphiques du projet.
+
+Pour la partie code, la licence CeCILL version 2.1 s’applique. Cette licence
+autorise la copie, la modification et la redistribution du code d’une façon
+compatible avec les licences GPL, tout en se conformant aux exigences du droit
+français (cf. le fichier LICENCE.CeCILL.fr.txt pour les termes exacts de la
+licence).
+
+Les éléments graphiques du projet (l’icône du programme) sont publiés sous
+licence Creative Commons BY-NC-ND, version 4. Cette licence autorise la copie
+et la redistribution à but non commercial avec obligation de mention de
+l’auteur originel, tout en interdisant la modification du matériel original
+(cf. [la page web de la
+licence](https://www.creativecommons.org/licenses/by-nc-nd/4.0/deed.fr) pour un
+résumé compréhensible des termes de la licence).
+
+
+### 2.2. Exécution
+
+#### 2.2.1. Options de ligne de commande
 
 CE programme est invoqué depuis la ligne de commande et accepte un ensemble
 d’options.
@@ -462,7 +482,7 @@ cas où l’argument de `-f` ne fait pas référence au même fichier pour l’e
 et la sortie : `-f-` est un raccourci pour `-i- -o-`.
 
 
-#### 2.1.2. Interface graphique
+#### 2.2.2. Interface graphique
 
 L’interface graphique du programme est minimaliste ; seule la grille est
 affichée. Les cellules sont présentées comme des carrés, blancs pour les
@@ -483,7 +503,7 @@ cellules ou de dessiner des motifs complets avant que ceux-ci n’évoluent. Dan
 ce mode, la grille peut toujours évoluer par étapes.
 
 
-#### 2.1.3. Interaction avec le clavier et la souris
+#### 2.2.3. Interaction avec le clavier et la souris
 
 L’utilisateur peut interagir avec la fenêtre du programme au travers du clavier
 aussi bien que de la souris. Déplacer la souris au-dessus de la grille change
@@ -550,7 +570,7 @@ souris</td>
 </table>
 
 
-#### 2.1.4. Entrée/Sortie de fichiers
+#### 2.2.4. Entrée/Sortie de fichiers
 
 Le programme peut lire ou écrire vers des fichiers dont le contenu décrit une
 configuration de grille (dimensions, état des cellules et parfois
@@ -575,7 +595,7 @@ Le fichier d’entrée peut être fourni dans l’un des deux formats, mais le
 fichier de sortie sera toujours écrit en format texte brut.
 
 
-##### 2.1.4.1. Format texte brut
+##### 2.2.4.1. Format texte brut
 
 Le format texte brut est une représentation textuelle de la grille en un bloc
 de texte rectangulaire, avec des `.` pour les cellules mortes et des `@` ou `O`
@@ -600,7 +620,7 @@ Exemple : un planeur orienté vers le bas et la gauche en texte brut
     @@@
 
 
-##### 2.1.4.2. Format *RLE*
+##### 2.2.4.2. Format *RLE*
 
 Le *RLE* est un format compressé où une suite contigüe de cellules dans le même
 état est réduite à une seule cellule et la longueur de la suite. Ce format
@@ -629,7 +649,7 @@ Exemple : le planeur orienté sud-ouest en format *RLE*
     Ce texte après le ! final n’est pas parcouru
 
 
-### 2.2. Développement
+### 2.3. Développement
 
 Le code est écrit en C, le fameux langage « bas niveau ». Tout est parti d’un
 projet d’apprendre et me familiariser avec le langage, et au bout d’un moment
@@ -641,7 +661,7 @@ homogène, lisible (en tout cas en ce qui me concerne) et les parties absconses
 du texte sont commentées.
 
 
-#### 2.2.1. La SDL
+#### 2.3.1. La SDL
 
 Le programme utilise la [SDL](http://www.libsdl.org "Le site web de la SDL")
 (*Simple DirectMedia Layer*), version 2 pour la partie graphique. C’est une
@@ -650,7 +670,7 @@ d’utilisation. Elle est également populaire et supportée sur la majorité de
 plateformes, ce qui améliore la portabilité du projet.
 
 
-#### 2.2.2. Environnement
+#### 2.3.2. Environnement
 
 Les plateforms supportées sont GNU/Linux, notamment les distributions Debian,
 et MS Windows.
@@ -671,7 +691,7 @@ avec Visual Studio) pour fournir `nmake` et le compilateur et éditeur de liens.
 La SDL et Doxygen devront être installés et configurés manuellement.
 
 
-#### 2.2.3. Compilation
+#### 2.3.3. Compilation
 
 Le code est écrit suivant le standard C11, et emploie des fonctionnalités
 exclusives au C, C++ n’est pas supporté et on ne doit pas s’attendre à ce que
@@ -695,7 +715,7 @@ standard. Je me suis également abstenu d’utiliser des spécificités GNU
 que les pragmas ou `__attribute__` ne sont utilisés).
 
 
-#### 2.2.4. Documentation
+#### 2.3.4. Documentation
 
 Les définitions de structures et déclarations de fonctions dans les en-têtes
 sont intégralement (je l’espère ; en tout cas majoritairement) documentées dans
