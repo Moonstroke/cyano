@@ -69,7 +69,7 @@ ld_debug_flags = /release
 
 
 # Preprocessor flags
-CPPFLAGS = /I$(INC_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flags) $(CPPFLAGS)
+CPPFLAGS = /I$(INC_DIR) /I$(DATA_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flags) $(CPPFLAGS)
 # Compilation flags
 CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820 $(optim_flags) $(c_debug_flags) $(CFLAGS)
 
