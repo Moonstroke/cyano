@@ -1,3 +1,19 @@
+/*
+ * This file contains a textual transcription of the program icon of size 64
+ * (embedded in the file cyano.ico) in a C-compatible syntax.
+ *
+ * It is distributed under the CC BY-NC-ND license, version 4; refer to
+ * https://www.creativecommons.org/licenses/by-nc-nd/4.0/ for a human-readable
+ * summary of the license.
+ *
+ *
+ * Ce fichier contient une transcription textuelle de l'icône du programme de
+ * taille 64 (intégrée au fichier cyano.ico) dans une syntaxe compatible au C.
+ *
+ * Il est distribué sous licence CC BY-NC-ND, version 4 ; se référer à
+ * https://www.creativecommons.org/licenses/by-nc-nd/4.0/deed.fr pour un résumé
+ * intelligible de la licence.
+ */
 /* each 11-lines block <=> 1 row in the icon image */
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
