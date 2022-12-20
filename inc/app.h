@@ -29,9 +29,9 @@ int init_app(void);
  * Extract the options and values passed to the program in the given variables.
  *
  * Considering that the program is being run in a sh-like environment in the
- * current directory as \c sdlife, an example of invocation can be:
+ * current directory as \c cyano, an example of invocation can be:
  * \code{.sh}
- * $ ./sdlife -w73 -h42 -n -c8 -v
+ * $ ./cyano -w73 -h42 -n -c8 -v
  * \endcode
  * This invocation will open a grid of \c 72 cells per \c 42, without borders
  * between the cells, each cell wide of \c 8 pixels and updating synchronously

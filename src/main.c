@@ -19,6 +19,8 @@ static inline enum grid_format _guess_format_from_ext(const char *fpath) {
 	}
 	return GRID_FORMAT_UNKNOWN;
 }
+const char WINDOW_TITLE[] = "Cyano - Game of Life";
+
 
 int main(int argc, char **argv) {
 
@@ -72,7 +74,7 @@ int main(int argc, char **argv) {
 
 	struct grid_window grid_win;
 	if (init_grid_window(&grid_win, &grid, cell_pixels, border_width,
-	                     "SDL Game of Life") < 0) {
+	                     WINDOW_TITLE) < 0) {
 		fprintf(stderr, "Failure in creation of the game window: %s\n",
 		        grid_win.error_msg);
 		return EXIT_FAILURE;

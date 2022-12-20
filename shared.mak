@@ -2,7 +2,7 @@
 
 
 # Project name
-PROJECT_NAME = SDLife
+PROJECT_NAME = cyano
 
 
 # Project directories

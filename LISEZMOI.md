@@ -1,6 +1,6 @@
-# SDLife
+# Cyano
 
-> Une implémentation du Jeu de la Vie en C utilisant la SDL v2
+> Une implémentation en C du Jeu de la Vie
 
 ## 1. Présentation du Jeu de la Vie
 
@@ -341,6 +341,15 @@ programme reconnaît, accompagnés de leur rulestring :
 
 Ce programme est un simulateur d’automates cellulaires similaires au Jeu de la
 Vie tels que présentés ci-dessus.
+
+Le nom du projet est inspiré des
+[cyanobactéries](https://fr.wikipedia.org/wiki/Cyanobacteria), un embranchement
+des bactéries connu pour être la plus ancienne forme de vie (-3,7 milliards
+d'années) à s’assembler en colonies complexes et structurées. Cette
+particularité rappelle le Jeu, où des motifs élaborés sont formés par
+l’interaction de simples cellules. Ce nom participe également d’une convention
+personnelle de donner à des projets écrits en C des noms commençant par cette
+lettre.
 
 ### 2.1. Exécution
 

@@ -31,7 +31,7 @@ CCMD := $(patsubst %.o,%.ccmd,$(OBJ))
 
 
 # Preprocessor flags
-CPPFLAGS := -I$(INC_DIR) -DICONSIZE=64 $(CPPFLAGS)
+CPPFLAGS := -I$(INC_DIR) -I$(DATA_DIR) -DICONSIZE=64 $(CPPFLAGS)
 # Compilation flags
 ifeq ($(DEBUG), y)
 	debug_flag += -g
