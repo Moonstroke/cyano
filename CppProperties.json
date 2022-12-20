@@ -7,7 +7,7 @@
       "name": "x64-Debug",
       "includePath": [
         "${workspaceRoot}\\inc",
-        "${workspaceRoot}\\data",
+        "${workspaceRoot}\\res",
         "${env.INCLUDE}"
       ],
       "defines": [

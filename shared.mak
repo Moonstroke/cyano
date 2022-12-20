@@ -20,7 +20,7 @@ DOC_DIR = doc
 
 
 # Resources (images, other data)
-DATA_DIR = data
+DATA_DIR = res
 
 
 
