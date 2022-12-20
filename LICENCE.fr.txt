@@ -1,0 +1,12 @@
+Cyano
+Copyright 2022 Joachim "Moonstroke" MARIE
+
+
+Les fichiers d'en-tête et source dans les dossiers inc et src sont fournis
+sous licence CeCILL version 2.1, cf. LICENCE.CeCILL.fr.txt pour le texte
+complet.
+
+Les fichiers graphiques dans le dossier res sous distribués sous licence
+CC BY-NC-ND version 4.0, cf.
+https://www.creativecommons.org/licenses/by-nc-nd/4.0/deed.fr pour un résumé
+intelligible de la licence.

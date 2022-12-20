@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 #include "file_io.h"
 
 #include <stdio.h> /* for FILE, f*, rewind */

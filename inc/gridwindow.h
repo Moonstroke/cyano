@@ -1,6 +1,7 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 /**
  * \file "gridwindow.h"
- * \author joH1
+ * \author Joachim "Moonstroke" MARIE
  *
  * \version 0.1
  *

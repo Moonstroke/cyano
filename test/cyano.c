@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 #include <CUTE/cute.h>
 #include <stdlib.h> /* for EXIT_SUCCESS */
 

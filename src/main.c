@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 #include <stdio.h> /* for fprintf, stderr, fputs */
 #include <stdlib.h> /* for EXIT_*, free */
 #include <string.h> /* for strlen, strnlen, memcmp */

@@ -327,9 +327,28 @@ elaborate patterns form by the interaction of singular cells. This name also
 fits a personal convention of giving to projects written in C a name starting
 with this letter.
 
-### 2.1. Execution
+### 2.1 License
 
-#### 2.1.1. Command-line options
+This program is distributed under the terms of two distinct licenses, one for
+the code part and the other for the graphical assets of the project.
+
+For the code part, the CeCILL version 2.1 license applies. This license
+authorizes copy, modification and redistribution of the code in a way
+compatible with the GPL licenses, while conforming to the requirements of
+french law (see the file LICENSE.CeCILL.en.txt for the full terms of the
+license).
+
+The graphical elements of the project (the program icon) are published under
+the Creative Commons BY-NC-ND license, version 4. This license authorizes copy
+and redistribution for non-commercial purposes with obligation of mention of
+the initial author, while forbidding modification of the original material (see
+[the license's web
+page](https://www.creativecommons.org/licenses/by-nc-nd/4.0/) for a
+human-readable summary of the license terms).
+
+### 2.2. Execution
+
+#### 2.2.1. Command-line options
 
 The program is invoked from the command-line and accepts a set of options.
 
@@ -447,7 +466,7 @@ read from the standard input stream or write to the standard output stream. It
 is the only case where the argument to `-f` does not refer to the same file for
 input and output: `-f-` is a shortcut to `-i- -o-`.
 
-#### 2.1.2. Graphical interface
+#### 2.2.2. Graphical interface
 
 The graphical interface of the program is minimalistic; only the grid is
 displayed. The cells are displayed as squares; white represent dead cells and
@@ -463,7 +482,7 @@ rate specified on the command-line (see above), or be in a paused state, giving
 the user time to modify the cells or draw full patterns before they evolve. In
 this state, the grid can still be updated by steps.
 
-#### 2.1.3. Mouse and keyboard interaction
+#### 2.2.3. Mouse and keyboard interaction
 
 The program window can be interacted with using the mouse and the keyboard.
 Moving the mouse cursor changes the active cell to the one under the mouse tip.
@@ -525,7 +544,7 @@ actions</td>
   </tr>
 </table>
 
-#### 2.1.4. File input/output
+#### 2.2.4. File input/output
 
 The program can read and write to text files whose content describe a grid
 state (dimensions, state of cells and sometimes rulestring). These file can
@@ -547,7 +566,7 @@ command-line option to specify the output file format; it is determined from
 the file extension: if it is `.rle`, the RLE format is used, in all other
 cases, including if it is `.cells`, the plain-text format is used.
 
-##### 2.1.4.1. Plain text format
+##### 2.2.4.1. Plain text format
 
 The plain text format is a textual representation of the grid as a rectangular
 block of text with `.` for dead cells and `@` or `O` for live ones. Although
@@ -568,7 +587,7 @@ Example: a down-left-oriented glider in plain text
     @..
     @@@
 
-##### 2.1.4.2. RLE format
+##### 2.2.4.2. RLE format
 
 RLE is a compressed format where a range of contiguous cells in the same state
 are represented with a single cell and the number of cells in the range. This
@@ -593,7 +612,7 @@ Example : the southwestward glider in RLE format
     3o!
     This text after the terminating ! is not parsed
 
-### 2.2. Developement
+### 2.3. Developement
 
 The code is written in C, the ubiquitous "low-level" language. It began as a
 project to learn and familiarize with the language, and eventually grew into
@@ -603,7 +622,7 @@ I strived to keep the headers well-documented, in case anyone is interested in
 taking a look; the code formatting is homogenous, readable (for me, at least)
 and obscure sections are commented.
 
-#### 2.2.1. The SDL
+#### 2.3.1. The SDL
 
 The program uses the [SDL](http://www.libsdl.org "The SDL website") (Simple
 DirectMedia Layer) version 2 for the graphical part. It is a low-level
@@ -611,7 +630,7 @@ graphical library; it provides a powerful yet easy to use API. It is also
 widespread and supported on the majority of platforms, which improves the
 portability of the project.
 
-#### 2.2.2. Environment
+#### 2.3.2. Environment
 
 Supported platforms are GNU/Linux, notably Debian distributions, and Windows.
 
@@ -630,7 +649,7 @@ For Win32, the developer tools must be installed (they come with Visual Studio)
 to provide `nmake` and the compiler/linker. The SDL and doxygen (if desired)
 must be installed and configured manually.
 
-#### 2.2.3. Compilation
+#### 2.3.3. Compilation
 
 The code is written following the C11 standard, and uses C-exclusive
 constructs, so C++ is not supported and the code is not expected to compile in
@@ -661,7 +680,7 @@ database is simply a JSON file listing all command-line arguments to a compiler
 call. This feature is not limited to Clang (or Sonarlint), but can be used by
 all Clang-based tools and other tools implementing this interface.
 
-#### 2.2.4. Documentation
+#### 2.3.4. Documentation
 
 The definitions of the structures and functions declarations in the headers are
 fully (hopefully; or at least mostly) documented in
