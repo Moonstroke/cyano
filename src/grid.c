@@ -30,8 +30,8 @@ void free_grid(struct grid *grid) {
 
 static enum cell_state _get_cell_walls(const struct grid *grid, int row,
                                        int col) {
-	if (0 <= row && (unsigned) row < grid->width
-	    && 0 <= col && (unsigned) col < grid->height) {
+	if (0 <= row && (unsigned) row < grid->height
+	    && 0 <= col && (unsigned) col < grid->width) {
 		return get_bit(grid->cells, grid->width * row + col);
 	}
 	return DEAD;
