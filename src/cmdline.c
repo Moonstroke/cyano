@@ -76,7 +76,7 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t\tPrint the version number and a short copyright notice";
 
 
-static const char *const OPTSTRING = ":b:c:F:f:h:i:no:R:r:S:Ww:";
+static const char OPTSTRING[] = ":b:c:F:f:h:i:no:R:r:S:Ww:";
 
 /**
  * The long options array.
