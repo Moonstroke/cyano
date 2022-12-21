@@ -71,7 +71,9 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\"plain\", \"plaintext\" or \"RLE\" case not significant(string argument, "
 	"default none)\n"
 	"\t--help, --usage\n"
-	"\t\tPrint this message and exit";
+	"\t\tPrint this message and exit\n"
+	"\t--version\n"
+	"\t\tPrint the version number and a short copyright notice";
 
 
 static const char *const OPTSTRING = ":b:c:F:f:h:i:no:R:r:S:Ww:";
@@ -95,6 +97,7 @@ static const struct option LONGOPTS[] = {
 	{"usage",       no_argument      , NULL, 'u'},
 	{"wrap",        no_argument      , NULL, 'W'},
 	{"grid-width",  required_argument, NULL, 'w'},
+	{"version",     no_argument      , NULL, 'v'},
 	{"", 0, NULL, 0}
 };
 
@@ -102,6 +105,9 @@ static const struct option LONGOPTS[] = {
 static void _print_usage(const char *argv0) {
 	printf(USAGE_HEADER, argv0);
 	puts(USAGE);
+}
+
+static void _print_version(void) {
 }
 
 static int _set_rule(const char *arg, const char **dst) {
@@ -236,6 +242,9 @@ int parse_cmdline(int argc, char **argv, unsigned int *grid_width,
 			case 'u':
 				_print_usage(argv[0]);
 				return 1;
+			case 'v':
+				_print_version();
+				return 2;
 			case 'W':
 				*wrap = true;
 				break;
