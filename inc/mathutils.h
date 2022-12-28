@@ -2,7 +2,7 @@
  * \file "mathutils.h"
  * \author joH1
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief A set of math-related or abstract computation functions.
  */

@@ -3,7 +3,7 @@
  * \file "file_io.h"
  * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief This file defines a set of functions to encapsulate the communication
  *        with files from their paths.

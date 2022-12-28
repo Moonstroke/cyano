@@ -3,7 +3,7 @@
  * \file "bits.h"
  * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief This file defines a set of macros and functions to operate on a
  *        \c char array as a bit array.

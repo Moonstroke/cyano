@@ -2,7 +2,7 @@
  * \file utils.h
  * \author joH1
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief A set of macros useful for clean and readable code.
  */

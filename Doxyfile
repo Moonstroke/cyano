@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = Cyano
-PROJECT_NUMBER         =
+PROJECT_NUMBER         = 1.0
 PROJECT_BRIEF          = "Conway's Game of Life in C"
 PROJECT_LOGO           = res/icon64.png
 OUTPUT_DIRECTORY       = doc

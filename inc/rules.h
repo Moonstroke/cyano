@@ -3,7 +3,7 @@
  * \file "rules.h"
  * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief This file defines a single function that converts a rule name to the
  *        corresponding rulestring.

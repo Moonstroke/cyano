@@ -3,7 +3,7 @@
  * \file "stringutils.h"
  * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief Declarations of functions manipulating strings; an extension of the
  *        standard header string.h.

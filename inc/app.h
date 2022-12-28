@@ -3,7 +3,7 @@
  * \file "app.h"
  * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief This header provides functions that define the main steps in the
  *        execution of the program: initialization, running, termination.

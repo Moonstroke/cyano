@@ -3,7 +3,7 @@
  * \file "gridwindow.h"
  * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief This file contains the definition of the structure used to manage the
  *        graphical rendering of a grid of the Game of Life.
