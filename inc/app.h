@@ -19,6 +19,12 @@
 
 
 /**
+ * The current version number of the program.
+ */
+#define VERSION_STRING "1.0"
+
+
+/**
  * Initialize the context of the application.
  *
  * @return \c 0 on success
