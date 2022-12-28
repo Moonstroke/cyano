@@ -75,6 +75,14 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t--version\n"
 	"\t\tPrint the version number and a short copyright notice, then exit";
 
+static const char NOTICE[] = "cyano " VERSION_STRING "\n"
+	"Copyright (c) 2022 Joachim \"Moonstroke\" MARIE\n"
+	"This program is distributed under the terms of the CeCILL license,"
+	" version 2.1\navailable"
+	" here: http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html,\n"
+	"except for the graphical assets (program icon), which are CC NC-BY-ND.\n"
+	"It is free software; you are free (and welcome) to use, change and"
+	" redistribute\nit.";
 
 static const char OPTSTRING[] = ":b:c:F:f:h:i:no:R:r:S:Ww:";
 
@@ -108,6 +116,7 @@ static void _print_usage(const char *argv0) {
 }
 
 static void _print_version(void) {
+	puts(NOTICE);
 }
 
 static int _set_rule(const char *arg, const char **dst) {
