@@ -73,7 +73,7 @@ static const char USAGE[] = "where OPTION is any of the following:\n"
 	"\t--help, --usage\n"
 	"\t\tPrint this message and exit\n"
 	"\t--version\n"
-	"\t\tPrint the version number and a short copyright notice";
+	"\t\tPrint the version number and a short copyright notice, then exit";
 
 
 static const char OPTSTRING[] = ":b:c:F:f:h:i:no:R:r:S:Ww:";
