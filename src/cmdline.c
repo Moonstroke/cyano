@@ -82,7 +82,9 @@ static const char NOTICE[] = "cyano " VERSION_STRING "\n"
 	" here: http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html,\n"
 	"except for the graphical assets (program icon), which are CC NC-BY-ND.\n"
 	"It is free software; you are free (and welcome) to use, change and"
-	" redistribute\nit.";
+	" redistribute\nit.\n"
+	"This software comes with NO WARRANTY beyond the minimal clauses required"
+	" by\nthe French law.";
 
 static const char OPTSTRING[] = ":b:c:F:f:h:i:no:R:r:S:Ww:";
 
