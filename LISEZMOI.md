@@ -745,11 +745,6 @@ Ce projet a été relancé après un hiatus notable, et devient de plus en plus
 viable (bien que tout à fait superflu). Voici une liste d’évolutions que j’ai
 en tête pour le programme, certaines de plus court terme que d’autres.
 
-- Atteindre une version 1.0 stable
-
-  C’est plus une directive spirituelle qu’un objectif concret ; il ne tient
-  qu’à moi de décider quand apposer officiellement le numéro de version, mais
-  j’attends d’être entièrement satisfait de l’état du projet pour cela.
 - Implémentation avec OpenGL
 
   Je suis en local sur une version utilisant OpenGL pour le rendu graphique,

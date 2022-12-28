@@ -695,11 +695,6 @@ This project was revived after a substantial hiatus, and becomes increasingly
 viable (although utterly redundant). Here is a set of evolutions I have in mind
 for the program, some of which shorter-term than others.
 
-- Achieving a stable version 1.0
-
-  This is probably more a spiritual guideline than a concrete goal; it depends
-  on me only to decide when to officially put the version tag out, but I want
-  to be entirely satisfied with the state of the project for that.
 - OpenGL implementation
 
   I am working locally on a version backed with OpenGL for the rendering, it
