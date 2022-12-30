@@ -84,7 +84,7 @@ static const char NOTICE[] = "cyano " VERSION_STRING "\n"
 	"It is free software; you are free (and welcome) to use, change and"
 	" redistribute\nit.\n"
 	"This software comes with NO WARRANTY beyond the minimal clauses required"
-	" by\nthe French law.";
+	" by\nFrench law.";
 
 static const char OPTSTRING[] = ":b:c:F:f:h:i:no:R:r:S:Ww:";
 
