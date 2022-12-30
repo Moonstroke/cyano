@@ -2,6 +2,9 @@
 
 > Une implémentation en C du Jeu de la Vie
 
+Copyright (c) 2022 Joachim "Moonstroke" MARIE
+<https://github.com/Moonstroke/cyano>
+
 ## 1. Présentation du Jeu de la Vie
 
 ### 1.1. Automates cellulaires

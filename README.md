@@ -2,6 +2,9 @@
 
 > A C implementation of the Game of Life
 
+Copyright (c) 2022 Joachim "Moonstroke" MARIE
+<https://github.com/Moonstroke/cyano>
+
 ## 1. Presentation of the Game of Life
 
 ### 1.1. Cellular automata
