@@ -35,15 +35,15 @@ CCMD := $(patsubst %.o,%.ccmd,$(OBJ))
 CPPFLAGS := -I$(INC_DIR) -I$(DATA_DIR) -DICONSIZE=64 $(CPPFLAGS)
 # Compilation flags
 ifeq ($(DEBUG), y)
-	debug_flag += -g
+	debug_flag := -g
 endif
 CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) -O$(OPTIM_LVL) $(debug_flag) $(CFLAGS)
 
 # The libraries to link against
 ifeq ($(STATIC),y)
-	sdl2_libs=$$(sdl2-config --static-libs)
+	sdl2_libs := $$(sdl2-config --static-libs)
 else
-	sdl2_libs = $$(sdl2-config --libs)
+	sdl2_libs := $$(sdl2-config --libs)
 endif
 LDLIBS := $(sdl2_libs) -lCUTE $(LDLIBS)
 
