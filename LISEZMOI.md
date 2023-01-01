@@ -2,7 +2,8 @@
 
 > Une implémentation en C du Jeu de la Vie
 
-Copyright (c) 2022 Joachim "Moonstroke" MARIE
+Copyright (c) 2022 Joachim « Moonstroke » MARIE
+
 <https://github.com/Moonstroke/cyano>
 
 ## 1. Présentation du Jeu de la Vie
@@ -52,7 +53,7 @@ critère sont ici représentées par les `#` :
     .....
 
 Le jeu est *binaire*, c’est-à-dire que chaque cellule ne peut prendre que deux
-états: « vivante » ou « morte ».
+états : « vivante » ou « morte ».
 
 La grille est *orthogonale* : les cellules sont disposées le long d’axes
 perpendiculaires.
@@ -183,7 +184,7 @@ deviennent
      ......     .......       @@.......
 
 Le *planeur*, le plus petit vaisseau, se déplace en diagonale d’une cellule
-toutes les quatre générations:
+toutes les quatre générations :
 
     .@..    ....    ....    ....    ....
     ..@.    @.@.    ..@.    @...    ..@.
