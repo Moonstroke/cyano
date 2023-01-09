@@ -34,10 +34,7 @@ CCMD := $(patsubst %.o,%.ccmd,$(OBJ))
 # Preprocessor flags
 CPPFLAGS := -I$(INC_DIR) -I$(DATA_DIR) -DICONSIZE=64 $(CPPFLAGS)
 # Compilation flags
-ifeq ($(DEBUG), y)
-	debug_flag := -g
-endif
-CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) -O$(OPTIM_LVL) $(debug_flag) $(CFLAGS)
+CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) $(CFLAGS)
 
 # The libraries to link against
 ifeq ($(STATIC),y)
@@ -52,6 +49,11 @@ ifndef ($(LDFLAGS))
 	LDFLAGS :=
 endif
 
+# Append build mode-specific compilation flags (optimization level, debug)
+# Giving credit where it's due: https://stackoverflow.com/a/1080180/6337519
+release: CFLAGS += -O$(OPTIM_LVL)
+debug: CFLAGS += -g
+
 
 ## RULES ##
 
@@ -62,6 +64,10 @@ endif
 
 # The default rule (the one called when make is invoked without arguments)
 all: $(EXEC)
+
+# Build targets
+debug: all
+release: all
 
 # Linkage
 $(EXEC): $(OBJ)
