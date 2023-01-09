@@ -52,7 +52,7 @@ endif
 # Append build mode-specific compilation flags (optimization level, debug)
 # Giving credit where it's due: https://stackoverflow.com/a/1080180/6337519
 release: CFLAGS += -O$(OPTIM_LVL) -g1
-debug: CFLAGS += -g3
+debug: CFLAGS += -Og -g3
 
 
 ## RULES ##
