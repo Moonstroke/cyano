@@ -53,6 +53,7 @@ endif
 # Giving credit where it's due: https://stackoverflow.com/a/1080180/6337519
 release: CFLAGS += -O$(OPTIM_LVL) -g1
 debug: CFLAGS += -Og -g3
+test: CFLAGS += -0g -g3
 
 
 ## RULES ##
