@@ -17,7 +17,7 @@
 
 
 /**
- * \brief Checks whether the end of the string corresponds to the suffix.
+ * \brief Check whether the end of the string corresponds to the suffix.
  *
  * \param[in] string The string to test
  * \param[in] suffix The string to find at the end
