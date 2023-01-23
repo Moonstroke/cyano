@@ -42,7 +42,7 @@ ifeq ($(STATIC),y)
 else
 	sdl2_libs := $$(sdl2-config --libs)
 endif
-LDLIBS := $(sdl2_libs) -lCUTE $(LDLIBS)
+LDLIBS := $(sdl2_libs) $(LDLIBS)
 
 # Linkage flags
 ifndef ($(LDFLAGS))
@@ -54,6 +54,8 @@ endif
 release: CFLAGS += -O$(OPTIM_LVL) -g1
 debug: CFLAGS += -Og -g3
 test: CFLAGS += -0g -g3
+
+test: LDLIBS += -lCUTE
 
 
 ## RULES ##
