@@ -67,7 +67,9 @@ test: LDLIBS += -lCUTE
 
 
 # The default rule (the one called when make is invoked without arguments)
-all: $(EXEC)
+all:
+	@echo 'No default build mode. Please specifiy either "debug" or "release".'
+	@exit 1
 
 # Build targets
 debug: all
