@@ -6,7 +6,8 @@ include shared.mak
 
 
 # Test executable
-TEST_EXEC := $(OUT_DIR)/test_$(PROJECT_NAME)
+TEST_EXEC := $(OUT_DIR)/$(PROJECT_NAME)_test
+DEBUG_EXEC := $(OUT_DIR)/$(PROJECT_NAME)_debug
 
 # Tests files
 TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
