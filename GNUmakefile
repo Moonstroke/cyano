@@ -78,7 +78,7 @@ release: all
 # Linkage
 $(EXEC): $(OBJ)
 	@mkdir -p $(OUT_DIR)
-	$(CC) -o$(EXEC) $^ $(LDFLAGS) $(LDLIBS)
+	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
 
 # Filewise compilation
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
