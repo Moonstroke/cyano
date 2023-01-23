@@ -616,7 +616,7 @@ Example : the southwestward glider in RLE format
     3o!
     This text after the terminating ! is not parsed
 
-### 2.3. Developement
+### 2.3. Development
 
 The code is written in C, the ubiquitous "low-level" language. It began as a
 project to learn and familiarize with the language, and eventually grew into

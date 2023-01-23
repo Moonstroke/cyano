@@ -349,7 +349,7 @@ Vie tels que présentés ci-dessus.
 Le nom du projet est inspiré des
 [cyanobactéries](https://fr.wikipedia.org/wiki/Cyanobacteria), un embranchement
 des bactéries connu pour être la plus ancienne forme de vie (-3,7 milliards
-d'années) à s’assembler en colonies complexes et structurées. Cette
+d’années) à s’assembler en colonies complexes et structurées. Cette
 particularité rappelle le Jeu, où des motifs élaborés sont formés par
 l’interaction de simples cellules. Ce nom participe également d’une convention
 personnelle de donner à des projets écrits en C des noms commençant par cette
@@ -512,9 +512,8 @@ sont actuellement pas configurables.
 Le programme dispose de deux modes d’évolution. Il peut être lancé et évoluer
 en continu à la fréquence indiquée au lancement (voir ci-dessus), ou être dans
 un état stoppé, donnant ainsi à l’utilisateur la possibilité de modifier
-l’état des
-cellules ou de dessiner des motifs complets avant que ceux-ci n’évoluent. Dans
-ce mode, la grille peut toujours évoluer par étapes.
+l’état des cellules ou de dessiner des motifs complets avant que ceux-ci
+n’évoluent. Dans ce mode, la grille peut toujours évoluer par étapes.
 
 #### 2.2.3. Interaction avec le clavier et la souris
 
