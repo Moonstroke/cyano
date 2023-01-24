@@ -72,11 +72,11 @@ all:
 	@exit 1
 
 # Build targets
-debug: all
-release: all
+debug: $(DEBUG_EXEC)
+release: $(EXEC)
 
 # Linkage
-$(EXEC): $(OBJ)
+$(EXEC)%: $(OBJ)
 	@mkdir -p $(OUT_DIR)
 	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
 
