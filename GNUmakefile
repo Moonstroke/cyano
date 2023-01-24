@@ -135,9 +135,7 @@ cleandoc:
 	@rm -rf $(DOC_DIR)
 
 # Build and launch tests
-test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
-	@mkdir -p $(OUT_DIR)
-	$(CC) -o$(TEST_EXEC) $^ $(LDLIBS) $(LDFLAGS)
+test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ) $(TEST_EXEC)
 	./$(TEST_EXEC)
 
 # Remove test build files
