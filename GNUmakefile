@@ -63,7 +63,7 @@ test: LDLIBS += -lCUTE
 
 
 # All rule names that do not refer to files
-.PHONY: all compdb clean distclean doc cleandoc
+.PHONY: all release debug compdb clean distclean doc cleandoc
 
 
 # The default rule (the one called when make is invoked without arguments)
