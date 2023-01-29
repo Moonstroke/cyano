@@ -5,9 +5,14 @@ include shared.mak
 ## VARIABLES ##
 
 
-# Test executable
-TEST_EXEC := $(OUT_DIR)/$(PROJECT_NAME)_test
+# Executables
+EXEC := $(OUT_DIR)/$(PROJECT_NAME)
 DEBUG_EXEC := $(OUT_DIR)/$(PROJECT_NAME)_debug
+TEST_EXEC := $(OUT_DIR)/$(PROJECT_NAME)_test
+
+# Variables describing the architecture of the project directory
+SRC := $(wildcard $(SRC_DIR)/*.c)
+OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 
 # Tests files
 TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
@@ -15,14 +20,6 @@ TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
 TEST_REQUIRED_OBJ := $(OBJ_DIR)/bits.o $(OBJ_DIR)/grid.o $(OBJ_DIR)/grid_io.o $(OBJ_DIR)/rules.o
 TEST_LOG := test.log
-
-# Variables describing the architecture of the project directory
-SRC := $(wildcard $(SRC_DIR)/*.c)
-OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
-
-
-# Output executable
-EXEC := $(OUT_DIR)/$(PROJECT_NAME)
 
 
 # Compilation database (used by Sonarlint)
@@ -72,8 +69,13 @@ all:
 	@exit 1
 
 # Build targets
-debug: $(DEBUG_EXEC)
 release: $(EXEC)
+debug: $(DEBUG_EXEC)
+
+# Build and launch tests
+test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ) $(TEST_EXEC)
+	./$(TEST_EXEC)
+
 
 # Linkage
 $(EXEC)%: $(OBJ)
@@ -125,6 +127,11 @@ clean:
 distclean: clean cleandoc
 	@rm -rf $(OUT_DIR)
 
+# Remove test build files
+testclean:
+	@rm -rf $(TEST_OBJ) $(TEST_EXEC) $(TEST_LOG)
+
+
 
 # (Re)generate doc
 doc: $(DOC_CFG)
@@ -133,11 +140,3 @@ doc: $(DOC_CFG)
 # Remove doc directory
 cleandoc:
 	@rm -rf $(DOC_DIR)
-
-# Build and launch tests
-test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ) $(TEST_EXEC)
-	./$(TEST_EXEC)
-
-# Remove test build files
-testclean:
-	@rm -rf $(TEST_OBJ) $(TEST_EXEC) $(TEST_LOG)
