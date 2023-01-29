@@ -6,29 +6,30 @@ include shared.mak
 
 
 # Executables
-EXEC := $(OUT_DIR)/$(PROJECT_NAME)
-DEBUG_EXEC := $(OUT_DIR)/$(PROJECT_NAME)_debug
-TEST_EXEC := $(OUT_DIR)/$(PROJECT_NAME)_test
+RELEASE_EXEC := $(OUT_DIR)/release/$(PROJECT_NAME)
+DEBUG_EXEC := $(OUT_DIR)/debug/$(PROJECT_NAME)
+TEST_EXEC := $(OUT_DIR)/test/$(PROJECT_NAME)
 
 # Variables describing the architecture of the project directory
 SRC := $(wildcard $(SRC_DIR)/*.c)
-OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+RELEASE_OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/release/%.o,$(SRC))
+DEBUG_OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/debug/%.o,$(SRC))
 
 # Tests files
 TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
-TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
+TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test/%.o,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
-TEST_REQUIRED_OBJ := $(OBJ_DIR)/bits.o \
-                     $(OBJ_DIR)/grid.o \
-                     $(OBJ_DIR)/grid_io.o \
-                     $(OBJ_DIR)/rules.o
+TEST_REQUIRED_OBJ := $(OBJ_DIR)/debug/bits.o \
+                     $(OBJ_DIR)/debug/grid.o \
+                     $(OBJ_DIR)/debug/grid_io.o \
+                     $(OBJ_DIR)/debug/rules.o
 
 
 # Compilation database (used by Sonarlint)
 COMPDB := compile_commands.json
 
 # Intermediate compilation command files (one per source file)
-CCMD := $(patsubst %.o,%.ccmd,$(OBJ))
+CCMD := $(patsubst $(OBJ_DIR)/debug/%.o,$(OBJ_DIR)/%.ccmd,$(DEBUG_OBJ))
 
 
 # Preprocessor flags
@@ -71,7 +72,7 @@ all:
 	@exit 1
 
 # Build targets
-release: $(EXEC)
+release: $(RELEASE_EXEC)
 debug: $(DEBUG_EXEC)
 
 # Build and launch tests
@@ -80,18 +81,26 @@ test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ) $(TEST_EXEC)
 
 
 # Linkage
-$(EXEC)%: $(OBJ)
-	@mkdir -p $(OUT_DIR)
+$(RELEASE_EXEC): $(RELEASE_OBJ)
+	@mkdir -p $(OUT_DIR)/release
+	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
+
+$(DEBUG_EXEC): $(DEBUG_OBJ)
+	@mkdir -p $(OUT_DIR)/debug
 	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
 
 # Filewise compilation
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/release/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/release
+	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
+
+$(OBJ_DIR)/debug/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/debug
 	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
 
 # Tests compilation
-$(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)/test/%.o: $(TEST_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/test
 	$(CC) -c $< -o $@ $(CPPFLAGS) $(CFLAGS)
 
 
