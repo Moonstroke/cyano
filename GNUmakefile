@@ -124,6 +124,7 @@ $(OBJ_DIR)/%.ccmd: $(SRC_DIR)/%.c
 # Remove object files
 clean:
 	@rm -rf $(OBJ_DIR)
+	@rm -f $(COMPDB)
 
 # Reset project to initial state
 distclean: clean cleandoc
