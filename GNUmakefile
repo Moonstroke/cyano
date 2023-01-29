@@ -19,7 +19,6 @@ TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
 TEST_REQUIRED_OBJ := $(OBJ_DIR)/bits.o $(OBJ_DIR)/grid.o $(OBJ_DIR)/grid_io.o $(OBJ_DIR)/rules.o
-TEST_LOG := test.log
 
 
 # Compilation database (used by Sonarlint)
@@ -129,7 +128,7 @@ distclean: clean cleandoc
 
 # Remove test build files
 testclean:
-	@rm -rf $(TEST_OBJ) $(TEST_EXEC) $(TEST_LOG)
+	@rm -rf $(TEST_OBJ) $(TEST_EXEC)
 
 
 
