@@ -18,7 +18,10 @@ OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
 TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
-TEST_REQUIRED_OBJ := $(OBJ_DIR)/bits.o $(OBJ_DIR)/grid.o $(OBJ_DIR)/grid_io.o $(OBJ_DIR)/rules.o
+TEST_REQUIRED_OBJ := $(OBJ_DIR)/bits.o \
+                     $(OBJ_DIR)/grid.o \
+                     $(OBJ_DIR)/grid_io.o \
+                     $(OBJ_DIR)/rules.o
 
 
 # Compilation database (used by Sonarlint)
