@@ -126,8 +126,8 @@ compdb: $(COMPDB)
 
 # Intermediate compilation commands files
 $(OBJ_DIR)/%.ccmd: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
-	clang -MJ $@ -c $< -o $(OBJ_DIR)/$*.o $(CPPFLAGS) $(CFLAGS)
+	@mkdir -p $(OBJ_DIR)/debug
+	clang -MJ $@ -c $< -o $(OBJ_DIR)/debug/$*.o $(CPPFLAGS) $(CFLAGS)
 
 
 # Remove object files
