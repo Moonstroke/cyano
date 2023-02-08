@@ -55,12 +55,12 @@ endif
 
 
 # All rule names that do not refer to files
-.PHONY: all release debug compdb clean distclean doc cleandoc
+.PHONY: all release debug test compdb clean distclean doc cleandoc
 
 
 # The default rule (the one called when make is invoked without arguments)
 all:
-	@echo 'No default build mode. Please specifiy either "debug" or "release".'
+	@echo 'No default build mode, use either "debug", "release" or "test".'
 	@exit 1
 
 # Build targets
