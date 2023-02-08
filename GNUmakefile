@@ -50,14 +50,6 @@ ifndef ($(LDFLAGS))
 	LDFLAGS :=
 endif
 
-# Append build mode-specific compilation flags (optimization level, debug)
-# Giving credit where it's due: https://stackoverflow.com/a/1080180/6337519
-release: CFLAGS += -O$(OPTIM_LVL) -g1
-debug: CFLAGS += -Og -g3
-test: CFLAGS += -Og -g3
-
-test: LDLIBS += -lCUTE
-
 
 ## RULES ##
 
@@ -90,21 +82,21 @@ $(DEBUG_EXEC): $(DEBUG_OBJ)
 
 $(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 	@mkdir -p $(OUT_DIR)/test
-	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
+	$(CC) -o$@ $^ $(LDFLAGS) -lCUTE $(LDLIBS)
 
 # Filewise compilation
 $(OBJ_DIR)/release/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)/release
-	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
+	$(CC) -o$@ -c $< $(CPPFLAGS) -O$(OPTIM_LVL) -g1 $(CFLAGS)
 
 $(OBJ_DIR)/debug/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)/debug
-	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
+	$(CC) -o$@ -c $< $(CPPFLAGS) -Og -g3 $(CFLAGS)
 
 # Tests compilation
 $(OBJ_DIR)/test/%.o: $(TEST_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)/test
-	$(CC) -c $< -o $@ $(CPPFLAGS) $(CFLAGS)
+	$(CC) -c $< -o $@ $(CPPFLAGS) -Og -g3 $(CFLAGS)
 
 
 # Build the compilation database
@@ -130,7 +122,7 @@ compdb: $(COMPDB)
 # Intermediate compilation commands files
 $(OBJ_DIR)/%.ccmd: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)/debug
-	clang -MJ $@ -c $< -o $(OBJ_DIR)/debug/$*.o $(CPPFLAGS) $(CFLAGS)
+	clang -MJ $@ -c $< -o $(OBJ_DIR)/debug/$*.o $(CPPFLAGS) -Og -g3 $(CFLAGS)
 
 
 # Remove object files
