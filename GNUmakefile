@@ -74,9 +74,8 @@ all:
 # Build targets
 release: $(RELEASE_EXEC)
 debug: $(DEBUG_EXEC)
-
-# Build and launch tests
-test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ) $(TEST_EXEC)
+# Test build also runs the tests
+test: $(TEST_EXEC)
 	./$(TEST_EXEC)
 
 
@@ -87,6 +86,10 @@ $(RELEASE_EXEC): $(RELEASE_OBJ)
 
 $(DEBUG_EXEC): $(DEBUG_OBJ)
 	@mkdir -p $(OUT_DIR)/debug
+	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
+
+$(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
+	@mkdir -p $(OUT_DIR)/test
 	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
 
 # Filewise compilation
