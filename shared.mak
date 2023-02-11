@@ -1,8 +1,9 @@
+# SPDX-License-Identifier: CECILL-2.1
 ## PROJECT SETTINGS ##
 
 
 # Project name
-PROJECT_NAME = SDLife
+PROJECT_NAME = cyano
 
 
 # Project directories
@@ -20,7 +21,7 @@ DOC_DIR = doc
 
 
 # Resources (images, other data)
-DATA_DIR = data
+DATA_DIR = res
 
 
 

@@ -14,3 +14,6 @@ doc/
 # Test input files
 **.rle
 **.cells
+
+# Compilation databse file (used by Clang-based tools)
+compile_commands.json

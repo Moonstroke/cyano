@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: CECILL-2.1
 !include <shared.mak>
 
 
@@ -9,7 +10,7 @@ TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME).exe
 
 # Tests files
 TEST_SRC = $(TEST_DIR)\board.c \
-           $(TEST_DIR)\sdlife.c
+           $(TEST_DIR)\cyano.c
 # nmake doesn't handle file name prefixes in inference rule syntax, only directories; so
 # the project structure is changed here wrt. GNU/nux: test object files go to a designed
 # subdir in the objects directory
@@ -29,8 +30,7 @@ SRC = $(SRC_DIR)\app.c \
       $(SRC_DIR)\grid_io.c \
       $(SRC_DIR)\main.c \
       $(SRC_DIR)\rules.c \
-      $(SRC_DIR)\stringutils.c \
-      $(SRC_DIR)\timer.c
+      $(SRC_DIR)\stringutils.c
 OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\\%.obj,$(SRC))
 
 # Output executable
@@ -44,36 +44,39 @@ RC_FILE = $(PROJECT_NAME).rc
 RES_FILE = $(PROJECT_NAME).res
 
 
-# Preprocessor flags
-CPPFLAGS = /I$(INC_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64
-# Compilation flags
-CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820
-
-# Linkage flags
-LDFLAGS = /nologo
-LDLIBS = SDL2.lib
-
 # Translate GCC optimization levels into MSVC equivalent
+optim_flags =
 !if "$(OPTIM_LVL)" == "0"
-CFLAGS = $(CFLAGS) /Od
+optim_flags = /Od
 !else if "$(OPTIM_LVL)" == "1"
-CFLAGS = $(CFLAGS) /Ot
+optim_flags = /Ot
 !else if "$(OPTIM_LVL)" == "s"
-CFLAGS = $(CFLAGS) /O1
+optim_flags = /O1
 !else if "$(OPTIM_LVL)" == "2"
-CFLAGS = $(CFLAGS) /Ox
+optim_flags = /Ox
 !else if "$(OPTIM_LVL)" == "3"
-CFLAGS = $(CFLAGS) /O2 /Ob3
+optim_flags = /O2 /Ob3
 !endif
 
 !if "$(DEBUG)" == "y"
-CPPFLAGS = $(CPPFLAGS) /D_DEBUG
-CFLAGS = $(CFLAGS) /Zi /Fd$(PDB_FILE)
-LDFLAGS = $(LDFLAGS) /debug /pdb:$(PDB_FILE)
+cpp_debug_flags = /D_DEBUG
+c_debug_flags = /Zi /Fd$(PDB_FILE)
+ld_debug_flags = /debug /pdb:$(PDB_FILE)
 !else
-CPPFLAGS = $(CPPFLAGS) /DNDEBUG
-LDFLAGS = $(LDFLAGS) /release
+cpp_debug_flags = /DNDEBUG
+c_debug_flags =
+ld_debug_flags = /release
 !endif
+
+
+# Preprocessor flags
+CPPFLAGS = /I$(INC_DIR) /I$(DATA_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flags) $(CPPFLAGS)
+# Compilation flags
+CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820 $(optim_flags) $(c_debug_flags) $(CFLAGS)
+
+# Linkage flags
+LDFLAGS = /nologo $(ld_debug_flags) $(LDFLAGS)
+LDLIBS = SDL2.lib $(LDLIBS)
 
 
 

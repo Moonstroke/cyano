@@ -4,10 +4,10 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = SDLife
-PROJECT_NUMBER         =
-PROJECT_BRIEF          = "Conway's Game of Life in C using the SDL"
-PROJECT_LOGO           =
+PROJECT_NAME           = Cyano
+PROJECT_NUMBER         = 1.0
+PROJECT_BRIEF          = "Conway's Game of Life in C"
+PROJECT_LOGO           = res/icon64.png
 OUTPUT_DIRECTORY       = doc
 CREATE_SUBDIRS         = NO
 ALLOW_UNICODE_NAMES    = NO

@@ -1,13 +1,17 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 #include "file_io.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> /* for strcmp, strlen */
+#include <stdio.h> /* for FILE, f*, rewind */
+#include <stdlib.h> /* for NULL, realloc, free */
+#include <string.h> /* for strncpy, strcmp, strlen */
 #ifdef _MSC_VER
 # include <io.h> /* for _access */
 #else
 # include <unistd.h> /* for access */
 #endif
+
+#include "utils.h" /* for CHECK_NULL */
+
 
 
 static char *_read_stdin(void) {
@@ -26,7 +30,10 @@ static char *_read_stdin(void) {
 		strncpy(text + len, buffer, read);
 		len += read;
 	}
-	if (ferror(stdin)) {
+	if (text == NULL) { /* If stdin is empty */
+		return NULL;
+	}
+	if (ferror(stdin) != 0) {
 		free(text);
 		return NULL;
 	}
@@ -51,31 +58,45 @@ char *read_file(const char *path) {
 		fclose(file);
 		return NULL;
 	}
-	long filesize = ftell(file);
-	if (filesize < 0) {
+	long pos = ftell(file);
+	if (pos < 0) {
 		fclose(file);
 		return NULL;
 	}
+	unsigned long filesize = pos;
 	char *text = malloc(filesize + 1);
 	if (text == NULL) {
 		fclose(file);
 		return NULL;
 	}
 	rewind(file);
-	if (fread(text, 1, filesize, file) < (unsigned) filesize || ferror(file)) {
+	bool file_err = fread(text, 1, filesize, file) < filesize
+	                || ferror(file) != 0;
+	fclose(file);
+	if (file_err) {
 		free(text);
-		fclose(file);
 		return NULL;
 	}
 	if (text[filesize - 1] == '\n') {
 		if (text[filesize - 2] == '\r') {
 			text[filesize - 2] = '\0';
+			/* Try to free the unused byte(s). Do nothing if realloc fails,
+			   since the old pointer is not changed. But since we actually free
+			   memory it shouldn't actually fail */
+			char *tmp = realloc(text, filesize - 1);
+			if (tmp != NULL) {
+				text = tmp;
+			}
+		} else {
+			text[filesize - 1] = '\0';
+			char *tmp = realloc(text, filesize);
+			if (tmp != NULL) {
+				text = tmp;
+			}
 		}
-		text[filesize - 1] = '\0';
 	} else {
 		text[filesize] = '\0';
 	}
-	fclose(file);
 	return text;
 }
 
@@ -96,9 +117,7 @@ int write_file(const char *path, const char *text) {
 		return _write_stdout(text);
 	}
 	FILE *file = fopen(path, "w");
-	if (file == NULL) {
-		return -__LINE__;
-	}
+	CHECK_NULL(file);
 	size_t len = strlen(text);
 	if (fwrite(text, 1, len, file) < len) {
 		fclose(file);

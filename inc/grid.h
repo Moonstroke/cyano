@@ -1,47 +1,12 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 /**
  * \file "grid.h"
- * \author joH1
+ * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
- * \brief This file contains the definition of the structure representing a
- *        grid of John Conway's <b>Game of Life</b>.
- *
- * This game is a 0-player game, which means its evolution only depends on its
- * initial state and the \a rule that orders it.
- *
- * The principle of the game is simple: given a (virtually) infinite
- * 2-dimensional grid of cells, each \e cell can be either \b dead or \b alive,
- * and on the next step of the game (within the biological register, we speak of
- * \e generations) the state of the cell is determined by the state of its
- * \b eight closest neighbors (\e Moore neighborhood).
- *
- * The rule is:
- * - if the cell has less than \c 2 alive neighbors, it dies (underpopulation)
- * - if the cell is alive and has \c 2 or \c 3 alive neighbors, it remains alive
- *   (survival)
- * - if the cell is alive and has more than \c 3 alive neighbors, it dies
- *   (overpopulation)
- * - and if the cell is dead and has exactly \c 3 alive neighbors, it is born
- *   (reproduction).
- *
- * The rule guiding the evolution of a Game of Life grid can be reduced to a
- * simpler expression, containing only the number of alive neighbors a cell
- * needs to be born and the number of alive neighbors it needs to stay alive, or
- * in a short form:
- * \code B<number of alive neighbors to be born>S<numberof neighbors to survive>
- * \endcode.  So the original rule of the Game of Life as designed by Conway
- * can be expressed as \c B3/S23. Ths format is called the *Golly* format.
- * (\e Golly is a renown Life-simulation software which uses this format to
- * characterize a Life-like cellular automata).
- *
- * Some famous other rules are:
- * - \b Seeds, of form \c B2/S, in this scheme, <em>no cell survives more than a
- *   single generation</em>;
- * - \b HighLife, of rule \c B36/S23,
- * - <b>Day & Night</b>, of rule \c B3678/S34678, a cellular automaton were the
- *   \e dead and \e alive states are symmetrical, meaning that dead cells mirror
- *   the behavior of alive cells.
+ * \brief This file contains the definition of a game grid and declarations of
+ *        functions to manipulate it.
  */
 
 #ifndef GRID_H
@@ -72,15 +37,23 @@
  * \brief The type representing the grid of the game.
  */
 struct grid {
-	unsigned int w; /**< The width of the grid. */
-	unsigned int h; /**< The height of the grid. */
+	unsigned int width; /**< The width of the grid. */
+	unsigned int height; /**< The height of the grid. */
 	char *cells; /**< The data of the grid cells. */
-	/** The rule determining the evolution of the game, as a string in \e Golly
-	    format. */
-	const char *rule;
+	/** The rulestring determining the evolution of the game. */
+	char rule[22];
 	/** A flag indicating whether the state on one side of the grid affects the
 	    opposite side. */
 	bool wrap;
+};
+
+
+/**
+ * \brief Represents the state of a single cell. More expressive than \c bool
+ */
+enum cell_state {
+	DEAD, /**< The cell is dead: inactive */
+	ALIVE /**< The cell is alive: active */
 };
 
 
@@ -147,26 +120,25 @@ void free_grid(struct grid *grid);
  * \brief Get the state of a cell from the grid.
  *
  * \param[in] grid The game grid
- * \param[in] i     The row to get
- * \param[in] j     The column to get
+ * \param[in] row   The row to get
+ * \param[in] col   The column to get
  *
- * \return \c true if the cell at (i, j) is \e "alive", or \c false if the cell
- *         is \e "dead" or coordinates are invalid.
+ * \return \c ALIVE if the cell at (row, col) is alive, or \c DEAD if the cell
+ *         is dead or coordinates are invalid.
  */
-bool get_grid_gell(const struct grid *grid, int i, int j);
+enum cell_state get_grid_cell(const struct grid *grid, int row, int col);
 
 
 /**
  * \brief Invert the state of a cell.
  *
  * \param[in,out] grid The grid
- * \param[in]     x     The row of the cell to toggle
- * \param[in]     y     The column of the cell
+ * \param[in]     row  The row of the cell to toggle
+ * \param[in]     col  The column of the cell
  *
- * \return The new state of the cell (\c true means \e alive), or \c false if
- *         the coordinates are invalid
+ * \return The new state of the cell, or \c DEAD if the coordinates are invalid
  */
-bool toggle_cell(struct grid *grid, unsigned int x, unsigned int y);
+enum cell_state toggle_cell(struct grid *grid, int row, int col);
 
 
 /**
@@ -193,19 +165,22 @@ void clear_grid(struct grid *grid);
 
 
 /**
- * \brief Return a textual representation of the current state of the grid.
- *
- * The returned string consists of lines of at-signs and dots to respectively
- * represent live and dead cells, the lines separated with newline characters.
+ * \brief Return a representation of the current state of the grid in the
+ *        specified format.
  *
  * \note The returned string is allocated dynamically; callers must take care of
  * freeing it after use.
  *
- * \param[in] grid The grid
+ * \note If the given format is \c GRID_FORMAT_UNKNOWN, the returned
+ *       representation defaults to plain-text.
  *
- * \return A string representation of the current state of the grid
+ * \param[in] grid   The grid
+ * \param[in] format The format of the representation to generate
+ *
+ * \return A string representation of the current state of the grid, or \c NULL
+ *         on error
  */
-char *get_grid_repr(const struct grid *grid);
+char *get_grid_repr(const struct grid *grid, enum grid_format format);
 
 
 #endif /* grid_H */

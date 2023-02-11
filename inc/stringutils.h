@@ -1,8 +1,9 @@
+/* SPDX-License-Identifier: CECILL-2.1 */
 /**
  * \file "stringutils.h"
- * \author joH1
+ * \author Joachim "Moonstroke" MARIE
  *
- * \version 0.1
+ * \version 1.0
  *
  * \brief Declarations of functions manipulating strings; an extension of the
  *        standard header string.h.
@@ -16,15 +17,14 @@
 
 
 /**
- * \brief Checks whether the end of the first string corresponds to the second
- *        one.
+ * \brief Check whether the end of the string corresponds to the suffix.
  *
- * \param[in] s1 The first string
- * \param[in] s2 The second string (the suffix)
+ * \param[in] string The string to test
+ * \param[in] suffix The string to find at the end
  *
- * \return \c true iff the first string ends with the second
+ * \return \c true iff the end of the string ends matches the suffix
  */
-bool endswith(const char *restrict s1, const char *restrict s2);
+bool endswith(const char *string, const char *suffix);
 
 
 #endif /* STRINGUTILS_H */
