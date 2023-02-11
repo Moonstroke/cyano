@@ -36,6 +36,6 @@ DEBUG = y
 # y/n
 STATIC = n
 
-# The optimization level for the compilation
+# The optimization level for the compilation in Release mode
 # 0..3/s
-OPTIM_LVL = 0
+OPTIM_LVL = 2

@@ -5,39 +5,37 @@ include shared.mak
 ## VARIABLES ##
 
 
-# Test executable
-TEST_EXEC := $(OUT_DIR)/test_$(PROJECT_NAME)
-
-# Tests files
-TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
-TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
-# Necessary to avoid redefinition of main()
-TEST_REQUIRED_OBJ := $(OBJ_DIR)/bits.o $(OBJ_DIR)/grid.o $(OBJ_DIR)/grid_io.o $(OBJ_DIR)/rules.o
-TEST_LOG := test.log
+# Executables
+RELEASE_EXEC := $(OUT_DIR)/release/$(PROJECT_NAME)
+DEBUG_EXEC := $(OUT_DIR)/debug/$(PROJECT_NAME)
+TEST_EXEC := $(OUT_DIR)/test/$(PROJECT_NAME)
 
 # Variables describing the architecture of the project directory
 SRC := $(wildcard $(SRC_DIR)/*.c)
-OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+RELEASE_OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/release/%.o,$(SRC))
+DEBUG_OBJ := $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/debug/%.o,$(SRC))
 
-
-# Output executable
-EXEC := $(OUT_DIR)/$(PROJECT_NAME)
+# Tests files
+TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
+TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test/%.o,$(TEST_SRC))
+# Necessary to avoid redefinition of main()
+TEST_REQUIRED_OBJ := $(OBJ_DIR)/debug/bits.o \
+                     $(OBJ_DIR)/debug/grid.o \
+                     $(OBJ_DIR)/debug/grid_io.o \
+                     $(OBJ_DIR)/debug/rules.o
 
 
 # Compilation database (used by Sonarlint)
 COMPDB := compile_commands.json
 
 # Intermediate compilation command files (one per source file)
-CCMD := $(patsubst %.o,%.ccmd,$(OBJ))
+CCMD := $(patsubst $(OBJ_DIR)/debug/%.o,$(OBJ_DIR)/%.ccmd,$(DEBUG_OBJ))
 
 
 # Preprocessor flags
 CPPFLAGS := -I$(INC_DIR) -I$(DATA_DIR) -DICONSIZE=64 $(CPPFLAGS)
 # Compilation flags
-ifeq ($(DEBUG), y)
-	debug_flag := -g
-endif
-CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) -O$(OPTIM_LVL) $(debug_flag) $(CFLAGS)
+CFLAGS := -std=c11 -pedantic -Wall -Wextra $$(sdl2-config --cflags) $(CFLAGS)
 
 # The libraries to link against
 ifeq ($(STATIC),y)
@@ -45,7 +43,7 @@ ifeq ($(STATIC),y)
 else
 	sdl2_libs := $$(sdl2-config --libs)
 endif
-LDLIBS := $(sdl2_libs) -lCUTE $(LDLIBS)
+LDLIBS := $(sdl2_libs) $(LDLIBS)
 
 # Linkage flags
 ifndef ($(LDFLAGS))
@@ -57,26 +55,48 @@ endif
 
 
 # All rule names that do not refer to files
-.PHONY: all compdb clean distclean doc cleandoc
+.PHONY: all release debug test compdb clean distclean doc cleandoc
 
 
 # The default rule (the one called when make is invoked without arguments)
-all: $(EXEC)
+all:
+	@echo 'No default build mode, use either "debug", "release" or "test".'
+	@exit 1
+
+# Build targets
+release: $(RELEASE_EXEC)
+debug: $(DEBUG_EXEC)
+# Test build also runs the tests
+test: $(TEST_EXEC)
+	./$(TEST_EXEC)
+
 
 # Linkage
-$(EXEC): $(OBJ)
-	@mkdir -p $(OUT_DIR)
-	$(CC) -o$(EXEC) $^ $(LDFLAGS) $(LDLIBS)
+$(RELEASE_EXEC): $(RELEASE_OBJ)
+	@mkdir -p $(OUT_DIR)/release
+	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
+
+$(DEBUG_EXEC): $(DEBUG_OBJ)
+	@mkdir -p $(OUT_DIR)/debug
+	$(CC) -o$@ $^ $(LDFLAGS) $(LDLIBS)
+
+$(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
+	@mkdir -p $(OUT_DIR)/test
+	$(CC) -o$@ $^ $(LDFLAGS) -lCUTE $(LDLIBS)
 
 # Filewise compilation
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
+$(OBJ_DIR)/release/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/release
+	$(CC) -o$@ -c $< $(CPPFLAGS) -O$(OPTIM_LVL) -g1 $(CFLAGS)
+
+$(OBJ_DIR)/debug/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/debug
+	$(CC) -o$@ -c $< $(CPPFLAGS) -Og -g3 $(CFLAGS)
 
 # Tests compilation
-$(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) -c $< -o $@ $(CPPFLAGS) $(CFLAGS)
+$(OBJ_DIR)/test/%.o: $(TEST_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)/test
+	$(CC) -c $< -o $@ $(CPPFLAGS) -Og -g3 $(CFLAGS)
 
 
 # Build the compilation database
@@ -101,17 +121,23 @@ compdb: $(COMPDB)
 
 # Intermediate compilation commands files
 $(OBJ_DIR)/%.ccmd: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
-	clang -MJ $@ -c $< -o $(OBJ_DIR)/$*.o $(CPPFLAGS) $(CFLAGS)
+	@mkdir -p $(OBJ_DIR)/debug
+	clang -MJ $@ -c $< -o $(OBJ_DIR)/debug/$*.o $(CPPFLAGS) -Og -g3 $(CFLAGS)
 
 
 # Remove object files
 clean:
 	@rm -rf $(OBJ_DIR)
+	@rm -f $(COMPDB)
 
 # Reset project to initial state
 distclean: clean cleandoc
 	@rm -rf $(OUT_DIR)
+
+# Remove test build files
+testclean:
+	@rm -rf $(TEST_OBJ) $(TEST_EXEC)
+
 
 
 # (Re)generate doc
@@ -121,13 +147,3 @@ doc: $(DOC_CFG)
 # Remove doc directory
 cleandoc:
 	@rm -rf $(DOC_DIR)
-
-# Build and launch tests
-test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
-	@mkdir -p $(OUT_DIR)
-	$(CC) -o$(TEST_EXEC) $^ $(LDLIBS) $(LDFLAGS)
-	./$(TEST_EXEC)
-
-# Remove test build files
-testclean:
-	@rm -rf $(TEST_OBJ) $(TEST_EXEC) $(TEST_LOG)
