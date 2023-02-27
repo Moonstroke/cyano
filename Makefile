@@ -89,6 +89,10 @@ LDLIBS = SDL2.lib $(LDLIBS)
 .SUFFIXES: .c .obj .rc .res
 
 
+all:
+	@echo No default build mode, use either "debug", "release" or "test".
+	@exit 1
+
 # Linkage (has to be first to be the default rule)
 $(EXEC): $(OBJ) $(RES_FILE)
 	@if not exist $(OUT_DIR) md $(OUT_DIR)
