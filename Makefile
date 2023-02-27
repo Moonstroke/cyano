@@ -9,14 +9,18 @@
 TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME).exe
 
 # Tests files
-TEST_SRC = $(TEST_DIR)\board.c \
-           $(TEST_DIR)\cyano.c
+TEST_SRC = $(TEST_DIR)\bits.c \
+           $(TEST_DIR)\cyano.c \
+           $(TEST_DIR)\grid.c
 # nmake doesn't handle file name prefixes in inference rule syntax, only directories; so
 # the project structure is changed here wrt. GNU/nux: test object files go to a designed
 # subdir in the objects directory
 TEST_OBJ = $(patsubst %.c,$(OBJ_DIR)\\%.obj,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
-TEST_REQUIRED_OBJ = $(OBJ_DIR)\grid.obj $(OBJ_DIR)\rules.obj
+TEST_REQUIRED_OBJ = $(OBJ_DIR)\bits.obj \
+                    $(OBJ_DIR)\grid.obj \
+                    $(OBJ_DIR)\grid_io.obj \
+                    $(OBJ_DIR)\rules.obj
 
 
 # Variables describing the architecture of the project directory
