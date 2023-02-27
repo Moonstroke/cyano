@@ -42,9 +42,8 @@ EXEC = $(OUT_DIR)\$(PROJECT_NAME).exe
 # Debugging symbols
 PDB_FILE = $(PROJECT_NAME).pdb
 
-# Resource files (source and compiled)
-RC_FILE = $(PROJECT_NAME).rc
-RES_FILE = $(PROJECT_NAME).res
+# Compiled resources files
+RES_FILE = $(OBJ_DIR)\$(PROJECT_NAME).res
 
 
 # Translate GCC optimization levels into MSVC equivalent
@@ -91,7 +90,7 @@ LDLIBS = SDL2.lib $(LDLIBS)
 
 
 # Linkage (has to be first to be the default rule)
-$(EXEC): $(OBJ) $(OBJ_DIR)\$(RES_FILE)
+$(EXEC): $(OBJ) $(RES_FILE)
 	@if not exist $(OUT_DIR) md $(OUT_DIR)
 	link $(LDFLAGS) /out:$(EXEC) $** $(LDLIBS)
 
