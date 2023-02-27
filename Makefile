@@ -17,7 +17,6 @@ TEST_SRC = $(TEST_DIR)\board.c \
 TEST_OBJ = $(patsubst %.c,$(OBJ_DIR)\\%.obj,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
 TEST_REQUIRED_OBJ = $(OBJ_DIR)\grid.obj $(OBJ_DIR)\rules.obj
-TEST_LOG = test.log
 
 
 # Variables describing the architecture of the project directory
@@ -135,4 +134,3 @@ test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 testclean:
 	@if exist $(OBJ_DIR)\$(TEST_DIR) rmdir /s /q $(OBJ_DIR)\$(TEST_DIR)
 	@if exist $(TEST_EXEC) del /f /q $(TEST_EXEC)
-	@if exist $(TEST_LOG) del /f /q  $(TEST_LOG)
