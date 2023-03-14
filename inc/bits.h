@@ -97,4 +97,20 @@ void copy_bits(const char *src, size_t src_offset, char *dest,
 void print_bits(const char *bits, size_t offset, size_t size, FILE *file);
 
 
+/**
+ * Compare two bit arrays for bit-by-bit equality.
+ *
+ * @param bits1   Pointer to the first bit array
+ * @param offset1 Start index of the first bit array to compare within bits1
+ * @param bits2   Pointer to the second bit array
+ * @param offset2 Start pointer of the second bit array
+ * @param length  Length of the two bit arrays
+ *
+ * @return \c 1 iff each bit in the first array are equal to their counterpart
+ *         in the second array
+ */
+int bits_equal(const char *bits1, size_t offset1, const char *bits2,
+               size_t offset2, size_t length);
+
+
 #endif /* BITS_H */
