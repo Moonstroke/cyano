@@ -49,6 +49,7 @@ void test_num_octets(void) {
 	for (unsigned int i = 0; i < (sizeof values / sizeof values[0]); ++i) {
 		fprintf(stderr, "num_octets(%zu): expected %zu, got %zu\n", values[i],
 		        expected[i], num_octets(values[i]));
+		CUTE_assertEquals(num_octets(values[i]), expected[i]);
 	}
 	fputc('\n', stderr);
 }
@@ -68,6 +69,7 @@ void test_get_bit(void) {
 	for(unsigned int i = 0; i < 8 * sizeof bits; ++i) {
 		fprintf(stderr, "get_bit(%u): expected %d, got %d\n", i, expected[i],
 		        get_bit(bits, i));
+		CUTE_assertEquals(get_bit(bits, i), expected[i]);
 	}
 	fputc('\n', stderr);
 }
@@ -84,6 +86,7 @@ void test_set_bit(void) {
 		        i, 1, expected[i]);
 		set_bit(&value, i, 1);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
+		CUTE_assertEquals(value, expected[i]);
 	}
 	value = 0xff;
 	for (unsigned int i = 0; i < 8; ++i) {
@@ -91,6 +94,7 @@ void test_set_bit(void) {
 		        i, 0, expected[8 + i]);
 		set_bit(&value, i, 0);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
+		CUTE_assertEquals(value, expected[i]);
 	}
 	fputc('\n', stderr);
 }
@@ -107,6 +111,7 @@ void test_toggle_bit(void) {
 		        i, expected[i]);
 		toggle_bit(&value, i);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
+		CUTE_assertEquals(value, expected[i]);
 	}
 	value = 0xff;
 	for (unsigned int i = 0; i < 8; ++i) {
@@ -114,6 +119,7 @@ void test_toggle_bit(void) {
 		        value, i, expected[8 + i]);
 		toggle_bit(&value, i);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
+		CUTE_assertEquals(value, expected[i]);
 	}
 	fputc('\n', stderr);
 }
@@ -160,6 +166,7 @@ void test_copy_bits(void) {
 		fputs("got      ", stderr);
 		print_bits(dest, 0, sizeof dest * 8, stderr);
 		fputc('\n', stderr);
+		CUTE_runTimeAssert(bits_equal(src, src_offset, dest, dest_offset, length));
 	}
 	fputc('\n', stderr);
 }
