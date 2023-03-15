@@ -22,7 +22,7 @@ TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test/%.o,$(TEST_SRC))
 TEST_REQUIRED_OBJ := $(OBJ_DIR)/debug/bits.o \
                      $(OBJ_DIR)/debug/grid.o \
                      $(OBJ_DIR)/debug/grid_io.o \
-                     $(OBJ_DIR)/debug/rules.o
+                     $(OBJ_DIR)/debug/mathutils.o
 
 
 # Compilation database (used by Sonarlint)

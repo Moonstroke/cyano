@@ -69,3 +69,14 @@ void print_bits(const char *bits, size_t offset, size_t size, FILE *file) {
 	}
 	fputc('\n', file);
 }
+
+
+int bits_equal(const char *bits1, size_t offset1, const char *bits2,
+               size_t offset2, size_t length) {
+	for (size_t i = 0; i < length; ++i) {
+		if (get_bit(bits1, offset1 + i) != get_bit(bits2, offset2 + i)) {
+			return 0;
+		}
+	}
+	return 1;
+}

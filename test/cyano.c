@@ -6,20 +6,20 @@
 
 extern CUTE_TestCase *case_grid;
 extern void build_case_grid(void);
-extern void tests_bits(void);
+extern CUTE_TestCase *case_bits;
+extern void build_case_bits(void);
 
 int main(void) {
 	const CUTE_RunResults **results;
 
 	build_case_grid();
+	build_case_bits();
 
-	CUTE_prepareTestSuite(1, case_grid);
+	CUTE_prepareTestSuite(2, case_grid, case_bits);
 
 	results = CUTE_runTestSuite();
 
-	CUTE_printResults(1, results);
-
-	tests_bits();
+	CUTE_printResults(2, results);
 
 	return EXIT_SUCCESS;
 }
