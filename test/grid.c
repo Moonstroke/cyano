@@ -42,15 +42,15 @@ void test_blinker_after_one_gen(void) {
 	unsigned int col;
 	fputs("-- Test for the status of a blinker after one generation\n",
 	      stderr);
-	fputs("Create vertical blinker from (1, 0) to (1, 2)\n", stderr);
-	for(col = 0; col < 3; ++col) {
-		toggle_cell(&grid, 1, col);
+	fputs("Create vertical blinker from (0, 1) to (2, 1)\n", stderr);
+	for(unsigned int row = 0; row < 3; ++row) {
+		toggle_cell(&grid, row, 1);
 	}
 
 	fputs("Next generation\n", stderr);
 	update_grid(&grid);
 
-	fputs("Looking for horizontal blinker from (0, 1) to (2, 1)\n", stderr);
+	fputs("Looking for horizontal blinker from (1, 0) to (1, 2)\n", stderr);
 	for(col = 0; col < 3; ++col) {
 		CUTE_assertEquals(get_grid_cell(&grid, 1, col), ALIVE);
 	}

@@ -29,7 +29,7 @@ void test_num_octets(void) {
 		0xffffffff
 	};
 	static const size_t expected[] = {
-		0,
+		2305843009213693952,
 		0,
 		1,
 		1,
@@ -94,7 +94,7 @@ void test_set_bit(void) {
 		        i, 0, expected[8 + i]);
 		set_bit(&value, i, 0);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
-		CUTE_assertEquals(value, expected[i]);
+		CUTE_assertEquals(value, expected[8 + i]);
 	}
 	fputc('\n', stderr);
 }
@@ -119,7 +119,7 @@ void test_toggle_bit(void) {
 		        value, i, expected[8 + i]);
 		toggle_bit(&value, i);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
-		CUTE_assertEquals(value, expected[i]);
+		CUTE_assertEquals(value, expected[8 + i]);
 	}
 	fputc('\n', stderr);
 }
