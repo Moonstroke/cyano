@@ -1,6 +1,11 @@
 /* SPDX-License-Identifier: CECILL-2.1 */
 #include "bits.h"
 
+#include "CUTE/cute.h"
+
+
+
+CUTE_TestCase *case_bits;
 
 
 void test_num_octets(void) {
@@ -159,14 +164,11 @@ void test_copy_bits(void) {
 	fputc('\n', stderr);
 }
 
-void tests_bits(void) {
-	test_num_octets();
-
-	test_get_bit();
-
-	test_set_bit();
-
-	test_toggle_bit();
-
-	test_copy_bits();
+void build_case_bits(void) {
+	case_bits = CUTE_newTestCase("Tests for bit manipulation functions", 5);
+	CUTE_addCaseTest(case_bits, CUTE_makeTest(test_num_octets));
+	CUTE_addCaseTest(case_bits, CUTE_makeTest(test_get_bit));
+	CUTE_addCaseTest(case_bits, CUTE_makeTest(test_set_bit));
+	CUTE_addCaseTest(case_bits, CUTE_makeTest(test_toggle_bit));
+	CUTE_addCaseTest(case_bits, CUTE_makeTest(test_copy_bits));
 }
