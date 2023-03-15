@@ -3,7 +3,7 @@
 
 
 
-static void _test_num_octets(void) {
+void test_num_octets(void) {
 	fputs("Testing num_octets(size)\n", stderr);
 	static const size_t values[] = {
 		-1,
@@ -48,7 +48,7 @@ static void _test_num_octets(void) {
 	fputc('\n', stderr);
 }
 
-static void _test_get_bit(void) {
+void test_get_bit(void) {
 	fputs("Testing get_bit(arr, i)\n", stderr);
 	/* binary: 1110 1111 0011 0101 0011 1010 0001 0011 */
 	static const char bits[] = {
@@ -67,7 +67,7 @@ static void _test_get_bit(void) {
 	fputc('\n', stderr);
 }
 
-static void _test_set_bit(void) {
+void test_set_bit(void) {
 	fputs("Testing set_bit(arr, i, val)\n", stderr);
 	static const char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
@@ -90,7 +90,7 @@ static void _test_set_bit(void) {
 	fputc('\n', stderr);
 }
 
-static void _test_toggle_bit(void) {
+void test_toggle_bit(void) {
 	fputs("Testing toggle_bit(arr, i)\n", stderr);
 	static const char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
@@ -113,7 +113,7 @@ static void _test_toggle_bit(void) {
 	fputc('\n', stderr);
 }
 
-static void _test_copy_bits(void) {
+void test_copy_bits(void) {
 	fputs("Testing copy_bits(src, src_offset, dest, dest_offset, length)\n",
 	      stderr);
 	static const char src[] = {
@@ -160,13 +160,13 @@ static void _test_copy_bits(void) {
 }
 
 void tests_bits(void) {
-	_test_num_octets();
+	test_num_octets();
 
-	_test_get_bit();
+	test_get_bit();
 
-	_test_set_bit();
+	test_set_bit();
 
-	_test_toggle_bit();
+	test_toggle_bit();
 
-	_test_copy_bits();
+	test_copy_bits();
 }
