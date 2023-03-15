@@ -4,6 +4,7 @@
 
 
 static void _test_num_octets(void) {
+	fputs("Testing num_octets(size)\n", stderr);
 	static const size_t values[] = {
 		-1,
 		0,
@@ -44,9 +45,11 @@ static void _test_num_octets(void) {
 		fprintf(stderr, "num_octets(%zu): expected %zu, got %zu\n", values[i],
 		        expected[i], num_octets(values[i]));
 	}
+	fputc('\n', stderr);
 }
 
 static void _test_get_bit(void) {
+	fputs("Testing get_bit(arr, i)\n", stderr);
 	/* binary: 1110 1111 0011 0101 0011 1010 0001 0011 */
 	static const char bits[] = {
 		0xef, 0x35, 0x3a, 0x13
@@ -61,9 +64,11 @@ static void _test_get_bit(void) {
 		fprintf(stderr, "get_bit(%u): expected %d, got %d\n", i, expected[i],
 		        get_bit(bits, i));
 	}
+	fputc('\n', stderr);
 }
 
 static void _test_set_bit(void) {
+	fputs("Testing set_bit(arr, i, val)\n", stderr);
 	static const char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
 		0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00
@@ -82,9 +87,11 @@ static void _test_set_bit(void) {
 		set_bit(&value, i, 0);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
+	fputc('\n', stderr);
 }
 
 static void _test_toggle_bit(void) {
+	fputs("Testing toggle_bit(arr, i)\n", stderr);
 	static const char expected[] = {
 		0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff,
 		0x7f, 0x3f, 0x1f, 0x0f, 0x07, 0x03, 0x01, 0x00
@@ -103,9 +110,12 @@ static void _test_toggle_bit(void) {
 		toggle_bit(&value, i);
 		fprintf(stderr, ", got 0x%02hhx\n", value);
 	}
+	fputc('\n', stderr);
 }
 
 static void _test_copy_bits(void) {
+	fputs("Testing copy_bits(src, src_offset, dest, dest_offset, length)\n",
+	      stderr);
 	static const char src[] = {
 		0xca, 0xfe, 0xba, 0xbe, 0xde, 0xad, 0xbe, 0xef
 		/* 1100 1010 1111 1110
@@ -146,27 +156,17 @@ static void _test_copy_bits(void) {
 		print_bits(dest, 0, sizeof dest * 8, stderr);
 		fputc('\n', stderr);
 	}
+	fputc('\n', stderr);
 }
 
 void tests_bits(void) {
-	fputs("Testing num_octets(size)\n", stderr);
 	_test_num_octets();
-	fputc('\n', stderr);
 
-	fputs("Testing get_bit(arr, i)\n", stderr);
 	_test_get_bit();
-	fputc('\n', stderr);
 
-	fputs("Testing set_bit(arr, i, val)\n", stderr);
 	_test_set_bit();
-	fputc('\n', stderr);
 
-	fputs("Testing toggle_bit(arr, i)\n", stderr);
 	_test_toggle_bit();
-	fputc('\n', stderr);
 
-	fputs("Testing copy_bits(src, src_offset, dest, dest_offset, length)\n",
-	      stderr);
 	_test_copy_bits();
-	fputc('\n', stderr);
 }
