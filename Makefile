@@ -94,16 +94,16 @@ $(DEBUG_EXEC): $(DEBUG_OBJ) $(RES_FILE)
 # Filewise compilation
 {$(SRC_DIR)}.c{$(OBJ_DIR)\release}.obj:
 	@if not exist $(OBJ_DIR)\release md $(OBJ_DIR)\release
-	@$(CC) /Fo$@ /c $< /DNDEBUG $(CPPFLAGS) $(optim_flags) $(CFLAGS)
+	$(CC) /Fo$@ /c $< /DNDEBUG $(CPPFLAGS) $(optim_flags) $(CFLAGS)
 
 {$(SRC_DIR)}.c{$(OBJ_DIR)\debug}.obj:
 	@if not exist $(OBJ_DIR)\debug md $(OBJ_DIR)\debug
-	@$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
+	$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
 
 # Tests compilation
 {$(TEST_DIR)}.c{$(OBJ_DIR)\test}.obj:
 	@if not exist $(OBJ_DIR)\test md $(OBJ_DIR)\test
-	@$(CC) /c $< /Fo$@ /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
+	$(CC) /Fo$@ /c $< D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
 
 # Resource compilation
 {$(DATA_DIR)}.rc{$(OBJ_DIR)}.res:
