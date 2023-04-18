@@ -59,24 +59,14 @@ optim_flags = /Ox
 optim_flags = /O2 /Ob3
 !endif
 
-!if "$(DEBUG)" == "y"
-cpp_debug_flags = /D_DEBUG
-c_debug_flags = /Zi /Fd$(PDB_FILE)
-ld_debug_flags = /debug /pdb:$(PDB_FILE)
-!else
-cpp_debug_flags = /DNDEBUG
-c_debug_flags =
-ld_debug_flags = /release
-!endif
-
 
 # Preprocessor flags
-CPPFLAGS = /I$(INC_DIR) /I$(DATA_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(cpp_debug_flags) $(CPPFLAGS)
+CPPFLAGS = /I$(INC_DIR) /I$(DATA_DIR) /D_CRT_SECURE_NO_WARNINGS /DICONSIZE=64 $(CPPFLAGS)
 # Compilation flags
-CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820 $(optim_flags) $(c_debug_flags) $(CFLAGS)
+CFLAGS = /nologo /std:c11 /Wall /wd5045 /wd4820 $(CFLAGS)
 
 # Linkage flags
-LDFLAGS = /nologo $(ld_debug_flags) $(LDFLAGS)
+LDFLAGS = /nologo $(LDFLAGS)
 LDLIBS = SDL2.lib $(LDLIBS)
 
 
@@ -95,25 +85,25 @@ all:
 # Linkage
 $(RELEASE_EXEC): $(RELEASE_OBJ) $(RES_FILE)
 	@if not exist $(OUT_DIR)\release md $(OUT_DIR)\release
-	link $(LDFLAGS) /out:$@ $** $(LDLIBS)
+	link /release $(LDFLAGS) /out:$@ $** $(LDLIBS)
 
 $(DEBUG_EXEC): $(DEBUG_OBJ) $(RES_FILE)
 	@if not exist $(OUT_DIR)\debug md $(OUT_DIR)\debug
-	link $(LDFLAGS) /out:$@ $** $(LDLIBS)
+	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$@ $** $(LDLIBS)
 
 # Filewise compilation
 {$(SRC_DIR)}.c{$(OBJ_DIR)\release}.obj:
 	@if not exist $(OBJ_DIR)\release md $(OBJ_DIR)\release
-	@$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
+	@$(CC) /Fo$@ /c $< /DNDEBUG $(CPPFLAGS) $(optim_flags) $(CFLAGS)
 
 {$(SRC_DIR)}.c{$(OBJ_DIR)\debug}.obj:
 	@if not exist $(OBJ_DIR)\debug md $(OBJ_DIR)\debug
-	@$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
+	@$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
 
 # Tests compilation
 {$(TEST_DIR)}.c{$(OBJ_DIR)\test}.obj:
 	@if not exist $(OBJ_DIR)\test md $(OBJ_DIR)\test
-	@$(CC) /c $< /Fo$@ $(CPPFLAGS) $(CFLAGS)
+	@$(CC) /c $< /Fo$@ /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
 
 # Resource compilation
 {$(DATA_DIR)}.rc{$(OBJ_DIR)}.res:
@@ -141,7 +131,7 @@ cleandoc:
 # Build and launch tests
 test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 	@if not exist $(OUT_DIR)\test md $(OUT_DIR)\test
-	link $(LDFLAGS) /out:$(TEST_EXEC) $** $(LDLIBS)
+	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$(TEST_EXEC) $** $(LDLIBS)
 	.\$(TEST_EXEC)
 
 # Remove test build files

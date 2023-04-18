@@ -28,10 +28,6 @@ DATA_DIR = res
 ## BUILD SETTINGS ##
 
 
-# Enables debugging symbols (gdb)
-# y/n
-DEBUG = y
-
 # Specify whether the libraries should be linked statically or not
 # y/n
 STATIC = n
