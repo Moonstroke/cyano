@@ -6,16 +6,13 @@
 
 
 # Test executable
-TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME).exe
+TEST_EXEC = $(OUT_DIR)\test\$(PROJECT_NAME).exe
 
 # Tests files
 TEST_SRC = $(TEST_DIR)\bits.c \
            $(TEST_DIR)\cyano.c \
            $(TEST_DIR)\grid.c
-# nmake doesn't handle file name prefixes in inference rule syntax, only directories; so
-# the project structure is changed here wrt. GNU/nux: test object files go to a designed
-# subdir in the objects directory
-TEST_OBJ = $(patsubst %.c,$(OBJ_DIR)\\%.obj,$(TEST_SRC))
+TEST_OBJ = $(patsubst $(TEST_DIR)\\%.c,$(OBJ_DIR)\test\\%.obj,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
 TEST_REQUIRED_OBJ = $(OBJ_DIR)\bits.obj \
                     $(OBJ_DIR)\grid.obj \
@@ -104,8 +101,8 @@ $(EXEC): $(OBJ) $(RES_FILE)
 	@$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
 
 # Tests compilation
-{$(TEST_DIR)}.c{$(OBJ_DIR)\$(TEST_DIR)}.obj:
-	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
+{$(TEST_DIR)}.c{$(OBJ_DIR)\test}.obj:
+	@if not exist $(OBJ_DIR)\test md $(OBJ_DIR)\test
 	@$(CC) /c $< /Fo$@ $(CPPFLAGS) $(CFLAGS)
 
 # Resource compilation
@@ -133,11 +130,11 @@ cleandoc:
 
 # Build and launch tests
 test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
-	@if not exist $(OUT_DIR) md $(OUT_DIR)
+	@if not exist $(OUT_DIR)\test md $(OUT_DIR)\test
 	link $(LDFLAGS) /out:$(TEST_EXEC) $** $(LDLIBS)
 	.\$(TEST_EXEC)
 
 # Remove test build files
 testclean:
-	@if exist $(OBJ_DIR)\$(TEST_DIR) rmdir /s /q $(OBJ_DIR)\$(TEST_DIR)
+	@if exist $(OBJ_DIR)\test rmdir /s /q $(OBJ_DIR)\test
 	@if exist $(TEST_EXEC) del /f /q $(TEST_EXEC)
