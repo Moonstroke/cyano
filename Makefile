@@ -9,8 +9,8 @@
 TEST_EXEC = $(OUT_DIR)\test_$(PROJECT_NAME).exe
 
 # Tests files
-TEST_SRC = $(TEST_DIR)\board.c \
-           $(TEST_DIR)\cyano.c
+TEST_SRC = $(TEST_SRC_DIR)\board.c \
+           $(TEST_SRC_DIR)\cyano.c
 # nmake doesn't handle file name prefixes in inference rule syntax, only directories; so
 # the project structure is changed here wrt. GNU/nux: test object files go to a designed
 # subdir in the objects directory
@@ -98,7 +98,7 @@ $(EXEC): $(OBJ) $(OBJ_DIR)\$(RES_FILE)
 	@$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
 
 # Tests compilation
-{$(TEST_DIR)}.c{$(OBJ_DIR)\$(TEST_DIR)}.obj:
+{$(TEST_SRC_DIR)}.c{$(OBJ_DIR)\$(TEST_SRC_DIR)}.obj:
 	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
 	@$(CC) /c $< /Fo$@ $(CPPFLAGS) $(CFLAGS)
 
@@ -133,6 +133,6 @@ test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 
 # Remove test build files
 testclean:
-	@if exist $(OBJ_DIR)\$(TEST_DIR) rmdir /s /q $(OBJ_DIR)\$(TEST_DIR)
+	@if exist $(OBJ_DIR)\$(TEST_SRC_DIR) rmdir /s /q $(OBJ_DIR)\$(TEST_SRC_DIR)
 	@if exist $(TEST_EXEC) del /f /q $(TEST_EXEC)
 	@if exist $(TEST_LOG) del /f /q  $(TEST_LOG)

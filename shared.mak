@@ -11,7 +11,7 @@ INC_DIR = inc
 SRC_DIR = src
 OBJ_DIR = obj
 OUT_DIR = out
-TEST_DIR = test
+TEST_SRC_DIR = test
 
 
 # Documentation

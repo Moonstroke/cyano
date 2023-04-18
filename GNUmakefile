@@ -9,8 +9,8 @@ include shared.mak
 TEST_EXEC := $(OUT_DIR)/test_$(PROJECT_NAME)
 
 # Tests files
-TEST_SRC := $(wildcard $(TEST_DIR)/*.c)
-TEST_OBJ := $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
+TEST_SRC := $(wildcard $(TEST_SRC_DIR)/*.c)
+TEST_OBJ := $(patsubst $(TEST_SRC_DIR)/%.c,$(OBJ_DIR)/test_%.o,$(TEST_SRC))
 # Necessary to avoid redefinition of main()
 TEST_REQUIRED_OBJ := $(OBJ_DIR)/bits.o $(OBJ_DIR)/grid.o $(OBJ_DIR)/grid_io.o $(OBJ_DIR)/mathutils.o
 TEST_LOG := test.log
@@ -74,7 +74,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) -o$@ -c $< $(CPPFLAGS) $(CFLAGS)
 
 # Tests compilation
-$(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.c
+$(OBJ_DIR)/test_%.o: $(TEST_SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(CPPFLAGS) $(CFLAGS)
 
