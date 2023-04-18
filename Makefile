@@ -31,10 +31,12 @@ SRC = $(SRC_DIR)\app.c \
       $(SRC_DIR)\main.c \
       $(SRC_DIR)\rules.c \
       $(SRC_DIR)\stringutils.c
-OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\\%.obj,$(SRC))
+RELEASE_OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\release\\%.obj,$(SRC))
+DEBUG_OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\debug\\%.obj,$(SRC))
 
-# Output executable
-EXEC = $(OUT_DIR)\$(PROJECT_NAME).exe
+# Output executables
+RELEASE_EXEC = $(OUT_DIR)\release\$(PROJECT_NAME).exe
+DEBUG_EXEC = $(OUT_DIR)\debug\$(PROJECT_NAME).exe
 
 # Debugging symbols
 PDB_FILE = $(PROJECT_NAME).pdb
@@ -90,14 +92,22 @@ all:
 	@echo No default build mode, use either "debug", "release" or "test".
 	@exit 1
 
-# Linkage (has to be first to be the default rule)
-$(EXEC): $(OBJ) $(RES_FILE)
-	@if not exist $(OUT_DIR) md $(OUT_DIR)
-	link $(LDFLAGS) /out:$(EXEC) $** $(LDLIBS)
+# Linkage
+$(RELEASE_EXEC): $(RELEASE_OBJ) $(RES_FILE)
+	@if not exist $(OUT_DIR)\release md $(OUT_DIR)\release
+	link $(LDFLAGS) /out:$@ $** $(LDLIBS)
+
+$(DEBUG_EXEC): $(DEBUG_OBJ) $(RES_FILE)
+	@if not exist $(OUT_DIR)\debug md $(OUT_DIR)\debug
+	link $(LDFLAGS) /out:$@ $** $(LDLIBS)
 
 # Filewise compilation
-{$(SRC_DIR)}.c{$(OBJ_DIR)}.obj:
-	@if not exist $(OBJ_DIR) md $(OBJ_DIR)
+{$(SRC_DIR)}.c{$(OBJ_DIR)\release}.obj:
+	@if not exist $(OBJ_DIR)\release md $(OBJ_DIR)\release
+	@$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
+
+{$(SRC_DIR)}.c{$(OBJ_DIR)\debug}.obj:
+	@if not exist $(OBJ_DIR)\debug md $(OBJ_DIR)\debug
 	@$(CC) /Fo$@ /c $< $(CPPFLAGS) $(CFLAGS)
 
 # Tests compilation
