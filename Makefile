@@ -78,9 +78,18 @@ LDLIBS = SDL2.lib $(LDLIBS)
 .SUFFIXES: .c .obj .rc .res
 
 
+# Main entry point targets
 all:
 	@echo No default build mode, use either "debug", "release" or "test".
 	@exit 1
+
+debug: $(DEBUG_EXEC)
+
+release: $(RELEASE_EXEC)
+
+test: $(TEST_EXEC)
+	./(TEST_EXEC)
+
 
 # Linkage
 $(RELEASE_EXEC): $(RELEASE_OBJ) $(RES_FILE)
@@ -131,10 +140,6 @@ doc: $(DOC_CFG)
 # Remove doc directory
 cleandoc:
 	@if exist $(DOC_DIR) rmdir /s /q $(DOC_DIR)
-
-# Build and launch tests
-test: $(TEST_EXEC)
-	.\$(TEST_EXEC)
 
 # Remove test build files
 testclean:
