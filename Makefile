@@ -91,6 +91,10 @@ $(DEBUG_EXEC): $(DEBUG_OBJ) $(RES_FILE)
 	@if not exist $(OUT_DIR)\debug md $(OUT_DIR)\debug
 	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$@ $** $(LDLIBS)
 
+$(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
+	@if not exist $(OUT_DIR)\test md $(OUT_DIR)\test
+	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$(TEST_EXEC) $** $(LDLIBS)
+
 # Filewise compilation
 {$(SRC_DIR)}.c{$(OBJ_DIR)\release}.obj:
 	@if not exist $(OBJ_DIR)\release md $(OBJ_DIR)\release
@@ -129,9 +133,7 @@ cleandoc:
 	@if exist $(DOC_DIR) rmdir /s /q $(DOC_DIR)
 
 # Build and launch tests
-test: $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
-	@if not exist $(OUT_DIR)\test md $(OUT_DIR)\test
-	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$(TEST_EXEC) $** $(LDLIBS)
+test: $(TEST_EXEC)
 	.\$(TEST_EXEC)
 
 # Remove test build files
