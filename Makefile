@@ -102,7 +102,7 @@ $(DEBUG_EXEC): $(DEBUG_OBJ) $(RES_FILE)
 
 $(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 	@if not exist $(OUT_DIR)\test md $(OUT_DIR)\test
-	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$(TEST_EXEC) $** $(LDLIBS)
+	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$@ $** $(LDLIBS)
 
 # Filewise compilation
 {$(SRC_DIR)}.c{$(OBJ_DIR)\release}.obj:
@@ -116,7 +116,7 @@ $(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 # Tests compilation
 {$(TEST_DIR)}.c{$(OBJ_DIR)\test}.obj:
 	@if not exist $(OBJ_DIR)\test md $(OBJ_DIR)\test
-	$(CC) /Fo$@ /c $< D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
+	$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
 
 # Resource compilation
 {$(DATA_DIR)}.rc{$(OBJ_DIR)}.res:
