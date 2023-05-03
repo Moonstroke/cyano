@@ -5,20 +5,10 @@
 ## VARIABLES ##
 
 
-# Test executable
+# Output executables
+RELEASE_EXEC = $(OUT_DIR)\release\$(PROJECT_NAME).exe
+DEBUG_EXEC = $(OUT_DIR)\debug\$(PROJECT_NAME).exe
 TEST_EXEC = $(OUT_DIR)\test\$(PROJECT_NAME).exe
-
-# Tests files
-TEST_SRC = $(TEST_DIR)\bits.c \
-           $(TEST_DIR)\cyano.c \
-           $(TEST_DIR)\grid.c
-TEST_OBJ = $(patsubst $(TEST_DIR)\\%.c,$(OBJ_DIR)\test\\%.obj,$(TEST_SRC))
-# Necessary to avoid redefinition of main()
-TEST_REQUIRED_OBJ = $(OBJ_DIR)\bits.obj \
-                    $(OBJ_DIR)\grid.obj \
-                    $(OBJ_DIR)\grid_io.obj \
-                    $(OBJ_DIR)\rules.obj
-
 
 # Variables describing the architecture of the project directory
 SRC = $(SRC_DIR)\app.c \
@@ -34,9 +24,17 @@ SRC = $(SRC_DIR)\app.c \
 RELEASE_OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\release\\%.obj,$(SRC))
 DEBUG_OBJ = $(patsubst $(SRC_DIR)\\%.c,$(OBJ_DIR)\debug\\%.obj,$(SRC))
 
-# Output executables
-RELEASE_EXEC = $(OUT_DIR)\release\$(PROJECT_NAME).exe
-DEBUG_EXEC = $(OUT_DIR)\debug\$(PROJECT_NAME).exe
+# Tests files
+TEST_SRC = $(TEST_DIR)\bits.c \
+           $(TEST_DIR)\cyano.c \
+           $(TEST_DIR)\grid.c
+TEST_OBJ = $(patsubst $(TEST_DIR)\\%.c,$(OBJ_DIR)\test\\%.obj,$(TEST_SRC))
+# Necessary to avoid redefinition of main()
+TEST_REQUIRED_OBJ = $(OBJ_DIR)\bits.obj \
+                    $(OBJ_DIR)\grid.obj \
+                    $(OBJ_DIR)\grid_io.obj \
+                    $(OBJ_DIR)\rules.obj
+
 
 # Debugging symbols
 PDB_FILE = $(PROJECT_NAME).pdb
@@ -83,10 +81,11 @@ all:
 	@echo No default build mode, use either "debug", "release" or "test".
 	@exit 1
 
+## Build targets
+release: $(RELEASE_EXEC)
 debug: $(DEBUG_EXEC)
 
-release: $(RELEASE_EXEC)
-
+### Test build, also runs the tests
 test: $(TEST_EXEC)
 	./$(TEST_EXEC)
 
@@ -132,6 +131,11 @@ clean:
 distclean: clean cleandoc
 	@if exist $(OUT_DIR) rmdir /s /q $(OUT_DIR)
 
+# Remove test build files
+testclean:
+	@if exist $(OBJ_DIR)\test rmdir /s /q $(OBJ_DIR)\test
+	@if exist $(TEST_EXEC) del /f /q $(TEST_EXEC)
+
 
 # (Re)generate doc
 doc: $(DOC_CFG)
@@ -140,8 +144,3 @@ doc: $(DOC_CFG)
 # Remove doc directory
 cleandoc:
 	@if exist $(DOC_DIR) rmdir /s /q $(DOC_DIR)
-
-# Remove test build files
-testclean:
-	@if exist $(OBJ_DIR)\test rmdir /s /q $(OBJ_DIR)\test
-	@if exist $(TEST_EXEC) del /f /q $(TEST_EXEC)
