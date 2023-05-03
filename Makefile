@@ -88,7 +88,7 @@ debug: $(DEBUG_EXEC)
 release: $(RELEASE_EXEC)
 
 test: $(TEST_EXEC)
-	./(TEST_EXEC)
+	./$(TEST_EXEC)
 
 
 # Linkage
