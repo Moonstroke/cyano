@@ -54,7 +54,7 @@ optim_flags = /Ot
 !else if "$(OPTIM_LVL)" == "s"
 optim_flags = /O1
 !else if "$(OPTIM_LVL)" == "2"
-optim_flags = /Ox
+optim_flags = /O2
 !else if "$(OPTIM_LVL)" == "3"
 optim_flags = /O2 /Ob3
 !endif
