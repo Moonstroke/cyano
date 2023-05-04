@@ -97,11 +97,11 @@ $(RELEASE_EXEC): $(RELEASE_OBJ) $(RES_FILE)
 
 $(DEBUG_EXEC): $(DEBUG_OBJ) $(RES_FILE)
 	@if not exist $(OUT_DIR)\debug md $(OUT_DIR)\debug
-	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$@ $** $(LDLIBS)
+	link /debug /pdb:$(OBJ_DIR)\debug\$(PDB_FILE) $(LDFLAGS) /out:$@ $** $(LDLIBS)
 
 $(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 	@if not exist $(OUT_DIR)\test md $(OUT_DIR)\test
-	link /debug /pdb:$(PDB_FILE) $(LDFLAGS) /out:$@ $** $(LDLIBS)
+	link /debug /pdb:$(OBJ_DIR)\test\$(PDB_FILE) $(LDFLAGS) /out:$@ $** $(LDLIBS)
 
 # Filewise compilation
 {$(SRC_DIR)}.c{$(OBJ_DIR)\release}.obj:
@@ -110,12 +110,12 @@ $(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 
 {$(SRC_DIR)}.c{$(OBJ_DIR)\debug}.obj:
 	@if not exist $(OBJ_DIR)\debug md $(OBJ_DIR)\debug
-	$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
+	$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(OBJ_DIR)\debug\$(PDB_FILE) $(CFLAGS)
 
 # Tests compilation
 {$(TEST_DIR)}.c{$(OBJ_DIR)\test}.obj:
 	@if not exist $(OBJ_DIR)\test md $(OBJ_DIR)\test
-	$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(PDB_FILE) $(CFLAGS)
+	$(CC) /Fo$@ /c $< /D_DEBUG $(CPPFLAGS) /Zi /Fd$(OBJ_DIR)\test\$(PDB_FILE) $(CFLAGS)
 
 # Resource compilation
 {$(DATA_DIR)}.rc{$(OBJ_DIR)}.res:
@@ -124,7 +124,6 @@ $(TEST_EXEC): $(TEST_OBJ) $(TEST_REQUIRED_OBJ)
 
 # Remove object files
 clean:
-	@if exist $(PDB_FILE) del /f /q $(PDB_FILE)
 	@if exist $(OBJ_DIR) rmdir /s /q $(OBJ_DIR)
 
 # Reset project to initial state
